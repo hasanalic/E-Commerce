@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/materialCardShoppinCartItem"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="@color/white"
+    app:strokeWidth="0dp"
+    app:cardElevation="4dp"
+    android:layout_marginHorizontal="8dp"
+    android:layout_marginTop="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="18dp">
+
+        <ImageView
+            android:id="@+id/imageViewShoppingCartItemPhoto"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:scaleType="fitCenter"
+            android:layout_marginEnd="8dp"
+            tools:src="@drawable/google"/>
+
+        <LinearLayout
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textViewBrand"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/coal_dark"
+                android:layout_marginBottom="4dp"
+                tools:text="Apple"
+                android:textSize="18sp"
+                android:fontFamily="@font/inter_bold"/>
+
+            <TextView
+                android:id="@+id/textViewDetail"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:text="Lorem ipsum"
+                android:textSize="14sp"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="@font/inter_regular"
+                android:textColor="@color/font_secondary"/>
+
+            <TextView
+                android:id="@+id/textViewPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="₺99.84"
+                android:textSize="14sp"
+                android:fontFamily="@font/inter_bold"
+                android:textColor="@color/coal_dark"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="72dp"
+                android:layout_height="36dp"
+                app:strokeWidth="0dp"
+                app:cardElevation="2dp"
+                android:layout_marginVertical="4dp"
+                android:layout_marginHorizontal="8dp"
+                app:cardBackgroundColor="@color/white">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/textViewDecrease"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:fontFamily="@font/inter_semibold"
+                        android:textSize="18sp"/>
+
+                    <TextView
+                        android:id="@+id/textViewQuantity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="10dp"
+                        tools:text="2"
+                        android:textColor="@color/color_star"
+                        android:fontFamily="@font/inter_semibold"/>
+
+                    <TextView
+                        android:id="@+id/textViewIncrease"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="+"
+                        android:fontFamily="@font/inter_semibold"
+                        android:textSize="18sp"/>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/materialCardDelete"
+                android:layout_width="72dp"
+                android:layout_height="36dp"
+                app:strokeWidth="0dp"
+                app:cardElevation="2dp"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginVertical="4dp"
+                app:cardBackgroundColor="@color/white">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginEnd="4dp"
+                        android:background="@drawable/delete"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/delete"/>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

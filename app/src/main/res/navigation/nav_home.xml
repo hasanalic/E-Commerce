@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_home"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.hasanalic.starlisans.ui.home.views.HomeFragment"
+        android:label="HomeFragment"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_filteredProductsFragment"
+            app:destination="@id/filteredProductsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_compareFragment"
+            app:destination="@id/compareFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_filteredProductsByCategoryFragment"
+            app:destination="@id/filteredProductsByCategoryFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/filteredProductsFragment"
+        android:name="com.hasanalic.starlisans.ui.home.views.FilteredProductsFragment"
+        android:label="FilteredProductsFragment"
+        tools:layout="@layout/fragment_filtered_products">
+        <argument
+            android:name="searchQuery"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="null" />
+        <action
+            android:id="@+id/action_filteredProductsFragment_to_compareFragment"
+            app:destination="@id/compareFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/compareFragment"
+        android:name="com.hasanalic.starlisans.ui.home.views.CompareFragment"
+        android:label="CompareFragment"
+        tools:layout="@layout/fragment_compare"/>
+
+    <fragment
+        android:id="@+id/filteredProductsByCategoryFragment"
+        android:name="com.hasanalic.starlisans.ui.home.views.FilteredProductsByCategoryFragment"
+        android:label="FilteredProductsByCategoryFragment"
+        tools:layout="@layout/fragment_filtered_products_by_category">
+
+        <argument
+            android:name="category"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_filteredProductsByCategoryFragment_to_compareFragment"
+            app:destination="@id/compareFragment" />
+
+    </fragment>
+
+</navigation>

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginHorizontal="20dp"
+    android:paddingVertical="18sp"
+    android:paddingHorizontal="22dp"
+    android:gravity="center"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:src="@drawable/secure_3d"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="@color/font_secondary"
+            android:fontFamily="@font/inter_regular"
+            android:text="@string/transaction_cost" />
+
+        <TextView
+            android:id="@+id/textViewCost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="@color/font_secondary"
+            android:fontFamily="@font/inter_semibold"
+            tools:text="100 TL" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="@color/font_secondary"
+            android:fontFamily="@font/inter_regular"
+            android:text="@string/transaction_time" />
+
+        <TextView
+            android:id="@+id/textViewTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="@color/font_secondary"
+            android:fontFamily="@font/inter_semibold"
+            tools:text="04.01.2022 11:19" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="@color/font_secondary"
+            android:fontFamily="@font/inter_regular"
+            android:text="@string/card_number" />
+
+        <TextView
+            android:id="@+id/textViewCardNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="@color/font_secondary"
+            android:fontFamily="@font/inter_semibold"
+            tools:text="8815 **** **** **45" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:gravity="center"
+        android:textSize="14sp"
+        android:textColor="@color/font_secondary"
+        android:fontFamily="@font/inter_regular"
+        android:text="@string/validate" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="28dp"
+        android:layout_marginTop="12dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutCode"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="60dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textInputEditTextCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:inputType="number"
+                tools:text="12548"
+                android:textColor="@color/font_secondary"
+                android:textSize="15sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/buttonCancel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingVertical="10sp"
+                android:textSize="13sp"
+                android:layout_weight="1"
+                android:layout_marginEnd="12dp"
+                android:text="@string/cancel_order" />
+
+            <Button
+                android:id="@+id/buttonSend"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingVertical="10sp"
+                android:textSize="13sp"
+                android:layout_weight="1"
+                android:text="@string/send" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

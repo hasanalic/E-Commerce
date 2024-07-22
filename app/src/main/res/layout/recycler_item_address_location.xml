@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/materialCardAddress"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:strokeWidth="0dp"
+    app:cardElevation="4dp"
+    app:cardBackgroundColor="@color/white"
+    android:layout_marginHorizontal="12dp"
+    android:layout_marginVertical="12dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:gravity="start|center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/location" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textViewAddressTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="Ev"
+                android:fontFamily="@font/inter_bold"
+                android:textSize="16sp"
+                android:textColor="@color/font_secondary" />
+
+            <TextView
+                android:id="@+id/textViewAddressDetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="Çırpıcı Mah. Rüstem Balkan Sok. No:12 Daire: 6"
+                android:fontFamily="@font/inter_medium"
+                android:textSize="14sp"
+                android:textColor="@color/font_secondary" />
+
+        </LinearLayout>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/materialCardDelete"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_weight="1"
+            app:strokeWidth="0dp"
+            app:cardElevation="2dp"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginVertical="4dp"
+            app:cardBackgroundColor="@color/white">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_marginEnd="4dp"
+                    android:background="@drawable/delete"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/delete"/>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

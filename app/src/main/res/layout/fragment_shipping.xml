@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolBarShipping"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="Kargo"
+        app:navigationIcon="@drawable/vector"
+        app:titleTextAppearance="@style/TextAppearance.MaterialComponents.Body1">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/code"
+            android:layout_gravity="end"
+            android:paddingHorizontal="12dp"/>
+
+    </com.google.android.material.appbar.MaterialToolbar>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolBarShipping">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:fontFamily="@font/inter_regular"
+            android:gravity="center"
+            android:text="@string/adres"
+            android:textColor="@color/font_secondary"
+            android:textSize="14sp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="2dp"
+            android:background="@color/font_secondary" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:fontFamily="@font/inter_bold"
+            android:text="@string/shipping"
+            android:textColor="@color/font_third"
+            android:textSize="14sp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="2dp"
+            android:background="@color/font_secondary" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:fontFamily="@font/inter_regular"
+            android:gravity="center"
+            android:text="@string/payment_method"
+            android:textColor="@color/font_secondary"
+            android:textSize="14sp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="2dp"
+            android:background="@color/font_secondary" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:fontFamily="@font/inter_regular"
+            android:gravity="center"
+            android:text="@string/payment"
+            android:textColor="@color/font_secondary"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageViewDelivery"
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/delivery"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"/>
+
+    <RadioGroup
+        android:id="@+id/kargoRadioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewDelivery">
+
+        <RadioButton
+            android:id="@+id/mngKargoRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:fontFamily="@font/inter_medium"
+            android:layout_marginBottom="15dp"
+            android:textSize="16sp"
+            android:text="@string/mng_kargo"
+            android:paddingHorizontal="6dp"
+            android:drawableStart="@drawable/mng"
+            android:drawablePadding="10dp"/>
+
+        <RadioButton
+            android:id="@+id/arasKargoRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/aras_kargo"
+            android:layout_marginBottom="15dp"
+            android:fontFamily="@font/inter_medium"
+            android:textSize="16sp"
+            android:paddingHorizontal="6dp"
+            android:drawableStart="@drawable/aras"
+            android:drawablePadding="10dp"/>
+
+        <RadioButton
+            android:id="@+id/yurticiKargoRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_medium"
+            android:textSize="16sp"
+            android:text="@string/yurti_i_kargo"
+            android:layout_marginBottom="15dp"
+            android:drawableStart="@drawable/yurtici"
+            android:drawablePadding="10dp"
+            android:paddingHorizontal="6dp"/>
+
+        <RadioButton
+            android:id="@+id/pttKargoRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_medium"
+            android:textSize="16sp"
+            android:text="@string/ptt_kargo"
+            android:paddingHorizontal="6dp"
+            android:drawableStart="@drawable/ptt"
+            android:drawablePadding="10dp"/>
+
+    </RadioGroup>
+
+    <LinearLayout
+        android:id="@+id/bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingVertical="12dp"
+        android:paddingHorizontal="36dp"
+        android:background="@drawable/bottom_bar"
+        android:elevation="24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <Button
+            android:id="@+id/buttonContinue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="7"
+            android:text="@string/continue_button"
+            android:textSize="15sp"/>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

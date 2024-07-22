@@ -2,4 +2,31 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="blue">#459DE4</color>
+    <color name="red">#FF0000</color>
+
+    <!-- Base application theme. -->
+    <color name="color_primary">#4267B2</color>
+    <color name="color_primary_variant">#518ad8</color>
+    <color name="color_secondary">#606060</color>
+    <color name="color_secondary_variant">#979797</color>
+    <color name="color_status_bar">#9dcbf3</color>
+    <color name="color_star">#FF9900</color>
+    <color name="soft_blue">#E7F4FF</color>
+    <color name="color_order_track_current">#317ADD</color>
+    <color name="color_order_track_completed">#47A04E</color>
+    <color name="color_order_track_uncompleted">#B9B8B9</color>
+
+    <!-- Amazon -->
+    <color name="color_primary_amazon">#E4C083</color>
+    <color name="color_primary_variant_amazon">#CEA968</color>
+    <color name="color_secondary_amazon">#2DBFF8</color>
+    <color name="color_secondary_variant_amazon">#08AAE3</color>
+
+    <color name="color_light_grey">#EEEEEE</color>
+
+    <!-- Fonts -->
+    <color name="coal_dark">#212121</color>
+    <color name="font_secondary">#363636</color>
+    <color name="font_third">#F0A25D</color>
 </resources>

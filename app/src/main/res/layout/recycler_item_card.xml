@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/materialCardBankOrCreditCard"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginHorizontal="20dp"
+    android:layout_marginTop="20dp"
+    app:strokeWidth="0dp"
+    app:cardElevation="4dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardBackgroundColor="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:paddingHorizontal="12dp"
+        android:gravity="center"
+        android:paddingTop="12dp"
+        android:paddingBottom="4dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:layout_marginStart="8dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textViewCardNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="4dp"
+                android:fontFamily="@font/inter_medium"
+                android:textColor="@color/font_secondary"
+                android:textSize="14sp"
+                tools:text="45513181819191" />
+
+            <ImageView
+                android:layout_width="130dp"
+                android:layout_height="60dp"
+                android:src="@drawable/masterpass" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:layout_weight="2"
+            android:src="@drawable/card"/>
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

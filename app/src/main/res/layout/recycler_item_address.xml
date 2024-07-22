@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/materialCardAddress"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardBackgroundColor="@color/white"
+    android:layout_marginHorizontal="8dp"
+    android:layout_marginVertical="8dp"
+    app:cardElevation="4dp"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/location" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textViewAddressTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Ev"
+                android:fontFamily="@font/inter_bold"
+                android:textSize="18sp"
+                android:textColor="@color/font_secondary" />
+
+            <TextView
+                android:id="@+id/textViewAddressDetail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Çırpıcı Mah. Rüstem Balkan Sok. No:12 Daire: 6"
+                android:fontFamily="@font/inter_medium"
+                android:textSize="15sp"
+                android:textColor="@color/font_secondary" />
+
+        </LinearLayout>
+
+        <RadioButton
+            android:id="@+id/radioButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp" />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

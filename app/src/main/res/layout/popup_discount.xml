@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayoutMasterpass"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="30dp"
+    android:orientation="vertical"
+    android:padding="18dp">
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/discount"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="12dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/textViewTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="İndirimi Kaçırma!"
+            android:textSize="22sp"
+            android:fontFamily="@font/poppins_bold"
+            android:textColor="@color/coal_dark"/>
+
+        <TextView
+            android:id="@+id/textViewDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Ürün $product'i %$discount indirimle hemen alabilirsin! Son şansı kaçırma, sipariş ver."
+            android:textSize="14sp"
+            android:gravity="center"
+            android:fontFamily="@font/poppins_medium"
+            android:textColor="@color/font_secondary"/>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/buttonOk"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tamam"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="center_horizontal"/>
+
+</LinearLayout>

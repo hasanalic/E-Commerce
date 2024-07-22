@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ScrollView
+        android:id="@+id/scrollViewProductDetail"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottom"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolBarProductDetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:title="Kategoriler/ Bilgisayar"
+                app:navigationIcon="@drawable/vector"
+                app:titleTextAppearance="@style/TextAppearance.MaterialComponents.Body1">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/imageViewShare"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/share"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:layout_marginEnd="12dp"/>
+
+                    <ImageView
+                        android:id="@+id/imageViewFavorite"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginEnd="14dp"
+                        tools:src="@drawable/favorite_orange"/>
+
+                </LinearLayout>
+
+            </com.google.android.material.appbar.MaterialToolbar>
+
+            <TextView
+                android:id="@+id/code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/code"
+                android:layout_gravity="end"
+                android:paddingHorizontal="12dp"
+                app:layout_constraintTop_toBottomOf="@id/toolBarProductDetail"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <ImageView
+                android:id="@+id/imageViewProductPhoto"
+                android:layout_width="match_parent"
+                android:layout_height="230dp"
+                tools:src="@drawable/google"
+                android:layout_marginTop="4dp"
+                android:padding="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/code" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="12dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageViewProductPhoto">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textViewProductBrand"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter_bold"
+                        android:textColor="@color/coal_dark"
+                        android:textSize="18sp"
+                        tools:text="Apple" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical|end"
+                        android:orientation="horizontal"
+                        android:paddingEnd="10dp">
+
+                        <ImageView
+                            android:id="@+id/imageViewStar"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_marginEnd="3dp"
+                            android:src="@drawable/star" />
+
+                        <TextView
+                            android:id="@+id/textViewRate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/inter_regular"
+                            android:textSize="16sp"
+                            tools:text="4.3"
+                            android:layout_marginEnd="8dp"/>
+
+                        <TextView
+                            android:id="@+id/textViewReviewCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/inter_regular"
+                            android:textSize="14sp"
+                            tools:text="(153)" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/textViewProductDetail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:fontFamily="@font/inter_regular"
+                    android:textColor="@color/font_secondary"
+                    android:textSize="15sp"
+                    tools:text="2020 Apple MacBook Air Laptop: Apple M1 Chip, 13” Retina Display, 8GB RAM, 256GB SSD Storage." />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:fontFamily="@font/inter_semibold"
+                    android:textColor="@color/font_secondary"
+                    android:textSize="14sp"
+                    android:text="@string/details" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="8dp"
+                            android:src="@drawable/local_shipping" />
+
+                        <TextView
+                            android:id="@+id/textViewShipping"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="12sp"
+                            android:textColor="@color/font_secondary"
+                            android:fontFamily="@font/inter_regular"
+                            tools:text="Aras Kargo" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="-2dp"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="8dp"
+                            android:src="@drawable/store" />
+
+                        <TextView
+                            android:id="@+id/textViewStore"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/font_secondary"
+                            android:fontFamily="@font/inter_regular"
+                            android:textSize="12sp"
+                            android:layout_marginEnd="10dp"
+                            tools:text="Karsu Teknoloji" />
+
+                        <TextView
+                            android:id="@+id/textViewStoreRate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/inter_medium"
+                            android:textSize="10sp"
+                            tools:text="8.9"
+                            android:paddingVertical="3dp"
+                            android:paddingHorizontal="6dp"
+                            android:background="@drawable/store_rate_bacg"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginVertical="12dp"
+                    android:background="@color/font_secondary" />
+
+                <TextView
+                    android:id="@+id/textViewReviewContentCount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:fontFamily="@font/inter_semibold"
+                    android:textColor="@color/coal_dark"
+                    android:textSize="16sp"
+                    tools:text="Değerlendirme (3)" />
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewProductDetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout4"
+                tools:listitem="@layout/recycler_item_review">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <LinearLayout
+                android:id="@+id/emptyReview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout4"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <ImageView
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:layout_marginBottom="14dp"
+                    android:src="@drawable/empty_review" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_regular"
+                    android:text="@string/empty_review"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/progressBarProductDetail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:indeterminateTint="@color/color_primary"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingVertical="12dp"
+        android:paddingHorizontal="18dp"
+        android:background="@drawable/bottom_bar"
+        android:elevation="24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/toplam_fiyat"
+                android:textSize="13sp"
+                android:textColor="@color/font_secondary"
+                android:fontFamily="@font/inter_semibold" />
+
+            <TextView
+                android:id="@+id/textViewPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="83.97"
+                android:textSize="18sp"
+                android:textColor="@color/font_secondary"
+                android:fontFamily="@font/inter_semibold" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/buttonAddCart"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="7"
+            tools:text="Sepete ekle"
+            android:textSize="15sp"/>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

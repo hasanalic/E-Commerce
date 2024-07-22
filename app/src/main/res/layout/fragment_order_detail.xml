@@ -1,0 +1,514 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBarOrderDetail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            app:title="Sipariş Detayı"
+            app:navigationIcon="@drawable/vector"
+            app:titleTextColor="@color/font_secondary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:titleTextAppearance="@style/TextAppearance.MaterialComponents.Body1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/code"
+                android:layout_gravity="center"
+                android:paddingHorizontal="12dp"/>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:layout_gravity="center|end"
+                android:layout_marginEnd="20dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:strokeWidth="0dp"
+                app:cardBackgroundColor="@color/white">
+
+                <TextView
+                    android:id="@+id/textViewCancelOrReturn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/inter_medium"
+                    android:textColor="@color/font_secondary"
+                    tools:text="@string/cancel_order"
+                    android:textSize="16sp"
+                    android:src="@drawable/notification_black" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </com.google.android.material.appbar.MaterialToolbar>
+
+        <LinearLayout
+            android:id="@+id/linearLayoutOrderInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="18dp"
+            android:orientation="vertical"
+            android:layout_marginTop="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/topAppBarOrderDetail">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:layout_marginEnd="8dp"
+                    android:textColor="@color/font_secondary"
+                    android:fontFamily="@font/inter_regular"
+                    android:text="@string/order_no" />
+
+                <TextView
+                    android:id="@+id/textViewOrderNo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:textColor="@color/font_secondary"
+                    android:fontFamily="@font/inter_semibold"
+                    tools:text="AHVN-1928FAJCLDV" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:layout_marginEnd="8dp"
+                    android:textColor="@color/font_secondary"
+                    android:fontFamily="@font/inter_regular"
+                    android:text="@string/order_date" />
+
+                <TextView
+                    android:id="@+id/textViewOrderDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:textColor="@color/font_secondary"
+                    android:fontFamily="@font/inter_semibold"
+                    tools:text="12.24.2024" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:layout_marginEnd="8dp"
+                    android:textColor="@color/font_secondary"
+                    android:fontFamily="@font/inter_regular"
+                    android:text="@string/toplam" />
+
+                <TextView
+                    android:id="@+id/textViewOrderTotal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:textColor="@color/font_secondary"
+                    android:fontFamily="@font/inter_semibold"
+                    tools:text="2245 TL" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:layout_marginEnd="8dp"
+                    android:textColor="@color/font_secondary"
+                    android:fontFamily="@font/inter_regular"
+                    android:text="Tahmini Teslim Tarihi:" />
+
+                <TextView
+                    android:id="@+id/textViewOrderEstimatedDelivery"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:textColor="@color/font_secondary"
+                    android:fontFamily="@font/inter_semibold"
+                    tools:text="12 Mart" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/location" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:layout_marginStart="4dp"
+                    android:textColor="@color/font_secondary"
+                    android:fontFamily="@font/inter_semibold"
+                    android:text="@string/delivery_info" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textViewAddressDetail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textSize="15sp"
+                android:textColor="@color/font_secondary"
+                android:fontFamily="@font/inter_regular"
+                tools:text="Çırpıcı Mahallesi Rüstem Balkan Sokak No:9 Daire:6 Zeytinburnu/ İstanbul" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/bill" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:layout_marginStart="4dp"
+                    android:textColor="@color/font_secondary"
+                    android:fontFamily="@font/inter_semibold"
+                    android:text="@string/payment_info" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textViewPayment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:textColor="@color/font_secondary"
+                    android:fontFamily="@font/inter_regular"
+                    tools:text="12** **** **** 1285" />
+
+                <ImageView
+                    android:id="@+id/imageViewPayment"
+                    android:layout_width="wrap_content"
+                    android:paddingStart="-80dp"
+                    android:layout_height="28dp"
+                    android:src="@drawable/masterpass" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/delivery" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:layout_marginStart="8dp"
+                    android:textColor="@color/font_secondary"
+                    android:fontFamily="@font/inter_semibold"
+                    android:text="@string/cargo_company" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textViewCargo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textSize="16sp"
+                android:textColor="@color/font_secondary"
+                android:fontFamily="@font/inter_regular"
+                tools:text="Aras Kargo" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="16dp"
+                android:background="@color/font_secondary" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="6dp"
+                android:textSize="16sp"
+                android:textColor="@color/font_secondary"
+                android:fontFamily="@font/inter_semibold"
+                android:text="Sipariş Durumu" />
+
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayoutOrderInfo">
+
+            <View
+                android:id="@+id/orderTaken"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginStart="30dp"
+                android:background="@drawable/shape_status_current"
+                app:layout_constraintBottom_toBottomOf="@id/imageViewOrderReceived"
+                app:layout_constraintTop_toTopOf="@id/imageViewOrderReceived"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <ImageView
+                android:id="@+id/imageViewOrderReceived"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/order_received"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="25dp"
+                app:layout_constraintTop_toTopOf="@id/constraint"
+                app:layout_constraintStart_toEndOf="@id/orderTaken">
+            </ImageView>
+
+            <TextView
+                android:id="@+id/textViewOrderTaken"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:fontFamily="@font/inter_medium"
+                android:text="@string/order_taken"
+                android:textColor="@color/font_secondary"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageViewOrderReceived"
+                app:layout_constraintStart_toEndOf="@id/imageViewOrderReceived"
+                app:layout_constraintTop_toTopOf="@id/imageViewOrderReceived" />
+
+            <View
+                android:id="@+id/stickOne"
+                android:layout_width="3dp"
+                android:layout_height="0dp"
+                android:background="@color/color_order_track_uncompleted"
+                app:layout_constraintTop_toBottomOf="@id/orderTaken"
+                app:layout_constraintBottom_toTopOf="@id/orderPrepare"
+                app:layout_constraintStart_toStartOf="@id/orderTaken"
+                app:layout_constraintEnd_toEndOf="@id/orderTaken" />
+
+
+            <View
+                android:id="@+id/orderPrepare"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginStart="30dp"
+                android:background="@drawable/shape_status_uncompleted"
+                app:layout_constraintBottom_toBottomOf="@id/imageViewOrderPrepare"
+                app:layout_constraintTop_toTopOf="@id/imageViewOrderPrepare"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <ImageView
+                android:id="@+id/imageViewOrderPrepare"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="35dp"
+                android:src="@drawable/order_prepare"
+                app:layout_constraintStart_toEndOf="@+id/orderPrepare"
+                app:layout_constraintTop_toBottomOf="@+id/imageViewOrderReceived" />
+
+            <TextView
+                android:id="@+id/textViewOrderPrepare"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:fontFamily="@font/inter_medium"
+                android:text="@string/order_prepare"
+                android:textColor="@color/font_secondary"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageViewOrderPrepare"
+                app:layout_constraintStart_toEndOf="@+id/imageViewOrderPrepare"
+                app:layout_constraintTop_toTopOf="@+id/imageViewOrderPrepare" />
+
+            <View
+                android:id="@+id/stickTwo"
+                android:layout_width="3dp"
+                android:layout_height="0dp"
+                android:background="@color/color_order_track_uncompleted"
+                app:layout_constraintTop_toBottomOf="@id/orderPrepare"
+                app:layout_constraintBottom_toTopOf="@id/orderReceiveCargo"
+                app:layout_constraintStart_toStartOf="@id/orderPrepare"
+                app:layout_constraintEnd_toEndOf="@id/orderPrepare" />
+
+
+            <View
+                android:id="@+id/orderReceiveCargo"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginStart="30dp"
+                android:background="@drawable/shape_status_uncompleted"
+                app:layout_constraintBottom_toBottomOf="@id/imageViewOrderCargo"
+                app:layout_constraintTop_toTopOf="@id/imageViewOrderCargo"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <ImageView
+                android:id="@+id/imageViewOrderCargo"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="35dp"
+                android:src="@drawable/order_cargo"
+                app:layout_constraintStart_toEndOf="@+id/orderReceiveCargo"
+                app:layout_constraintTop_toBottomOf="@+id/imageViewOrderPrepare" />
+
+
+            <TextView
+                android:id="@+id/textViewOrderReceiveCargo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:fontFamily="@font/inter_medium"
+                android:text="Kargoya Verildi"
+                android:textColor="@color/font_secondary"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageViewOrderCargo"
+                app:layout_constraintStart_toEndOf="@+id/imageViewOrderCargo"
+                app:layout_constraintTop_toTopOf="@+id/imageViewOrderCargo" />
+
+            <View
+                android:id="@+id/stickThree"
+                android:layout_width="3dp"
+                android:layout_height="0dp"
+                android:background="@color/color_order_track_uncompleted"
+                app:layout_constraintTop_toBottomOf="@id/orderReceiveCargo"
+                app:layout_constraintBottom_toTopOf="@id/orderDelivered"
+                app:layout_constraintStart_toStartOf="@id/orderReceiveCargo"
+                app:layout_constraintEnd_toEndOf="@id/orderReceiveCargo" />
+
+
+            <View
+                android:id="@+id/orderDelivered"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginStart="30dp"
+                android:background="@drawable/shape_status_uncompleted"
+                app:layout_constraintBottom_toBottomOf="@id/imageViewDelivered"
+                app:layout_constraintTop_toTopOf="@id/imageViewDelivered"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <ImageView
+                android:id="@+id/imageViewDelivered"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="35dp"
+                android:src="@drawable/order_delivered"
+                app:layout_constraintStart_toEndOf="@+id/orderDelivered"
+                app:layout_constraintTop_toBottomOf="@+id/imageViewOrderCargo" />
+
+            <TextView
+                android:id="@+id/textViewOrderDelivered"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:fontFamily="@font/inter_medium"
+                android:text="@string/delivered"
+                android:textColor="@color/font_secondary"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageViewDelivered"
+                app:layout_constraintStart_toEndOf="@+id/imageViewDelivered"
+                app:layout_constraintTop_toTopOf="@+id/imageViewDelivered" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayoutCancelOrReturn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayoutOrderInfo"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <ImageView
+                android:id="@+id/imageViewOrderInfo"
+                android:layout_width="54dp"
+                android:layout_height="54dp"
+                android:layout_marginBottom="14dp"
+                tools:src="@drawable/cancel" />
+
+            <TextView
+                android:id="@+id/textViewOrderInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_regular"
+                tools:text="Siparişiniz iptal edilmiştir."
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
