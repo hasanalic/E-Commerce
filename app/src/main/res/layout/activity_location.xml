@@ -19,13 +19,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:titleTextAppearance="@style/TextAppearance.MaterialComponents.Body1">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/code"
-            android:layout_gravity="end"
-            android:paddingHorizontal="12dp"/>
-
     </com.google.android.material.appbar.MaterialToolbar>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -75,7 +68,6 @@
                     android:maxLines="1"
                     android:maxLength="12"
                     android:textColor="@color/font_secondary"
-                    android:fontFamily="@font/inter_medium"
                     tools:text="Ev"
                     android:textSize="16sp" />
 
@@ -95,7 +87,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/font_secondary"
-                    android:fontFamily="@font/inter_medium"
                     tools:text="Çırpıcı Mahallesi Rüstem Balkan Sokak No: 12 Daire: 6"
                     android:textSize="16sp" />
 

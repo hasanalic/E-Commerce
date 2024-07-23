@@ -29,7 +29,6 @@
             android:paddingEnd="20dp"
             android:inputType="text"
             tools:text="Araba marka"
-            android:fontFamily="@font/inter_medium"
             android:textColor="@color/coal_dark"
             android:textSize="15sp" />
 
@@ -43,7 +42,6 @@
         android:layout_marginStart="2dp"
         android:layout_marginTop="12dp"
         android:textColor="@color/font_secondary"
-        android:fontFamily="@font/inter_medium"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="@id/textInputLayoutSearch"
         app:layout_constraintTop_toBottomOf="@id/textInputLayoutSearch"/>
@@ -56,7 +54,6 @@
         android:layout_marginTop="12dp"
         android:layout_marginEnd="2dp"
         android:textColor="@color/font_secondary"
-        android:fontFamily="@font/inter_medium"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@id/textInputLayoutSearch"
         app:layout_constraintTop_toBottomOf="@id/textInputLayoutSearch"/>

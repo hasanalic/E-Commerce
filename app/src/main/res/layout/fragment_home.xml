@@ -31,7 +31,6 @@
             android:inputType="text"
             android:drawableStart="@drawable/search"
             android:drawablePadding="8dp"
-            android:fontFamily="@font/inter_semibold"
             android:textSize="14sp"
             android:elevation="10dp"
             android:textColor="@color/coal_dark"
@@ -78,7 +77,6 @@
             android:layout_height="wrap_content"
             android:text="@string/categories"
             android:layout_marginEnd="8dp"
-            android:fontFamily="@font/inter_medium"
             android:textColor="@color/font_secondary"/>
 
         <View

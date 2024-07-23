@@ -17,12 +17,6 @@
         app:navigationIcon="@drawable/vector"
         app:titleTextAppearance="@style/TextAppearance.MaterialComponents.Body1">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/code"
-            android:layout_gravity="end"
-            android:paddingHorizontal="12dp"/>
     </com.google.android.material.appbar.MaterialToolbar>
 
     <ScrollView
@@ -52,7 +46,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:fontFamily="@font/inter_regular"
                     android:gravity="center"
                     android:text="@string/adres"
                     android:textColor="@color/font_secondary"
@@ -69,7 +62,6 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:gravity="center"
-                    android:fontFamily="@font/inter_regular"
                     android:text="@string/shipping"
                     android:textColor="@color/font_secondary"
                     android:textSize="14sp" />
@@ -84,7 +76,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:fontFamily="@font/inter_regular"
                     android:gravity="center"
                     android:text="@string/payment_method"
                     android:textColor="@color/font_secondary"
@@ -100,7 +91,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:fontFamily="@font/inter_bold"
                     android:gravity="center"
                     android:text="@string/payment"
                     android:textColor="@color/font_third"
@@ -119,7 +109,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
-                    android:fontFamily="@font/inter_semibold"
                     android:text="@string/card_name"
                     android:textColor="@color/font_secondary"
                     android:textSize="14sp" />
@@ -134,7 +123,6 @@
                         android:id="@+id/textInputEditTextCardName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_medium"
                         android:inputType="text"
                         android:maxLength="22"
                         android:textColor="@color/font_secondary"
@@ -147,7 +135,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="4dp"
-                    android:fontFamily="@font/inter_semibold"
                     android:text="@string/bank_or_credit_card"
                     android:textColor="@color/font_secondary"
                     android:textSize="14sp" />
@@ -162,7 +149,6 @@
                         android:id="@+id/textInputEditTextCardNumber"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_medium"
                         android:inputType="number"
                         android:maxLength="16"
                         android:textColor="@color/font_secondary"
@@ -186,7 +172,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="4dp"
-                            android:fontFamily="@font/inter_semibold"
                             android:text="@string/month"
                             android:textColor="@color/font_secondary"
                             android:textSize="14sp" />
@@ -202,7 +187,6 @@
                                 android:id="@+id/textInputEditTextCardMonth"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:fontFamily="@font/inter_medium"
                                 android:inputType="number"
                                 android:maxLength="2"
                                 android:textColor="@color/font_secondary"
@@ -221,7 +205,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="4dp"
-                            android:fontFamily="@font/inter_semibold"
                             android:text="@string/year"
                             android:textColor="@color/font_secondary"
                             android:textSize="14sp" />
@@ -237,7 +220,6 @@
                                 android:id="@+id/textInputEditTextCardYear"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:fontFamily="@font/inter_medium"
                                 android:inputType="number"
                                 android:maxLength="2"
                                 android:textColor="@color/font_secondary"
@@ -256,7 +238,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="4dp"
-                            android:fontFamily="@font/inter_semibold"
                             android:text="@string/cvv"
                             android:textColor="@color/font_secondary"
                             android:textSize="14sp" />
@@ -271,7 +252,6 @@
                                 android:id="@+id/textInputEditTextCardCvv"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:fontFamily="@font/inter_medium"
                                 android:inputType="number"
                                 android:maxLength="3"
                                 android:textColor="@color/font_secondary"
@@ -286,7 +266,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
-                    android:fontFamily="@font/inter_regular"
                     android:text="@string/secure_3d"
                     android:textColor="@color/font_secondary" />
 
@@ -299,7 +278,6 @@
                         android:id="@+id/checkBoxSave"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_regular"
                         android:text="@string/save_mastercard"
                         android:textColor="@color/font_secondary" />
 

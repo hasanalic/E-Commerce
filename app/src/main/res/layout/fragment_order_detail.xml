@@ -23,13 +23,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:titleTextAppearance="@style/TextAppearance.MaterialComponents.Body1">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/code"
-                android:layout_gravity="center"
-                android:paddingHorizontal="12dp"/>
-
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="wrap_content"
                 android:layout_height="36dp"
@@ -45,7 +38,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:fontFamily="@font/inter_medium"
                     android:textColor="@color/font_secondary"
                     tools:text="@string/cancel_order"
                     android:textSize="16sp"
@@ -78,7 +70,6 @@
                     android:textSize="16sp"
                     android:layout_marginEnd="8dp"
                     android:textColor="@color/font_secondary"
-                    android:fontFamily="@font/inter_regular"
                     android:text="@string/order_no" />
 
                 <TextView
@@ -87,7 +78,6 @@
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
                     android:textColor="@color/font_secondary"
-                    android:fontFamily="@font/inter_semibold"
                     tools:text="AHVN-1928FAJCLDV" />
 
             </LinearLayout>
@@ -104,7 +94,6 @@
                     android:textSize="16sp"
                     android:layout_marginEnd="8dp"
                     android:textColor="@color/font_secondary"
-                    android:fontFamily="@font/inter_regular"
                     android:text="@string/order_date" />
 
                 <TextView
@@ -113,7 +102,6 @@
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
                     android:textColor="@color/font_secondary"
-                    android:fontFamily="@font/inter_semibold"
                     tools:text="12.24.2024" />
 
             </LinearLayout>
@@ -130,7 +118,6 @@
                     android:textSize="16sp"
                     android:layout_marginEnd="8dp"
                     android:textColor="@color/font_secondary"
-                    android:fontFamily="@font/inter_regular"
                     android:text="@string/toplam" />
 
                 <TextView
@@ -139,7 +126,6 @@
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
                     android:textColor="@color/font_secondary"
-                    android:fontFamily="@font/inter_semibold"
                     tools:text="2245 TL" />
 
             </LinearLayout>
@@ -156,7 +142,6 @@
                     android:textSize="16sp"
                     android:layout_marginEnd="8dp"
                     android:textColor="@color/font_secondary"
-                    android:fontFamily="@font/inter_regular"
                     android:text="Tahmini Teslim Tarihi:" />
 
                 <TextView
@@ -165,7 +150,6 @@
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
                     android:textColor="@color/font_secondary"
-                    android:fontFamily="@font/inter_semibold"
                     tools:text="12 Mart" />
 
             </LinearLayout>
@@ -188,7 +172,6 @@
                     android:textSize="16sp"
                     android:layout_marginStart="4dp"
                     android:textColor="@color/font_secondary"
-                    android:fontFamily="@font/inter_semibold"
                     android:text="@string/delivery_info" />
 
             </LinearLayout>
@@ -200,7 +183,6 @@
                 android:layout_marginTop="8dp"
                 android:textSize="15sp"
                 android:textColor="@color/font_secondary"
-                android:fontFamily="@font/inter_regular"
                 tools:text="Çırpıcı Mahallesi Rüstem Balkan Sokak No:9 Daire:6 Zeytinburnu/ İstanbul" />
 
             <LinearLayout
@@ -221,7 +203,6 @@
                     android:textSize="16sp"
                     android:layout_marginStart="4dp"
                     android:textColor="@color/font_secondary"
-                    android:fontFamily="@font/inter_semibold"
                     android:text="@string/payment_info" />
 
             </LinearLayout>
@@ -239,7 +220,6 @@
                     android:layout_height="wrap_content"
                     android:textSize="15sp"
                     android:textColor="@color/font_secondary"
-                    android:fontFamily="@font/inter_regular"
                     tools:text="12** **** **** 1285" />
 
                 <ImageView
@@ -269,7 +249,6 @@
                     android:textSize="16sp"
                     android:layout_marginStart="8dp"
                     android:textColor="@color/font_secondary"
-                    android:fontFamily="@font/inter_semibold"
                     android:text="@string/cargo_company" />
 
             </LinearLayout>
@@ -281,7 +260,6 @@
                 android:layout_marginTop="8dp"
                 android:textSize="16sp"
                 android:textColor="@color/font_secondary"
-                android:fontFamily="@font/inter_regular"
                 tools:text="Aras Kargo" />
 
             <View
@@ -297,7 +275,6 @@
                 android:layout_marginBottom="6dp"
                 android:textSize="16sp"
                 android:textColor="@color/font_secondary"
-                android:fontFamily="@font/inter_semibold"
                 android:text="Sipariş Durumu" />
 
         </LinearLayout>
@@ -337,7 +314,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:fontFamily="@font/inter_medium"
                 android:text="@string/order_taken"
                 android:textColor="@color/font_secondary"
                 android:textSize="16sp"
@@ -381,7 +357,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:fontFamily="@font/inter_medium"
                 android:text="@string/order_prepare"
                 android:textColor="@color/font_secondary"
                 android:textSize="16sp"
@@ -426,7 +401,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:fontFamily="@font/inter_medium"
                 android:text="Kargoya Verildi"
                 android:textColor="@color/font_secondary"
                 android:textSize="16sp"
@@ -470,7 +444,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:fontFamily="@font/inter_medium"
                 android:text="@string/delivered"
                 android:textColor="@color/font_secondary"
                 android:textSize="16sp"
@@ -503,7 +476,6 @@
                 android:id="@+id/textViewOrderInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/inter_regular"
                 tools:text="Siparişiniz iptal edilmiştir."
                 android:textSize="16sp" />
 

@@ -11,7 +11,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="Kategori"
-        android:fontFamily="@font/inter_medium"
         app:chipStrokeWidth="1dp"
         app:chipStrokeColor="@color/color_light_grey"
         android:backgroundTint="@color/white"

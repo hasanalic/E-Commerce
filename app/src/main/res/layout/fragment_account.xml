@@ -21,24 +21,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:fontFamily="@font/inter_medium"
         android:text="isim@gmail.com"
         android:textColor="@color/font_secondary"
         android:textSize="13sp"
         app:layout_constraintTop_toTopOf="@id/imageViewProfilePhoto"
         app:layout_constraintBottom_toBottomOf="@id/imageViewProfilePhoto"
         app:layout_constraintStart_toEndOf="@id/imageViewProfilePhoto"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="20dp"
-        android:paddingHorizontal="12dp"
-        android:text="@string/code"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <View
         android:id="@+id/view"
@@ -55,7 +43,6 @@
         android:id="@+id/textViewSupport"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/inter_medium"
         android:layout_marginTop="30dp"
         android:text="@string/customer_service"
         android:textColor="@color/font_secondary"
@@ -68,7 +55,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:fontFamily="@font/inter_medium"
         android:text="@string/my_orders"
         android:textColor="@color/font_secondary"
         android:textSize="18sp"
@@ -76,34 +62,20 @@
         app:layout_constraintTop_toBottomOf="@+id/textViewSupport" />
 
     <TextView
-        android:id="@+id/textViewChatBot"
+        android:id="@+id/textViewFeedBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:fontFamily="@font/inter_medium"
-        android:text="@string/ai"
+        android:text="@string/geri_bildirim"
         android:textColor="@color/font_secondary"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/imageViewProfilePhoto"
         app:layout_constraintTop_toBottomOf="@+id/textViewOrders" />
 
     <TextView
-        android:id="@+id/textViewFeedBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:fontFamily="@font/inter_medium"
-        android:text="@string/geri_bildirim"
-        android:textColor="@color/font_secondary"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/imageViewProfilePhoto"
-        app:layout_constraintTop_toBottomOf="@+id/textViewChatBot" />
-
-    <TextView
         android:id="@+id/textViewLogout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/inter_medium"
         android:layout_marginTop="20dp"
         android:text="@string/logout"
         android:textColor="@color/font_secondary"

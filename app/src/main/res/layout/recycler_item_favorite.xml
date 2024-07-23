@@ -36,8 +36,7 @@
             android:textColor="@color/coal_dark"
             android:layout_marginBottom="4dp"
             tools:text="Apple"
-            android:textSize="18sp"
-            android:fontFamily="@font/inter_bold" />
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/textViewProductDetail"
@@ -46,7 +45,6 @@
             tools:text="2020 Apple MacBook Air Laptop: Apple M1 Chip, 13” Retina Display, 8GB RAM, 256GB SSD Storage, Backlit Keyboard, FaceTime HD Camera, Touch ID. Works with iPhone/iPad; Silver"
             android:textSize="14sp"
             android:layout_marginBottom="8dp"
-            android:fontFamily="@font/inter_regular"
             android:textColor="@color/font_secondary" />
 
         <TextView
@@ -55,7 +53,6 @@
             android:layout_height="wrap_content"
             tools:text="₺99.84"
             android:textSize="14sp"
-            android:fontFamily="@font/inter_bold"
             android:textColor="@color/coal_dark" />
 
         <View
@@ -76,7 +73,6 @@
                 android:layout_height="wrap_content"
                 tools:text="4.7"
                 android:textSize="11sp"
-                android:fontFamily="@font/inter_regular"
                 android:textColor="@color/coal_dark" />
 
             <LinearLayout
@@ -123,7 +119,6 @@
                 android:layout_height="wrap_content"
                 tools:text="(39)"
                 android:textSize="11sp"
-                android:fontFamily="@font/inter_regular"
                 android:textColor="@color/coal_dark" />
 
         </LinearLayout>
@@ -142,8 +137,7 @@
                 android:layout_marginEnd="18dp"
                 android:padding="10dp"
                 android:text="@string/add_cart"
-                android:textSize="12sp"
-                android:fontFamily="@font/inter_bold" />
+                android:textSize="12sp" />
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="0dp"
@@ -153,7 +147,7 @@
                 app:strokeWidth="0dp"
                 android:clickable="true"
                 android:focusable="true"
-                style="@style/Base.Theme.StarLisans">
+                style="@style/Base.Theme.Ecommerce">
 
                 <ImageView
                     android:id="@+id/imageViewFavorite"

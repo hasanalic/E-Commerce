@@ -33,7 +33,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="4dp"
-                android:fontFamily="@font/inter_medium"
                 android:textColor="@color/font_secondary"
                 android:textSize="14sp"
                 tools:text="45513181819191" />

@@ -22,7 +22,6 @@
         android:gravity="center"
         android:layout_marginBottom="10dp"
         android:textColor="@color/font_secondary"
-        android:fontFamily="@font/inter_light"
         android:text="@string/massterpass_saved" />
 
     <TextView
@@ -32,7 +31,6 @@
         android:gravity="center"
         android:layout_marginBottom="16dp"
         android:textColor="@color/font_secondary"
-        android:fontFamily="@font/inter_medium"
         android:text="@string/wish_card" />
 
     <Button

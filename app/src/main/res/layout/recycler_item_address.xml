@@ -35,7 +35,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="Ev"
-                android:fontFamily="@font/inter_bold"
                 android:textSize="18sp"
                 android:textColor="@color/font_secondary" />
 
@@ -44,7 +43,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="Çırpıcı Mah. Rüstem Balkan Sok. No:12 Daire: 6"
-                android:fontFamily="@font/inter_medium"
                 android:textSize="15sp"
                 android:textColor="@color/font_secondary" />
 

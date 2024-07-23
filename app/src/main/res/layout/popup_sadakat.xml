@@ -23,7 +23,6 @@
             android:gravity="center"
             tools:text="Sana Özel %4 İndirim"
             android:textSize="18sp"
-            android:fontFamily="@font/poppins_bold"
             android:textColor="@color/coal_dark"/>
 
         <ImageView
@@ -42,7 +41,6 @@
             tools:text="Apple"
             android:textSize="16sp"
             android:gravity="center"
-            android:fontFamily="@font/poppins_bold"
             android:textColor="@color/font_secondary"/>
 
         <TextView
@@ -52,7 +50,6 @@
             tools:text="Apple MacBook Pro M3 Pro 18GB 512GB SSD macOS 14 inch Taşınabilir Bilgisayar Uzay Siyahı MRX33TU/A"
             android:textSize="13sp"
             android:gravity="center"
-            android:fontFamily="@font/poppins_medium"
             android:textColor="@color/font_secondary"/>
 
     </LinearLayout>

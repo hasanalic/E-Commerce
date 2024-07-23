@@ -14,7 +14,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:title="@string/code"
         app:navigationIcon="@drawable/vector"
         app:titleTextAppearance="@style/TextAppearance.MaterialComponents.Body1"/>
 
@@ -23,7 +22,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:fontFamily="@font/inter_semibold"
         android:gravity="center"
         android:text="@string/contact"
         android:textColor="@color/font_secondary"
@@ -38,7 +36,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:fontFamily="@font/inter_regular"
         android:gravity="center"
         android:paddingHorizontal="20dp"
         android:text="@string/customer_explain"
@@ -77,7 +74,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:fontFamily="@font/inter_regular"
                 android:text="@string/fake_number"
                 android:textColor="@color/font_secondary"
                 android:textSize="14sp" />
@@ -114,7 +110,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:fontFamily="@font/inter_regular"
                 android:text="@string/fake_email"
                 android:textColor="@color/font_secondary"
                 android:textSize="14sp" />
@@ -141,7 +136,6 @@
             android:id="@+id/review"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fontFamily="@font/inter_regular"
             android:inputType="text"
             android:gravity="top|start"
             android:textColor="@color/font_secondary"

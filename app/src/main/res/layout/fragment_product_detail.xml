@@ -56,17 +56,6 @@
 
             </com.google.android.material.appbar.MaterialToolbar>
 
-            <TextView
-                android:id="@+id/code"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/code"
-                android:layout_gravity="end"
-                android:paddingHorizontal="12dp"
-                app:layout_constraintTop_toBottomOf="@id/toolBarProductDetail"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
-
             <ImageView
                 android:id="@+id/imageViewProductPhoto"
                 android:layout_width="match_parent"
@@ -76,7 +65,7 @@
                 android:padding="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/code" />
+                app:layout_constraintTop_toBottomOf="@+id/toolBarProductDetail" />
 
             <LinearLayout
                 android:id="@+id/linearLayout4"
@@ -97,7 +86,6 @@
                         android:id="@+id/textViewProductBrand"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_bold"
                         android:textColor="@color/coal_dark"
                         android:textSize="18sp"
                         tools:text="Apple" />
@@ -121,7 +109,6 @@
                             android:id="@+id/textViewRate"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/inter_regular"
                             android:textSize="16sp"
                             tools:text="4.3"
                             android:layout_marginEnd="8dp"/>
@@ -130,7 +117,6 @@
                             android:id="@+id/textViewReviewCount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/inter_regular"
                             android:textSize="14sp"
                             tools:text="(153)" />
 
@@ -143,7 +129,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:fontFamily="@font/inter_regular"
                     android:textColor="@color/font_secondary"
                     android:textSize="15sp"
                     tools:text="2020 Apple MacBook Air Laptop: Apple M1 Chip, 13” Retina Display, 8GB RAM, 256GB SSD Storage." />
@@ -152,7 +137,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:fontFamily="@font/inter_semibold"
                     android:textColor="@color/font_secondary"
                     android:textSize="14sp"
                     android:text="@string/details" />
@@ -180,7 +164,6 @@
                             android:layout_height="wrap_content"
                             android:textSize="12sp"
                             android:textColor="@color/font_secondary"
-                            android:fontFamily="@font/inter_regular"
                             tools:text="Aras Kargo" />
 
                     </LinearLayout>
@@ -202,7 +185,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/font_secondary"
-                            android:fontFamily="@font/inter_regular"
                             android:textSize="12sp"
                             android:layout_marginEnd="10dp"
                             tools:text="Karsu Teknoloji" />
@@ -212,7 +194,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/white"
-                            android:fontFamily="@font/inter_medium"
                             android:textSize="10sp"
                             tools:text="8.9"
                             android:paddingVertical="3dp"
@@ -234,7 +215,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
-                    android:fontFamily="@font/inter_semibold"
                     android:textColor="@color/coal_dark"
                     android:textSize="16sp"
                     tools:text="Değerlendirme (3)" />
@@ -274,7 +254,6 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/inter_regular"
                     android:text="@string/empty_review"
                     android:textSize="14sp" />
 
@@ -319,8 +298,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/toplam_fiyat"
                 android:textSize="13sp"
-                android:textColor="@color/font_secondary"
-                android:fontFamily="@font/inter_semibold" />
+                android:textColor="@color/font_secondary" />
 
             <TextView
                 android:id="@+id/textViewPrice"
@@ -328,8 +306,7 @@
                 android:layout_height="wrap_content"
                 tools:text="83.97"
                 android:textSize="18sp"
-                android:textColor="@color/font_secondary"
-                android:fontFamily="@font/inter_semibold" />
+                android:textColor="@color/font_secondary" />
 
         </LinearLayout>
 

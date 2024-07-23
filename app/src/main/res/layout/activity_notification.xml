@@ -16,7 +16,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:name="com.hasanalic.starlisans.ui.notification.NotificationFragment"
+        android:name="com.hasanalic.ecommerce.ui.notification.NotificationFragment"
         tools:layout="@layout/fragment_notification">
 
     </androidx.fragment.app.FragmentContainerView>

@@ -16,13 +16,6 @@
         app:title="Kartlarınız"
         app:titleTextAppearance="@style/TextAppearance.MaterialComponents.Body1">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/code"
-            android:layout_gravity="end"
-            android:paddingHorizontal="12dp"/>
-
     </com.google.android.material.appbar.MaterialToolbar>
 
     <androidx.recyclerview.widget.RecyclerView

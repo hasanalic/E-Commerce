@@ -29,7 +29,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/inter_semibold"
             android:text="@string/order_recieved"
             android:textColor="@color/coal_dark"
             android:textSize="24sp" />
@@ -37,7 +36,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/inter_regular"
             android:text="Satın alımınız için teşekkürler."
             android:textColor="@color/font_secondary"
             android:textSize="16sp" />

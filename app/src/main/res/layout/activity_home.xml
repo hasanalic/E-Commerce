@@ -45,7 +45,6 @@
                         android:layout_marginBottom="2dp"
                         android:layout_marginStart="4dp"
                         android:textColor="@color/font_secondary"
-                        android:fontFamily="@font/inter_regular"
                         android:text="Konum" />
 
                     <LinearLayout
@@ -64,8 +63,7 @@
                             android:layout_height="wrap_content"
                             android:text="İstanbul, Türkiye"
                             android:textSize="14sp"
-                            android:textColor="@color/coal_dark"
-                            android:fontFamily="@font/inter_medium">
+                            android:textColor="@color/coal_dark">
 
                         </TextView>
 
@@ -76,13 +74,6 @@
             </LinearLayout>
 
         </com.google.android.material.card.MaterialCardView>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/code"
-            android:layout_gravity="center"
-            android:paddingHorizontal="12dp"/>
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/materialCardNotification"

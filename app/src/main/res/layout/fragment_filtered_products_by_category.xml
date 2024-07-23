@@ -17,13 +17,6 @@
         app:navigationIcon="@drawable/back_arrow_smallest"
         app:titleTextAppearance="@style/TextAppearance.MaterialComponents.Body1">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/code"
-            android:layout_gravity="end"
-            android:paddingHorizontal="12dp"/>
-
     </com.google.android.material.appbar.MaterialToolbar>
 
     <TextView
@@ -34,7 +27,6 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="12dp"
         android:textColor="@color/font_secondary"
-        android:fontFamily="@font/inter_medium"
         android:textSize="13sp"
         app:layout_constraintEnd_toEndOf="@id/toolBarFilteredProductsByCategory"
         app:layout_constraintTop_toBottomOf="@id/toolBarFilteredProductsByCategory"/>

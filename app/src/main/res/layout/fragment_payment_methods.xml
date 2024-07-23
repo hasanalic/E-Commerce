@@ -17,13 +17,6 @@
         app:navigationIcon="@drawable/vector"
         app:titleTextAppearance="@style/TextAppearance.MaterialComponents.Body1">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/code"
-            android:layout_gravity="end"
-            android:paddingHorizontal="12dp"/>
-
     </com.google.android.material.appbar.MaterialToolbar>
 
     <LinearLayout
@@ -43,7 +36,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:fontFamily="@font/inter_regular"
             android:gravity="center"
             android:text="@string/adres"
             android:textColor="@color/font_secondary"
@@ -59,7 +51,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:fontFamily="@font/inter_regular"
             android:gravity="center"
             android:text="@string/shipping"
             android:textColor="@color/font_secondary"
@@ -75,7 +66,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:fontFamily="@font/inter_bold"
             android:gravity="center"
             android:text="@string/payment_method"
             android:textColor="@color/font_third"
@@ -91,7 +81,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:fontFamily="@font/inter_regular"
             android:gravity="center"
             android:text="@string/payment"
             android:textColor="@color/font_secondary"
@@ -114,7 +103,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/inter_semibold"
             android:layout_marginBottom="10dp"
             android:text="@string/bank_or_credit_card"
             android:textSize="16sp"
@@ -139,7 +127,6 @@
                 android:text="@string/add_card"
                 android:paddingEnd="8dp"
                 android:textSize="15sp"
-                android:fontFamily="@font/inter_medium"
                 android:textColor="@color/font_secondary"
                 android:drawablePadding="8dp"
                 app:drawableStartCompat="@drawable/credit_card"
@@ -164,7 +151,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/inter_semibold"
             android:layout_marginBottom="10dp"
             android:text="@string/others"
             android:textSize="16sp"
@@ -192,63 +178,6 @@
                 app:drawableStartCompat="@drawable/door"
                 android:text="@string/kapida_odeme"
                 android:textSize="15sp"
-                android:fontFamily="@font/inter_medium"
-                android:textColor="@color/font_secondary"
-                app:drawableEndCompat="@drawable/arrow_right" />
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/materialCardPaypal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="4dp"
-            android:layout_marginBottom="12dp"
-            app:cardBackgroundColor="@color/white"
-            android:clickable="true"
-            android:focusable="true"
-            app:cardElevation="2dp"
-            app:strokeWidth="0dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingVertical="15dp"
-                android:paddingStart="15dp"
-                android:drawablePadding="12dp"
-                android:paddingEnd="8dp"
-                app:drawableStartCompat="@drawable/paypal"
-                android:text="@string/paypal"
-                android:textSize="15sp"
-                android:fontFamily="@font/inter_medium"
-                android:textColor="@color/font_secondary"
-                app:drawableEndCompat="@drawable/arrow_right" />
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/materialCardBkm"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="4dp"
-            android:layout_marginBottom="4dp"
-            app:cardBackgroundColor="@color/white"
-            android:clickable="true"
-            android:focusable="true"
-            app:cardElevation="2dp"
-            app:strokeWidth="0dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingVertical="15dp"
-                android:paddingStart="15dp"
-                android:drawablePadding="12dp"
-                android:paddingEnd="8dp"
-                app:drawableStartCompat="@drawable/bkm_small"
-                android:text="@string/bmk"
-                android:textSize="15sp"
-                android:fontFamily="@font/inter_medium"
                 android:textColor="@color/font_secondary"
                 app:drawableEndCompat="@drawable/arrow_right" />
 

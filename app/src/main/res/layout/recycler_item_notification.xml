@@ -27,7 +27,6 @@
                 android:layout_height="wrap_content"
                 tools:text="Özel İndirim Fırsatı!"
                 android:textSize="16sp"
-                android:fontFamily="@font/inter_medium"
                 android:textColor="@color/font_secondary"/>
 
             <TextView
@@ -37,7 +36,6 @@
                 android:layout_marginTop="2dp"
                 tools:text="Bugün sadece sizin için özel indirim fırsatları sizleri bekliyor. Hemen alışverişe başlayın!"
                 android:textSize="15sp"
-                android:fontFamily="@font/inter_regular"
                 android:textColor="@color/font_secondary"/>
 
             <TextView
@@ -47,7 +45,6 @@
                 android:layout_marginTop="2dp"
                 tools:text="3 dakika"
                 android:textSize="12sp"
-                android:fontFamily="@font/inter_regular"
                 android:textColor="@color/font_secondary"/>
 
         </LinearLayout>

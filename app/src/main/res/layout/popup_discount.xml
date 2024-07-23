@@ -28,7 +28,6 @@
             android:layout_height="wrap_content"
             tools:text="İndirimi Kaçırma!"
             android:textSize="22sp"
-            android:fontFamily="@font/poppins_bold"
             android:textColor="@color/coal_dark"/>
 
         <TextView
@@ -38,7 +37,6 @@
             tools:text="Ürün $product'i %$discount indirimle hemen alabilirsin! Son şansı kaçırma, sipariş ver."
             android:textSize="14sp"
             android:gravity="center"
-            android:fontFamily="@font/poppins_medium"
             android:textColor="@color/font_secondary"/>
 
     </LinearLayout>

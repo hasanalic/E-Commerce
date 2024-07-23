@@ -44,7 +44,6 @@
                     tools:text="Apple"
                     android:gravity="center"
                     android:textSize="14sp"
-                    android:fontFamily="@font/inter_medium"
                     android:textColor="@color/font_secondary" />
 
                 <TextView
@@ -54,7 +53,6 @@
                     android:maxLines="2"
                     tools:text="2020 Apple MacBook Air Laptop: Apple M1 Chip, 13” Retina Display, 8GB RAM, 256GB SSD Storage, Backlit Keyboard, FaceTime HD Camera, Touch ID. Works with iPhone/iPad; Silver"
                     android:textSize="12sp"
-                    android:fontFamily="@font/inter_regular"
                     android:textColor="@color/font_secondary" />
 
             </LinearLayout>
@@ -71,7 +69,6 @@
         tools:text="15000 TL"
         android:gravity="center"
         android:textSize="13sp"
-        android:fontFamily="@font/inter_regular"
         android:textColor="@color/font_secondary" />
 
     <LinearLayout
@@ -90,7 +87,6 @@
             android:gravity="center"
             android:textSize="14sp"
             tools:src="@drawable/star"
-            android:fontFamily="@font/inter_regular"
             android:textColor="@color/font_secondary" />
 
         <TextView
@@ -99,7 +95,6 @@
             android:layout_height="wrap_content"
             tools:text="4.7"
             android:textSize="13sp"
-            android:fontFamily="@font/inter_regular"
             android:textColor="@color/font_secondary" />
 
     </LinearLayout>
@@ -119,7 +114,6 @@
             android:gravity="center"
             android:textSize="13sp"
             android:layout_marginBottom="4dp"
-            android:fontFamily="@font/inter_regular"
             android:textColor="@color/font_secondary" />
 
         <TextView
@@ -127,7 +121,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:fontFamily="@font/inter_medium"
             android:textSize="10sp"
             tools:text="8.9"
             android:paddingVertical="3dp"

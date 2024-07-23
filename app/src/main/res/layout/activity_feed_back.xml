@@ -14,7 +14,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:title="@string/code"
         app:navigationIcon="@drawable/vector"
         app:titleTextAppearance="@style/TextAppearance.MaterialComponents.Body1"/>
 
@@ -23,7 +22,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:fontFamily="@font/inter_semibold"
         android:gravity="center"
         android:text="@string/write_your_review"
         android:textColor="@color/font_secondary"
@@ -38,7 +36,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:fontFamily="@font/inter_regular"
         android:gravity="center"
         android:paddingHorizontal="20dp"
         android:text="@string/review_desc"
@@ -65,7 +62,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
-            android:fontFamily="@font/inter_regular"
             android:textColor="@color/font_secondary"
             android:textSize="16sp" />
 
@@ -88,7 +84,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
-            android:fontFamily="@font/inter_regular"
             android:textColor="@color/font_secondary"
             android:textSize="16sp" />
 
@@ -111,7 +106,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:inputType="text"
-            android:fontFamily="@font/inter_regular"
             android:textColor="@color/font_secondary"
             android:textSize="16sp" />
 

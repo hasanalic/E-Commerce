@@ -29,13 +29,6 @@
                 app:title="Filtrele"
                 app:titleTextAppearance="@style/TextAppearance.MaterialComponents.Body1">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/code"
-                    android:layout_gravity="end"
-                    android:paddingHorizontal="12dp"/>
-
             </com.google.android.material.appbar.MaterialToolbar>
 
             <LinearLayout
@@ -52,7 +45,6 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/inter_semibold"
                     android:layout_marginBottom="8dp"
                     android:text="@string/category"
                     android:textSize="16sp"
@@ -82,7 +74,6 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/inter_semibold"
                     android:layout_marginBottom="8dp"
                     android:text="@string/brand"
                     android:textSize="16sp"
@@ -112,7 +103,6 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/inter_semibold"
                     android:layout_marginBottom="8dp"
                     android:text="@string/price_range"
                     android:textSize="16sp"
@@ -139,7 +129,6 @@
                             android:inputType="number"
                             android:maxLength="7"
                             tools:text="100"
-                            android:fontFamily="@font/inter_medium"
                             android:textColor="@color/font_secondary"
                             android:textSize="16sp" />
 
@@ -166,7 +155,6 @@
                             android:inputType="number"
                             android:maxLength="7"
                             tools:text="10000"
-                            android:fontFamily="@font/inter_medium"
                             android:textColor="@color/font_secondary"
                             android:textSize="16sp" />
 
@@ -191,7 +179,6 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/inter_semibold"
                     android:layout_marginBottom="8dp"
                     android:text="@string/review"
                     android:textSize="16sp"
@@ -245,7 +232,6 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_semibold"
                         android:layout_marginStart="8dp"
                         android:text="@string/four_five_and_above"
                         android:textSize="14sp"
@@ -301,7 +287,6 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_semibold"
                         android:layout_marginStart="8dp"
                         android:text="@string/four_and_four_five"
                         android:textSize="14sp"
@@ -357,7 +342,6 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_semibold"
                         android:text="@string/three_five_and_four"
                         android:layout_marginStart="8dp"
                         android:textSize="14sp"
@@ -413,7 +397,6 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_semibold"
                         android:text="@string/three_and_three_five"
                         android:layout_marginStart="8dp"
                         android:textSize="14sp"
@@ -469,7 +452,6 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_semibold"
                         android:text="@string/two_five_and_three"
                         android:layout_marginStart="8dp"
                         android:textSize="14sp"
@@ -525,7 +507,6 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_semibold"
                         android:text="@string/two_and_two_five"
                         android:layout_marginStart="8dp"
                         android:textSize="14sp"

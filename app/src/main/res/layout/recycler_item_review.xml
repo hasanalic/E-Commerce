@@ -43,8 +43,7 @@
                     android:layout_marginBottom="1dp"
                     tools:text="Batu"
                     android:textSize="13sp"
-                    android:textColor="@color/font_secondary"
-                    android:fontFamily="@font/inter_semibold"/>
+                    android:textColor="@color/font_secondary" />
 
                 <TextView
                     android:id="@+id/textViewDate"
@@ -107,8 +106,7 @@
                 android:text="@string/verified"
                 android:textSize="10sp"
                 android:layout_marginStart="10dp"
-                android:textColor="@color/font_third"
-                android:fontFamily="@font/inter_bold"/>
+                android:textColor="@color/font_third" />
 
         </LinearLayout>
 
@@ -116,7 +114,6 @@
             android:id="@+id/textViewReviewTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/inter_bold"
             android:textColor="@color/font_secondary"
             android:layout_marginTop="4dp"
             tools:text="Harika bir ürün!!!"
@@ -129,7 +126,6 @@
             android:layout_marginTop="4dp"
             android:textSize="12sp"
             android:textColor="@color/font_secondary"
-            android:fontFamily="@font/inter_medium"
             tools:text="Cidden harika bir üründü, ayrıca kargo da çok hızlı geldi o yüzden çalışan herkese çok teşekkür ederim." />
 
         <ImageView

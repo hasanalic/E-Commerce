@@ -34,7 +34,6 @@
                     android:id="@+id/textViewDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/inter_medium"
                     android:textColor="@color/font_secondary"
                     android:textSize="15sp"
                     tools:text="12.02.2024" />
@@ -47,7 +46,6 @@
                     <TextView
                         android:layout_width="60dp"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_medium"
                         android:textColor="@color/font_secondary"
                         android:textSize="15sp"
                         android:text="@string/toplam" />
@@ -56,7 +54,6 @@
                         android:id="@+id/textViewCost"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_regular"
                         android:textColor="@color/font_secondary"
                         android:textSize="15sp"
                         tools:text="1252.12 TL" />
@@ -91,7 +88,6 @@
                 android:id="@+id/textViewOrderStatus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/inter_medium"
                 android:textColor="@color/coal_dark"
                 tools:text="Teslim Edildi" />
 
@@ -110,7 +106,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:paddingHorizontal="8dp"
-            android:fontFamily="@font/inter_regular"
             android:textSize="14sp"
             android:textColor="@color/font_secondary"
             tools:text="2 ürün teslim edildi" />

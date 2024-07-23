@@ -39,8 +39,7 @@
                 android:textColor="@color/coal_dark"
                 android:layout_marginBottom="4dp"
                 tools:text="Apple"
-                android:textSize="18sp"
-                android:fontFamily="@font/inter_bold"/>
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/textViewDetail"
@@ -49,7 +48,6 @@
                 android:text="Lorem ipsum"
                 android:textSize="14sp"
                 android:layout_marginBottom="8dp"
-                android:fontFamily="@font/inter_regular"
                 android:textColor="@color/font_secondary"/>
 
             <TextView
@@ -58,7 +56,6 @@
                 android:layout_height="wrap_content"
                 tools:text="₺99.84"
                 android:textSize="14sp"
-                android:fontFamily="@font/inter_bold"
                 android:textColor="@color/coal_dark"/>
 
         </LinearLayout>
@@ -89,7 +86,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="-"
-                        android:fontFamily="@font/inter_semibold"
                         android:textSize="18sp"/>
 
                     <TextView
@@ -98,15 +94,13 @@
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="10dp"
                         tools:text="2"
-                        android:textColor="@color/color_star"
-                        android:fontFamily="@font/inter_semibold"/>
+                        android:textColor="@color/color_star" />
 
                     <TextView
                         android:id="@+id/textViewIncrease"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="+"
-                        android:fontFamily="@font/inter_semibold"
                         android:textSize="18sp"/>
 
                 </LinearLayout>
