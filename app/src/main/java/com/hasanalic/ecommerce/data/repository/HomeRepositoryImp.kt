@@ -10,7 +10,7 @@ import com.hasanalic.ecommerce.data.dto.ReviewEntity
 import com.hasanalic.ecommerce.data.dto.ShoppingCartItemsEntity
 import com.hasanalic.ecommerce.domain.model.Chip
 import com.hasanalic.ecommerce.domain.repository.HomeRepository
-import com.hasanalic.ecommerce.ui.filter.Filter
+import com.hasanalic.ecommerce.feature_filter.presentation.Filter
 import com.hasanalic.ecommerce.utils.Resource
 import javax.inject.Inject
 import kotlin.Exception

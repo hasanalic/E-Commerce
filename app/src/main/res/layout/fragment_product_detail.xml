@@ -60,7 +60,6 @@
                 android:id="@+id/imageViewProductPhoto"
                 android:layout_width="match_parent"
                 android:layout_height="230dp"
-                tools:src="@drawable/google"
                 android:layout_marginTop="4dp"
                 android:padding="20dp"
                 app:layout_constraintEnd_toEndOf="parent"

@@ -29,8 +29,7 @@
                 android:id="@+id/imageViewProduct"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:layout_marginEnd="10dp"
-                tools:src="@drawable/google" />
+                android:layout_marginEnd="10dp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"

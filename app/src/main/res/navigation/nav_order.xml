@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/ordersFragment"
-        android:name="com.hasanalic.ecommerce.ui.order.views.OrdersFragment"
+        android:name="com.hasanalic.ecommerce.feature_orders.presentation.views.OrdersFragment"
         android:label="OrdersFragment"
         tools:layout="@layout/fragment_orders">
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/orderDetailFragment"
-        android:name="com.hasanalic.ecommerce.ui.order.views.OrderDetailFragment"
+        android:name="com.hasanalic.ecommerce.feature_orders.presentation.views.OrderDetailFragment"
         android:label="OrderDetailFragment"
         tools:layout="@layout/fragment_order_detail"/>
 </navigation>

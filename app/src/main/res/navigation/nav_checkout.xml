@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/addressFragment"
-        android:name="com.hasanalic.ecommerce.ui.checkout.views.AddressFragment"
+        android:name="com.hasanalic.ecommerce.feature_checkout.presentation.views.AddressFragment"
         android:label="AddressFragment"
         tools:layout="@layout/fragment_address">
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/shippingFragment"
-        android:name="com.hasanalic.ecommerce.ui.checkout.views.ShippingFragment"
+        android:name="com.hasanalic.ecommerce.feature_checkout.presentation.views.ShippingFragment"
         android:label="ShippingFragment"
         tools:layout="@layout/fragment_shipping">
         <action
@@ -25,7 +25,7 @@
     </fragment>
     <fragment
         android:id="@+id/paymentMethodsFragment"
-        android:name="com.hasanalic.ecommerce.ui.checkout.views.PaymentMethodsFragment"
+        android:name="com.hasanalic.ecommerce.feature_checkout.presentation.views.PaymentMethodsFragment"
         android:label="PaymentMethodsFragment"
         tools:layout="@layout/fragment_payment_methods">
         <action
@@ -37,7 +37,7 @@
     </fragment>
     <fragment
         android:id="@+id/paymentCardFragment"
-        android:name="com.hasanalic.ecommerce.ui.checkout.views.PaymentCardFragment"
+        android:name="com.hasanalic.ecommerce.feature_checkout.presentation.views.PaymentCardFragment"
         android:label="CardFragment"
         tools:layout="@layout/fragment_payment_card">
         <action
@@ -49,12 +49,12 @@
     </fragment>
     <fragment
         android:id="@+id/successFragment"
-        android:name="com.hasanalic.ecommerce.ui.checkout.views.SuccessFragment"
+        android:name="com.hasanalic.ecommerce.feature_checkout.presentation.views.SuccessFragment"
         android:label="SuccessFragment"
         tools:layout="@layout/fragment_success"/>
     <fragment
         android:id="@+id/cardsFragment"
-        android:name="com.hasanalic.ecommerce.ui.checkout.views.CardsFragment"
+        android:name="com.hasanalic.ecommerce.feature_checkout.presentation.views.CardsFragment"
         android:label="CardsFragment"
         tools:layout="@layout/fragment_cards">
         <action

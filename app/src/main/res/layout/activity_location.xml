@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.location.LocationActivity">
+    tools:context=".feature_location.presentation.LocationActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/topAppBarHome"
