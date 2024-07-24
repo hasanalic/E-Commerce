@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hasanalic.ecommerce.domain.model.ShoppingCartItem
-import com.hasanalic.ecommerce.domain.repository.HomeRepository
+import com.hasanalic.ecommerce.feature_shopping_cart.domain.model.ShoppingCartItem
+import com.hasanalic.ecommerce.feature_home.domain.repository.HomeRepository
 import com.hasanalic.ecommerce.feature_checkout.presentation.ShoppingCartList
 import com.hasanalic.ecommerce.utils.Resource
 import com.hasanalic.ecommerce.utils.TotalCost
@@ -50,7 +50,8 @@ class ShoppingCartViewModel @Inject constructor(
 
                             for (shoppingCartEntity in shoppingCartItemsEntityList) {
                                 if (productEntity.productId.toString() == shoppingCartEntity.productId) {
-                                    tempShoppingCartList.add(ShoppingCartItem(
+                                    tempShoppingCartList.add(
+                                        ShoppingCartItem(
                                         shoppingCartItemId = productEntity.productId.toString(),
                                         shoppingCartItemCategory = productEntity.productCategory!!,
                                         shoppingCartItemPhoto = productEntity.productPhoto!!,
@@ -59,7 +60,8 @@ class ShoppingCartViewModel @Inject constructor(
                                         shoppingCartItemPriceWhole = productEntity.productPriceWhole!!,
                                         shoppingCartItemPriceCent = productEntity.productPriceCent!!,
                                         shoppingCartItemQuantity = shoppingCartEntity.quantity!!.toInt()
-                                    ))
+                                    )
+                                    )
                                 }
                             }
                         }

@@ -1,9 +1,9 @@
 package com.hasanalic.ecommerce.utils
 
 import android.content.Context
-import com.hasanalic.ecommerce.data.dto.ProductEntity
-import com.hasanalic.ecommerce.data.dto.ReviewEntity
-import com.hasanalic.ecommerce.domain.repository.HomeRepository
+import com.hasanalic.ecommerce.feature_home.data.entity.ProductEntity
+import com.hasanalic.ecommerce.feature_product_detail.data.entity.ReviewEntity
+import com.hasanalic.ecommerce.feature_home.domain.repository.HomeRepository
 import javax.inject.Inject
 
 class DatabaseInitializer @Inject constructor(

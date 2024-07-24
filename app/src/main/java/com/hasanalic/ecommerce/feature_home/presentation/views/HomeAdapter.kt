@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.hasanalic.ecommerce.R
 import com.hasanalic.ecommerce.databinding.RecyclerItemProductBinding
-import com.hasanalic.ecommerce.domain.model.Product
+import com.hasanalic.ecommerce.feature_home.domain.model.Product
 import com.hasanalic.ecommerce.utils.glide
 import com.hasanalic.ecommerce.utils.placeHolderProgressBar
 import com.hasanalic.ecommerce.utils.toCent

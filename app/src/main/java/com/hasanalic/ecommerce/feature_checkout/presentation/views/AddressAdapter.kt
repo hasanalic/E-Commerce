@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.hasanalic.ecommerce.databinding.RecyclerItemAddressBinding
-import com.hasanalic.ecommerce.domain.model.Address
+import com.hasanalic.ecommerce.core.domain.model.Address
 
 class AddressAdapter: RecyclerView.Adapter<AddressAdapter.MyViewHolder>() {
 

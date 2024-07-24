@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.hasanalic.ecommerce.databinding.RecyclerItemShoppingCartBinding
-import com.hasanalic.ecommerce.domain.model.ShoppingCartItem
+import com.hasanalic.ecommerce.feature_shopping_cart.domain.model.ShoppingCartItem
 import com.hasanalic.ecommerce.utils.glide
 import com.hasanalic.ecommerce.utils.placeHolderProgressBar
 import com.hasanalic.ecommerce.utils.toCent

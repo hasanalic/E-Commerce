@@ -4,10 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hasanalic.ecommerce.data.dto.AddressEntity
-import com.hasanalic.ecommerce.data.dto.PaymentEntity
-import com.hasanalic.ecommerce.domain.model.Order
-import com.hasanalic.ecommerce.domain.repository.OrderRepository
+import com.hasanalic.ecommerce.feature_location.data.entity.AddressEntity
+import com.hasanalic.ecommerce.feature_checkout.data.entity.PaymentEntity
+import com.hasanalic.ecommerce.feature_orders.domain.model.Order
+import com.hasanalic.ecommerce.feature_orders.domain.repository.OrderRepository
 import com.hasanalic.ecommerce.utils.Constants.ORDER_CANCELLED
 import com.hasanalic.ecommerce.utils.Constants.ORDER_RETURN
 import com.hasanalic.ecommerce.utils.Resource
@@ -50,7 +50,8 @@ class OrderViewModel @Inject constructor(
                         val responseFromOrderProducts = repository.getOrderProductsList(userId, orderEntity.orderId.toString())
 
                         if (responseFromOrderProducts is Resource.Success) {
-                            tempOrderList.add(Order(
+                            tempOrderList.add(
+                                Order(
                                 orderId = orderEntity.orderId.toString(),
                                 orderUserId = orderEntity.orderUserId!!,
                                 orderTotal = orderEntity.orderTotal!!,
@@ -65,7 +66,8 @@ class OrderViewModel @Inject constructor(
                                 orderTimeStamp = orderEntity.orderTimeStamp!!,
                                 orderTime = orderEntity.orderTime!!,
                                 orderProductsList = responseFromOrderProducts.data!!
-                            ))
+                            )
+                            )
                         } else {
                             _statusOrderList.value = Resource.Error(null,responseFromOrderProducts.message?:"hata")
                         }

@@ -23,7 +23,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.hasanalic.ecommerce.R
 import com.hasanalic.ecommerce.databinding.FragmentHomeBinding
-import com.hasanalic.ecommerce.feature_auth.presentation.MainActivity
+import com.hasanalic.ecommerce.feature_auth.presentation.AuthActivity
 import com.hasanalic.ecommerce.feature_product_detail.presentation.ProductDetailActivity
 import com.hasanalic.ecommerce.feature_filter.presentation.FilterActivity
 import com.hasanalic.ecommerce.feature_filter.presentation.FilterSingleton
@@ -214,7 +214,7 @@ class HomeFragment: Fragment() {
                 viewModel.addFavorite(userId,it)
             } else {
                 toast(requireContext(),"Favori işlemleri için giriş yapmalısınız.",false)
-                val intent = Intent(requireActivity(), MainActivity::class.java)
+                val intent = Intent(requireActivity(), AuthActivity::class.java)
                 startActivity(intent)
                 requireActivity().finish()
             }
@@ -224,7 +224,7 @@ class HomeFragment: Fragment() {
                 viewModel.removeFromFavorite(userId,it)
             } else {
                 toast(requireContext(),"Favori işlemleri için giriş yapmalısınız.",false)
-                val intent = Intent(requireActivity(), MainActivity::class.java)
+                val intent = Intent(requireActivity(), AuthActivity::class.java)
                 startActivity(intent)
                 requireActivity().finish()
             }

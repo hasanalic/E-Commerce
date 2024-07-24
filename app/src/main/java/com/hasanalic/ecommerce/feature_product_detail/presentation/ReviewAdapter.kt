@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.hasanalic.ecommerce.R
 import com.hasanalic.ecommerce.databinding.RecyclerItemReviewBinding
-import com.hasanalic.ecommerce.data.dto.ReviewEntity
+import com.hasanalic.ecommerce.feature_product_detail.data.entity.ReviewEntity
 import com.hasanalic.ecommerce.utils.glide
 import com.hasanalic.ecommerce.utils.hide
 import com.hasanalic.ecommerce.utils.placeHolderProgressBar

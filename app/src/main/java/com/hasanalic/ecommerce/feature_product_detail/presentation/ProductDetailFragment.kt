@@ -11,8 +11,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hasanalic.ecommerce.R
 import com.hasanalic.ecommerce.databinding.FragmentProductDetailBinding
-import com.hasanalic.ecommerce.domain.model.Product
-import com.hasanalic.ecommerce.feature_auth.presentation.MainActivity
+import com.hasanalic.ecommerce.feature_home.domain.model.Product
+import com.hasanalic.ecommerce.feature_auth.presentation.AuthActivity
 import com.hasanalic.ecommerce.utils.Constants
 import com.hasanalic.ecommerce.utils.ItemDecoration
 import com.hasanalic.ecommerce.utils.Resource
@@ -176,7 +176,7 @@ class ProductDetailFragment: Fragment() {
                 }
             } else {
                 toast(requireContext(),"Favori işlemleri için giriş yapmalısınız.",false)
-                val intent = Intent(requireActivity(), MainActivity::class.java)
+                val intent = Intent(requireActivity(), AuthActivity::class.java)
                 startActivity(intent)
                 requireActivity().finish()
             }

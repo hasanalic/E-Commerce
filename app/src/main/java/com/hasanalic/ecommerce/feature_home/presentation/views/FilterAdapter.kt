@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.hasanalic.ecommerce.R
 import com.hasanalic.ecommerce.databinding.RecyclerItemFilterBinding
-import com.hasanalic.ecommerce.domain.model.Chip
+import com.hasanalic.ecommerce.feature_home.domain.model.Chip
 
 class FilterAdapter: RecyclerView.Adapter<FilterAdapter.MyViewHolder>() {
 

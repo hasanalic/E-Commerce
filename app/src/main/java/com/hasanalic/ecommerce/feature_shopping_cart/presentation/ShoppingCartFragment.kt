@@ -15,7 +15,7 @@ import com.hasanalic.ecommerce.R
 import com.hasanalic.ecommerce.databinding.FragmentShoppingCartBinding
 import com.hasanalic.ecommerce.feature_checkout.presentation.CheckoutActivity
 import com.hasanalic.ecommerce.feature_home.presentation.views.HomeActivity
-import com.hasanalic.ecommerce.feature_auth.presentation.MainActivity
+import com.hasanalic.ecommerce.feature_auth.presentation.AuthActivity
 import com.hasanalic.ecommerce.feature_product_detail.presentation.ProductDetailActivity
 import com.hasanalic.ecommerce.feature_home.presentation.SharedViewModel
 import com.hasanalic.ecommerce.utils.Constants
@@ -181,7 +181,7 @@ class ShoppingCartFragment: Fragment() {
             launcherForCheckout.launch(intent)
         }
         alertDialogBuilder.setNegativeButton("Giriş Yap") { _, _ ->
-            val intent = Intent(requireActivity(), MainActivity::class.java)
+            val intent = Intent(requireActivity(), AuthActivity::class.java)
             startActivity(intent)
             requireActivity().finish()
         }

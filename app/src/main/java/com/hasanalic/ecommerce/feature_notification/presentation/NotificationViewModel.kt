@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hasanalic.ecommerce.data.dto.NotificationEntity
-import com.hasanalic.ecommerce.domain.repository.ServiceRepository
+import com.hasanalic.ecommerce.feature_notification.data.entity.NotificationEntity
+import com.hasanalic.ecommerce.core.domain.repository.ServiceRepository
 import com.hasanalic.ecommerce.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch

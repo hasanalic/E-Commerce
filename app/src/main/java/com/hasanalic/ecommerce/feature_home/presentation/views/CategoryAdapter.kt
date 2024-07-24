@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.hasanalic.ecommerce.databinding.RecyclerItemCategoryBinding
-import com.hasanalic.ecommerce.domain.model.Chip
+import com.hasanalic.ecommerce.feature_home.domain.model.Chip
 
 class CategoryAdapter: RecyclerView.Adapter<CategoryAdapter.MyViewHolder>() {
 

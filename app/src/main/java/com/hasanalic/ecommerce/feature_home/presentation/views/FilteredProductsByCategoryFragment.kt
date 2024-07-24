@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.hasanalic.ecommerce.R
 import com.hasanalic.ecommerce.databinding.FragmentFilteredProductsByCategoryBinding
-import com.hasanalic.ecommerce.feature_auth.presentation.MainActivity
+import com.hasanalic.ecommerce.feature_auth.presentation.AuthActivity
 import com.hasanalic.ecommerce.feature_product_detail.presentation.ProductDetailActivity
 import com.hasanalic.ecommerce.feature_home.presentation.HomeViewModel
 import com.hasanalic.ecommerce.feature_home.presentation.SharedViewModel
@@ -171,7 +171,7 @@ class FilteredProductsByCategoryFragment: Fragment() {
                 adapter.notifyChanges()
             } else {
                 toast(requireContext(),"Favori işlemleri için giriş yapmalısınız.",false)
-                val intent = Intent(requireActivity(), MainActivity::class.java)
+                val intent = Intent(requireActivity(), AuthActivity::class.java)
                 startActivity(intent)
                 requireActivity().finish()
             }
@@ -182,7 +182,7 @@ class FilteredProductsByCategoryFragment: Fragment() {
                 adapter.notifyChanges()
             } else {
                 toast(requireContext(),"Favori işlemleri için giriş yapmalısınız.",false)
-                val intent = Intent(requireActivity(), MainActivity::class.java)
+                val intent = Intent(requireActivity(), AuthActivity::class.java)
                 startActivity(intent)
                 requireActivity().finish()
             }

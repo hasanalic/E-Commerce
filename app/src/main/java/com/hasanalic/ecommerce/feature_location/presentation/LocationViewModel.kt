@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hasanalic.ecommerce.data.dto.AddressEntity
-import com.hasanalic.ecommerce.domain.model.Address
-import com.hasanalic.ecommerce.domain.repository.CheckoutRepository
+import com.hasanalic.ecommerce.feature_location.data.entity.AddressEntity
+import com.hasanalic.ecommerce.core.domain.model.Address
+import com.hasanalic.ecommerce.feature_checkout.domain.repository.CheckoutRepository
 import com.hasanalic.ecommerce.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -32,9 +32,11 @@ class LocationViewModel @Inject constructor(
     fun saveAddress(userId: String, address: String, addressTitle: String) {
         _statusSaveAddress.value = Resource.Loading()
         viewModelScope.launch {
-            val response = checkoutRepository.insertAddress(AddressEntity(
+            val response = checkoutRepository.insertAddress(
+                AddressEntity(
                 userId, addressTitle, address
-            ))
+            )
+            )
             _statusSaveAddress.value = response
         }
     }

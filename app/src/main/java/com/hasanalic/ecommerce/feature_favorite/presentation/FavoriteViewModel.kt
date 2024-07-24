@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hasanalic.ecommerce.domain.model.Product
-import com.hasanalic.ecommerce.data.dto.ShoppingCartItemsEntity
-import com.hasanalic.ecommerce.domain.repository.HomeRepository
+import com.hasanalic.ecommerce.feature_home.domain.model.Product
+import com.hasanalic.ecommerce.feature_shopping_cart.data.entity.ShoppingCartItemsEntity
+import com.hasanalic.ecommerce.feature_home.domain.repository.HomeRepository
 import com.hasanalic.ecommerce.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -63,7 +63,8 @@ class FavoriteViewModel @Inject constructor(
                                         break
                                     }
                                 }
-                                tempProductList.add(Product(
+                                tempProductList.add(
+                                    Product(
                                     productId = productEntity.productId.toString(),
                                     productCategory = productEntity.productCategory!!,
                                     productPhoto = productEntity.productPhoto!!,
@@ -76,7 +77,8 @@ class FavoriteViewModel @Inject constructor(
                                     productBarcode = productEntity.productBarcode!!,
                                     addedToFavorites = true,
                                     addedToShoppingCart = addedToCart
-                                ))
+                                )
+                                )
                                 _stateFavorites.value = Resource.Success(tempProductList)
                             }
                         } else {

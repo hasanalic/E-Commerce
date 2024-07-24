@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hasanalic.ecommerce.R
 import com.hasanalic.ecommerce.databinding.RecyclerItemOrderBinding
-import com.hasanalic.ecommerce.domain.model.Order
+import com.hasanalic.ecommerce.feature_orders.domain.model.Order
 import com.hasanalic.ecommerce.utils.Constants
 import com.hasanalic.ecommerce.utils.Constants.ORDER_CARGO
 import com.hasanalic.ecommerce.utils.Constants.ORDER_DELIVERED

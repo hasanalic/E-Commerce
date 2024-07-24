@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.hasanalic.ecommerce.data.dto.OrderProductsEntity
+import com.hasanalic.ecommerce.feature_orders.data.entity.OrderProductsEntity
 import com.hasanalic.ecommerce.databinding.RecyclerItemProductImageBinding
 import com.hasanalic.ecommerce.utils.glide
 import com.hasanalic.ecommerce.utils.placeHolderProgressBar

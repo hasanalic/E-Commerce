@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.hasanalic.ecommerce.databinding.FragmentAccountBinding
-import com.hasanalic.ecommerce.feature_auth.presentation.MainActivity
+import com.hasanalic.ecommerce.feature_auth.presentation.AuthActivity
 import com.hasanalic.ecommerce.feature_orders.presentation.views.OrderActivity
 import com.hasanalic.ecommerce.utils.Constants.CART_ALARM_INTERVAL_TEST
 import com.hasanalic.ecommerce.utils.Constants.CART_ALARM_REQUEST_CODE
@@ -103,7 +103,7 @@ class AccountFragment: Fragment() {
     }
 
     private fun moveToMainActivity() {
-        val intent = Intent(requireContext(), MainActivity::class.java)
+        val intent = Intent(requireContext(), AuthActivity::class.java)
         startActivity(intent)
         requireActivity().finish()
     }

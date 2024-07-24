@@ -4,12 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hasanalic.ecommerce.data.dto.OrderEntity
-import com.hasanalic.ecommerce.data.dto.OrderProductsEntity
-import com.hasanalic.ecommerce.data.dto.PaymentEntity
-import com.hasanalic.ecommerce.domain.model.Address
-import com.hasanalic.ecommerce.domain.model.ShoppingCartItem
-import com.hasanalic.ecommerce.domain.repository.CheckoutRepository
+import com.hasanalic.ecommerce.feature_orders.data.entity.OrderEntity
+import com.hasanalic.ecommerce.feature_orders.data.entity.OrderProductsEntity
+import com.hasanalic.ecommerce.feature_checkout.data.entity.PaymentEntity
+import com.hasanalic.ecommerce.core.domain.model.Address
+import com.hasanalic.ecommerce.feature_shopping_cart.domain.model.ShoppingCartItem
+import com.hasanalic.ecommerce.feature_checkout.domain.repository.CheckoutRepository
 import com.hasanalic.ecommerce.utils.Constants
 import com.hasanalic.ecommerce.utils.Constants.AT_DOOR
 import com.hasanalic.ecommerce.utils.Constants.BANK_OR_CREDIT_CARD
@@ -182,9 +182,11 @@ class CheckoutViewModel @Inject constructor(
         order.orderTimeStamp = System.currentTimeMillis()
 
         viewModelScope.launch {
-            val responseFromCard = checkoutRepository.insertCard(PaymentEntity(
+            val responseFromCard = checkoutRepository.insertCard(
+                PaymentEntity(
                 cardName,cardNumber,order.orderUserId
-            ))
+            )
+            )
 
             if (responseFromCard is Resource.Success) {
                 val paymentId = responseFromCard.data

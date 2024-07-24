@@ -27,6 +27,7 @@
         android:required="false" />
 
     <application
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -37,7 +38,7 @@
         android:theme="@style/Theme.Ecommerce"
         tools:targetApi="31">
         <activity
-            android:name=".feature_auth.presentation.MainActivity"
+            android:name=".feature_auth.presentation.AuthActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -45,6 +46,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".feature_checkout.presentation.CheckoutActivity" />
+        <activity android:name=".feature_filter.presentation.FilterActivity" />
+        <activity android:name=".feature_home.presentation.views.HomeActivity" />
+        <activity android:name=".feature_location.presentation.LocationActivity" />
+        <activity android:name=".feature_notification.presentation.NotificationActivity" />
+        <activity android:name=".feature_orders.presentation.views.OrderActivity" />
+        <activity android:name=".feature_product_detail.presentation.ProductDetailActivity" />
+
     </application>
 
 </manifest>

@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import com.hasanalic.ecommerce.databinding.FragmentSuccessBinding
-import com.hasanalic.ecommerce.domain.repository.HomeRepository
+import com.hasanalic.ecommerce.feature_home.domain.repository.HomeRepository
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

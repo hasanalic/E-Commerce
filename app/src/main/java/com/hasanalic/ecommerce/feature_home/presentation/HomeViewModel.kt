@@ -4,12 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hasanalic.ecommerce.data.dto.FavoritesEntity
-import com.hasanalic.ecommerce.domain.model.Product
-import com.hasanalic.ecommerce.data.dto.ShoppingCartItemsEntity
-import com.hasanalic.ecommerce.domain.model.Chip
-import com.hasanalic.ecommerce.domain.model.ComparedProduct
-import com.hasanalic.ecommerce.domain.repository.HomeRepository
+import com.hasanalic.ecommerce.feature_favorite.data.entity.FavoritesEntity
+import com.hasanalic.ecommerce.feature_home.domain.model.Product
+import com.hasanalic.ecommerce.feature_shopping_cart.data.entity.ShoppingCartItemsEntity
+import com.hasanalic.ecommerce.feature_home.domain.model.Chip
+import com.hasanalic.ecommerce.feature_home.domain.model.ComparedProduct
+import com.hasanalic.ecommerce.feature_home.domain.repository.HomeRepository
 import com.hasanalic.ecommerce.feature_filter.presentation.Filter
 import com.hasanalic.ecommerce.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -543,7 +543,9 @@ class HomeViewModel @Inject constructor(
                             if (isAddedToShoppingCart) {
                                 product.addedToShoppingCart = true
                             } else {
-                                val response = homeRepository.insertShoppingCartItems(ShoppingCartItemsEntity(userId, productId, "1"))
+                                val response = homeRepository.insertShoppingCartItems(
+                                    ShoppingCartItemsEntity(userId, productId, "1")
+                                )
                                 if (response is Resource.Success) {
                                     product.addedToShoppingCart = true
                                 } else {

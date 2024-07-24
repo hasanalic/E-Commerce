@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hasanalic.ecommerce.domain.repository.HomeRepository
-import com.hasanalic.ecommerce.domain.model.Chip
+import com.hasanalic.ecommerce.feature_home.domain.repository.HomeRepository
+import com.hasanalic.ecommerce.feature_home.domain.model.Chip
 import com.hasanalic.ecommerce.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch

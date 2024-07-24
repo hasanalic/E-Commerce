@@ -8,8 +8,8 @@ import android.content.Intent
 import androidx.core.app.NotificationCompat
 import androidx.room.Room
 import com.hasanalic.ecommerce.R
-import com.hasanalic.ecommerce.data.local.MyDatabase
-import com.hasanalic.ecommerce.data.repository.ServiceRepositoryImp
+import com.hasanalic.ecommerce.core.data.local.MyDatabase
+import com.hasanalic.ecommerce.core.data.repository.ServiceRepositoryImp
 import com.hasanalic.ecommerce.feature_home.presentation.views.HomeActivity
 import com.hasanalic.ecommerce.utils.notification.Notifier
 import kotlinx.coroutines.CoroutineScope

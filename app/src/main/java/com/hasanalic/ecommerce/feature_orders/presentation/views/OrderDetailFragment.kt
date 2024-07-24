@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.hasanalic.ecommerce.R
 import com.hasanalic.ecommerce.databinding.FragmentOrderDetailBinding
-import com.hasanalic.ecommerce.domain.model.Order
+import com.hasanalic.ecommerce.feature_orders.domain.model.Order
 import com.hasanalic.ecommerce.feature_orders.presentation.OrderSingleton
 import com.hasanalic.ecommerce.feature_orders.presentation.OrderViewModel
 import com.hasanalic.ecommerce.utils.Constants.BANK_OR_CREDIT_CARD

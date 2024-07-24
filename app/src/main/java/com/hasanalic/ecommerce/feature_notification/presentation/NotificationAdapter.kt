@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.hasanalic.ecommerce.data.dto.NotificationEntity
+import com.hasanalic.ecommerce.feature_notification.data.entity.NotificationEntity
 import com.hasanalic.ecommerce.databinding.RecyclerItemNotificationBinding
 
 class NotificationAdapter: RecyclerView.Adapter<NotificationAdapter.MyViewHolder>() {
