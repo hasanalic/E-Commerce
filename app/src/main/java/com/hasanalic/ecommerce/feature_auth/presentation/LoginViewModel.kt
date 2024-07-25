@@ -3,24 +3,21 @@ package com.hasanalic.ecommerce.feature_auth.presentation
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.hasanalic.ecommerce.feature_checkout.domain.repository.CheckoutRepository
-import com.hasanalic.ecommerce.feature_home.domain.repository.HomeRepository
+import com.hasanalic.ecommerce.feature_auth.domain.use_cases.AuthUseCases
 import com.hasanalic.ecommerce.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val homeRepository: HomeRepository,
-    private val checkoutRepository: CheckoutRepository
+    private val authUseCases: AuthUseCases
 ): ViewModel() {
 
     private var _stateShoppingCartItems = MutableLiveData<Resource<Boolean>>()
     val stateShoppingCartItems: LiveData<Resource<Boolean>>
         get() = _stateShoppingCartItems
 
+    /*
     fun updateUsersShoppingCartEntities(userId: String, anomimUserId: String) {
         _stateShoppingCartItems.value = Resource.Loading()
         viewModelScope.launch {
@@ -79,4 +76,6 @@ class LoginViewModel @Inject constructor(
             }
         }
     }
+
+     */
 }

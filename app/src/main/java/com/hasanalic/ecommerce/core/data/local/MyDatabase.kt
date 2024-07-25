@@ -11,7 +11,7 @@ import com.hasanalic.ecommerce.feature_checkout.data.entity.PaymentEntity
 import com.hasanalic.ecommerce.feature_home.data.entity.ProductEntity
 import com.hasanalic.ecommerce.feature_product_detail.data.entity.ReviewEntity
 import com.hasanalic.ecommerce.feature_shopping_cart.data.entity.ShoppingCartItemsEntity
-import com.hasanalic.ecommerce.feature_auth.data.entity.UserEntity
+import com.hasanalic.ecommerce.feature_auth.data.local.entities.UserEntity
 import com.hasanalic.ecommerce.feature_auth.data.local.UserDao
 import com.hasanalic.ecommerce.feature_checkout.data.local.PaymentDao
 import com.hasanalic.ecommerce.feature_favorite.data.local.FavoritesDao

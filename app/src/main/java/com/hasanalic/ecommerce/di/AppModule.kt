@@ -20,6 +20,12 @@ import com.hasanalic.ecommerce.feature_checkout.domain.repository.CheckoutReposi
 import com.hasanalic.ecommerce.feature_home.domain.repository.HomeRepository
 import com.hasanalic.ecommerce.feature_orders.domain.repository.OrderRepository
 import com.hasanalic.ecommerce.core.domain.repository.ServiceRepository
+import com.hasanalic.ecommerce.feature_auth.data.local.UserDao
+import com.hasanalic.ecommerce.feature_auth.data.repository.AuthenticationRepositoryImp
+import com.hasanalic.ecommerce.feature_auth.domain.repository.AuthenticationRepository
+import com.hasanalic.ecommerce.feature_auth.domain.use_cases.AuthUseCases
+import com.hasanalic.ecommerce.feature_auth.domain.use_cases.InsertUserUseCase
+import com.hasanalic.ecommerce.feature_auth.domain.use_cases.UserPasswordValidatorUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -126,6 +132,25 @@ object AppModule {
     ): ServiceRepository {
         return ServiceRepositoryImp(
             shoppingCartItemsDao, notificationDao
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideAuthenticationRepository(
+        userDao: UserDao
+    ): AuthenticationRepository {
+        return AuthenticationRepositoryImp(
+            userDao
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideAuthUseCases(authRepository: AuthenticationRepository): AuthUseCases {
+        return AuthUseCases(
+            insertUserUseCase = InsertUserUseCase(authRepository),
+            userPasswordValidatorUseCase = UserPasswordValidatorUseCase()
         )
     }
 }
