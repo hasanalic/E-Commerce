@@ -1,4 +1,4 @@
-package com.hasanalic.ecommerce.core.domain
+package com.hasanalic.ecommerce.core.domain.model
 
 sealed interface DataError: Error {
     enum class Network: DataError {
@@ -12,16 +12,16 @@ sealed interface DataError: Error {
     }
 
     enum class Local: DataError {
-        DISK_FULL,
-        DB_CORRUPTION,
         QUERY_FAILED,
         INSERTION_FAILD,
         UPDATE_FAILED,
         DELETION_FAILED,
-        CONSTRAINT_VIOLATION,
-        DATA_CONVERSION,
-        MIGRATION_FAILED,
-        ACCESS_DENIED,
         UNKNOWN
+        //DISK_FULL,
+        //DB_CORRUPTION,
+        //CONSTRAINT_VIOLATION,
+        //DATA_CONVERSION,
+        //MIGRATION_FAILED,
+        //ACCESS_DENIED,
     }
 }

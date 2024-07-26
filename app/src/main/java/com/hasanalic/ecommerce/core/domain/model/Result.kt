@@ -1,4 +1,4 @@
-package com.hasanalic.ecommerce.core.domain
+package com.hasanalic.ecommerce.core.domain.model
 
 typealias RootError = Error
 

@@ -1,12 +1,9 @@
 package com.hasanalic.ecommerce.feature_auth.data.repository
 
-import android.database.sqlite.SQLiteConstraintException
-import android.database.sqlite.SQLiteDatabaseCorruptException
-import android.database.sqlite.SQLiteFullException
 import com.hasanalic.ecommerce.feature_auth.data.local.UserDao
 import com.hasanalic.ecommerce.feature_auth.data.local.entities.UserEntity
-import com.hasanalic.ecommerce.core.domain.DataError
-import com.hasanalic.ecommerce.core.domain.Result
+import com.hasanalic.ecommerce.core.domain.model.DataError
+import com.hasanalic.ecommerce.core.domain.model.Result
 import com.hasanalic.ecommerce.feature_auth.domain.repository.AuthenticationRepository
 
 class AuthenticationRepositoryImp(
@@ -30,12 +27,6 @@ class AuthenticationRepositoryImp(
             } else {
                 Result.Error(DataError.Local.INSERTION_FAILD)
             }
-        } catch (e: SQLiteConstraintException) {
-            Result.Error(DataError.Local.CONSTRAINT_VIOLATION)
-        } catch (e: SQLiteFullException) {
-            Result.Error(DataError.Local.DISK_FULL)
-        } catch (e: SQLiteDatabaseCorruptException) {
-            Result.Error(DataError.Local.DB_CORRUPTION)
         } catch (e: Exception) {
             Result.Error(DataError.Local.UNKNOWN)
         }

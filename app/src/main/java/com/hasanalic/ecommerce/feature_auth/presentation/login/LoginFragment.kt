@@ -1,4 +1,4 @@
-package com.hasanalic.ecommerce.feature_auth.presentation
+package com.hasanalic.ecommerce.feature_auth.presentation.login
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,30 +8,42 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.hasanalic.ecommerce.R
-import com.hasanalic.ecommerce.databinding.FragmentRegisterBinding
+import com.hasanalic.ecommerce.databinding.FragmentLoginBinding
+import com.hasanalic.ecommerce.feature_auth.presentation.register.RegisterFragment
 import com.hasanalic.ecommerce.feature_home.presentation.views.HomeActivity
 import com.hasanalic.ecommerce.utils.CustomSharedPreferences
 import com.hasanalic.ecommerce.utils.Resource
 import com.hasanalic.ecommerce.utils.toast
 
-class RegisterFragment: Fragment() {
+class LoginFragment: Fragment() {
 
-    private var _binding: FragmentRegisterBinding? = null
+    private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var viewModel: LoginViewModel
 
     /*
     private lateinit var auth: FirebaseAuth
-    private lateinit var db: FirebaseFirestore
     private lateinit var callbackManager: CallbackManager
 
      */
 
     private lateinit var signInWith: String
 
+    override fun onStart() {
+        super.onStart()
+        /*
+        val currentUser = auth.currentUser
+
+        if (currentUser != null) {
+            moveToHomeActivity()
+        }
+
+         */
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        _binding = FragmentRegisterBinding.inflate(inflater,container,false)
+        _binding = FragmentLoginBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -40,10 +52,7 @@ class RegisterFragment: Fragment() {
 
         viewModel = ViewModelProvider(requireActivity())[LoginViewModel::class.java]
 
-        /*
-        auth = FirebaseAuth.getInstance()
-        db = FirebaseFirestore.getInstance()
-         */
+        //auth = FirebaseAuth.getInstance()
 
         binding.buttonGuest.setOnClickListener {
             val intent = Intent(requireActivity(), HomeActivity::class.java)
@@ -51,16 +60,15 @@ class RegisterFragment: Fragment() {
             requireActivity().finish()
         }
 
-        binding.buttonRegister.setOnClickListener {
+        binding.buttonLogin.setOnClickListener {
             if (validateFields()) {
-                val username = binding.textInputEditTextName.text.toString()
                 val email = binding.textInputEditTextEmail.text.toString().trim()
                 val password = binding.textInputEditTextPassword.text.toString()
-
                 /*
-                auth.createUserWithEmailAndPassword(email, password).addOnSuccessListener {result ->
-                    result.user?.uid?.let {uid ->
-                        createUserOnFirestore(uid, username,requireActivity().getString(R.string.classic))
+                auth.signInWithEmailAndPassword(email, password).addOnSuccessListener {result->
+                    result.user?.uid?.let { userId ->
+                        signInWith = requireActivity().getString(R.string.classic)
+                        viewModel.updateUsersShoppingCartEntities(userId, ANOMIM_USER_ID)
                     }
                 }.addOnFailureListener {exception ->
                     println(exception.message)
@@ -71,8 +79,8 @@ class RegisterFragment: Fragment() {
             }
         }
 
-        binding.textViewLogin.setOnClickListener {
-            navigateToLoginFragment()
+        binding.textViewRegister.setOnClickListener {
+            navigateToRegisterFragment()
         }
 
         observer()
@@ -82,7 +90,6 @@ class RegisterFragment: Fragment() {
         viewModel.stateShoppingCartItems.observe(viewLifecycleOwner) {
             when(it) {
                 is Resource.Success -> {
-                    toast(requireContext(),"Kayıt işlemi başarılı.",false)
                     moveToHomeActivity(signInWith)
                 }
                 is Resource.Error -> {
@@ -91,6 +98,15 @@ class RegisterFragment: Fragment() {
                 }
             }
         }
+    }
+
+    private fun validateFields(): Boolean {
+        if (binding.textInputEditTextEmail.text.toString().isEmpty() ||
+            binding.textInputEditTextPassword.text.toString().isEmpty()) {
+            toast(requireContext(),"Lütfen, tüm bilgileri eksiksiz doldurun",false)
+            return false
+        }
+        return true
     }
 
     private fun moveToHomeActivity(signInFrom: String? = null) {
@@ -103,20 +119,10 @@ class RegisterFragment: Fragment() {
         requireActivity().finish()
     }
 
-    private fun validateFields(): Boolean {
-        if (binding.textInputEditTextEmail.text.toString().isEmpty() ||
-            binding.textInputEditTextPassword.text.toString().isEmpty() ||
-            binding.textInputEditTextName.text.toString().isEmpty()) {
-            toast(requireContext(),"Lütfen, tüm bilgileri eksiksiz doldurun",false)
-            return false
-        }
-        return true
-    }
-
-    private fun navigateToLoginFragment() {
+    private fun navigateToRegisterFragment() {
         val fragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
         fragmentTransaction.apply {
-            replace(R.id.fragmentContainerViewMainActivity, LoginFragment())
+            replace(R.id.fragmentContainerViewMainActivity, RegisterFragment())
             commit()
         }
     }

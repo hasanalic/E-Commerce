@@ -1,7 +1,7 @@
 package com.hasanalic.ecommerce.feature_auth.domain.repository
 
-import com.hasanalic.ecommerce.core.domain.DataError
-import com.hasanalic.ecommerce.core.domain.Result
+import com.hasanalic.ecommerce.core.domain.model.DataError
+import com.hasanalic.ecommerce.core.domain.model.Result
 
 interface AuthenticationRepository {
 

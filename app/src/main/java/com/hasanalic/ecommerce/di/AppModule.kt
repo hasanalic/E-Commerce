@@ -25,6 +25,8 @@ import com.hasanalic.ecommerce.feature_auth.data.repository.AuthenticationReposi
 import com.hasanalic.ecommerce.feature_auth.domain.repository.AuthenticationRepository
 import com.hasanalic.ecommerce.feature_auth.domain.use_cases.AuthUseCases
 import com.hasanalic.ecommerce.feature_auth.domain.use_cases.InsertUserUseCase
+import com.hasanalic.ecommerce.feature_auth.domain.use_cases.UserEmailValidatorUseCase
+import com.hasanalic.ecommerce.feature_auth.domain.use_cases.UserInputValidatorUseCase
 import com.hasanalic.ecommerce.feature_auth.domain.use_cases.UserPasswordValidatorUseCase
 import dagger.Module
 import dagger.Provides
@@ -150,6 +152,8 @@ object AppModule {
     fun provideAuthUseCases(authRepository: AuthenticationRepository): AuthUseCases {
         return AuthUseCases(
             insertUserUseCase = InsertUserUseCase(authRepository),
+            userEmailValidatorUseCase = UserEmailValidatorUseCase(),
+            userInputValidatorUseCase = UserInputValidatorUseCase(),
             userPasswordValidatorUseCase = UserPasswordValidatorUseCase()
         )
     }

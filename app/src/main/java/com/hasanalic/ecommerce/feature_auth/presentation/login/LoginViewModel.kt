@@ -1,4 +1,4 @@
-package com.hasanalic.ecommerce.feature_auth.presentation
+package com.hasanalic.ecommerce.feature_auth.presentation.login
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

@@ -1,7 +1,7 @@
 package com.hasanalic.ecommerce.feature_auth.domain.use_cases
 
-import com.hasanalic.ecommerce.core.domain.PasswordError
-import com.hasanalic.ecommerce.core.domain.Result
+import com.hasanalic.ecommerce.feature_auth.domain.model.PasswordError
+import com.hasanalic.ecommerce.core.domain.model.Result
 
 class UserPasswordValidatorUseCase {
 
