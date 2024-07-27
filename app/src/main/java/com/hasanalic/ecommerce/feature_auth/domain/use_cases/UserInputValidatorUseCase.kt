@@ -5,9 +5,11 @@ import com.hasanalic.ecommerce.feature_auth.domain.model.InputValidationError
 
 class UserInputValidatorUseCase {
 
-    operator fun invoke(name: String, email: String, password: String): Result<Unit, InputValidationError> {
-        if (name.isBlank()) {
-            return Result.Error(InputValidationError.EMPTY_NAME)
+    operator fun invoke(name: String? = null, email: String, password: String): Result<Unit, InputValidationError> {
+        name?.let {
+            if (name.isBlank()) {
+                return Result.Error(InputValidationError.EMPTY_NAME)
+            }
         }
 
         if (email.isBlank()) {

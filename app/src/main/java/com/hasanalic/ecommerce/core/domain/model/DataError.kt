@@ -16,6 +16,7 @@ sealed interface DataError: Error {
         INSERTION_FAILD,
         UPDATE_FAILED,
         DELETION_FAILED,
+        NOT_FOUND,
         UNKNOWN
         //DISK_FULL,
         //DB_CORRUPTION,

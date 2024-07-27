@@ -11,8 +11,8 @@ import com.hasanalic.ecommerce.R
 import com.hasanalic.ecommerce.databinding.FragmentLoginBinding
 import com.hasanalic.ecommerce.feature_auth.presentation.register.RegisterFragment
 import com.hasanalic.ecommerce.feature_home.presentation.views.HomeActivity
-import com.hasanalic.ecommerce.utils.CustomSharedPreferences
-import com.hasanalic.ecommerce.utils.Resource
+import com.hasanalic.ecommerce.utils.hide
+import com.hasanalic.ecommerce.utils.show
 import com.hasanalic.ecommerce.utils.toast
 
 class LoginFragment: Fragment() {
@@ -22,14 +22,6 @@ class LoginFragment: Fragment() {
 
     private lateinit var viewModel: LoginViewModel
 
-    /*
-    private lateinit var auth: FirebaseAuth
-    private lateinit var callbackManager: CallbackManager
-
-     */
-
-    private lateinit var signInWith: String
-
     override fun onStart() {
         super.onStart()
         /*
@@ -38,7 +30,6 @@ class LoginFragment: Fragment() {
         if (currentUser != null) {
             moveToHomeActivity()
         }
-
          */
     }
 
@@ -52,8 +43,11 @@ class LoginFragment: Fragment() {
 
         viewModel = ViewModelProvider(requireActivity())[LoginViewModel::class.java]
 
-        //auth = FirebaseAuth.getInstance()
+        setupListeners()
+        setupObservers()
+    }
 
+    private fun setupListeners() {
         binding.buttonGuest.setOnClickListener {
             val intent = Intent(requireActivity(), HomeActivity::class.java)
             startActivity(intent)
@@ -61,59 +55,46 @@ class LoginFragment: Fragment() {
         }
 
         binding.buttonLogin.setOnClickListener {
-            if (validateFields()) {
-                val email = binding.textInputEditTextEmail.text.toString().trim()
-                val password = binding.textInputEditTextPassword.text.toString()
-                /*
-                auth.signInWithEmailAndPassword(email, password).addOnSuccessListener {result->
-                    result.user?.uid?.let { userId ->
-                        signInWith = requireActivity().getString(R.string.classic)
-                        viewModel.updateUsersShoppingCartEntities(userId, ANOMIM_USER_ID)
-                    }
-                }.addOnFailureListener {exception ->
-                    println(exception.message)
-                    toast(requireContext(),exception.message?:"Girilen bilgiler geçersiz",true)
-                }
+            val email = binding.textInputEditTextEmail.text.toString()
+            val password = binding.textInputEditTextPassword.text.toString()
 
-                 */
-            }
+            viewModel.onLoginClick(email, password)
         }
 
         binding.textViewRegister.setOnClickListener {
             navigateToRegisterFragment()
         }
-
-        observer()
     }
 
-    private fun observer() {
-        viewModel.stateShoppingCartItems.observe(viewLifecycleOwner) {
-            when(it) {
-                is Resource.Success -> {
-                    moveToHomeActivity(signInWith)
-                }
-                is Resource.Error -> {
-                }
-                is Resource.Loading -> {
-                }
-            }
+    private fun setupObservers() {
+        viewModel.loginState.observe(viewLifecycleOwner) { state ->
+            handleState(state)
         }
     }
 
-    private fun validateFields(): Boolean {
-        if (binding.textInputEditTextEmail.text.toString().isEmpty() ||
-            binding.textInputEditTextPassword.text.toString().isEmpty()) {
-            toast(requireContext(),"Lütfen, tüm bilgileri eksiksiz doldurun",false)
-            return false
+    private fun handleState(state: LoginState) {
+        if (state.isLoginSuccessful) {
+            navigateToHomeActivity()
         }
-        return true
+
+        if (state.isLoading) {
+            binding.progressBarLogin.show()
+            binding.buttonLogin.isEnabled = false
+        } else {
+            binding.progressBarLogin.hide()
+            binding.buttonLogin.isEnabled = true
+        }
+
+        state.validationError?.let {
+            toast(requireContext(), it, false)
+        }
+
+        state.dataError?.let {
+            toast(requireContext(), it, false)
+        }
     }
 
-    private fun moveToHomeActivity(signInFrom: String? = null) {
-        signInFrom?.let {
-            CustomSharedPreferences(requireContext()).setSignInWithSocialMediaType(signInFrom,requireContext())
-        }
-
+    private fun navigateToHomeActivity() {
         val intent = Intent(requireActivity(), HomeActivity::class.java)
         startActivity(intent)
         requireActivity().finish()

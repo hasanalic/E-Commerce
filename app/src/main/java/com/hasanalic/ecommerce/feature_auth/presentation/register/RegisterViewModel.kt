@@ -102,13 +102,13 @@ class RegisterViewModel @Inject constructor(
             DataError.Local.QUERY_FAILED -> {}
             DataError.Local.INSERTION_FAILD -> {
                 _registerState.value = RegisterState(
-                    dataError = "Kullanıcı kaydedilemedi.",
-                    isLoading = false
+                    dataError = "Kullanıcı kaydedilemedi."
                 )
             }
             DataError.Local.UPDATE_FAILED -> {}
             DataError.Local.DELETION_FAILED -> {}
             DataError.Local.UNKNOWN -> {}
+            DataError.Local.NOT_FOUND -> {}
         }
     }
 }
