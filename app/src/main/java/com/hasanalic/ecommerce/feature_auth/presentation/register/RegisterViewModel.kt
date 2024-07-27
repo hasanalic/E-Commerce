@@ -5,14 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hasanalic.ecommerce.core.domain.model.DataError
-import com.hasanalic.ecommerce.feature_auth.domain.model.PasswordError
+import com.hasanalic.ecommerce.feature_auth.domain.model.PasswordValidationError
 import com.hasanalic.ecommerce.core.domain.model.Result
-import com.hasanalic.ecommerce.feature_auth.domain.model.EmailError
-import com.hasanalic.ecommerce.feature_auth.domain.model.InputError
+import com.hasanalic.ecommerce.feature_auth.domain.model.EmailValidationError
+import com.hasanalic.ecommerce.feature_auth.domain.model.InputValidationError
 import com.hasanalic.ecommerce.feature_auth.domain.use_cases.AuthUseCases
-import com.hasanalic.ecommerce.feature_auth.domain.use_cases.UserEmailValidatorUseCase
-import com.hasanalic.ecommerce.feature_auth.domain.use_cases.UserInputValidatorUseCase
-import com.hasanalic.ecommerce.feature_auth.domain.use_cases.UserPasswordValidatorUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -52,11 +49,11 @@ class RegisterViewModel @Inject constructor(
         }
     }
 
-    private fun handleInputValidationError(error: InputError) {
+    private fun handleInputValidationError(error: InputValidationError) {
         val message = when(error) {
-            InputError.EMPTY_NAME -> "İsim boş olamaz."
-            InputError.EMPTY_EMAIL -> "Email boş olamaz."
-            InputError.EMPTY_PASSWORD -> "Şifre boş olamaz."
+            InputValidationError.EMPTY_NAME -> "İsim boş olamaz."
+            InputValidationError.EMPTY_EMAIL -> "Email boş olamaz."
+            InputValidationError.EMPTY_PASSWORD -> "Şifre boş olamaz."
         }
         _registerState.value = _registerState.value!!.copy(
             validationError = message,
@@ -64,9 +61,9 @@ class RegisterViewModel @Inject constructor(
         )
     }
 
-    private fun handleEmailValidationError(error: EmailError) {
+    private fun handleEmailValidationError(error: EmailValidationError) {
         val message = when(error) {
-            EmailError.INVALID_FORMAT -> "Geçersiz email formatı."
+            EmailValidationError.INVALID_FORMAT -> "Geçersiz email formatı."
         }
         _registerState.value = _registerState.value!!.copy(
             validationError = message,
@@ -74,27 +71,17 @@ class RegisterViewModel @Inject constructor(
         )
     }
 
-    private fun handlePasswordValidationError(error: PasswordError) {
-        when(error) {
-            PasswordError.TOO_SHORT -> {
-                _registerState.value = _registerState.value!!.copy(
-                    validationError = "Şifre çok kısa",
-                    isLoading = false
-                )
-            }
-            PasswordError.NO_UPPERCASE -> {
-                _registerState.value = _registerState.value!!.copy(
-                    validationError = "Şifrede en az bir tane büyük harf karakter olmalı.",
-                    isLoading = false
-                )
-            }
-            PasswordError.NO_DIGIT -> {
-                _registerState.value = _registerState.value!!.copy(
-                    validationError = "Şifrede en az bir rakam olmalı.",
-                    isLoading = false
-                )
-            }
+    private fun handlePasswordValidationError(error: PasswordValidationError) {
+        val message = when(error) {
+            PasswordValidationError.TOO_SHORT -> "Şifre çok kısa"
+            PasswordValidationError.NO_UPPERCASE -> "Şifrede en az bir tane büyük harf karakter olmalı."
+            PasswordValidationError.NO_DIGIT -> "Şifrede en az bir rakam olmalı."
         }
+
+        _registerState.value = _registerState.value!!.copy(
+            validationError = message,
+            isLoading = false
+        )
     }
 
     private fun registerUser(name: String, email: String, password: String) {
