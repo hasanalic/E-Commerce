@@ -6,7 +6,7 @@ import com.hasanalic.ecommerce.core.domain.model.Result
 class UserPasswordValidatorUseCase {
 
     operator fun invoke(password: String): Result<Unit, PasswordValidationError> {
-        if (password.length < 9) {
+        if (password.length < 8) {
             return Result.Error(PasswordValidationError.TOO_SHORT)
         }
 

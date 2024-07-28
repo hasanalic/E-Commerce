@@ -5,7 +5,8 @@ import com.hasanalic.ecommerce.feature_auth.domain.model.EmailValidationError
 
 class UserEmailValidatorUseCase {
     operator fun invoke(email: String): Result<Unit, EmailValidationError> {
-        return if (android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        val emailPattern = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$"
+        return if (email.matches(Regex(emailPattern))) {
             Result.Success(Unit)
         } else {
             Result.Error(EmailValidationError.INVALID_FORMAT)
