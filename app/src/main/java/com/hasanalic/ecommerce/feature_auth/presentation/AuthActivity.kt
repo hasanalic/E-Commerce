@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.hasanalic.ecommerce.R
-import com.hasanalic.ecommerce.feature_auth.presentation.login.LoginFragment
+import com.hasanalic.ecommerce.feature_auth.presentation.login.views.LoginFragment
 import com.hasanalic.ecommerce.feature_product_detail.presentation.ProductDetailActivity
 import com.hasanalic.ecommerce.utils.Constants.ADDS_ALARM_INTERVAL_TEST
 import com.hasanalic.ecommerce.utils.Constants.ADDS_ALARM_REQUEST_CODE

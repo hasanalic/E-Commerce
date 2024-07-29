@@ -7,11 +7,18 @@ import com.hasanalic.ecommerce.feature_auth.domain.repository.AuthenticationRepo
 
 class FakeAuthenticationRepository: AuthenticationRepository {
 
-    private val fakeUser = User(1, "John Doe",  "john.doe@example.com")
+    private val validName = "John Doe"
+    private val validEmail = "john.doe@example.com"
     private val fakeUserId = 1L
+    private val fakeUser = User(fakeUserId.toInt(), validName,  validEmail)
+
+    private val nonExistentEmail = "nonexistent@example.com"
+    private val nonExistentPassword = "nonExistentPassword1"
 
     override suspend fun login(email: String, password: String): Result<User, DataError.Local> {
-        return Result.Success(fakeUser)
+        return if (email == nonExistentEmail || password == nonExistentPassword) {
+            Result.Error(DataError.Local.NOT_FOUND)
+        } else Result.Success(fakeUser)
     }
 
     override suspend fun register(

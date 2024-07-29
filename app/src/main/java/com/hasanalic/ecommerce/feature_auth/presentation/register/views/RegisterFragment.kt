@@ -1,4 +1,4 @@
-package com.hasanalic.ecommerce.feature_auth.presentation.register
+package com.hasanalic.ecommerce.feature_auth.presentation.register.views
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,7 +7,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.hasanalic.ecommerce.R
 import com.hasanalic.ecommerce.core.presentation.BaseFragment
 import com.hasanalic.ecommerce.databinding.FragmentRegisterBinding
-import com.hasanalic.ecommerce.feature_auth.presentation.login.LoginFragment
+import com.hasanalic.ecommerce.feature_auth.presentation.login.views.LoginFragment
+import com.hasanalic.ecommerce.feature_auth.presentation.register.RegisterState
+import com.hasanalic.ecommerce.feature_auth.presentation.register.RegisterViewModel
 import com.hasanalic.ecommerce.feature_home.presentation.views.HomeActivity
 import com.hasanalic.ecommerce.utils.hide
 import com.hasanalic.ecommerce.utils.show
