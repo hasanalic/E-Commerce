@@ -98,17 +98,30 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")
     implementation("androidx.navigation:navigation-ui-ktx:$nav_version")
 
-    //Testing
+    // TestImplementations
+    implementation ("androidx.test:core:1.5.0")
     testImplementation ("junit:junit:4.13.2")
-    testImplementation ("org.mockito:mockito-core:2.11.0")
-    testImplementation ("android.arch.core:core-testing:1.1.1")
-    testImplementation ("com.google.truth:truth:1.1")
+    testImplementation ("org.hamcrest:hamcrest-all:1.3")
+    testImplementation ("androidx.arch.core:core-testing:2.2.0")
+    testImplementation ("org.robolectric:robolectric:4.8.1")
+    testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
+    testImplementation ("com.google.truth:truth:1.1.3")
+    testImplementation ("org.mockito:mockito-core:4.7.0")
+
+    // Android Test Implementations
+    androidTestImplementation ("junit:junit:4.13.2")
+    androidTestImplementation ("org.mockito:mockito-android:4.7.0")
+    androidTestImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
+    androidTestImplementation ("androidx.arch.core:core-testing:2.2.0")
+    androidTestImplementation ("com.google.truth:truth:1.1.3")
+    androidTestImplementation ("androidx.test.espresso:espresso-core:3.5.1")
+    androidTestImplementation ("org.mockito:mockito-core:4.7.0")
+    androidTestImplementation ("com.google.dagger:hilt-android-testing:2.43.2")
+    kaptAndroidTest ("com.google.dagger:hilt-android-compiler:2.44.2")
+    debugImplementation ("androidx.fragment:fragment-testing:1.6.0-rc01")
 
     // For Robolectric tests
     testImplementation("com.google.dagger:hilt-android-testing:2.28-alpha")
-
-    // For instrumented tests
-    androidTestImplementation("com.google.dagger:hilt-android-testing:2.28-alpha")
 
     // ...with Kotlin
     kaptTest("com.google.dagger:hilt-android-compiler:2.40.5")
