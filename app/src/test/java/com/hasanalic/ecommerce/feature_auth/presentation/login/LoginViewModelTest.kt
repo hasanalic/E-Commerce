@@ -56,6 +56,18 @@ class LoginViewModelTest {
     }
 
     @Test
+    fun `onLoginClick with empty credentials triggers login validation error`()  {
+        val email = ""
+        val password = ""
+
+        loginViewModel.onLoginClick(email, password)
+
+        val loginStateValue = loginViewModel.loginState.getOrAwaitValue()
+
+        assertThat(loginStateValue.validationError).isNotEmpty()
+    }
+
+    @Test
     fun `onLoginClick with invalid email format triggers login validation error`() {
         val invalidEmail = "email"
         val password = "Password123"

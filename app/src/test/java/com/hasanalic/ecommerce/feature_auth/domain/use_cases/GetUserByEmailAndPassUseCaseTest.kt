@@ -35,4 +35,14 @@ class GetUserByEmailAndPassUseCaseTest {
         assertThat((result as Result.Success).data).isEqualTo(fakeUser)
     }
 
+    @Test
+    fun `Get User By Email should return error when User not found`() = runBlocking {
+        val nonExistentEmail = "nonexistent@example.com"
+        val nonExistentPassword = "nonExistentPassword1"
+
+        val result = getUserByEmailAndPassUseCase(nonExistentEmail, nonExistentPassword)
+
+        assertThat(result).isInstanceOf(Result.Error::class.java)
+    }
+
 }
