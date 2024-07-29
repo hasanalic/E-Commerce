@@ -13,7 +13,7 @@ class AuthenticationRepositoryImp(
 ): AuthenticationRepository {
     override suspend fun login(email: String, password: String): Result<User, DataError.Local> {
         return try {
-            val userEntity = userDao.getUserByUserNameAndPassword(email, password)
+            val userEntity = userDao.getUserByEmailAndPassword(email, password)
 
             userEntity?.let {
                 Result.Success(it.toUser())

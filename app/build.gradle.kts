@@ -110,6 +110,7 @@ dependencies {
 
     // Android Test Implementations
     androidTestImplementation ("junit:junit:4.13.2")
+    androidTestImplementation ("androidx.test.ext:junit:1.1.5")
     androidTestImplementation ("org.mockito:mockito-android:4.7.0")
     androidTestImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
     androidTestImplementation ("androidx.arch.core:core-testing:2.2.0")
@@ -125,6 +126,8 @@ dependencies {
 
     // ...with Kotlin
     kaptTest("com.google.dagger:hilt-android-compiler:2.40.5")
+
+    implementation(libs.androidx.runner)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

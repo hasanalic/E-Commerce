@@ -9,7 +9,7 @@ import com.hasanalic.ecommerce.feature_auth.data.local.entities.UserEntity
 interface UserDao {
 
     @Query("SELECT * FROM User WHERE user_email = :email AND user_password = :password")
-    suspend fun getUserByUserNameAndPassword(email: String, password: String): UserEntity?
+    suspend fun getUserByEmailAndPassword(email: String, password: String): UserEntity?
 
     @Insert
     suspend fun insertUser(user: UserEntity): Long
