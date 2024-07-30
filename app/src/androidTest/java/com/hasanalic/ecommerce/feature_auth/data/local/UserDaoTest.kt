@@ -1,38 +1,40 @@
 package com.hasanalic.ecommerce.feature_auth.data.local
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.room.Room
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.filters.SmallTest
-import androidx.test.runner.AndroidJUnit4
 import com.google.common.truth.Truth.assertThat
 import com.hasanalic.ecommerce.core.data.local.MyDatabase
 import com.hasanalic.ecommerce.feature_auth.data.local.entities.UserEntity
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
+import javax.inject.Inject
+import javax.inject.Named
 
 @SmallTest
-@RunWith(AndroidJUnit4::class)
 @ExperimentalCoroutinesApi
+@HiltAndroidTest
 class UserDaoTest {
+
+    @get:Rule
+    var hiltRule = HiltAndroidRule(this)
 
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
 
+    @Inject
+    @Named("test_db")
+    lateinit var database: MyDatabase
     private lateinit var userDao: UserDao
-    private lateinit var database: MyDatabase
 
     @Before
     fun setup() {
-        database = Room.inMemoryDatabaseBuilder(
-            ApplicationProvider.getApplicationContext(),
-            MyDatabase::class.java
-        ).allowMainThreadQueries().build()
+        hiltRule.inject()
 
         userDao = database.userDao()
     }
