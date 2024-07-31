@@ -123,6 +123,7 @@ dependencies {
     androidTestImplementation ("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation ("org.mockito:mockito-core:4.7.0")
     androidTestImplementation ("com.google.dagger:hilt-android-testing:2.43.2")
+    androidTestImplementation ("androidx.test.espresso:espresso-intents:3.6.1")
     kaptAndroidTest ("com.google.dagger:hilt-android-compiler:2.44.2")
     debugImplementation ("androidx.fragment:fragment-testing:1.6.0-rc01")
 
