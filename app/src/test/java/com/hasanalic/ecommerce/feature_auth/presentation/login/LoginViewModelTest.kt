@@ -53,6 +53,9 @@ class LoginViewModelTest {
         val loginStateValue = loginViewModel.loginState.getOrAwaitValue()
 
         assertThat(loginStateValue.isLoginSuccessful).isTrue()
+        assertThat(loginStateValue.isLoading).isFalse()
+        assertThat(loginStateValue.dataError).isNull()
+        assertThat(loginStateValue.validationError).isNull()
     }
 
     @Test
@@ -65,6 +68,9 @@ class LoginViewModelTest {
         val loginStateValue = loginViewModel.loginState.getOrAwaitValue()
 
         assertThat(loginStateValue.validationError).isNotEmpty()
+        assertThat(loginStateValue.isLoginSuccessful).isFalse()
+        assertThat(loginStateValue.isLoading).isFalse()
+        assertThat(loginStateValue.dataError).isNull()
     }
 
     @Test
@@ -77,6 +83,9 @@ class LoginViewModelTest {
         val loginStateValue = loginViewModel.loginState.getOrAwaitValue()
 
         assertThat(loginStateValue.validationError).isNotEmpty()
+        assertThat(loginStateValue.isLoginSuccessful).isFalse()
+        assertThat(loginStateValue.isLoading).isFalse()
+        assertThat(loginStateValue.dataError).isNull()
     }
 
     @Test
@@ -89,6 +98,9 @@ class LoginViewModelTest {
         val loginStateValue = loginViewModel.loginState.getOrAwaitValue()
 
         assertThat(loginStateValue.validationError).isNotEmpty()
+        assertThat(loginStateValue.isLoginSuccessful).isFalse()
+        assertThat(loginStateValue.isLoading).isFalse()
+        assertThat(loginStateValue.dataError).isNull()
     }
 
     @Test
@@ -101,6 +113,9 @@ class LoginViewModelTest {
         val loginStateValue = loginViewModel.loginState.getOrAwaitValue()
 
         assertThat(loginStateValue.validationError).isNotEmpty()
+        assertThat(loginStateValue.isLoginSuccessful).isFalse()
+        assertThat(loginStateValue.isLoading).isFalse()
+        assertThat(loginStateValue.dataError).isNull()
     }
 
     @Test
@@ -113,6 +128,9 @@ class LoginViewModelTest {
         val loginStateValue = loginViewModel.loginState.getOrAwaitValue()
 
         assertThat(loginStateValue.validationError).isNotEmpty()
+        assertThat(loginStateValue.isLoginSuccessful).isFalse()
+        assertThat(loginStateValue.isLoading).isFalse()
+        assertThat(loginStateValue.dataError).isNull()
     }
 
     @Test
@@ -123,9 +141,11 @@ class LoginViewModelTest {
         loginViewModel.onLoginClick(nonExistentEmail, nonExistentPassword)
 
         val loginStateValue = loginViewModel.loginState.getOrAwaitValue()
-        println(loginStateValue)
 
         assertThat(loginStateValue.dataError).isNotEmpty()
+        assertThat(loginStateValue.validationError).isNull()
+        assertThat(loginStateValue.isLoginSuccessful).isFalse()
+        assertThat(loginStateValue.isLoading).isFalse()
     }
 
 }
