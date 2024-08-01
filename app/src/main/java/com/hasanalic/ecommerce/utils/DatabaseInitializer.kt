@@ -334,7 +334,7 @@ class DatabaseInitializer @Inject constructor(
                 reviewDate = "2024-03-06",
                 reviewTitle = "Çok İyi Telefon",
                 reviewContent = "Ürün gerçekten mükemmel. Hem performansı hem de kamera kalitesi beni çok etkiledi. Herkese tavsiye ederim.",
-                reviewProductPhoto = null,
+                reviewProductPhoto = "",
                 reviewStar = 4
             ),
             ReviewEntity(
@@ -344,7 +344,7 @@ class DatabaseInitializer @Inject constructor(
                 reviewDate = "2024-03-06",
                 reviewTitle = "Harika Ürün",
                 reviewContent = "Telefonun özellikleri çok iyi. Hızlı kargo ve güvenilir satıcı. Teşekkür ederim!",
-                reviewProductPhoto = null,
+                reviewProductPhoto = "",
                 reviewStar = 5
             ),
             ReviewEntity(

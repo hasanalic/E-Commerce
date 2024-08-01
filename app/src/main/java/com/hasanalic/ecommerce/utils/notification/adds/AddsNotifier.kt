@@ -38,6 +38,7 @@ class AddsNotifier(
         CoroutineScope(Dispatchers.IO).launch {
             val response = serviceRepository.insertNotification(
                 NotificationEntity(
+                    userId = "",
                     notificationTitle = notificationTitle,
                     notificationContent = notificationMessage,
                     notificationTime = System.currentTimeMillis()
