@@ -1,4 +1,4 @@
-package com.hasanalic.ecommerce.feature_favorite.presentation
+package com.hasanalic.ecommerce.feature_favorite.presentation.views
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

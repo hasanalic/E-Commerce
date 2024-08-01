@@ -13,7 +13,7 @@
         tools:layout="@layout/fragment_shopping_cart"/>
     <fragment
         android:id="@+id/favoriteFragment"
-        android:name="com.hasanalic.ecommerce.feature_favorite.presentation.FavoriteFragment"
+        android:name="com.hasanalic.ecommerce.feature_favorite.presentation.views.FavoriteFragment"
         android:label="FavoriteFragment"
         tools:layout="@layout/fragment_favorite"/>
     <fragment

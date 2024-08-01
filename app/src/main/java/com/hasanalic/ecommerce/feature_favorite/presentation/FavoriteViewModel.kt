@@ -35,7 +35,7 @@ class FavoriteViewModel @Inject constructor(
         }
     }
 
-    fun getFavorites(userId: String) {
+    fun getUserFavoriteProducts(userId: String) {
         val tempProductList = mutableListOf<Product>()
         _stateFavorites.value = Resource.Loading(null)
         viewModelScope.launch {
@@ -93,7 +93,7 @@ class FavoriteViewModel @Inject constructor(
         }
     }
 
-    fun unFavorite(userId: String, productId: String) {
+    fun removeProductFromFavorites(userId: String, productId: String, itemIndex: Int) {
         var tempMutableList = _stateFavorites.value!!.data
 
         viewModelScope.launch {
@@ -106,6 +106,14 @@ class FavoriteViewModel @Inject constructor(
             } else {
             }
         }
+    }
+
+    fun addProductToCart() {
+
+    }
+
+    fun removeProductFromCart() {
+
     }
 
     fun changeAddToShoppingCart(userId: String, productId: String) {

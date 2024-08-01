@@ -29,6 +29,8 @@ import com.hasanalic.ecommerce.feature_auth.domain.use_cases.InsertUserUseCase
 import com.hasanalic.ecommerce.feature_auth.domain.use_cases.UserEmailValidatorUseCase
 import com.hasanalic.ecommerce.feature_auth.domain.use_cases.UserInputValidatorUseCase
 import com.hasanalic.ecommerce.feature_auth.domain.use_cases.UserPasswordValidatorUseCase
+import com.hasanalic.ecommerce.feature_favorite.data.repository.FavoriteRepositoryImp
+import com.hasanalic.ecommerce.feature_favorite.domain.repository.FavoriteRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -145,6 +147,18 @@ object AppModule {
     ): AuthenticationRepository {
         return AuthenticationRepositoryImp(
             userDao
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideFavoriteRepository(
+        favoriteDao: FavoritesDao,
+        productDao: ProductDao
+    ): FavoriteRepository {
+        return FavoriteRepositoryImp(
+            favoritesDao = favoriteDao,
+            productDao = productDao
         )
     }
 

@@ -10,6 +10,5 @@ data class FavoriteProduct(
     val priceCent: Int,
     val rate: Double,
     val reviewCount: String,
-    var addedToShoppingCart: Boolean = false,
-    var addedToFavorites: Boolean = false
+    var addedToShoppingCart: Boolean = false
 )

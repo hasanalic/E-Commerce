@@ -3,6 +3,7 @@ package com.hasanalic.ecommerce.feature_home.data.local
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import com.hasanalic.ecommerce.feature_favorite.data.entity.FavoriteProductDto
 import com.hasanalic.ecommerce.feature_home.data.entity.ProductEntity
 
 @Dao
@@ -31,6 +32,26 @@ interface ProductDao {
 
     @Query("SELECT product_brand FROM Product")
     suspend fun getBrands(): List<String>?
+
+    @Query("""
+        SELECT p.* FROM Product p
+        INNER JOIN Favorites f ON p.productId = f.product_id
+        WHERE f.user_id = :userId
+    """)
+    suspend fun getFavoriteProductsByUserId(userId: String): List<ProductEntity>
+
+    @Query("""
+        SELECT p.*, 
+        CASE 
+            WHEN sc.product_id IS NOT NULL THEN 1
+            ELSE 0
+        END as inCart
+        FROM Product p
+        INNER JOIN Favorites f ON p.productId = f.product_id
+        LEFT JOIN ShoppingCartItems sc ON p.productId = sc.product_id AND sc.user_id = :userId
+        WHERE f.user_id = :userId
+    """)
+    suspend fun getFavoriteProducts(userId: String): List<FavoriteProductDto>?
 
     @Insert
     suspend fun insertAllProducts(vararg products: ProductEntity): List<Long>

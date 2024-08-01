@@ -1,4 +1,4 @@
-package com.hasanalic.ecommerce.feature_favorite.presentation
+package com.hasanalic.ecommerce.feature_favorite.presentation.views
 
 import android.app.AlertDialog
 import android.content.Context
@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hasanalic.ecommerce.R
 import com.hasanalic.ecommerce.databinding.FragmentFavoriteBinding
+import com.hasanalic.ecommerce.feature_favorite.presentation.FavoriteViewModel
 import com.hasanalic.ecommerce.feature_home.presentation.views.HomeActivity
 import com.hasanalic.ecommerce.feature_product_detail.presentation.ProductDetailActivity
 import com.hasanalic.ecommerce.feature_home.presentation.SharedViewModel
@@ -82,7 +83,7 @@ class FavoriteFragment: Fragment() {
         sharedViewModel = ViewModelProvider(requireActivity())[SharedViewModel::class.java]
 
         viewModel.getShoppingCartCount(userId)
-        viewModel.getFavorites(userId)
+        viewModel.getUserFavoriteProducts(userId)
 
         setRecyclerView()
 
@@ -125,7 +126,8 @@ class FavoriteFragment: Fragment() {
         binding.recyclerViewFavorite.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
         favoriteAdapter.setOnFavoriteClickListener {
-            showUnFavoriteWarning(userId,it)
+            TODO("GET ITEM INDEX")
+            showUnFavoriteWarning(userId,it, 1)
             favoriteAdapter.notifyChanges()
         }
         favoriteAdapter.setOnCartButtonClickListener {
@@ -139,11 +141,11 @@ class FavoriteFragment: Fragment() {
         }
     }
 
-    private fun showUnFavoriteWarning(userId: String, shoppingCartItemId: String) {
+    private fun showUnFavoriteWarning(userId: String, shoppingCartItemId: String, itemIndex: Int) {
         val alertDialogBuilder = AlertDialog.Builder(requireContext())
         alertDialogBuilder.setMessage("Ürünü favorilerden kaldırmak istediğine emin misin?")
         alertDialogBuilder.setPositiveButton("Kaldır") { _, _ ->
-            viewModel.unFavorite(userId,shoppingCartItemId)
+            viewModel.removeProductFromFavorites(userId,shoppingCartItemId, itemIndex)
             favoriteAdapter.notifyChanges()
         }
         alertDialogBuilder.setNegativeButton("Vazgeç") { _, _ ->
@@ -154,7 +156,7 @@ class FavoriteFragment: Fragment() {
     }
 
     private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-        viewModel.getFavorites(userId)
+        viewModel.getUserFavoriteProducts(userId)
         viewModel.getShoppingCartCount(userId)
     }
 
