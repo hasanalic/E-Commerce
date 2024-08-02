@@ -4,6 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hasanalic.ecommerce.core.domain.model.DataError
+import com.hasanalic.ecommerce.core.domain.model.Result
+import com.hasanalic.ecommerce.feature_favorite.domain.use_cases.FavoriteUseCases
 import com.hasanalic.ecommerce.feature_home.domain.model.Product
 import com.hasanalic.ecommerce.feature_shopping_cart.data.entity.ShoppingCartItemsEntity
 import com.hasanalic.ecommerce.feature_home.domain.repository.HomeRepository
@@ -14,27 +17,87 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FavoriteViewModel @Inject constructor(
-    private val homeRepository: HomeRepository
+    private val favoriteUseCases: FavoriteUseCases
 ) : ViewModel() {
 
-    private var _stateFavorites = MutableLiveData<Resource<MutableList<Product>>>()
-    val stateFavorites : LiveData<Resource<MutableList<Product>>>
-        get() = _stateFavorites
+    private val _favoriteState = MutableLiveData(FavoriteState())
+    var favoriteState: LiveData<FavoriteState> = _favoriteState
 
-    private var _stateShoppingCartItemSize = MutableLiveData<Int>()
-    val stateShoppingCartItemSize: LiveData<Int>
-        get() = _stateShoppingCartItemSize
-
-    fun getShoppingCartCount(userId: String) {
+    fun getUserFavoriteProducts(userId: String) {
+        _favoriteState.value = FavoriteState(isLoading = true)
         viewModelScope.launch {
-            val response = homeRepository.getShoppingCartCount(userId)
-            if (response is Resource.Success) {
-                _stateShoppingCartItemSize.value = response.data!!
-            } else {
+            when(val result = favoriteUseCases.getFavoriteProductsUseCase(userId)) {
+                is Result.Error -> handleGetFavoriteProductsError(result.error)
+                is Result.Success -> _favoriteState.value = FavoriteState(
+                    favoriteProductList = result.data.toMutableList()
+                )
             }
         }
     }
 
+    private fun handleGetFavoriteProductsError(error: DataError.Local) {
+        when(error) {
+            DataError.Local.QUERY_FAILED -> {}
+            DataError.Local.INSERTION_FAILD -> {}
+            DataError.Local.UPDATE_FAILED -> {}
+            DataError.Local.DELETION_FAILED -> {}
+            DataError.Local.NOT_FOUND -> {
+                _favoriteState.value = FavoriteState(
+                    dataError = "Favori ürün yok."
+                )
+            }
+            DataError.Local.UNKNOWN -> {
+                _favoriteState.value = FavoriteState(
+                    dataError = "Bilinmeyen bir hata meydana geldi."
+                )
+            }
+        }
+    }
+
+    fun removeProductFromFavorites(userId: String, productId: String, itemIndex: Int) {
+        viewModelScope.launch {
+            when(val result = favoriteUseCases.deleteFavoriteUseCase(userId, productId)) {
+                is Result.Error -> handleDeleteFavoriteError(result.error)
+                is Result.Success -> removeProductFromMutableFavoriteProductList(itemIndex)
+            }
+        }
+    }
+
+    private fun handleDeleteFavoriteError(error: DataError.Local) {
+        when(error) {
+            DataError.Local.QUERY_FAILED -> {}
+            DataError.Local.INSERTION_FAILD -> {}
+            DataError.Local.UPDATE_FAILED -> {}
+            DataError.Local.DELETION_FAILED -> { _favoriteState.value = _favoriteState.value!!.copy(
+                actionError = "ürün favorilerden kaldırılamadı."
+            ) }
+            DataError.Local.NOT_FOUND -> {}
+            DataError.Local.UNKNOWN -> { _favoriteState.value = _favoriteState.value!!.copy(
+                actionError = "Bilinmeyen bir nedenden dolayı, ürün favorilerden kaldırılamadı."
+            ) }
+        }
+    }
+
+    private fun removeProductFromMutableFavoriteProductList(itemIndex: Int) {
+        val currentFavorites = _favoriteState.value!!.favoriteProductList
+
+        if (itemIndex >= 0 && itemIndex < currentFavorites.size) {
+            currentFavorites.removeAt(itemIndex)
+        }
+        _favoriteState.value = _favoriteState.value!!.copy(
+            favoriteProductList = currentFavorites
+        )
+    }
+
+    fun addProductToCart(userId: String, productId: String, itemIndex: Int) {
+
+    }
+
+    fun removeProductFromCart(userId: String, productId: String, itemIndex: Int) {
+
+    }
+
+    /*
     fun getUserFavoriteProducts(userId: String) {
         val tempProductList = mutableListOf<Product>()
         _stateFavorites.value = Resource.Loading(null)
@@ -92,7 +155,9 @@ class FavoriteViewModel @Inject constructor(
             }
         }
     }
+     */
 
+    /*
     fun removeProductFromFavorites(userId: String, productId: String, itemIndex: Int) {
         var tempMutableList = _stateFavorites.value!!.data
 
@@ -107,15 +172,9 @@ class FavoriteViewModel @Inject constructor(
             }
         }
     }
+     */
 
-    fun addProductToCart() {
-
-    }
-
-    fun removeProductFromCart() {
-
-    }
-
+    /*
     fun changeAddToShoppingCart(userId: String, productId: String) {
         var tempMutableList = _stateFavorites.value!!.data
 
@@ -150,4 +209,13 @@ class FavoriteViewModel @Inject constructor(
             _stateFavorites.value = Resource.Success(tempMutableList?: mutableListOf())
         }
     }
+     */
+
+    /*
+    fun getShoppingCartCount(userId: String) {
+        /*
+        TODO("Veriyi(ShoppingCart count) almadan viewModel'a sadece 'eksilt'-'arttır' bilgisi ileterek yap")
+         */
+    }
+     */
 }

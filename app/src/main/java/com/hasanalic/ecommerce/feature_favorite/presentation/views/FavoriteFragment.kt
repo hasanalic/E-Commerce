@@ -13,13 +13,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hasanalic.ecommerce.R
 import com.hasanalic.ecommerce.databinding.FragmentFavoriteBinding
+import com.hasanalic.ecommerce.feature_favorite.presentation.FavoriteState
 import com.hasanalic.ecommerce.feature_favorite.presentation.FavoriteViewModel
 import com.hasanalic.ecommerce.feature_home.presentation.views.HomeActivity
 import com.hasanalic.ecommerce.feature_product_detail.presentation.ProductDetailActivity
 import com.hasanalic.ecommerce.feature_home.presentation.SharedViewModel
-import com.hasanalic.ecommerce.utils.Resource
 import com.hasanalic.ecommerce.utils.hide
 import com.hasanalic.ecommerce.utils.show
+import com.hasanalic.ecommerce.utils.toast
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -31,10 +32,6 @@ class FavoriteFragment: Fragment() {
     private lateinit var viewModel: FavoriteViewModel
     private lateinit var sharedViewModel: SharedViewModel
 
-    /*
-    private lateinit var auth: FirebaseAuth
-
-     */
     private lateinit var userId: String
 
     private val favoriteAdapter by lazy {
@@ -45,6 +42,9 @@ class FavoriteFragment: Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
+
+        TODO("HomeActivity Toolbar'ını HomeFragment'a taşı")
+
         homeActivity = context as HomeActivity
     }
 
@@ -73,23 +73,98 @@ class FavoriteFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        /*
-        auth = FirebaseAuth.getInstance()
-        userId = auth.uid ?: ANOMIM_USER_ID
-
-         */
-
         viewModel = ViewModelProvider(requireActivity())[FavoriteViewModel::class.java]
         sharedViewModel = ViewModelProvider(requireActivity())[SharedViewModel::class.java]
 
-        viewModel.getShoppingCartCount(userId)
+        //viewModel.getShoppingCartCount(userId)
         viewModel.getUserFavoriteProducts(userId)
 
-        setRecyclerView()
-
-        observe()
+        setupRecyclerView()
+        setupObservers()
     }
 
+    private fun setupRecyclerView() {
+        binding.recyclerViewFavorite.adapter = favoriteAdapter
+        binding.recyclerViewFavorite.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+
+        favoriteAdapter.setOnRemoveFromFavoriteClickListener { productId, position ->
+            showRemoveFromFavoriteWarningDialog(userId, productId, position)
+            favoriteAdapter.notifyChanges()
+        }
+
+        favoriteAdapter.setOnAddCartButtonClickListener { productId, position ->
+            viewModel.addProductToCart(userId, productId, position)
+            favoriteAdapter.notifyChanges()
+        }
+
+        favoriteAdapter.setOnRemoveFromCartButtonClickListener { productId, position ->
+            viewModel.removeProductFromCart(userId, productId, position)
+        }
+
+        favoriteAdapter.setOnCardClickListener { productId ->
+            val intent = Intent(requireActivity(), ProductDetailActivity::class.java)
+            intent.putExtra(getString(R.string.product_id), productId)
+            launcher.launch(intent)
+        }
+    }
+
+    private fun showRemoveFromFavoriteWarningDialog(userId: String, productId: String, itemIndex: Int) {
+        val alertDialogBuilder = AlertDialog.Builder(requireContext())
+        alertDialogBuilder.setMessage("Ürünü favorilerden kaldırmak istediğine emin misin?")
+        alertDialogBuilder.setPositiveButton("Kaldır") { _, _ ->
+            viewModel.removeProductFromFavorites(userId, productId, itemIndex)
+            favoriteAdapter.notifyChanges()
+        }
+        alertDialogBuilder.setNegativeButton("Vazgeç") { _, _ ->
+            favoriteAdapter.notifyChanges()
+        }
+
+        alertDialogBuilder.create().show()
+    }
+
+    private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        viewModel.getUserFavoriteProducts(userId)
+        //viewModel.getShoppingCartCount(userId)
+    }
+
+    private fun setupObservers() {
+        viewModel.favoriteState.observe(viewLifecycleOwner) { state ->
+            handleState(state)
+        }
+    }
+
+    private fun handleState(state: FavoriteState) {
+        if (state.isLoading) {
+            binding.progressBarFavorite.show()
+            binding.recyclerViewFavorite.hide()
+        } else {
+            binding.progressBarFavorite.hide()
+            binding.recyclerViewFavorite.show()
+        }
+
+        state.favoriteProductList.let {
+            val favoriteProductList = it.toList()
+
+            if (favoriteProductList.isEmpty()) {
+                binding.emptyFavorite.show()
+            } else {
+                binding.emptyFavorite.hide()
+                favoriteAdapter.favoriteProducts = it.toList()
+            }
+            favoriteAdapter.notifyChanges()
+        }
+
+        state.dataError?.let {
+            binding.recyclerViewFavorite.hide()
+            TODO("add data error TextView")
+        }
+
+        state.actionError?.let {
+            toast(requireContext(), it, false)
+        }
+    }
+
+    /*
     private fun observe() {
         viewModel.stateFavorites.observe(viewLifecycleOwner) {
             when(it) {
@@ -120,14 +195,15 @@ class FavoriteFragment: Fragment() {
             sharedViewModel.updateCartItemCount(it)
         }
     }
+     */
 
+    /*
     private fun setRecyclerView() {
         binding.recyclerViewFavorite.adapter = favoriteAdapter
         binding.recyclerViewFavorite.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
         favoriteAdapter.setOnFavoriteClickListener {
-            TODO("GET ITEM INDEX")
-            showUnFavoriteWarning(userId,it, 1)
+            showUnFavoriteWarning(userId, , 1)
             favoriteAdapter.notifyChanges()
         }
         favoriteAdapter.setOnCartButtonClickListener {
@@ -140,25 +216,7 @@ class FavoriteFragment: Fragment() {
             launcher.launch(intent)
         }
     }
-
-    private fun showUnFavoriteWarning(userId: String, shoppingCartItemId: String, itemIndex: Int) {
-        val alertDialogBuilder = AlertDialog.Builder(requireContext())
-        alertDialogBuilder.setMessage("Ürünü favorilerden kaldırmak istediğine emin misin?")
-        alertDialogBuilder.setPositiveButton("Kaldır") { _, _ ->
-            viewModel.removeProductFromFavorites(userId,shoppingCartItemId, itemIndex)
-            favoriteAdapter.notifyChanges()
-        }
-        alertDialogBuilder.setNegativeButton("Vazgeç") { _, _ ->
-            favoriteAdapter.notifyChanges()
-        }
-
-        alertDialogBuilder.create().show()
-    }
-
-    private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-        viewModel.getUserFavoriteProducts(userId)
-        viewModel.getShoppingCartCount(userId)
-    }
+     */
 
     override fun onDestroyView() {
         super.onDestroyView()

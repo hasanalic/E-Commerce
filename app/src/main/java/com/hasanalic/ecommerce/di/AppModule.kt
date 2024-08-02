@@ -31,6 +31,12 @@ import com.hasanalic.ecommerce.feature_auth.domain.use_cases.UserInputValidatorU
 import com.hasanalic.ecommerce.feature_auth.domain.use_cases.UserPasswordValidatorUseCase
 import com.hasanalic.ecommerce.feature_favorite.data.repository.FavoriteRepositoryImp
 import com.hasanalic.ecommerce.feature_favorite.domain.repository.FavoriteRepository
+import com.hasanalic.ecommerce.feature_favorite.domain.use_cases.DeleteFavoriteUseCase
+import com.hasanalic.ecommerce.feature_favorite.domain.use_cases.FavoriteUseCases
+import com.hasanalic.ecommerce.feature_favorite.domain.use_cases.GetFavoriteIdByUserIdAndProductIdUseCase
+import com.hasanalic.ecommerce.feature_favorite.domain.use_cases.GetFavoriteListByUserIdUseCase
+import com.hasanalic.ecommerce.feature_favorite.domain.use_cases.GetFavoriteProductsUseCase
+import com.hasanalic.ecommerce.feature_favorite.domain.use_cases.InsertFavoriteAndGetIdUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -171,6 +177,18 @@ object AppModule {
             userEmailValidatorUseCase = UserEmailValidatorUseCase(),
             userInputValidatorUseCase = UserInputValidatorUseCase(),
             userPasswordValidatorUseCase = UserPasswordValidatorUseCase()
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideFavoriteUseCases(favoriteRepository: FavoriteRepository): FavoriteUseCases {
+        return FavoriteUseCases(
+            deleteFavoriteUseCase = DeleteFavoriteUseCase(favoriteRepository),
+            getFavoriteIdByUserIdAndProductIdUseCase = GetFavoriteIdByUserIdAndProductIdUseCase(favoriteRepository),
+            getFavoriteListByUserIdUseCase = GetFavoriteListByUserIdUseCase(favoriteRepository),
+            getFavoriteProductsUseCase = GetFavoriteProductsUseCase(favoriteRepository),
+            insertFavoriteAndGetIdUseCase = InsertFavoriteAndGetIdUseCase(favoriteRepository)
         )
     }
 }

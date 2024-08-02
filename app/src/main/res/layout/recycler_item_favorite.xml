@@ -130,7 +130,7 @@
             android:gravity="start|center_vertical">
 
             <Button
-                android:id="@+id/buttonAddCart"
+                android:id="@+id/buttonCart"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="4"

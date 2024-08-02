@@ -7,52 +7,48 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.hasanalic.ecommerce.R
 import com.hasanalic.ecommerce.databinding.RecyclerItemFavoriteBinding
-import com.hasanalic.ecommerce.feature_home.domain.model.Product
+import com.hasanalic.ecommerce.feature_favorite.domain.model.FavoriteProduct
 import com.hasanalic.ecommerce.utils.glide
 import com.hasanalic.ecommerce.utils.placeHolderProgressBar
 import com.hasanalic.ecommerce.utils.toCent
 
 class FavoriteAdapter: RecyclerView.Adapter<FavoriteAdapter.MyViewHolder>() {
 
-    private val diffUtil = object : DiffUtil.ItemCallback<Product>() {
-        override fun areItemsTheSame(oldItem: Product, newItem: Product): Boolean {
+    private val diffUtil = object : DiffUtil.ItemCallback<FavoriteProduct>() {
+        override fun areItemsTheSame(oldItem: FavoriteProduct, newItem: FavoriteProduct): Boolean {
             return oldItem == newItem
         }
-        override fun areContentsTheSame(oldItem: Product, newItem: Product): Boolean {
+        override fun areContentsTheSame(oldItem: FavoriteProduct, newItem: FavoriteProduct): Boolean {
             return oldItem == newItem
         }
     }
 
     private val recyclerListDiffer = AsyncListDiffer(this,diffUtil)
 
-    var products: List<Product>
+    var favoriteProducts: List<FavoriteProduct>
         get() = recyclerListDiffer.currentList
         set(value) = recyclerListDiffer.submitList(value)
 
     inner class MyViewHolder(private val binding: RecyclerItemFavoriteBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(product: Product) {
-            binding.imageViewProduct.glide(product.productPhoto, placeHolderProgressBar(binding.root.context))
-            binding.textViewProductBrand.text = product.productBrand
-            binding.textViewProductDetail.text = product.productDetail
-            binding.textViewProductPrice.text = "${product.productPriceWhole}.${product.productPriceCent.toCent()} TL"
-            binding.textViewRate.text = product.productRate.toString()
-            setStarsByProductRate(product.productRate.toString())
-            binding.textViewReviewCount.text = "(${product.productReviewCount})"
+        fun bind(favoriteProduct: FavoriteProduct, position: Int) {
+            binding.imageViewProduct.glide(favoriteProduct.photo, placeHolderProgressBar(binding.root.context))
+            binding.textViewProductBrand.text = favoriteProduct.brand
+            binding.textViewProductDetail.text = favoriteProduct.detail
+            binding.textViewProductPrice.text = "${favoriteProduct.priceWhole}.${favoriteProduct.priceCent.toCent()} TL"
+            binding.textViewRate.text = favoriteProduct.rate.toString()
+            setStarsByProductRate(favoriteProduct.rate.toString())
+            binding.textViewReviewCount.text = "(${favoriteProduct.reviewCount})"
+            binding.imageViewFavorite.setImageResource(R.drawable.favorite_orange)
 
-            if (product.addedToFavorites) {
-                binding.imageViewFavorite.setImageResource(R.drawable.favorite_orange)
+            if (favoriteProduct.addedToShoppingCart) {
+                binding.buttonCart.text = "Kaldır"
+                binding.buttonCart.setBackgroundColor(binding.root.resources.getColor(R.color.font_third))
             } else {
-                binding.imageViewFavorite.setImageResource(R.drawable.favorite_border_orange)
-            }
-            if (product.addedToShoppingCart) {
-                binding.buttonAddCart.text = "Kaldır"
-                binding.buttonAddCart.setBackgroundColor(binding.root.resources.getColor(R.color.font_third))
-            } else {
-                binding.buttonAddCart.text = "Sepete Ekle"
-                binding.buttonAddCart.setBackgroundColor(binding.root.resources.getColor(R.color.color_primary))
+                binding.buttonCart.text = "Sepete Ekle"
+                binding.buttonCart.setBackgroundColor(binding.root.resources.getColor(R.color.color_primary))
             }
 
-            setClickListeners(product)
+            setClickListeners(favoriteProduct, position)
         }
 
         private fun setStarsByProductRate(productRate: String) {
@@ -78,37 +74,48 @@ class FavoriteAdapter: RecyclerView.Adapter<FavoriteAdapter.MyViewHolder>() {
             }
         }
 
-        private fun setClickListeners(product: Product) {
-            binding.buttonAddCart.setOnClickListener {
-                onCartButtonClickListener?.let {
-                    it(product.productId)
+        private fun setClickListeners(favoriteProduct: FavoriteProduct, position: Int) {
+            binding.buttonCart.setOnClickListener {
+                if (favoriteProduct.addedToShoppingCart) {
+                    onRemoveFromCartButtonClickListener?.let {
+                        it(favoriteProduct.productId, position)
+                    }
+                } else {
+                    onAddCartButtonClickListener?.let {
+                        it(favoriteProduct.productId, position)
+                    }
                 }
             }
+
             binding.imageViewFavorite.setOnClickListener {
-                onFavoriteClickListener?.let {
-                    it(product.productId)
+                onRemoveFromFavoriteClickListener?.let {
+                    it(favoriteProduct.productId, position)
                 }
             }
             binding.materialCardProductItem.setOnClickListener {
                 onCardClickListener?.let {
-                    it(product.productId)
+                    it(favoriteProduct.productId)
                 }
             }
         }
     }
 
     private var onCardClickListener: ((String) -> Unit)? = null
-    private var onCartButtonClickListener: ((String) -> Unit)? = null
-    private var onFavoriteClickListener: ((String) -> Unit)? = null
+    private var onRemoveFromCartButtonClickListener: ((String, Int) -> Unit)? = null
+    private var onAddCartButtonClickListener: ((String, Int) -> Unit)? = null
+    private var onRemoveFromFavoriteClickListener: ((String, Int) -> Unit)? = null
 
     fun setOnCardClickListener(listener: (String) -> Unit) {
         onCardClickListener = listener
     }
-    fun setOnCartButtonClickListener(listener: (String) -> Unit) {
-        onCartButtonClickListener = listener
+    fun setOnAddCartButtonClickListener(listener: (String, Int) -> Unit) {
+        onAddCartButtonClickListener = listener
     }
-    fun setOnFavoriteClickListener(listener: (String) -> Unit) {
-        onFavoriteClickListener = listener
+    fun setOnRemoveFromCartButtonClickListener(listener: (String, Int) -> Unit) {
+        onRemoveFromCartButtonClickListener = listener
+    }
+    fun setOnRemoveFromFavoriteClickListener(listener: (String, Int) -> Unit) {
+        onRemoveFromFavoriteClickListener = listener
     }
 
     fun notifyChanges() {
@@ -120,10 +127,10 @@ class FavoriteAdapter: RecyclerView.Adapter<FavoriteAdapter.MyViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return products.size
+        return favoriteProducts.size
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.bind(products[position])
+        holder.bind(favoriteProducts[position], position)
     }
 }
