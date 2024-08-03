@@ -8,7 +8,7 @@
     <include app:graph="@navigation/nav_home" />
     <fragment
         android:id="@+id/shoppingCartFragment"
-        android:name="com.hasanalic.ecommerce.feature_shopping_cart.presentation.ShoppingCartFragment"
+        android:name="com.hasanalic.ecommerce.feature_shopping_cart.presentation.views.ShoppingCartFragment"
         android:label="ShoppingCartFragment"
         tools:layout="@layout/fragment_shopping_cart"/>
     <fragment

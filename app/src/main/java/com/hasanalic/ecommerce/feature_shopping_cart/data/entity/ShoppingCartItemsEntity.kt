@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 data class ShoppingCartItemsEntity(
     @ColumnInfo(name = "user_id") var userId: String,
     @ColumnInfo(name = "product_id") var productId: String,
-    @ColumnInfo(name = "quantity") var quantity: String
+    @ColumnInfo(name = "quantity") var quantity: Int
 ) {
     @PrimaryKey(autoGenerate = true)
     var shoppingCartEntityId: Int = 0

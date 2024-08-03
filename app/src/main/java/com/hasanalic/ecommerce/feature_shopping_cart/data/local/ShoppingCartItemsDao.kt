@@ -35,7 +35,7 @@ interface ShoppingCartItemsDao {
 
     @Query("UPDATE ShoppingCartItems SET quantity = :quantity " +
             "WHERE user_id = :userId AND product_id = :productId")
-    suspend fun updateShoppingCartItemEntity(userId: String, productId: String, quantity: String): Int
+    suspend fun updateShoppingCartItemEntity(userId: String, productId: String, quantity: Int): Int
 
     @Query("DELETE FROM ShoppingCartItems WHERE user_id = :userId AND product_id = :productId")
     suspend fun deleteShoppingCartItemEntity(userId: String, productId: String): Int

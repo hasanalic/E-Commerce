@@ -7,10 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.hasanalic.ecommerce.core.domain.model.DataError
 import com.hasanalic.ecommerce.core.domain.model.Result
 import com.hasanalic.ecommerce.feature_favorite.domain.use_cases.FavoriteUseCases
-import com.hasanalic.ecommerce.feature_home.domain.model.Product
-import com.hasanalic.ecommerce.feature_shopping_cart.data.entity.ShoppingCartItemsEntity
-import com.hasanalic.ecommerce.feature_home.domain.repository.HomeRepository
-import com.hasanalic.ecommerce.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -38,7 +34,7 @@ class FavoriteViewModel @Inject constructor(
     private fun handleGetFavoriteProductsError(error: DataError.Local) {
         when(error) {
             DataError.Local.QUERY_FAILED -> {}
-            DataError.Local.INSERTION_FAILD -> {}
+            DataError.Local.INSERTION_FAILED -> {}
             DataError.Local.UPDATE_FAILED -> {}
             DataError.Local.DELETION_FAILED -> {}
             DataError.Local.NOT_FOUND -> {
@@ -66,7 +62,7 @@ class FavoriteViewModel @Inject constructor(
     private fun handleDeleteFavoriteError(error: DataError.Local) {
         when(error) {
             DataError.Local.QUERY_FAILED -> {}
-            DataError.Local.INSERTION_FAILD -> {}
+            DataError.Local.INSERTION_FAILED -> {}
             DataError.Local.UPDATE_FAILED -> {}
             DataError.Local.DELETION_FAILED -> { _favoriteState.value = _favoriteState.value!!.copy(
                 actionError = "ürün favorilerden kaldırılamadı."

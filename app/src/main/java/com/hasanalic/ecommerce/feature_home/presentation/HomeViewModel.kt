@@ -167,7 +167,7 @@ class HomeViewModel @Inject constructor(
     fun addShoppingCart(userId: String, productId: String) {
         val tempMutableProductList = _stateProducts.value!!.data
         viewModelScope.launch {
-            val response = homeRepository.insertShoppingCartItems(ShoppingCartItemsEntity(userId, productId, "1"))
+            val response = homeRepository.insertShoppingCartItems(ShoppingCartItemsEntity(userId, productId, 1))
             if (response is Resource.Success) {
                 tempMutableProductList?.let {products ->
                     for (product in products) {
@@ -544,7 +544,7 @@ class HomeViewModel @Inject constructor(
                                 product.addedToShoppingCart = true
                             } else {
                                 val response = homeRepository.insertShoppingCartItems(
-                                    ShoppingCartItemsEntity(userId, productId, "1")
+                                    ShoppingCartItemsEntity(userId, productId, 1)
                                 )
                                 if (response is Resource.Success) {
                                     product.addedToShoppingCart = true

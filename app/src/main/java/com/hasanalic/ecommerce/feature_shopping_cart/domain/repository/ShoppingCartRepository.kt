@@ -17,7 +17,7 @@ interface ShoppingCartRepository {
 
     suspend fun insertAllShoppingCartItemEntities(vararg shoppingCartItemEntities: ShoppingCartItemsEntity): Result<Unit, DataError.Local>
 
-    suspend fun updateShoppingCartItemEntity(userId: String, productId: String, quantity: String): Result<Unit, DataError.Local>
+    suspend fun updateShoppingCartItemEntity(userId: String, productId: String, quantity: Int): Result<Unit, DataError.Local>
 
     suspend fun deleteShoppingCartItemEntity(userId: String, productId: String): Result<Unit, DataError.Local>
 

@@ -1,4 +1,4 @@
-package com.hasanalic.ecommerce.feature_shopping_cart.presentation
+package com.hasanalic.ecommerce.feature_shopping_cart.presentation.views
 
 import android.app.AlertDialog
 import android.content.Context
@@ -18,6 +18,7 @@ import com.hasanalic.ecommerce.feature_home.presentation.views.HomeActivity
 import com.hasanalic.ecommerce.feature_auth.presentation.AuthActivity
 import com.hasanalic.ecommerce.feature_product_detail.presentation.ProductDetailActivity
 import com.hasanalic.ecommerce.feature_home.presentation.SharedViewModel
+import com.hasanalic.ecommerce.feature_shopping_cart.presentation.ShoppingCartViewModel
 import com.hasanalic.ecommerce.utils.Constants
 import com.hasanalic.ecommerce.utils.Resource
 import com.hasanalic.ecommerce.utils.hide
@@ -73,8 +74,9 @@ class ShoppingCartFragment: Fragment() {
 
         sharedViewModel = ViewModelProvider(requireActivity())[SharedViewModel::class.java]
         viewModel = ViewModelProvider(requireActivity())[ShoppingCartViewModel::class.java]
-        viewModel.getShoppingCartList(userId)
+        //viewModel.getShoppingCartList(userId)
 
+        /*
         binding.buttonCompleteOrder.setOnClickListener {
             if (viewModel.stateShoppingCartItemSize.value != 0) {
                 if (userId != Constants.ANOMIM_USER_ID) {
@@ -89,11 +91,14 @@ class ShoppingCartFragment: Fragment() {
             }
         }
 
-        setRecyclerView()
+         */
 
-        observer()
+        //setRecyclerView()
+
+        //observer()
     }
 
+    /*
     private fun observer() {
         viewModel.stateShoppingCartItems.observe(viewLifecycleOwner) {
             when(it) {
@@ -134,7 +139,9 @@ class ShoppingCartFragment: Fragment() {
             }
         }
     }
+     */
 
+    /*
     private fun setRecyclerView() {
         binding.recyclerViewShoppingCart.adapter = shoppingCartAdapter
         binding.recyclerViewShoppingCart.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
@@ -156,7 +163,9 @@ class ShoppingCartFragment: Fragment() {
             launcher.launch(intent)
         }
     }
+     */
 
+    /*
     private fun showDeleteWarn(userId: String, shoppingCartItemId: String) {
         val alertDialogBuilder = AlertDialog.Builder(requireContext())
         alertDialogBuilder.setMessage("Ürünü sepetten silmek istediğine emin misin?")
@@ -170,7 +179,9 @@ class ShoppingCartFragment: Fragment() {
 
         alertDialogBuilder.create().show()
     }
+     */
 
+    /*
     private fun showCheckoutWarn() {
         val alertDialogBuilder = AlertDialog.Builder(requireContext())
         alertDialogBuilder.setTitle("Giriş Yapmadınız")
@@ -189,6 +200,9 @@ class ShoppingCartFragment: Fragment() {
         alertDialogBuilder.create().show()
     }
 
+     */
+
+    /*
     private val launcherForCheckout = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         viewModel.getShoppingCartList(userId)
     }
@@ -196,6 +210,8 @@ class ShoppingCartFragment: Fragment() {
     private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         viewModel.getShoppingCartList(userId)
     }
+
+     */
 
     override fun onDestroyView() {
         super.onDestroyView()

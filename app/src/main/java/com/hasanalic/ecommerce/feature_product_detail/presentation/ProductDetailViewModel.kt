@@ -74,7 +74,7 @@ class ProductDetailViewModel @Inject constructor (
 
     fun addToShoppingCart(userId: String, productId: String) {
         viewModelScope.launch {
-            val response = homeRepository.insertShoppingCartItems(ShoppingCartItemsEntity(userId,productId,"1"))
+            val response = homeRepository.insertShoppingCartItems(ShoppingCartItemsEntity(userId,productId,1))
             if (response is Resource.Success) {
                 val product = _stateProduct.value!!.data
                 product!!.addedToShoppingCart = true

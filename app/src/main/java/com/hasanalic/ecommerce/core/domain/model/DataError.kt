@@ -13,7 +13,7 @@ sealed interface DataError: Error {
 
     enum class Local: DataError {
         QUERY_FAILED,
-        INSERTION_FAILD,
+        INSERTION_FAILED,
         UPDATE_FAILED,
         DELETION_FAILED,
         NOT_FOUND,

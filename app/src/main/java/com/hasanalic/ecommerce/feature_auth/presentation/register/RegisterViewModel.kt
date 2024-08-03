@@ -100,7 +100,7 @@ class RegisterViewModel @Inject constructor(
     private fun handleRegisterError(dataError: DataError.Local) {
         when(dataError) {
             DataError.Local.QUERY_FAILED -> {}
-            DataError.Local.INSERTION_FAILD -> {
+            DataError.Local.INSERTION_FAILED -> {
                 _registerState.value = RegisterState(
                     dataError = "Kullanıcı kaydedilemedi."
                 )

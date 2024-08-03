@@ -1,4 +1,4 @@
-package com.hasanalic.ecommerce.feature_shopping_cart.presentation
+package com.hasanalic.ecommerce.feature_shopping_cart.presentation.views
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

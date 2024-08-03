@@ -35,7 +35,7 @@ class AuthenticationRepositoryImp(
             if (insertedUserId > 0) {
                 Result.Success(insertedUserId)
             } else {
-                Result.Error(DataError.Local.INSERTION_FAILD)
+                Result.Error(DataError.Local.INSERTION_FAILED)
             }
         } catch (e: Exception) {
             Result.Error(DataError.Local.UNKNOWN)

@@ -37,6 +37,7 @@ import com.hasanalic.ecommerce.feature_favorite.domain.use_cases.GetFavoriteIdBy
 import com.hasanalic.ecommerce.feature_favorite.domain.use_cases.GetFavoriteListByUserIdUseCase
 import com.hasanalic.ecommerce.feature_favorite.domain.use_cases.GetFavoriteProductsUseCase
 import com.hasanalic.ecommerce.feature_favorite.domain.use_cases.InsertFavoriteAndGetIdUseCase
+import com.hasanalic.ecommerce.feature_shopping_cart.data.repository.ShoppingCartRepositoryImp
 import com.hasanalic.ecommerce.feature_shopping_cart.domain.repository.ShoppingCartRepository
 import com.hasanalic.ecommerce.feature_shopping_cart.domain.use_cases.CheckShoppingCartEntityByProductIdUseCase
 import com.hasanalic.ecommerce.feature_shopping_cart.domain.use_cases.DeleteShoppingCartItemEntitiesByProductIdListUseCase
@@ -46,7 +47,7 @@ import com.hasanalic.ecommerce.feature_shopping_cart.domain.use_cases.GetShoppin
 import com.hasanalic.ecommerce.feature_shopping_cart.domain.use_cases.InsertAllShoppingCartItemEntitiesUseCase
 import com.hasanalic.ecommerce.feature_shopping_cart.domain.use_cases.InsertShoppingCartItemEntityUseCase
 import com.hasanalic.ecommerce.feature_shopping_cart.domain.use_cases.ShoppingCartUseCases
-import com.hasanalic.ecommerce.feature_shopping_cart.domain.use_cases.UptadeShoppingCartItemEntityUseCase
+import com.hasanalic.ecommerce.feature_shopping_cart.domain.use_cases.UpdateShoppingCartItemEntityUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -176,6 +177,12 @@ object AppModule {
 
     @Singleton
     @Provides
+    fun provideShoppingCartRepository(shoppingCartItemsDao: ShoppingCartItemsDao): ShoppingCartRepository {
+        return ShoppingCartRepositoryImp(shoppingCartItemsDao)
+    }
+
+    @Singleton
+    @Provides
     fun provideAuthUseCases(authRepository: AuthenticationRepository): AuthUseCases {
         return AuthUseCases(
             insertUserUseCase = InsertUserUseCase(authRepository),
@@ -209,7 +216,7 @@ object AppModule {
             getShoppingCartItemCountUseCase = GetShoppingCartItemCountUseCase(shoppingCartRepository),
             insertAllShoppingCartItemEntitiesUseCase = InsertAllShoppingCartItemEntitiesUseCase(shoppingCartRepository),
             insertShoppingCartItemEntityUseCase = InsertShoppingCartItemEntityUseCase(shoppingCartRepository),
-            uptadeShoppingCartItemEntityUseCase = UptadeShoppingCartItemEntityUseCase(shoppingCartRepository)
+            updateShoppingCartItemEntityUseCase = UpdateShoppingCartItemEntityUseCase(shoppingCartRepository)
         )
     }
 }

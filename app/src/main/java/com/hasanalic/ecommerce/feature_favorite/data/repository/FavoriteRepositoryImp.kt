@@ -7,7 +7,6 @@ import com.hasanalic.ecommerce.feature_favorite.data.local.FavoritesDao
 import com.hasanalic.ecommerce.feature_favorite.data.mapper.toFavoriteProduct
 import com.hasanalic.ecommerce.feature_favorite.domain.model.FavoriteProduct
 import com.hasanalic.ecommerce.feature_favorite.domain.repository.FavoriteRepository
-import com.hasanalic.ecommerce.feature_home.data.local.ProductDao
 import javax.inject.Inject
 
 class FavoriteRepositoryImp @Inject constructor(
@@ -55,7 +54,7 @@ class FavoriteRepositoryImp @Inject constructor(
             if (favoriteId > 0) {
                 Result.Success(favoriteId)
             } else {
-                Result.Error(DataError.Local.INSERTION_FAILD)
+                Result.Error(DataError.Local.INSERTION_FAILED)
             }
         } catch (e: Exception) {
             Result.Error(DataError.Local.UNKNOWN)

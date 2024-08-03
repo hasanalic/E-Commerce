@@ -4,21 +4,172 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hasanalic.ecommerce.feature_shopping_cart.domain.model.ShoppingCartItem
-import com.hasanalic.ecommerce.feature_home.domain.repository.HomeRepository
-import com.hasanalic.ecommerce.feature_checkout.presentation.ShoppingCartList
-import com.hasanalic.ecommerce.utils.Resource
-import com.hasanalic.ecommerce.utils.TotalCost
-import com.hasanalic.ecommerce.utils.toCent
+import com.hasanalic.ecommerce.core.domain.model.DataError
+import com.hasanalic.ecommerce.core.domain.model.Result
+import com.hasanalic.ecommerce.feature_shopping_cart.domain.use_cases.ShoppingCartUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ShoppingCartViewModel @Inject constructor(
-    private val homeRepository: HomeRepository
+    private val shoppingCartUseCases: ShoppingCartUseCases
 ) : ViewModel() {
 
+    private var _shoppingCartState = MutableLiveData(ShoppingCartState())
+    val shoppingCartState: LiveData<ShoppingCartState> = _shoppingCartState
+
+    fun getShoppingCartItemList(userId: String) {
+        _shoppingCartState.value = ShoppingCartState(isLoading = true)
+        viewModelScope.launch {
+            when(val result = shoppingCartUseCases.getProductsInShoppingCartUseCase(userId)) {
+                is Result.Error -> handleGetShoppingCartItemsError(result.error)
+                is Result.Success -> {
+                    _shoppingCartState.value = ShoppingCartState(
+                        shoppingCartItemList = result.data.toMutableList()
+                    )
+                    TODO("CALCULATE TOTAL PRICE")
+                }
+            }
+        }
+    }
+
+    private fun handleGetShoppingCartItemsError(error: DataError.Local) {
+        when(error) {
+            DataError.Local.QUERY_FAILED -> {}
+            DataError.Local.INSERTION_FAILED -> {}
+            DataError.Local.UPDATE_FAILED -> {}
+            DataError.Local.DELETION_FAILED -> {}
+            DataError.Local.NOT_FOUND -> {
+                _shoppingCartState.value = ShoppingCartState(
+                    dataError = "Alışveriş sepetindeki ürünlerin bilgisi alınamadı."
+                )
+            }
+            DataError.Local.UNKNOWN -> {
+                _shoppingCartState.value = ShoppingCartState(
+                    dataError = "Bilinmeyen bir hata meydana geldi."
+                )
+            }
+        }
+    }
+
+    fun removeItemFromShoppingCart(userId: String, productId: String, itemIndex: Int) {
+        viewModelScope.launch {
+            when(val result = shoppingCartUseCases.deleteShoppingCartItemEntityUseCase(userId, productId)) {
+                is Result.Error -> handleRemoveItemFromShoppingCartError(result.error)
+                is Result.Success -> removeItemFromShoppingCartItemList(itemIndex)
+            }
+        }
+    }
+
+    private fun handleRemoveItemFromShoppingCartError(error: DataError.Local) {
+        when(error) {
+            DataError.Local.DELETION_FAILED -> {
+                _shoppingCartState.value = _shoppingCartState.value!!.copy(
+                    actionError = "Ürün, alışveriş sepetinden silinemedi."
+                )
+            }
+            DataError.Local.UNKNOWN -> {
+                _shoppingCartState.value = _shoppingCartState.value!!.copy(
+                    actionError = "Bilinmeyen bir hata meydana geldi."
+                )
+            }
+            else -> {}
+        }
+    }
+
+    private fun removeItemFromShoppingCartItemList(itemIndex: Int) {
+        val currentShoppingCartItems = _shoppingCartState.value!!.shoppingCartItemList
+        if (itemIndex >= 0 && itemIndex < currentShoppingCartItems.size) {
+            currentShoppingCartItems.removeAt(itemIndex)
+        }
+        _shoppingCartState.value = shoppingCartState.value!!.copy(
+            shoppingCartItemList = currentShoppingCartItems
+        )
+        TODO("CALCULATE TOTAL PRICE")
+    }
+
+    fun increaseItemQuantityInShoppingCart(userId: String, productId: String, currentQuantity: Int, itemIndex: Int) {
+        viewModelScope.launch {
+            val increasedItemQuantity = currentQuantity + 1
+            val result = shoppingCartUseCases.updateShoppingCartItemEntityUseCase(userId, productId, increasedItemQuantity)
+            when(result) {
+                is Result.Error -> handleIncreaseItemQuantityError(result.error)
+                is Result.Success -> increaseItemQuantityInShoppingCartItemList(increasedItemQuantity, itemIndex)
+            }
+        }
+    }
+
+    private fun handleIncreaseItemQuantityError(error: DataError.Local) {
+        when(error) {
+            DataError.Local.UPDATE_FAILED -> {
+                _shoppingCartState.value = shoppingCartState.value!!.copy(
+                    actionError = "Ürün adedi arttırılamadı."
+                )
+            }
+            DataError.Local.UNKNOWN -> {
+                _shoppingCartState.value = shoppingCartState.value!!.copy(
+                    actionError = "Bilinmeyen bir hata meydana geldi."
+                )
+            }
+            else -> {}
+        }
+    }
+
+    private fun increaseItemQuantityInShoppingCartItemList(increasedItemQuantity: Int, itemIndex: Int) {
+        val currentShoppingCartItemList = _shoppingCartState.value!!.shoppingCartItemList
+        currentShoppingCartItemList[itemIndex].quantity = increasedItemQuantity
+        _shoppingCartState.value = _shoppingCartState.value!!.copy(
+            shoppingCartItemList = currentShoppingCartItemList
+        )
+        TODO("CALCULATE TOTAL PRICE")
+    }
+
+    fun decreaseItemQuantityInShoppingCart(userId: String, productId: String, currentQuantity: Int, itemIndex: Int) {
+        val decreasedItemQuantity = currentQuantity - 1
+        if (decreasedItemQuantity == 0) {
+            removeItemFromShoppingCart(userId, productId, itemIndex)
+        } else {
+            viewModelScope.launch {
+                val result = shoppingCartUseCases.updateShoppingCartItemEntityUseCase(userId, productId, decreasedItemQuantity)
+                when(result) {
+                    is Result.Error -> handleIncreaseItemQuantityError(result.error)
+                    is Result.Success -> TODO()
+                }
+            }
+        }
+    }
+
+    private fun handleDecreaseItemQuantityError(error: DataError.Local) {
+        when(error) {
+            DataError.Local.UPDATE_FAILED -> {
+                _shoppingCartState.value = shoppingCartState.value!!.copy(
+                    actionError = "Ürün adedi azaltılamadı."
+                )
+            }
+            DataError.Local.UNKNOWN -> {
+                _shoppingCartState.value = shoppingCartState.value!!.copy(
+                    actionError = "Bilinmeyen bir hata meydana geldi."
+                )
+            }
+            else -> {}
+        }
+    }
+
+    private fun decreaseItemQuantityInShoppingCartList(decreasedItemQuantity: Int, itemIndex: Int) {
+        val currentShoppingCartItemList = _shoppingCartState.value!!.shoppingCartItemList
+        currentShoppingCartItemList[itemIndex].quantity = decreasedItemQuantity
+        _shoppingCartState.value = _shoppingCartState.value!!.copy(
+            shoppingCartItemList = currentShoppingCartItemList
+        )
+        TODO("CALCULATE TOTAL PRICE")
+    }
+
+    private fun calculateTotalPriceInShoppingCart() {
+
+    }
+
+    /*
     private var _stateShoppingCartItems = MutableLiveData<Resource<MutableList<ShoppingCartItem>>>()
     val stateShoppingCartItems: LiveData<Resource<MutableList<ShoppingCartItem>>>
         get() = _stateShoppingCartItems
@@ -30,7 +181,9 @@ class ShoppingCartViewModel @Inject constructor(
     private var _stateShoppingCartItemSize = MutableLiveData<Int>()
     val stateShoppingCartItemSize: LiveData<Int>
         get() = _stateShoppingCartItemSize
+     */
 
+    /*
     fun getShoppingCartList(userId: String) {
         val tempShoppingCartList = mutableListOf<ShoppingCartItem>()
         _stateShoppingCartItems.value = Resource.Loading(null)
@@ -80,7 +233,9 @@ class ShoppingCartViewModel @Inject constructor(
             }
         }
     }
+ */
 
+    /*
     fun increaseShoppingCartItem(userId: String, productId: String) {
         val tempMutableList = _stateShoppingCartItems.value!!.data
         viewModelScope.launch {
@@ -106,7 +261,9 @@ class ShoppingCartViewModel @Inject constructor(
             }
         }
     }
+     */
 
+    /*
     fun decreaseShoppingCartItem(userId: String, productId: String) {
         val tempMutableList = _stateShoppingCartItems.value!!.data
         viewModelScope.launch {
@@ -135,7 +292,9 @@ class ShoppingCartViewModel @Inject constructor(
             }
         }
     }
+     */
 
+    /*
     fun deleteShoppingCartItem(userId: String, productId: String) {
         var tempMutableList = _stateShoppingCartItems.value!!.data
         viewModelScope.launch {
@@ -156,7 +315,9 @@ class ShoppingCartViewModel @Inject constructor(
             }
         }
     }
+     */
 
+    /*
     private fun calculateTotalPriceAndShoppingCartQuantity() {
         val tempMutableList = _stateShoppingCartItems.value!!.data
 
@@ -178,9 +339,12 @@ class ShoppingCartViewModel @Inject constructor(
 
         _stateShoppingCartItemSize.value = tempMutableList?.size
     }
+     */
 
+    /*
     fun saveShoppinCartListToSingleton() {
         ShoppingCartList.shoppingCartList = _stateShoppingCartItems.value!!.data!!.toList()
         ShoppingCartList.totalPrice = _stateTotal.value!!
     }
+     */
 }

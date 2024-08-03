@@ -54,7 +54,7 @@ class ShoppingCartRepositoryImp @Inject constructor(
             if (result > 0) {
                 Result.Success(Unit)
             } else {
-                Result.Error(DataError.Local.INSERTION_FAILD)
+                Result.Error(DataError.Local.INSERTION_FAILED)
             }
         } catch (e: Exception) {
             Result.Error(DataError.Local.UNKNOWN)
@@ -67,7 +67,7 @@ class ShoppingCartRepositoryImp @Inject constructor(
             if (result.isNotEmpty()) {
                 Result.Success(Unit)
             } else {
-                Result.Error(DataError.Local.INSERTION_FAILD)
+                Result.Error(DataError.Local.INSERTION_FAILED)
             }
         } catch (e: Exception) {
             Result.Error(DataError.Local.UNKNOWN)
@@ -77,7 +77,7 @@ class ShoppingCartRepositoryImp @Inject constructor(
     override suspend fun updateShoppingCartItemEntity(
         userId: String,
         productId: String,
-        quantity: String
+        quantity: Int
     ): Result<Unit, DataError.Local> {
         return try {
             val result = shoppingCartItemsDao.updateShoppingCartItemEntity(userId, productId, quantity)

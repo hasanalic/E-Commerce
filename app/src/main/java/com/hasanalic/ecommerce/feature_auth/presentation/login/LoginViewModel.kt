@@ -93,7 +93,7 @@ class LoginViewModel @Inject constructor(
     private fun handleLoginError(error: DataError.Local) {
         when(error) {
             DataError.Local.QUERY_FAILED -> TODO()
-            DataError.Local.INSERTION_FAILD -> TODO()
+            DataError.Local.INSERTION_FAILED -> TODO()
             DataError.Local.UPDATE_FAILED -> TODO()
             DataError.Local.DELETION_FAILED -> TODO()
             DataError.Local.NOT_FOUND -> {

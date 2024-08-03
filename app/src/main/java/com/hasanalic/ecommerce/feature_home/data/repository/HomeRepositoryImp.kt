@@ -99,9 +99,8 @@ class HomeRepositoryImp @Inject constructor(
         productId: String,
         quantity: String
     ): Resource<Boolean> {
-
         return try {
-            val response = shoppingCartItemsDao.updateShoppingCartItemEntity(userId, productId,quantity)
+            val response = shoppingCartItemsDao.updateShoppingCartItemEntity(userId, productId,quantity.toInt())
             if (response > 0) {
                 Resource.Success(true)
             } else {
