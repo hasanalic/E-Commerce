@@ -30,11 +30,11 @@ class ShoppingCartAdapter: RecyclerView.Adapter<ShoppingCartAdapter.MyViewHolder
 
     inner class MyViewHolder(private val binding: RecyclerItemShoppingCartBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(shoppingCartItem: ShoppingCartItem) {
-            binding.imageViewShoppingCartItemPhoto.glide(shoppingCartItem.shoppingCartItemPhoto, placeHolderProgressBar(binding.root.context))
-            binding.textViewBrand.text = shoppingCartItem.shoppingCartItemBrand
-            binding.textViewDetail.text = shoppingCartItem.shoppingCartItemDetail
-            binding.textViewPrice.text = "${shoppingCartItem.shoppingCartItemPriceWhole}.${shoppingCartItem.shoppingCartItemPriceCent.toCent()} TL"
-            binding.textViewQuantity.text = shoppingCartItem.shoppingCartItemQuantity.toString()
+            binding.imageViewShoppingCartItemPhoto.glide(shoppingCartItem.photo, placeHolderProgressBar(binding.root.context))
+            binding.textViewBrand.text = shoppingCartItem.brand
+            binding.textViewDetail.text = shoppingCartItem.detail
+            binding.textViewPrice.text = "${shoppingCartItem.priceWhole}.${shoppingCartItem.priceCent.toCent()} TL"
+            binding.textViewQuantity.text = shoppingCartItem.quantity.toString()
 
             setOnClickListeners(shoppingCartItem)
         }
@@ -42,22 +42,22 @@ class ShoppingCartAdapter: RecyclerView.Adapter<ShoppingCartAdapter.MyViewHolder
         private fun setOnClickListeners(shoppingCartItem: ShoppingCartItem) {
             binding.textViewDecrease.setOnClickListener {
                 onDecreaseButtonClickListener?.let {
-                    it(shoppingCartItem.shoppingCartItemId)
+                    it(shoppingCartItem.productId)
                 }
             }
             binding.textViewIncrease.setOnClickListener {
                 onIncreaseButtonClickListener?.let {
-                    it(shoppingCartItem.shoppingCartItemId)
+                    it(shoppingCartItem.productId)
                 }
             }
             binding.materialCardDelete.setOnClickListener {
                 onDeleteButtonClickListener?.let {
-                    it(shoppingCartItem.shoppingCartItemId)
+                    it(shoppingCartItem.productId)
                 }
             }
             binding.materialCardShoppinCartItem.setOnClickListener {
                 onCardClickListener?.let {
-                    it(shoppingCartItem.shoppingCartItemId)
+                    it(shoppingCartItem.productId)
                 }
             }
         }

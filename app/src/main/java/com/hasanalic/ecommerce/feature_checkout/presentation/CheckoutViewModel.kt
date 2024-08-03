@@ -84,7 +84,7 @@ class CheckoutViewModel @Inject constructor(
         _statusPayment.value = Resource.Loading()
 
         val shoppingCartList = ShoppingCartList.shoppingCartList
-        val productIdList = shoppingCartList.map { it.shoppingCartItemId }
+        val productIdList = shoppingCartList.map { it.productId }
         val orderTotal = ShoppingCartList.totalPrice
 
         val order = _statusOrder.value!!
@@ -126,7 +126,7 @@ class CheckoutViewModel @Inject constructor(
         _statusPayment.value = Resource.Loading()
 
         val shoppingCartList = ShoppingCartList.shoppingCartList
-        val productIdList = shoppingCartList.map { it.shoppingCartItemId }
+        val productIdList = shoppingCartList.map { it.productId }
         val orderTotal = ShoppingCartList.totalPrice
 
         val order = _statusOrder.value!!
@@ -168,7 +168,7 @@ class CheckoutViewModel @Inject constructor(
         _statusPayment.value = Resource.Loading()
 
         val shoppingCartList = ShoppingCartList.shoppingCartList
-        val productIdList = shoppingCartList.map { it.shoppingCartItemId }
+        val productIdList = shoppingCartList.map { it.productId }
         val orderTotal = ShoppingCartList.totalPrice
 
         val order = _statusOrder.value!!
@@ -222,7 +222,7 @@ class CheckoutViewModel @Inject constructor(
         _statusPayment.value = Resource.Loading()
 
         val shoppingCartList = ShoppingCartList.shoppingCartList
-        val productIdList = shoppingCartList.map { it.shoppingCartItemId }
+        val productIdList = shoppingCartList.map { it.productId }
         val orderTotal = ShoppingCartList.totalPrice
 
         val order = _statusOrder.value!!
@@ -264,7 +264,7 @@ class CheckoutViewModel @Inject constructor(
         _statusPayment.value = Resource.Loading()
 
         val shoppingCartList = ShoppingCartList.shoppingCartList
-        val productIdList = shoppingCartList.map { it.shoppingCartItemId }
+        val productIdList = shoppingCartList.map { it.productId }
         val orderTotal = ShoppingCartList.totalPrice
 
         val order = _statusOrder.value!!
@@ -306,7 +306,7 @@ class CheckoutViewModel @Inject constructor(
         _statusPayment.value = Resource.Loading()
 
         val shoppingCartList = ShoppingCartList.shoppingCartList
-        val productIdList = shoppingCartList.map { it.shoppingCartItemId }
+        val productIdList = shoppingCartList.map { it.productId }
         val orderTotal = ShoppingCartList.totalPrice
 
         val order = _statusOrder.value!!
@@ -352,9 +352,9 @@ class CheckoutViewModel @Inject constructor(
                 OrderProductsEntity(
                     orderProductsUserId = userId,
                     orderProductsOrderId = orderId,
-                    orderProductsProductId = item.shoppingCartItemId,
-                    orderProductsProductQuantity = item.shoppingCartItemQuantity.toString(),
-                    orderProductsProductImage = item.shoppingCartItemPhoto
+                    orderProductsProductId = item.productId,
+                    orderProductsProductQuantity = item.quantity.toString(),
+                    orderProductsProductImage = item.photo
                 )
             )
         }

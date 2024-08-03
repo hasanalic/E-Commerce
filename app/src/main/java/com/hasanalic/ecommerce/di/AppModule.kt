@@ -37,6 +37,16 @@ import com.hasanalic.ecommerce.feature_favorite.domain.use_cases.GetFavoriteIdBy
 import com.hasanalic.ecommerce.feature_favorite.domain.use_cases.GetFavoriteListByUserIdUseCase
 import com.hasanalic.ecommerce.feature_favorite.domain.use_cases.GetFavoriteProductsUseCase
 import com.hasanalic.ecommerce.feature_favorite.domain.use_cases.InsertFavoriteAndGetIdUseCase
+import com.hasanalic.ecommerce.feature_shopping_cart.domain.repository.ShoppingCartRepository
+import com.hasanalic.ecommerce.feature_shopping_cart.domain.use_cases.CheckShoppingCartEntityByProductIdUseCase
+import com.hasanalic.ecommerce.feature_shopping_cart.domain.use_cases.DeleteShoppingCartItemEntitiesByProductIdListUseCase
+import com.hasanalic.ecommerce.feature_shopping_cart.domain.use_cases.DeleteShoppingCartItemEntityUseCase
+import com.hasanalic.ecommerce.feature_shopping_cart.domain.use_cases.GetProductsInShoppingCartUseCase
+import com.hasanalic.ecommerce.feature_shopping_cart.domain.use_cases.GetShoppingCartItemCountUseCase
+import com.hasanalic.ecommerce.feature_shopping_cart.domain.use_cases.InsertAllShoppingCartItemEntitiesUseCase
+import com.hasanalic.ecommerce.feature_shopping_cart.domain.use_cases.InsertShoppingCartItemEntityUseCase
+import com.hasanalic.ecommerce.feature_shopping_cart.domain.use_cases.ShoppingCartUseCases
+import com.hasanalic.ecommerce.feature_shopping_cart.domain.use_cases.UptadeShoppingCartItemEntityUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -158,10 +168,7 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideFavoriteRepository(
-        favoriteDao: FavoritesDao,
-        productDao: ProductDao
-    ): FavoriteRepository {
+    fun provideFavoriteRepository(favoriteDao: FavoritesDao): FavoriteRepository {
         return FavoriteRepositoryImp(
             favoritesDao = favoriteDao
         )
@@ -188,6 +195,21 @@ object AppModule {
             getFavoriteListByUserIdUseCase = GetFavoriteListByUserIdUseCase(favoriteRepository),
             getFavoriteProductsUseCase = GetFavoriteProductsUseCase(favoriteRepository),
             insertFavoriteAndGetIdUseCase = InsertFavoriteAndGetIdUseCase(favoriteRepository)
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideShoppingCartUseCases(shoppingCartRepository: ShoppingCartRepository): ShoppingCartUseCases {
+        return ShoppingCartUseCases(
+            checkShoppingCartEntityByProductIdUseCase = CheckShoppingCartEntityByProductIdUseCase(shoppingCartRepository),
+            deleteShoppingCartItemEntitiesByProductIdListUseCase = DeleteShoppingCartItemEntitiesByProductIdListUseCase(shoppingCartRepository),
+            deleteShoppingCartItemEntityUseCase = DeleteShoppingCartItemEntityUseCase(shoppingCartRepository),
+            getProductsInShoppingCartUseCase = GetProductsInShoppingCartUseCase(shoppingCartRepository),
+            getShoppingCartItemCountUseCase = GetShoppingCartItemCountUseCase(shoppingCartRepository),
+            insertAllShoppingCartItemEntitiesUseCase = InsertAllShoppingCartItemEntitiesUseCase(shoppingCartRepository),
+            insertShoppingCartItemEntityUseCase = InsertShoppingCartItemEntityUseCase(shoppingCartRepository),
+            uptadeShoppingCartItemEntityUseCase = UptadeShoppingCartItemEntityUseCase(shoppingCartRepository)
         )
     }
 }

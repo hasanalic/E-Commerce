@@ -52,14 +52,14 @@ class ShoppingCartViewModel @Inject constructor(
                                 if (productEntity.productId.toString() == shoppingCartEntity.productId) {
                                     tempShoppingCartList.add(
                                         ShoppingCartItem(
-                                        shoppingCartItemId = productEntity.productId.toString(),
-                                        shoppingCartItemCategory = productEntity.productCategory!!,
-                                        shoppingCartItemPhoto = productEntity.productPhoto!!,
-                                        shoppingCartItemBrand = productEntity.productBrand!!,
-                                        shoppingCartItemDetail = productEntity.productDetail!!,
-                                        shoppingCartItemPriceWhole = productEntity.productPriceWhole!!,
-                                        shoppingCartItemPriceCent = productEntity.productPriceCent!!,
-                                        shoppingCartItemQuantity = shoppingCartEntity.quantity!!.toInt()
+                                        productId = productEntity.productId.toString(),
+                                        category = productEntity.productCategory!!,
+                                        photo = productEntity.productPhoto!!,
+                                        brand = productEntity.productBrand!!,
+                                        detail = productEntity.productDetail!!,
+                                        priceWhole = productEntity.productPriceWhole!!,
+                                        priceCent = productEntity.productPriceCent!!,
+                                        quantity = shoppingCartEntity.quantity!!.toInt()
                                     )
                                     )
                                 }
@@ -86,8 +86,8 @@ class ShoppingCartViewModel @Inject constructor(
         viewModelScope.launch {
             tempMutableList?.let {shoppingCartItems ->
                 for (item in shoppingCartItems) {
-                    if (item.shoppingCartItemId == productId) {
-                        val increasedQuantity = item.shoppingCartItemQuantity + 1
+                    if (item.productId == productId) {
+                        val increasedQuantity = item.quantity + 1
 
                         val response = homeRepository.updateShoppingCartItem(
                             userId = userId,
@@ -96,7 +96,7 @@ class ShoppingCartViewModel @Inject constructor(
                         )
 
                         if (response is Resource.Success) {
-                            item.shoppingCartItemQuantity = increasedQuantity
+                            item.quantity = increasedQuantity
                             _stateShoppingCartItems.value = Resource.Success(tempMutableList)
                             calculateTotalPriceAndShoppingCartQuantity()
                         } else {
@@ -112,8 +112,8 @@ class ShoppingCartViewModel @Inject constructor(
         viewModelScope.launch {
             tempMutableList?.let {shoppingCartItems ->
                 for (item in shoppingCartItems) {
-                    if (item.shoppingCartItemId == productId) {
-                        val decreasedQuantity = item.shoppingCartItemQuantity - 1
+                    if (item.productId == productId) {
+                        val decreasedQuantity = item.quantity - 1
 
                         if (decreasedQuantity == 0) {
                             deleteShoppingCartItem(userId, productId)
@@ -124,7 +124,7 @@ class ShoppingCartViewModel @Inject constructor(
                                 quantity = decreasedQuantity.toString()
                             )
                             if (response is Resource.Success) {
-                                item.shoppingCartItemQuantity = decreasedQuantity
+                                item.quantity = decreasedQuantity
                                 _stateShoppingCartItems.value = Resource.Success(tempMutableList)
                                 calculateTotalPriceAndShoppingCartQuantity()
                             } else {
@@ -141,11 +141,11 @@ class ShoppingCartViewModel @Inject constructor(
         viewModelScope.launch {
             tempMutableList?.let {shoppingCartItems ->
                 for (item in shoppingCartItems) {
-                    if (item.shoppingCartItemId == productId) {
+                    if (item.productId == productId) {
                         val response = homeRepository.deleteShoppingCartItem(userId = userId, productId = productId)
                         if (response is Resource.Success) {
                             tempMutableList = tempMutableList?.filterIndexed { _, shoppingCartItem ->
-                                shoppingCartItem.shoppingCartItemId != productId
+                                shoppingCartItem.productId != productId
                             }?.toMutableList()
                             _stateShoppingCartItems.value = Resource.Success(tempMutableList?: mutableListOf())
                             calculateTotalPriceAndShoppingCartQuantity()
@@ -165,8 +165,8 @@ class ShoppingCartViewModel @Inject constructor(
             var totalDecimalPart = 0
 
             for (item in shoppingCartMutableList) {
-                val itemQuantity = item.shoppingCartItemQuantity
-                val totalArray = TotalCost.calculateTotalCost(item.shoppingCartItemPriceWhole, item.shoppingCartItemPriceCent, itemQuantity)
+                val itemQuantity = item.quantity
+                val totalArray = TotalCost.calculateTotalCost(item.priceWhole, item.priceCent, itemQuantity)
 
                 totalWholePart += totalArray[0]
                 totalDecimalPart += totalArray[1]

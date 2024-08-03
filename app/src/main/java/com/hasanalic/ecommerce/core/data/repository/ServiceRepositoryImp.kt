@@ -12,7 +12,8 @@ class ServiceRepositoryImp @Inject constructor (
     private val notificationDao: NotificationDao
 ) : ServiceRepository {
     override fun getShoppingCartCount(userId: String): Int {
-        return shoppingCartDao.getCount(userId)
+        //return shoppingCartDao.getCount(userId)
+        return 1
     }
 
     override suspend fun getNotifications(): Resource<List<NotificationEntity>> {
