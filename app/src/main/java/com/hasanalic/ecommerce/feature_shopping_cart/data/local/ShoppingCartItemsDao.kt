@@ -3,10 +3,20 @@ package com.hasanalic.ecommerce.feature_shopping_cart.data.local
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import com.hasanalic.ecommerce.feature_shopping_cart.data.entity.ShoppingCartItemDto
 import com.hasanalic.ecommerce.feature_shopping_cart.data.entity.ShoppingCartItemsEntity
 
 @Dao
 interface ShoppingCartItemsDao {
+
+    @Query("""
+        SELECT p.*, s.quantity
+        FROM Product p
+        INNER JOIN ShoppingCartItems s
+        ON p.productId = s.product_id
+        WHERE s.user_id = :userId
+    """)
+    suspend fun getProductsInShoppingCart(userId: String): List<ShoppingCartItemDto>?
 
     @Query("SELECT * FROM ShoppingCartItems WHERE user_id = :userId")
     suspend fun getShoppingCartItems(userId: String): List<ShoppingCartItemsEntity>?
@@ -14,11 +24,8 @@ interface ShoppingCartItemsDao {
     @Query("SELECT COUNT(*) FROM ShoppingCartItems WHERE user_id = :userId")
     suspend fun getShoppingCartItemCount(userId: String): Int?
 
-    @Query("SELECT COUNT(*) FROM ShoppingCartItems WHERE user_id = :userId")
-    fun getCount(userId: String): Int
-
     @Query("SELECT shoppingCartEntityId FROM ShoppingCartItems WHERE user_id = :userId AND product_id = :productId")
-    suspend fun getShoppingCartByProductId(userId: String, productId: String): Int?
+    suspend fun getShoppingCartEntityByProductId(userId: String, productId: String): Int?
 
     @Insert
     suspend fun insertShoppingCartItem(shoppingCartItemsEntity: ShoppingCartItemsEntity): Long
@@ -34,5 +41,5 @@ interface ShoppingCartItemsDao {
     suspend fun deleteShoppingCartItem(userId: String, productId: String): Int
 
     @Query("DELETE FROM ShoppingCartItems WHERE user_id = :userId AND product_id IN (:productIds)")
-    suspend fun deleteShoppingCartItemsByProductIds(userId: String, productIds: List<String>): Int
+    suspend fun deleteShoppingCartItemsByProductIdList(userId: String, productIds: List<String>): Int
 }

@@ -1,12 +1,12 @@
 package com.hasanalic.ecommerce.feature_shopping_cart.domain.model
 
 data class ShoppingCartItem(
-    val shoppingCartItemId: String,
-    val shoppingCartItemCategory: String,
-    val shoppingCartItemPhoto: String,
-    val shoppingCartItemBrand: String,
-    val shoppingCartItemDetail: String,
-    val shoppingCartItemPriceWhole: Int,
-    val shoppingCartItemPriceCent: Int,
-    var shoppingCartItemQuantity: Int
+    val productId: String,
+    val category: String,
+    val photo: String,
+    val brand: String,
+    val detail: String,
+    val priceWhole: Int,
+    val priceCent: Int,
+    var quantity: Int
 )

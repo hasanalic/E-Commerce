@@ -260,7 +260,7 @@ class HomeRepositoryImp @Inject constructor(
         productId: String
     ): Resource<Boolean> {
         return try {
-            val response = shoppingCartItemsDao.getShoppingCartByProductId(userId, productId)
+            val response = shoppingCartItemsDao.getShoppingCartEntityByProductId(userId, productId)
             response?.let {
                 Resource.Success(true)
             }?: Resource.Success(false)
