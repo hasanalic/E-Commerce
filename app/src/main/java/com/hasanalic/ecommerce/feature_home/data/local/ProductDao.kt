@@ -40,19 +40,6 @@ interface ProductDao {
     """)
     suspend fun getFavoriteProductsByUserId(userId: String): List<ProductEntity>
 
-    @Query("""
-        SELECT p.*, 
-        CASE 
-            WHEN sc.product_id IS NOT NULL THEN 1
-            ELSE 0
-        END as inCart
-        FROM Product p
-        INNER JOIN Favorites f ON p.productId = f.product_id
-        LEFT JOIN ShoppingCartItems sc ON p.productId = sc.product_id AND sc.user_id = :userId
-        WHERE f.user_id = :userId
-    """)
-    suspend fun getFavoriteProducts(userId: String): List<FavoriteProductDto>?
-
     @Insert
     suspend fun insertAllProducts(vararg products: ProductEntity): List<Long>
 

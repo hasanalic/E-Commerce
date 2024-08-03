@@ -12,11 +12,10 @@ import javax.inject.Inject
 
 class FavoriteRepositoryImp @Inject constructor(
     private val favoritesDao: FavoritesDao,
-    private val productDao: ProductDao
 ) : FavoriteRepository {
     override suspend fun getFavoriteProducts(userId: String): Result<List<FavoriteProduct>, DataError.Local> {
         return try {
-            val result = productDao.getFavoriteProducts(userId)
+            val result = favoritesDao.getFavoriteProducts(userId)
             result?.let {
                 Result.Success(result.map { it.toFavoriteProduct() })
             }?: Result.Error(DataError.Local.NOT_FOUND)

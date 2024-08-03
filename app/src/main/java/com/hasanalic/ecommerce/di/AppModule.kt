@@ -163,8 +163,7 @@ object AppModule {
         productDao: ProductDao
     ): FavoriteRepository {
         return FavoriteRepositoryImp(
-            favoritesDao = favoriteDao,
-            productDao = productDao
+            favoritesDao = favoriteDao
         )
     }
 
