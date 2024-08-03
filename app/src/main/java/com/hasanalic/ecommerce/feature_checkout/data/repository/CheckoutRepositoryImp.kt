@@ -93,7 +93,7 @@ class CheckoutRepositoryImp (
 
     override suspend fun deleteShoppingCartItemsByProductIds(userId: String, productIds: List<String>): Resource<Boolean> {
         return try {
-            val response = shoppingCartItemsDao.deleteShoppingCartItemsByProductIdList(userId, productIds)
+            val response = shoppingCartItemsDao.deleteShoppingCartItemEntitiesByProductIdList(userId, productIds)
             if (response > 0) {
                 Resource.Success(true)
             } else {

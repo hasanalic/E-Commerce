@@ -48,9 +48,9 @@ class ShoppingCartRepositoryImp @Inject constructor(
         }
     }
 
-    override suspend fun insertShoppingCartItem(shoppingCartItemsEntity: ShoppingCartItemsEntity): Result<Unit, DataError.Local> {
+    override suspend fun insertShoppingCartItemEntity(shoppingCartItemsEntity: ShoppingCartItemsEntity): Result<Unit, DataError.Local> {
         return try {
-            val result = shoppingCartItemsDao.insertShoppingCartItem(shoppingCartItemsEntity)
+            val result = shoppingCartItemsDao.insertShoppingCartItemEntity(shoppingCartItemsEntity)
             if (result > 0) {
                 Result.Success(Unit)
             } else {
@@ -61,9 +61,9 @@ class ShoppingCartRepositoryImp @Inject constructor(
         }
     }
 
-    override suspend fun insertAllShoppingCartItems(vararg shoppingCartItemsEntities: ShoppingCartItemsEntity): Result<Unit, DataError.Local> {
+    override suspend fun insertAllShoppingCartItemEntities(vararg shoppingCartItemEntities: ShoppingCartItemsEntity): Result<Unit, DataError.Local> {
         return try {
-            val result = shoppingCartItemsDao.insertAllShoppingCartItems(*shoppingCartItemsEntities)
+            val result = shoppingCartItemsDao.insertAllShoppingCartItemEntities(*shoppingCartItemEntities)
             if (result.isNotEmpty()) {
                 Result.Success(Unit)
             } else {
@@ -74,13 +74,13 @@ class ShoppingCartRepositoryImp @Inject constructor(
         }
     }
 
-    override suspend fun updateShoppingCartItem(
+    override suspend fun updateShoppingCartItemEntity(
         userId: String,
         productId: String,
         quantity: String
     ): Result<Unit, DataError.Local> {
         return try {
-            val result = shoppingCartItemsDao.updateShoppingCartItem(userId, productId, quantity)
+            val result = shoppingCartItemsDao.updateShoppingCartItemEntity(userId, productId, quantity)
             if (result > 0) {
                 Result.Success(Unit)
             } else {
@@ -91,12 +91,12 @@ class ShoppingCartRepositoryImp @Inject constructor(
         }
     }
 
-    override suspend fun deleteShoppingCartItem(
+    override suspend fun deleteShoppingCartItemEntity(
         userId: String,
         productId: String
     ): Result<Unit, DataError.Local> {
         return try {
-            val result = shoppingCartItemsDao.deleteShoppingCartItem(userId, productId)
+            val result = shoppingCartItemsDao.deleteShoppingCartItemEntity(userId, productId)
             if (result > 0) {
                 Result.Success(Unit)
             } else {
@@ -107,12 +107,12 @@ class ShoppingCartRepositoryImp @Inject constructor(
         }
     }
 
-    override suspend fun deleteShoppingCartItemsByProductIdList(
+    override suspend fun deleteShoppingCartItemEntitiesByProductIdList(
         userId: String,
         productIds: List<String>
     ): Result<Unit, DataError.Local> {
         return try {
-            val result = shoppingCartItemsDao.deleteShoppingCartItemsByProductIdList(userId, productIds)
+            val result = shoppingCartItemsDao.deleteShoppingCartItemEntitiesByProductIdList(userId, productIds)
             if (result > 0) {
                 Result.Success(Unit)
             } else {

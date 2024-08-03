@@ -13,13 +13,13 @@ interface ShoppingCartRepository {
 
     suspend fun checkShoppingCartEntityByProductId(userId: String, productId: String): Result<Boolean, DataError.Local>
 
-    suspend fun insertShoppingCartItem(shoppingCartItemsEntity: ShoppingCartItemsEntity): Result<Unit, DataError.Local>
+    suspend fun insertShoppingCartItemEntity(shoppingCartItemsEntity: ShoppingCartItemsEntity): Result<Unit, DataError.Local>
 
-    suspend fun insertAllShoppingCartItems(vararg shoppingCartItemsEntities: ShoppingCartItemsEntity): Result<Unit, DataError.Local>
+    suspend fun insertAllShoppingCartItemEntities(vararg shoppingCartItemEntities: ShoppingCartItemsEntity): Result<Unit, DataError.Local>
 
-    suspend fun updateShoppingCartItem(userId: String, productId: String, quantity: String): Result<Unit, DataError.Local>
+    suspend fun updateShoppingCartItemEntity(userId: String, productId: String, quantity: String): Result<Unit, DataError.Local>
 
-    suspend fun deleteShoppingCartItem(userId: String, productId: String): Result<Unit, DataError.Local>
+    suspend fun deleteShoppingCartItemEntity(userId: String, productId: String): Result<Unit, DataError.Local>
 
-    suspend fun deleteShoppingCartItemsByProductIdList(userId: String, productIds: List<String>): Result<Unit, DataError.Local>
+    suspend fun deleteShoppingCartItemEntitiesByProductIdList(userId: String, productIds: List<String>): Result<Unit, DataError.Local>
 }

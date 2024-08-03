@@ -28,18 +28,18 @@ interface ShoppingCartItemsDao {
     suspend fun getShoppingCartEntityByProductId(userId: String, productId: String): Int?
 
     @Insert
-    suspend fun insertShoppingCartItem(shoppingCartItemsEntity: ShoppingCartItemsEntity): Long
+    suspend fun insertShoppingCartItemEntity(shoppingCartItemsEntity: ShoppingCartItemsEntity): Long
 
     @Insert
-    suspend fun insertAllShoppingCartItems(vararg shoppingCartItemsEntities: ShoppingCartItemsEntity): List<Long>
+    suspend fun insertAllShoppingCartItemEntities(vararg shoppingCartItemsEntities: ShoppingCartItemsEntity): List<Long>
 
     @Query("UPDATE ShoppingCartItems SET quantity = :quantity " +
             "WHERE user_id = :userId AND product_id = :productId")
-    suspend fun updateShoppingCartItem(userId: String, productId: String, quantity: String): Int
+    suspend fun updateShoppingCartItemEntity(userId: String, productId: String, quantity: String): Int
 
     @Query("DELETE FROM ShoppingCartItems WHERE user_id = :userId AND product_id = :productId")
-    suspend fun deleteShoppingCartItem(userId: String, productId: String): Int
+    suspend fun deleteShoppingCartItemEntity(userId: String, productId: String): Int
 
     @Query("DELETE FROM ShoppingCartItems WHERE user_id = :userId AND product_id IN (:productIds)")
-    suspend fun deleteShoppingCartItemsByProductIdList(userId: String, productIds: List<String>): Int
+    suspend fun deleteShoppingCartItemEntitiesByProductIdList(userId: String, productIds: List<String>): Int
 }

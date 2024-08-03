@@ -70,7 +70,7 @@ class HomeRepositoryImp @Inject constructor(
 
     override suspend fun insertShoppingCartItems(shoppingCartItemsEntity: ShoppingCartItemsEntity): Resource<Boolean> {
         return try {
-            val response = shoppingCartItemsDao.insertShoppingCartItem(shoppingCartItemsEntity)
+            val response = shoppingCartItemsDao.insertShoppingCartItemEntity(shoppingCartItemsEntity)
             if (response > 0) {
                 Resource.Success(true)
             } else {
@@ -83,7 +83,7 @@ class HomeRepositoryImp @Inject constructor(
 
     override suspend fun insertAllShoppingCartItems(vararg shoppingCartItemsEntities: ShoppingCartItemsEntity): Resource<Boolean> {
         return try {
-            val response = shoppingCartItemsDao.insertAllShoppingCartItems(*shoppingCartItemsEntities)
+            val response = shoppingCartItemsDao.insertAllShoppingCartItemEntities(*shoppingCartItemsEntities)
             if (response.isNotEmpty()) {
                 Resource.Success(true)
             } else {
@@ -101,7 +101,7 @@ class HomeRepositoryImp @Inject constructor(
     ): Resource<Boolean> {
 
         return try {
-            val response = shoppingCartItemsDao.updateShoppingCartItem(userId, productId,quantity)
+            val response = shoppingCartItemsDao.updateShoppingCartItemEntity(userId, productId,quantity)
             if (response > 0) {
                 Resource.Success(true)
             } else {
@@ -114,7 +114,7 @@ class HomeRepositoryImp @Inject constructor(
 
     override suspend fun deleteShoppingCartItem(userId: String, productId: String): Resource<Boolean> {
         return try {
-            val response = shoppingCartItemsDao.deleteShoppingCartItem(userId, productId)
+            val response = shoppingCartItemsDao.deleteShoppingCartItemEntity(userId, productId)
             if (response > 0) {
                 Resource.Success(true)
             } else {
