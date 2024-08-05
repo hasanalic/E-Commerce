@@ -29,30 +29,30 @@ class ShoppingCartAdapter: RecyclerView.Adapter<ShoppingCartAdapter.MyViewHolder
         set(value) = recyclerListDiffer.submitList(value)
 
     inner class MyViewHolder(private val binding: RecyclerItemShoppingCartBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(shoppingCartItem: ShoppingCartItem) {
+        fun bind(shoppingCartItem: ShoppingCartItem, position: Int) {
             binding.imageViewShoppingCartItemPhoto.glide(shoppingCartItem.photo, placeHolderProgressBar(binding.root.context))
             binding.textViewBrand.text = shoppingCartItem.brand
             binding.textViewDetail.text = shoppingCartItem.detail
             binding.textViewPrice.text = "${shoppingCartItem.priceWhole}.${shoppingCartItem.priceCent.toCent()} TL"
             binding.textViewQuantity.text = shoppingCartItem.quantity.toString()
 
-            setOnClickListeners(shoppingCartItem)
+            setOnClickListeners(shoppingCartItem, position)
         }
 
-        private fun setOnClickListeners(shoppingCartItem: ShoppingCartItem) {
+        private fun setOnClickListeners(shoppingCartItem: ShoppingCartItem, position: Int) {
             binding.textViewDecrease.setOnClickListener {
                 onDecreaseButtonClickListener?.let {
-                    it(shoppingCartItem.productId)
+                    it(shoppingCartItem.productId, shoppingCartItem.quantity, position)
                 }
             }
             binding.textViewIncrease.setOnClickListener {
                 onIncreaseButtonClickListener?.let {
-                    it(shoppingCartItem.productId)
+                    it(shoppingCartItem.productId, shoppingCartItem.quantity, position)
                 }
             }
             binding.materialCardDelete.setOnClickListener {
                 onDeleteButtonClickListener?.let {
-                    it(shoppingCartItem.productId)
+                    it(shoppingCartItem.productId, position)
                 }
             }
             binding.materialCardShoppinCartItem.setOnClickListener {
@@ -64,25 +64,33 @@ class ShoppingCartAdapter: RecyclerView.Adapter<ShoppingCartAdapter.MyViewHolder
     }
 
     private var onCardClickListener: ((String) -> Unit)? = null
-    private var onDecreaseButtonClickListener: ((String) -> Unit)? = null
-    private var onIncreaseButtonClickListener: ((String) -> Unit)? = null
-    private var onDeleteButtonClickListener: ((String) -> Unit)? = null
+    private var onDecreaseButtonClickListener: ((String, Int, Int) -> Unit)? = null
+    private var onIncreaseButtonClickListener: ((String, Int, Int) -> Unit)? = null
+    private var onDeleteButtonClickListener: ((String, Int) -> Unit)? = null
 
     fun setOnCardClickListener(listener: (String) -> Unit) {
         onCardClickListener = listener
     }
-    fun setOnDecreaseButtonClickListener(listener: (String) -> Unit) {
+    fun setOnDecreaseButtonClickListener(listener: (String, Int, Int) -> Unit) {
         onDecreaseButtonClickListener = listener
     }
-    fun setOnIncreaseButtonClickListener(listener: (String) -> Unit) {
+    fun setOnIncreaseButtonClickListener(listener: (String, Int, Int) -> Unit) {
         onIncreaseButtonClickListener = listener
     }
-    fun setOnDeleteButtonClickListener(listener: (String) -> Unit) {
+    fun setOnDeleteButtonClickListener(listener: (String, Int) -> Unit) {
         onDeleteButtonClickListener = listener
     }
 
-    fun notifyChanges() {
+    fun notifyDataSetChangedInAdapter() {
         notifyDataSetChanged()
+    }
+
+    fun notifyItemChangedInAdapter(position: Int) {
+        notifyItemChanged(position)
+    }
+
+    fun notifyItemRemovedInAdapter(position: Int) {
+        notifyItemRemoved(position)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -94,6 +102,6 @@ class ShoppingCartAdapter: RecyclerView.Adapter<ShoppingCartAdapter.MyViewHolder
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.bind(shoppingCartItems[position])
+        holder.bind(shoppingCartItems[position], position)
     }
 }

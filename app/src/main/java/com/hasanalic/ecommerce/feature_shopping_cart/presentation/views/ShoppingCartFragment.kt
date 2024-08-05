@@ -18,6 +18,7 @@ import com.hasanalic.ecommerce.feature_home.presentation.views.HomeActivity
 import com.hasanalic.ecommerce.feature_auth.presentation.AuthActivity
 import com.hasanalic.ecommerce.feature_product_detail.presentation.ProductDetailActivity
 import com.hasanalic.ecommerce.feature_home.presentation.SharedViewModel
+import com.hasanalic.ecommerce.feature_shopping_cart.presentation.ShoppingCartState
 import com.hasanalic.ecommerce.feature_shopping_cart.presentation.ShoppingCartViewModel
 import com.hasanalic.ecommerce.utils.Constants
 import com.hasanalic.ecommerce.utils.Resource
@@ -42,7 +43,6 @@ class ShoppingCartFragment: Fragment() {
 
     private var homeActivity: HomeActivity? = null
 
-    //private lateinit var auth: FirebaseAuth
     private var userId: String = Constants.ANOMIM_USER_ID
 
     override fun onAttach(context: Context) {
@@ -63,72 +63,123 @@ class ShoppingCartFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        /*
-        auth = FirebaseAuth.getInstance()
-        val currentUser = auth.currentUser
-        currentUser?.let {
-            userId = it.uid
-        }
-
-         */
-
         sharedViewModel = ViewModelProvider(requireActivity())[SharedViewModel::class.java]
         viewModel = ViewModelProvider(requireActivity())[ShoppingCartViewModel::class.java]
-        //viewModel.getShoppingCartList(userId)
+        viewModel.getShoppingCartItemList(userId)
 
-        /*
+        setupListeners()
+        setupRecyclerView()
+        setupObservers()
+    }
+
+    private fun setupListeners() {
         binding.buttonCompleteOrder.setOnClickListener {
-            if (viewModel.stateShoppingCartItemSize.value != 0) {
+            if (viewModel.shoppingCartState.value!!.shoppingCartItemList.size != 0) {
                 if (userId != Constants.ANOMIM_USER_ID) {
-                    viewModel.saveShoppinCartListToSingleton()
+                    //viewModel.saveShoppinCartListToSingleton()
                     val intent = Intent(requireActivity(), CheckoutActivity::class.java)
                     launcherForCheckout.launch(intent)
                 } else {
-                    showCheckoutWarn()
+                    showCheckoutWarnAlertDialog()
                 }
             } else {
                 toast(requireContext(),"Sepetinizde ürün bulunmamaktadır",false)
             }
         }
+    }
 
-         */
+    private fun setupRecyclerView() {
+        binding.recyclerViewShoppingCart.adapter = shoppingCartAdapter
+        binding.recyclerViewShoppingCart.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
-        //setRecyclerView()
+        shoppingCartAdapter.setOnCardClickListener { productId ->
+            val intent = Intent(requireActivity(), ProductDetailActivity::class.java)
+            intent.putExtra(getString(R.string.product_id),productId)
+            launcher.launch(intent)
+        }
 
-        //observer()
+        shoppingCartAdapter.setOnIncreaseButtonClickListener { productId, quantity, position ->
+            viewModel.increaseItemQuantityInShoppingCart(userId, productId, quantity, position)
+            shoppingCartAdapter.notifyItemChangedInAdapter(position)
+        }
+
+        shoppingCartAdapter.setOnDecreaseButtonClickListener { productId, quantity, position ->
+            viewModel.decreaseItemQuantityInShoppingCart(userId, productId, quantity, position)
+            shoppingCartAdapter.notifyItemChangedInAdapter(position)
+        }
+
+        shoppingCartAdapter.setOnDeleteButtonClickListener { productId, position ->
+            showDeleteItemWarnAlertDialog(userId, productId, position)
+        }
+    }
+
+    private fun showDeleteItemWarnAlertDialog(userId: String, productId: String, position: Int) {
+        val alertDialogBuilder = AlertDialog.Builder(requireContext())
+        alertDialogBuilder.setMessage("Ürünü sepetten silmek istediğine emin misin?")
+        alertDialogBuilder.setPositiveButton("Sil") { _, _ ->
+            viewModel.removeItemFromShoppingCart(userId, productId, position)
+            shoppingCartAdapter.notifyItemRemovedInAdapter(position)
+        }
+        alertDialogBuilder.setNegativeButton("Vazgeç") { _, _ -> }
+
+        alertDialogBuilder.create().show()
+    }
+
+    private fun setupObservers() {
+        viewModel.shoppingCartState.observe(viewLifecycleOwner) { state ->
+            handleState(state)
+        }
+    }
+
+    private fun handleState(state: ShoppingCartState) {
+        if (state.isLoading) {
+            binding.progressBarShoppingCart.show()
+            binding.recyclerViewShoppingCart.hide()
+            binding.buttonCompleteOrder.isEnabled = false
+        } else {
+            binding.progressBarShoppingCart.hide()
+            binding.recyclerViewShoppingCart.show()
+            binding.buttonCompleteOrder.isEnabled = true
+        }
+
+        state.shoppingCartItemList.let {
+            val shoppingCartItemList = it.toList()
+            shoppingCartAdapter.shoppingCartItems = shoppingCartItemList
+
+            if (shoppingCartItemList.isEmpty()) {
+                binding.emptyShoppingCart.show()
+                binding.textViewCartSize.hide()
+                binding.textViewTotal.hide()
+                binding.textViewTotalTitle.hide()
+                binding.buttonCompleteOrder.hide()
+            } else {
+                binding.emptyShoppingCart.hide()
+                binding.textViewCartSize.show()
+                binding.textViewCartSize.text = shoppingCartItemList.size.toString()
+                binding.textViewTotalTitle.show()
+                binding.textViewTotal.show()
+                binding.buttonCompleteOrder.show()
+            }
+            shoppingCartAdapter.notifyDataSetChangedInAdapter()
+        }
+
+        if (state.totalPriceWhole != null && state.totalPriceCent != null) {
+            val totalPrice = "${state.totalPriceWhole},${state.totalPriceCent} TL"
+            binding.textViewTotal.text = totalPrice
+        }
+
+        state.dataError?.let {
+            binding.recyclerViewShoppingCart.hide()
+            TODO("add data error TextView")
+        }
+
+        state.actionError?.let {
+            toast(requireContext(), it, true)
+        }
     }
 
     /*
     private fun observer() {
-        viewModel.stateShoppingCartItems.observe(viewLifecycleOwner) {
-            when(it) {
-                is Resource.Success -> {
-                    binding.progressBarShoppingCart.hide()
-                    val shoppingCartList = it.data?.toList()
-
-                    if (shoppingCartList.isNullOrEmpty()) {
-                        shoppingCartAdapter.shoppingCartItems = listOf()
-                        binding.emptyShoppingCart.show()
-                    } else {
-                        binding.emptyShoppingCart.hide()
-                        shoppingCartAdapter.shoppingCartItems = shoppingCartList
-                    }
-
-                    shoppingCartAdapter.notifyChanges()
-                }
-                is Resource.Error -> {
-                    binding.progressBarShoppingCart.hide()
-                }
-                is Resource.Loading -> {
-                    binding.progressBarShoppingCart.show()
-                }
-            }
-        }
-
-        viewModel.stateTotal.observe(viewLifecycleOwner) {
-            binding.textViewTotal.text = it
-        }
-
         viewModel.stateShoppingCartItemSize.observe(viewLifecycleOwner) {
             sharedViewModel.updateCartItemCount(it)
 
@@ -141,53 +192,12 @@ class ShoppingCartFragment: Fragment() {
     }
      */
 
-    /*
-    private fun setRecyclerView() {
-        binding.recyclerViewShoppingCart.adapter = shoppingCartAdapter
-        binding.recyclerViewShoppingCart.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
-
-        shoppingCartAdapter.setOnDecreaseButtonClickListener {
-            viewModel.decreaseShoppingCartItem(userId,it)
-            shoppingCartAdapter.notifyChanges()
-        }
-        shoppingCartAdapter.setOnIncreaseButtonClickListener {
-            viewModel.increaseShoppingCartItem(userId,it)
-            shoppingCartAdapter.notifyChanges()
-        }
-        shoppingCartAdapter.setOnDeleteButtonClickListener {
-            showDeleteWarn(userId,it)
-        }
-        shoppingCartAdapter.setOnCardClickListener {
-            val intent = Intent(requireActivity(), ProductDetailActivity::class.java)
-            intent.putExtra(getString(R.string.product_id),it)
-            launcher.launch(intent)
-        }
-    }
-     */
-
-    /*
-    private fun showDeleteWarn(userId: String, shoppingCartItemId: String) {
-        val alertDialogBuilder = AlertDialog.Builder(requireContext())
-        alertDialogBuilder.setMessage("Ürünü sepetten silmek istediğine emin misin?")
-        alertDialogBuilder.setPositiveButton("Sil") { _, _ ->
-            viewModel.deleteShoppingCartItem(userId, shoppingCartItemId)
-            shoppingCartAdapter.notifyChanges()
-        }
-        alertDialogBuilder.setNegativeButton("Vazgeç") { _, _ ->
-            shoppingCartAdapter.notifyChanges()
-        }
-
-        alertDialogBuilder.create().show()
-    }
-     */
-
-    /*
-    private fun showCheckoutWarn() {
+    private fun showCheckoutWarnAlertDialog() {
         val alertDialogBuilder = AlertDialog.Builder(requireContext())
         alertDialogBuilder.setTitle("Giriş Yapmadınız")
         alertDialogBuilder.setMessage("Satın alma işlemine geçmek istediğinize emin misin?")
         alertDialogBuilder.setPositiveButton("Evet") { _, _ ->
-            viewModel.saveShoppinCartListToSingleton()
+            //viewModel.saveShoppinCartListToSingleton()
             val intent = Intent(requireActivity(), CheckoutActivity::class.java)
             launcherForCheckout.launch(intent)
         }
@@ -200,18 +210,13 @@ class ShoppingCartFragment: Fragment() {
         alertDialogBuilder.create().show()
     }
 
-     */
-
-    /*
     private val launcherForCheckout = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-        viewModel.getShoppingCartList(userId)
+        viewModel.getShoppingCartItemList(userId)
     }
 
     private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-        viewModel.getShoppingCartList(userId)
+        viewModel.getShoppingCartItemList(userId)
     }
-
-     */
 
     override fun onDestroyView() {
         super.onDestroyView()
