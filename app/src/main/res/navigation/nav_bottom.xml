@@ -8,17 +8,17 @@
     <include app:graph="@navigation/nav_home" />
     <fragment
         android:id="@+id/shoppingCartFragment"
-        android:name="com.hasanalic.ecommerce.feature_shopping_cart.presentation.views.ShoppingCartFragment"
+        android:name="com.hasanalic.ecommerce.feature_home.presentation.shopping_cart_screen.views.ShoppingCartFragment"
         android:label="ShoppingCartFragment"
         tools:layout="@layout/fragment_shopping_cart"/>
     <fragment
         android:id="@+id/favoriteFragment"
-        android:name="com.hasanalic.ecommerce.feature_favorite.presentation.views.FavoriteFragment"
+        android:name="com.hasanalic.ecommerce.feature_home.presentation.favorite_screen.views.FavoriteFragment"
         android:label="FavoriteFragment"
         tools:layout="@layout/fragment_favorite"/>
     <fragment
         android:id="@+id/accountFragment"
-        android:name="com.hasanalic.ecommerce.feature_home.presentation.views.AccountFragment"
+        android:name="com.hasanalic.ecommerce.feature_home.presentation.account_screen.AccountFragment"
         android:label="AccountFragment"
         tools:layout="@layout/fragment_account"/>
 </navigation>

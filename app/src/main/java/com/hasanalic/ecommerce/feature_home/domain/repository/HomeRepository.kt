@@ -1,11 +1,11 @@
 package com.hasanalic.ecommerce.feature_home.domain.repository
 
-import com.hasanalic.ecommerce.feature_favorite.data.entity.FavoritesEntity
-import com.hasanalic.ecommerce.feature_home.data.entity.ProductEntity
+import com.hasanalic.ecommerce.feature_home.data.local.entity.FavoritesEntity
+import com.hasanalic.ecommerce.feature_home.data.local.entity.ProductEntity
 import com.hasanalic.ecommerce.feature_product_detail.data.entity.ReviewEntity
-import com.hasanalic.ecommerce.feature_shopping_cart.data.entity.ShoppingCartItemsEntity
+import com.hasanalic.ecommerce.feature_home.data.local.entity.ShoppingCartItemsEntity
 import com.hasanalic.ecommerce.feature_home.domain.model.Chip
-import com.hasanalic.ecommerce.feature_filter.presentation.Filter
+import com.hasanalic.ecommerce.feature_filter.presentation.util.Filter
 import com.hasanalic.ecommerce.utils.Resource
 
 interface HomeRepository {

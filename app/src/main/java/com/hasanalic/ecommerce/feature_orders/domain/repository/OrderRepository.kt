@@ -3,7 +3,7 @@ package com.hasanalic.ecommerce.feature_orders.domain.repository
 import com.hasanalic.ecommerce.feature_location.data.entity.AddressEntity
 import com.hasanalic.ecommerce.feature_orders.data.entity.OrderEntity
 import com.hasanalic.ecommerce.feature_orders.data.entity.OrderProductsEntity
-import com.hasanalic.ecommerce.feature_checkout.data.entity.PaymentEntity
+import com.hasanalic.ecommerce.feature_checkout.data.local.entity.PaymentEntity
 import com.hasanalic.ecommerce.utils.Resource
 
 interface OrderRepository {

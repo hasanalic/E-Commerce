@@ -3,8 +3,7 @@ package com.hasanalic.ecommerce.feature_home.data.local
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import com.hasanalic.ecommerce.feature_favorite.data.entity.FavoriteProductDto
-import com.hasanalic.ecommerce.feature_home.data.entity.ProductEntity
+import com.hasanalic.ecommerce.feature_home.data.local.entity.ProductEntity
 
 @Dao
 interface ProductDao {

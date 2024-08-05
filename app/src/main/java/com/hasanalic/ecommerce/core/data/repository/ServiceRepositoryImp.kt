@@ -2,7 +2,7 @@ package com.hasanalic.ecommerce.core.data.repository
 
 import com.hasanalic.ecommerce.feature_notification.data.entity.NotificationEntity
 import com.hasanalic.ecommerce.feature_notification.data.local.NotificationDao
-import com.hasanalic.ecommerce.feature_shopping_cart.data.local.ShoppingCartItemsDao
+import com.hasanalic.ecommerce.feature_home.data.local.ShoppingCartItemsDao
 import com.hasanalic.ecommerce.core.domain.repository.ServiceRepository
 import com.hasanalic.ecommerce.utils.Resource
 import javax.inject.Inject

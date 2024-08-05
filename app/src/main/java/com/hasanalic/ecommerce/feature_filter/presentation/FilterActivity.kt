@@ -9,7 +9,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hasanalic.ecommerce.R
 import com.hasanalic.ecommerce.databinding.ActivityFilterBinding
-import com.hasanalic.ecommerce.feature_home.presentation.views.FilterAdapter
+import com.hasanalic.ecommerce.feature_filter.presentation.util.Filter
+import com.hasanalic.ecommerce.feature_filter.presentation.util.FilterSingleton
+import com.hasanalic.ecommerce.feature_home.presentation.filtered_screen.FilterAdapter
 import com.hasanalic.ecommerce.utils.ItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
 

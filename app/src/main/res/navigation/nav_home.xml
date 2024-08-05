@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.hasanalic.ecommerce.feature_home.presentation.views.HomeFragment"
+        android:name="com.hasanalic.ecommerce.feature_home.presentation.home_screen.HomeFragment"
         android:label="HomeFragment"
         tools:layout="@layout/fragment_home">
         <action
@@ -23,7 +23,7 @@
 
     <fragment
         android:id="@+id/filteredProductsFragment"
-        android:name="com.hasanalic.ecommerce.feature_home.presentation.views.FilteredProductsFragment"
+        android:name="com.hasanalic.ecommerce.feature_home.presentation.filtered_screen.FilteredProductsFragment"
         android:label="FilteredProductsFragment"
         tools:layout="@layout/fragment_filtered_products">
         <argument
@@ -38,13 +38,13 @@
 
     <fragment
         android:id="@+id/compareFragment"
-        android:name="com.hasanalic.ecommerce.feature_home.presentation.views.CompareFragment"
+        android:name="com.hasanalic.ecommerce.feature_home.presentation.compare_screen.CompareFragment"
         android:label="CompareFragment"
         tools:layout="@layout/fragment_compare"/>
 
     <fragment
         android:id="@+id/filteredProductsByCategoryFragment"
-        android:name="com.hasanalic.ecommerce.feature_home.presentation.views.FilteredProductsByCategoryFragment"
+        android:name="com.hasanalic.ecommerce.feature_home.presentation.filtered_category_screen.FilteredProductsByCategoryFragment"
         android:label="FilteredProductsByCategoryFragment"
         tools:layout="@layout/fragment_filtered_products_by_category">
 

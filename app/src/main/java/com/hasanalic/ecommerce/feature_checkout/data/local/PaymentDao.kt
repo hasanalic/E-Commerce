@@ -3,7 +3,7 @@ package com.hasanalic.ecommerce.feature_checkout.data.local
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import com.hasanalic.ecommerce.feature_checkout.data.entity.PaymentEntity
+import com.hasanalic.ecommerce.feature_checkout.data.local.entity.PaymentEntity
 
 @Dao
 interface PaymentDao {

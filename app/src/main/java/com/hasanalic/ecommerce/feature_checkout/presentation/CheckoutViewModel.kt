@@ -6,9 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hasanalic.ecommerce.feature_orders.data.entity.OrderEntity
 import com.hasanalic.ecommerce.feature_orders.data.entity.OrderProductsEntity
-import com.hasanalic.ecommerce.feature_checkout.data.entity.PaymentEntity
+import com.hasanalic.ecommerce.feature_checkout.data.local.entity.PaymentEntity
 import com.hasanalic.ecommerce.core.domain.model.Address
-import com.hasanalic.ecommerce.feature_shopping_cart.domain.model.ShoppingCartItem
+import com.hasanalic.ecommerce.feature_home.domain.model.ShoppingCartItem
 import com.hasanalic.ecommerce.feature_checkout.domain.repository.CheckoutRepository
 import com.hasanalic.ecommerce.utils.Constants
 import com.hasanalic.ecommerce.utils.Constants.AT_DOOR

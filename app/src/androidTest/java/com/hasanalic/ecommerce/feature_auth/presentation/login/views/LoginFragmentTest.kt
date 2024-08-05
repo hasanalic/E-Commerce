@@ -2,14 +2,13 @@ package com.hasanalic.ecommerce.feature_auth.presentation.login.views
 
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.action.ViewActions.typeText
 import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
 import androidx.test.espresso.intent.rule.IntentsRule
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.filters.MediumTest
 import com.hasanalic.ecommerce.R
-import com.hasanalic.ecommerce.feature_home.presentation.views.HomeActivity
+import com.hasanalic.ecommerce.feature_home.presentation.HomeActivity
 import com.hasanalic.ecommerce.launchFragmentInHiltContainer
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest

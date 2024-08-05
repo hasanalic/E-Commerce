@@ -12,7 +12,7 @@ import com.hasanalic.ecommerce.databinding.FragmentLoginBinding
 import com.hasanalic.ecommerce.feature_auth.presentation.login.LoginState
 import com.hasanalic.ecommerce.feature_auth.presentation.login.LoginViewModel
 import com.hasanalic.ecommerce.feature_auth.presentation.register.views.RegisterFragment
-import com.hasanalic.ecommerce.feature_home.presentation.views.HomeActivity
+import com.hasanalic.ecommerce.feature_home.presentation.HomeActivity
 import com.hasanalic.ecommerce.utils.hide
 import com.hasanalic.ecommerce.utils.show
 import com.hasanalic.ecommerce.utils.toast

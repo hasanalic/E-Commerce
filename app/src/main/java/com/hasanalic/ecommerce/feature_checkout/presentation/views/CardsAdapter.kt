@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.hasanalic.ecommerce.feature_checkout.data.entity.PaymentEntity
+import com.hasanalic.ecommerce.feature_checkout.data.local.entity.PaymentEntity
 import com.hasanalic.ecommerce.databinding.RecyclerItemCardBinding
 import com.hasanalic.ecommerce.utils.maskCreditCard
 
