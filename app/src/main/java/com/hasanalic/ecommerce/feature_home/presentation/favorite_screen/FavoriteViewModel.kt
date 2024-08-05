@@ -6,14 +6,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hasanalic.ecommerce.core.domain.model.DataError
 import com.hasanalic.ecommerce.core.domain.model.Result
+import com.hasanalic.ecommerce.feature_home.data.local.entity.ShoppingCartItemsEntity
 import com.hasanalic.ecommerce.feature_home.domain.use_case.favorite_use_cases.FavoriteUseCases
+import com.hasanalic.ecommerce.feature_home.domain.use_case.shopping_cart_use_cases.ShoppingCartUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class FavoriteViewModel @Inject constructor(
-    private val favoriteUseCases: FavoriteUseCases
+    private val favoriteUseCases: FavoriteUseCases,
+    private val shoppingCartUseCases: ShoppingCartUseCases
 ) : ViewModel() {
 
     private val _favoriteState = MutableLiveData(FavoriteState())
@@ -22,7 +25,7 @@ class FavoriteViewModel @Inject constructor(
     fun getUserFavoriteProducts(userId: String) {
         _favoriteState.value = FavoriteState(isLoading = true)
         viewModelScope.launch {
-            when(val result = favoriteUseCases.getFavoriteProductsUseCase(userId)) {
+            when (val result = favoriteUseCases.getFavoriteProductsUseCase(userId)) {
                 is Result.Error -> handleGetFavoriteProductsError(result.error)
                 is Result.Success -> _favoriteState.value = FavoriteState(
                     favoriteProductList = result.data.toMutableList()
@@ -32,11 +35,7 @@ class FavoriteViewModel @Inject constructor(
     }
 
     private fun handleGetFavoriteProductsError(error: DataError.Local) {
-        when(error) {
-            DataError.Local.QUERY_FAILED -> {}
-            DataError.Local.INSERTION_FAILED -> {}
-            DataError.Local.UPDATE_FAILED -> {}
-            DataError.Local.DELETION_FAILED -> {}
+        when (error) {
             DataError.Local.NOT_FOUND -> {
                 _favoriteState.value = FavoriteState(
                     dataError = "Favori ürün yok."
@@ -47,12 +46,13 @@ class FavoriteViewModel @Inject constructor(
                     dataError = "Bilinmeyen bir hata meydana geldi."
                 )
             }
+            else -> {}
         }
     }
 
     fun removeProductFromFavorites(userId: String, productId: String, itemIndex: Int) {
         viewModelScope.launch {
-            when(val result = favoriteUseCases.deleteFavoriteUseCase(userId, productId)) {
+            when (val result = favoriteUseCases.deleteFavoriteUseCase(userId, productId)) {
                 is Result.Error -> handleDeleteFavoriteError(result.error)
                 is Result.Success -> removeProductFromMutableFavoriteProductList(itemIndex)
             }
@@ -60,17 +60,18 @@ class FavoriteViewModel @Inject constructor(
     }
 
     private fun handleDeleteFavoriteError(error: DataError.Local) {
-        when(error) {
-            DataError.Local.QUERY_FAILED -> {}
-            DataError.Local.INSERTION_FAILED -> {}
-            DataError.Local.UPDATE_FAILED -> {}
-            DataError.Local.DELETION_FAILED -> { _favoriteState.value = _favoriteState.value!!.copy(
-                actionError = "ürün favorilerden kaldırılamadı."
-            ) }
-            DataError.Local.NOT_FOUND -> {}
-            DataError.Local.UNKNOWN -> { _favoriteState.value = _favoriteState.value!!.copy(
-                actionError = "Bilinmeyen bir nedenden dolayı, ürün favorilerden kaldırılamadı."
-            ) }
+        when (error) {
+            DataError.Local.DELETION_FAILED -> {
+                _favoriteState.value = _favoriteState.value!!.copy(
+                    actionError = "ürün favorilerden kaldırılamadı."
+                )
+            }
+            DataError.Local.UNKNOWN -> {
+                _favoriteState.value = _favoriteState.value!!.copy(
+                    actionError = "Bilinmeyen bir nedenden dolayı, ürün favorilerden kaldırılamadı."
+                )
+            }
+            else -> {}
         }
     }
 
@@ -86,12 +87,68 @@ class FavoriteViewModel @Inject constructor(
     }
 
     fun addProductToCart(userId: String, productId: String, itemIndex: Int) {
+        viewModelScope.launch {
+            val shoppingCartEntity = ShoppingCartItemsEntity(userId, productId, 1)
+            when (val result = shoppingCartUseCases.insertShoppingCartItemEntityUseCase(shoppingCartEntity)) {
+                is Result.Error -> handleAddProductToCartError(result.error)
+                is Result.Success -> setAddedToCart(itemIndex, true)
+            }
+        }
+    }
 
+    private fun handleAddProductToCartError(error: DataError.Local) {
+        when (error) {
+            DataError.Local.INSERTION_FAILED -> {
+                _favoriteState.value = FavoriteState(
+                    actionError = "Ürün alışveriş sepetine eklenemedi."
+                )
+            }
+
+            DataError.Local.UNKNOWN -> {
+                _favoriteState.value = FavoriteState(
+                    actionError = "Bilinmeyen bir hata meydana geldi."
+                )
+            }
+
+            else -> {}
+        }
     }
 
     fun removeProductFromCart(userId: String, productId: String, itemIndex: Int) {
-
+        viewModelScope.launch {
+            when (val result = shoppingCartUseCases.deleteShoppingCartItemEntityUseCase(userId, productId)) {
+                is Result.Error -> handleRemoveProductFromCartError(result.error)
+                is Result.Success -> setAddedToCart(itemIndex, false)
+            }
+        }
     }
+
+    private fun handleRemoveProductFromCartError(error: DataError.Local) {
+        when (error) {
+            DataError.Local.DELETION_FAILED -> {
+                _favoriteState.value = FavoriteState(
+                    actionError = "Bilinmeyen bir hata meydana geldi."
+                )
+            }
+
+            DataError.Local.UNKNOWN -> {
+                _favoriteState.value = FavoriteState(
+                    actionError = "Bilinmeyen bir hata meydana geldi."
+                )
+            }
+
+            else -> {}
+        }
+    }
+
+    private fun setAddedToCart(itemIndex: Int, isAddedToCart: Boolean) {
+        val currentFavoriteProductList = _favoriteState.value!!.favoriteProductList
+        currentFavoriteProductList[itemIndex].addedToShoppingCart = isAddedToCart
+        _favoriteState.value = _favoriteState.value!!.copy(
+            favoriteProductList = currentFavoriteProductList
+        )
+    }
+
 
     /*
     fun getUserFavoriteProducts(userId: String) {
