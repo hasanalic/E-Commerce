@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.hasanalic.ecommerce.core.domain.model.DataError
 import com.hasanalic.ecommerce.core.domain.model.Result
 import com.hasanalic.ecommerce.feature_shopping_cart.domain.use_cases.ShoppingCartUseCases
+import com.hasanalic.ecommerce.utils.TotalCost
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -28,7 +29,8 @@ class ShoppingCartViewModel @Inject constructor(
                     _shoppingCartState.value = ShoppingCartState(
                         shoppingCartItemList = result.data.toMutableList()
                     )
-                    TODO("CALCULATE TOTAL PRICE")
+
+                    calculateTotalPriceInShoppingCart()
                 }
             }
         }
@@ -36,10 +38,6 @@ class ShoppingCartViewModel @Inject constructor(
 
     private fun handleGetShoppingCartItemsError(error: DataError.Local) {
         when(error) {
-            DataError.Local.QUERY_FAILED -> {}
-            DataError.Local.INSERTION_FAILED -> {}
-            DataError.Local.UPDATE_FAILED -> {}
-            DataError.Local.DELETION_FAILED -> {}
             DataError.Local.NOT_FOUND -> {
                 _shoppingCartState.value = ShoppingCartState(
                     dataError = "Alışveriş sepetindeki ürünlerin bilgisi alınamadı."
@@ -50,6 +48,7 @@ class ShoppingCartViewModel @Inject constructor(
                     dataError = "Bilinmeyen bir hata meydana geldi."
                 )
             }
+            else -> {}
         }
     }
 
@@ -86,7 +85,8 @@ class ShoppingCartViewModel @Inject constructor(
         _shoppingCartState.value = shoppingCartState.value!!.copy(
             shoppingCartItemList = currentShoppingCartItems
         )
-        TODO("CALCULATE TOTAL PRICE")
+
+        calculateTotalPriceInShoppingCart()
     }
 
     fun increaseItemQuantityInShoppingCart(userId: String, productId: String, currentQuantity: Int, itemIndex: Int) {
@@ -122,7 +122,8 @@ class ShoppingCartViewModel @Inject constructor(
         _shoppingCartState.value = _shoppingCartState.value!!.copy(
             shoppingCartItemList = currentShoppingCartItemList
         )
-        TODO("CALCULATE TOTAL PRICE")
+
+        calculateTotalPriceInShoppingCart()
     }
 
     fun decreaseItemQuantityInShoppingCart(userId: String, productId: String, currentQuantity: Int, itemIndex: Int) {
@@ -133,8 +134,8 @@ class ShoppingCartViewModel @Inject constructor(
             viewModelScope.launch {
                 val result = shoppingCartUseCases.updateShoppingCartItemEntityUseCase(userId, productId, decreasedItemQuantity)
                 when(result) {
-                    is Result.Error -> handleIncreaseItemQuantityError(result.error)
-                    is Result.Success -> TODO()
+                    is Result.Error -> handleDecreaseItemQuantityError(result.error)
+                    is Result.Success -> decreaseItemQuantityInShoppingCartList(decreasedItemQuantity, itemIndex)
                 }
             }
         }
@@ -162,12 +163,42 @@ class ShoppingCartViewModel @Inject constructor(
         _shoppingCartState.value = _shoppingCartState.value!!.copy(
             shoppingCartItemList = currentShoppingCartItemList
         )
-        TODO("CALCULATE TOTAL PRICE")
+
+        calculateTotalPriceInShoppingCart()
     }
 
     private fun calculateTotalPriceInShoppingCart() {
+        val currentShoppingCartItemList = _shoppingCartState.value!!.shoppingCartItemList
 
+        var totalWholePart = 0
+        var totalDecimalPart = 0
+
+        for (shoppingCartItem in currentShoppingCartItemList) {
+            val itemQuantity = shoppingCartItem.quantity
+            val totalArray = TotalCost.calculateTotalCost(shoppingCartItem.priceWhole, shoppingCartItem.priceCent, itemQuantity)
+
+            totalWholePart += totalArray[0]
+            totalDecimalPart += 0
+        }
+
+        val totalArray = TotalCost.calculateTotalCost(totalWholePart, totalDecimalPart)
+        _shoppingCartState.value = _shoppingCartState.value!!.copy(
+            totalPriceWhole = totalArray[0],
+            totalPriceCent = totalArray[1]
+        )
     }
+
+
+    /*
+    fun saveShoppinCartListToSingleton() {
+        ShoppingCartList.shoppingCartList = _stateShoppingCartItems.value!!.data!!.toList()
+        ShoppingCartList.totalPrice = _stateTotal.value!!
+    }
+     */
+
+
+
+
 
     /*
     private var _stateShoppingCartItems = MutableLiveData<Resource<MutableList<ShoppingCartItem>>>()
@@ -314,37 +345,6 @@ class ShoppingCartViewModel @Inject constructor(
                 }
             }
         }
-    }
-     */
-
-    /*
-    private fun calculateTotalPriceAndShoppingCartQuantity() {
-        val tempMutableList = _stateShoppingCartItems.value!!.data
-
-        tempMutableList?.let {shoppingCartMutableList ->
-            var totalWholePart = 0
-            var totalDecimalPart = 0
-
-            for (item in shoppingCartMutableList) {
-                val itemQuantity = item.quantity
-                val totalArray = TotalCost.calculateTotalCost(item.priceWhole, item.priceCent, itemQuantity)
-
-                totalWholePart += totalArray[0]
-                totalDecimalPart += totalArray[1]
-            }
-
-            val totalArray = TotalCost.calculateTotalCost(totalWholePart, totalDecimalPart)
-            _stateTotal.value = "${totalArray[0]},${totalArray[1].toCent()} TL"
-        }
-
-        _stateShoppingCartItemSize.value = tempMutableList?.size
-    }
-     */
-
-    /*
-    fun saveShoppinCartListToSingleton() {
-        ShoppingCartList.shoppingCartList = _stateShoppingCartItems.value!!.data!!.toList()
-        ShoppingCartList.totalPrice = _stateTotal.value!!
     }
      */
 }
