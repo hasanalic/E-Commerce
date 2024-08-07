@@ -13,7 +13,7 @@ class FakeShoppingCartRepository : ShoppingCartRepository {
     )
 
     override suspend fun getProductsInShoppingCart(userId: String): Result<List<ShoppingCartItem>, DataError.Local> {
-        return Result.Success(shoppingCartItemList)
+        return if (userId == "1") Result.Success(shoppingCartItemList) else Result.Error(DataError.Local.NOT_FOUND)
     }
 
     override suspend fun getShoppingCartItemCount(userId: String): Result<Int, DataError.Local> {
