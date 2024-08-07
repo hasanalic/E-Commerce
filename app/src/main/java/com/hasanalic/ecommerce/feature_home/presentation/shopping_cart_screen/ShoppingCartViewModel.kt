@@ -170,21 +170,21 @@ class ShoppingCartViewModel @Inject constructor(
     private fun calculateTotalPriceInShoppingCart() {
         val currentShoppingCartItemList = _shoppingCartState.value!!.shoppingCartItemList
 
-        var totalWholePart = 0
-        var totalDecimalPart = 0
+        var totalWhole = 0
+        var totalCent = 0
 
         for (shoppingCartItem in currentShoppingCartItemList) {
             val itemQuantity = shoppingCartItem.quantity
-            val totalArray = TotalCost.calculateTotalCost(shoppingCartItem.priceWhole, shoppingCartItem.priceCent, itemQuantity)
+            val totalPriceArray = TotalCost.calculateTotalCost(shoppingCartItem.priceWhole, shoppingCartItem.priceCent, itemQuantity)
 
-            totalWholePart += totalArray[0]
-            totalDecimalPart += 0
+            totalWhole += totalPriceArray[0]
+            totalCent += totalPriceArray[1]
         }
 
-        val totalArray = TotalCost.calculateTotalCost(totalWholePart, totalDecimalPart)
+        val totalPriceArray = TotalCost.calculateTotalCost(totalWhole, totalCent)
         _shoppingCartState.value = _shoppingCartState.value!!.copy(
-            totalPriceWhole = totalArray[0],
-            totalPriceCent = totalArray[1]
+            totalPriceWhole = totalPriceArray[0],
+            totalPriceCent = totalPriceArray[1]
         )
     }
 

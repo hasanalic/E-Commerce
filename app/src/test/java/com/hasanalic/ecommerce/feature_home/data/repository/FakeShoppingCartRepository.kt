@@ -9,7 +9,7 @@ import com.hasanalic.ecommerce.feature_home.domain.repository.ShoppingCartReposi
 class FakeShoppingCartRepository : ShoppingCartRepository {
 
     private val shoppingCartItemList = mutableListOf(
-        ShoppingCartItem("1","category","photo","brand","detail",1,1,1)
+        ShoppingCartItem("1","category","photo","brand","detail",1,1,2)
     )
 
     override suspend fun getProductsInShoppingCart(userId: String): Result<List<ShoppingCartItem>, DataError.Local> {
@@ -50,7 +50,7 @@ class FakeShoppingCartRepository : ShoppingCartRepository {
         userId: String,
         productId: String
     ): Result<Unit, DataError.Local> {
-        return Result.Success(Unit)
+        return if (productId == shoppingCartItemList[0].productId) Result.Success(Unit) else Result.Error(DataError.Local.DELETION_FAILED)
     }
 
     override suspend fun deleteShoppingCartItemEntitiesByProductIdList(

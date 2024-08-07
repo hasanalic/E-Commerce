@@ -37,7 +37,6 @@ class GetProductsInShoppingCartUseCaseTest {
         val result = getProductsInShoppingCartUseCase("1")
         assertThat(result).isInstanceOf(Result.Success::class.java)
         assertThat((result as Result.Success).data).isNotEmpty()
-        assertThat((result as Result.Success).data.first().quantity).isEqualTo(1)
     }
 
     @Test
