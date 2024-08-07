@@ -19,7 +19,7 @@ class FakeFavoriteRepository : FavoriteRepository {
             "brand","detail",1,
             1,1.0,"1",
             "321321", "cargo","store",
-            "1.1",true)
+            "1.1",false)
     )
 
     override suspend fun getFavoriteProducts(userId: String): Result<List<FavoriteProduct>, DataError.Local> {
