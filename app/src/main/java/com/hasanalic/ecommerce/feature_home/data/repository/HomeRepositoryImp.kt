@@ -1,180 +1,96 @@
 package com.hasanalic.ecommerce.feature_home.data.repository
 
-import com.hasanalic.ecommerce.feature_home.data.local.FavoritesDao
+import com.hasanalic.ecommerce.core.domain.model.DataError
+import com.hasanalic.ecommerce.core.domain.model.Result
 import com.hasanalic.ecommerce.feature_home.data.local.ProductDao
-import com.hasanalic.ecommerce.feature_product_detail.data.local.ReviewDao
-import com.hasanalic.ecommerce.feature_home.data.local.ShoppingCartItemsDao
-import com.hasanalic.ecommerce.feature_home.data.local.entity.FavoritesEntity
 import com.hasanalic.ecommerce.feature_home.data.local.entity.ProductEntity
-import com.hasanalic.ecommerce.feature_product_detail.data.entity.ReviewEntity
-import com.hasanalic.ecommerce.feature_home.data.local.entity.ShoppingCartItemsEntity
-import com.hasanalic.ecommerce.feature_home.domain.model.Chip
 import com.hasanalic.ecommerce.feature_home.domain.repository.HomeRepository
 import com.hasanalic.ecommerce.feature_filter.presentation.util.Filter
+import com.hasanalic.ecommerce.feature_home.data.mapper.toProduct
+import com.hasanalic.ecommerce.feature_home.domain.model.Brand
+import com.hasanalic.ecommerce.feature_home.domain.model.Category
+import com.hasanalic.ecommerce.feature_home.domain.model.Product
 import com.hasanalic.ecommerce.utils.Resource
 import javax.inject.Inject
 import kotlin.Exception
 
 class HomeRepositoryImp @Inject constructor(
-    private val favoritesDao: FavoritesDao,
     private val productDao: ProductDao,
-    private val shoppingCartItemsDao: ShoppingCartItemsDao,
-    private val reviewDao: ReviewDao
 ) : HomeRepository {
-
-    override suspend fun getProducts(): Resource<List<ProductEntity>> {
+    override suspend fun getProductsByUserId(userId: String): Result<List<Product>, DataError.Local> {
         return try {
-            val response = productDao.getProducts()
-            response?.let {
-                return@let Resource.Success(it)
-            } ?: Resource.Error(null,"No Product Data")
+            val result = productDao.getProductsByUserId(userId)
+            result?.let {
+                Result.Success(result.map { productDao -> productDao.toProduct() })
+            }?: Result.Error(DataError.Local.NOT_FOUND)
         } catch (e: Exception) {
-            Resource.Error(null,e.localizedMessage?:"error - getProducts")
+            Result.Error(DataError.Local.UNKNOWN)
         }
     }
 
-    override suspend fun insertProducts(vararg products: ProductEntity): Resource<Boolean> {
+    override suspend fun getCategories(): Result<List<Category>, DataError.Local> {
         return try {
-            val response = productDao.insertAllProducts(*products)
-            if (response.isNotEmpty()) {
-                Resource.Success(true)
-            } else {
-                Resource.Error(false, "Failed to insert products")
-            }
+            val result = productDao.getCategories()
+            result?.let { categoryList->
+                val uniqueCategories = categoryList.distinct()
+                val chipCategoryList = uniqueCategories.map { Category(it) }
+                Result.Success(chipCategoryList)
+            }?: Result.Error(DataError.Local.NOT_FOUND)
         } catch (e: Exception) {
-            Resource.Error(false,e.localizedMessage?:"insertProducts")
+            Result.Error(DataError.Local.UNKNOWN)
         }
     }
 
-    override suspend fun getShoppingCartItems(userId: String): Resource<List<ShoppingCartItemsEntity>> {
+    override suspend fun getBrands(): Result<List<Brand>, DataError.Local> {
         return try {
-            val response = shoppingCartItemsDao.getShoppingCartItems(userId)
-            response?.let {
-                Resource.Success(it)
-            } ?: Resource.Error(null,"No ShoppingCartItems data")
+            val result = productDao.getBrands()
+            result?.let { brandList->
+                val uniqueBrands = brandList.distinct()
+                val chipBrandList = uniqueBrands.map { Brand(it) }
+                Result.Success(chipBrandList)
+            }?: Result.Error(DataError.Local.NOT_FOUND)
         } catch (e: Exception) {
-            Resource.Error(null,e.localizedMessage?:"getShoppingCartItems")
+            Result.Error(DataError.Local.UNKNOWN)
         }
     }
 
-    override suspend fun getShoppingCartCount(userId: String): Resource<Int> {
+    override suspend fun getBrandsByCategory(category: String): Result<List<Brand>, DataError.Local> {
         return try {
-            val response = shoppingCartItemsDao.getShoppingCartItemCount(userId)
-            response?.let {
-                Resource.Success(it)
-            }?: Resource.Error(null,"No ShoppingCartItems data")
+            val result = productDao.getBrandsByCategory(category)
+            result?.let { brandList->
+                val uniqueBrands = brandList.distinct()
+                val chipBrandList = uniqueBrands.map { Brand(it) }
+                Result.Success(chipBrandList)
+            }?: Result.Error(DataError.Local.NOT_FOUND)
         } catch (e: Exception) {
-            Resource.Error(null,e.localizedMessage?:"getShoppingCartCount")
+            Result.Error(DataError.Local.UNKNOWN)
         }
     }
 
-    override suspend fun insertShoppingCartItems(shoppingCartItemsEntity: ShoppingCartItemsEntity): Resource<Boolean> {
+    override suspend fun getProductEntityIdByBarcode(productBarcode: String): Result<Int, DataError.Local> {
         return try {
-            val response = shoppingCartItemsDao.insertShoppingCartItemEntity(shoppingCartItemsEntity)
-            if (response > 0) {
-                Resource.Success(true)
-            } else {
-                Resource.Error(false,"Failed to insert shoppingCartItem")
-            }
+            val result = productDao.getProductEntityIdByBarcode(productBarcode)
+            result?.let {
+                Result.Success(it)
+            }?: Result.Error(DataError.Local.NOT_FOUND)
         } catch (e: Exception) {
-            Resource.Error(false, e.localizedMessage?:"insertShoppingCartItems")
+            Result.Error(DataError.Local.UNKNOWN)
         }
     }
 
-    override suspend fun insertAllShoppingCartItems(vararg shoppingCartItemsEntities: ShoppingCartItemsEntity): Resource<Boolean> {
+    override suspend fun insertAllProductEntities(vararg products: ProductEntity): Result<Unit, DataError.Local> {
         return try {
-            val response = shoppingCartItemsDao.insertAllShoppingCartItemEntities(*shoppingCartItemsEntities)
-            if (response.isNotEmpty()) {
-                Resource.Success(true)
-            } else {
-                Resource.Error(false, "Failed to insert shopping cart item entity")
-            }
+            val result = productDao.insertAllProductEntities(*products)
+            if (result.isNotEmpty()) Result.Success(Unit)
+            else Result.Error(DataError.Local.INSERTION_FAILED)
         } catch (e: Exception) {
-            Resource.Error(false, e.localizedMessage?:"insertAllShoppingCartItems")
+            Result.Error(DataError.Local.UNKNOWN)
         }
     }
 
-    override suspend fun updateShoppingCartItem(
-        userId: String,
-        productId: String,
-        quantity: String
-    ): Resource<Boolean> {
+    override suspend fun getProductEntitiesBySearchQuery(searchQuery: String): Resource<List<ProductEntity>> {
         return try {
-            val response = shoppingCartItemsDao.updateShoppingCartItemEntity(userId, productId,quantity.toInt())
-            if (response > 0) {
-                Resource.Success(true)
-            } else {
-                Resource.Error(false,"Error shoppingCartItem")
-            }
-        } catch (e: Exception) {
-            Resource.Error(false,e.localizedMessage?:"updateShoppingCartItem")
-        }
-    }
-
-    override suspend fun deleteShoppingCartItem(userId: String, productId: String): Resource<Boolean> {
-        return try {
-            val response = shoppingCartItemsDao.deleteShoppingCartItemEntity(userId, productId)
-            if (response > 0) {
-                Resource.Success(true)
-            } else {
-                Resource.Error(false,"Error deleteShoppingCartItem")
-            }
-        } catch (e: Exception) {
-            Resource.Error(false,e.localizedMessage?:"deleteShoppingCartItem")
-        }
-    }
-
-    override suspend fun getFavorites(userId: String): Resource<List<FavoritesEntity>> {
-        return try {
-            val response = favoritesDao.getFavorites(userId)
-            response?.let {
-                Resource.Success(it)
-            }?: Resource.Error(null,"List<FavoritesEntity> null")
-        } catch (e: Exception) {
-            Resource.Error(null,e.localizedMessage?:"getFavorites")
-        }
-    }
-
-    override suspend fun insertFavorite(favoritesEntity: FavoritesEntity): Resource<Boolean> {
-        return try {
-            val response = favoritesDao.insertFavorite(favoritesEntity)
-            if (response > 0) {
-                Resource.Success(true)
-            } else {
-                Resource.Error(false,"Failed to insert favorite")
-            }
-        } catch (e: Exception) {
-            Resource.Error(false,e.localizedMessage?:"insertFavorite")
-        }
-    }
-
-    override suspend fun deleteFavorite(userId: String, productId: String): Resource<Boolean> {
-        return try {
-            val response = favoritesDao.deleteFavorite(userId, productId)
-            if (response > 0) {
-                Resource.Success(true)
-            } else {
-                Resource.Error(false,"Failed to delete favorite")
-            }
-        } catch (e: Exception) {
-            Resource.Error(false,e.localizedMessage?:"deleteFavorite")
-        }
-    }
-
-    override suspend fun getFavoriteProducts(favoriteProductIds: List<String>): Resource<List<ProductEntity>> {
-        return try {
-            val response = productDao.getFavoriteProducts(favoriteProductIds)
-            response?.let {
-                Resource.Success(it)
-            }?: Resource.Error(null,"Failed to fetch products")
-        } catch (e: Exception) {
-            Resource.Error(null,e.localizedMessage?:"")
-        }
-    }
-
-    override suspend fun getProductsBySearchQuery(searchQuery: String): Resource<List<ProductEntity>> {
-        return try {
-            val response = productDao.getProductsBySearchQuery(searchQuery)
+            val response = productDao.getProductEntitiesBySearchQuery(searchQuery)
             response?.let {
                 Resource.Success(it)
             }?: Resource.Error(null,"Failed to fetch searched products")
@@ -183,9 +99,9 @@ class HomeRepositoryImp @Inject constructor(
         }
     }
 
-    override suspend fun getProductsByCategory(productCategory: String): Resource<List<ProductEntity>> {
+    override suspend fun getProductEntitiesByCategory(productCategory: String): Resource<List<ProductEntity>> {
         return try {
-            val response = productDao.getProductsByCategory(productCategory)
+            val response = productDao.getProductEntitiesByCategory(productCategory)
             response?.let {
                 Resource.Success(it)
             }?: Resource.Error(null,"Failed to fetch category filtered products")
@@ -194,28 +110,38 @@ class HomeRepositoryImp @Inject constructor(
         }
     }
 
-    override suspend fun getProductIdByBarcode(productBarcode: String): Resource<Int> {
+    override suspend fun getProductsByFilter(filter: Filter): Resource<List<ProductEntity>> {
         return try {
-            val response = productDao.getProductByBarcode(productBarcode)
+            val response = productDao.filterProductEntities(
+                category = filter.category,
+                brand = filter.brand,
+                minPrice = filter.minPrice,
+                maxPrice = filter.maxPrice,
+                minStar = filter.minStar,
+                maxStar = filter.maxStar
+            )
             response?.let {
                 Resource.Success(it)
-            }?: Resource.Error(null,"Ürün bulunamadı.")
+            }?: Resource.Error(null,"Failed to fetch product")
         } catch (e: Exception) {
-            Resource.Error(null,e.localizedMessage?:"")
+            Resource.Error(null,e.localizedMessage?:"Bilinmeyen bir hata meydana geldi")
         }
     }
 
-    override suspend fun getProductById(productId: String): Resource<ProductEntity> {
+    /*
+    override suspend fun getProductEntities(): Resource<List<ProductEntity>> {
         return try {
-            val response = productDao.getProductById(productId)
+            val response = productDao.getProductEntities()
             response?.let {
-                Resource.Success(it)
-            }?: Resource.Error(null, "Failed to fetch product")
+                return@let Resource.Success(it)
+            } ?: Resource.Error(null,"No Product Data")
         } catch (e: Exception) {
-            Resource.Error(null,e.localizedMessage?:"error getProductById")
+            Resource.Error(null,e.localizedMessage?:"error - getProducts")
         }
     }
+     */
 
+    /*
     override suspend fun getReviewsByProductId(productId: String): Resource<List<ReviewEntity>> {
         return try {
             val response = reviewDao.getReviewsByProductId(productId)
@@ -239,7 +165,9 @@ class HomeRepositoryImp @Inject constructor(
             Resource.Error(false,e.localizedMessage?:"insertAllReviews")
         }
     }
+     */
 
+    /*
     override suspend fun getFavoriteByProductId(
         userId: String,
         productId: String
@@ -268,71 +196,5 @@ class HomeRepositoryImp @Inject constructor(
         }
     }
 
-    override suspend fun getProductsByFilter(filter: Filter): Resource<List<ProductEntity>> {
-        return try {
-            val response = productDao.filterProducts(
-                category = filter.category,
-                brand = filter.brand,
-                minPrice = filter.minPrice,
-                maxPrice = filter.maxPrice,
-                minStar = filter.minStar,
-                maxStar = filter.maxStar
-            )
-            response?.let {
-                Resource.Success(it)
-            }?: Resource.Error(null,"Failed to fetch product")
-        } catch (e: Exception) {
-            Resource.Error(null,e.localizedMessage?:"Bilinmeyen bir hata meydana geldi")
-        }
-    }
-
-    override suspend fun getShoppingCartItemCount(userId: String): Resource<Int> {
-        return try {
-            val response = shoppingCartItemsDao.getShoppingCartItemCount(userId)
-            response?.let {
-                Resource.Success(it)
-            }?: Resource.Error(null, "Failed to fetch ShoppingCartItemCount")
-        } catch (e: Exception) {
-            Resource.Error(null,e.localizedMessage?:"Bilinmeyen bir hata meydana geldi")
-        }
-    }
-
-    override suspend fun getCategories(): Resource<List<Chip>> {
-        return try {
-            val response = productDao.getCategories()
-            response?.let {categoryList->
-                val uniqueCategories = categoryList.distinct()
-                val chipCategoryList = uniqueCategories.map { Chip(it) }
-                Resource.Success(chipCategoryList)
-            }?: Resource.Error(null,"Kategori bulunamadı")
-        } catch (e: Exception) {
-            Resource.Error(null,e.localizedMessage?:"Bilinmeyen bir hata meydana geldi")
-        }
-    }
-
-    override suspend fun getBrands(): Resource<List<Chip>> {
-        return try {
-            val response = productDao.getBrands()
-            response?.let {brandList->
-                val uniqueBrands = brandList.distinct()
-                val chipBrandList = uniqueBrands.map { Chip(it) }
-                Resource.Success(chipBrandList)
-            }?: Resource.Error(null,"Marka bulunamadı")
-        } catch (e: Exception) {
-            Resource.Error(null,e.localizedMessage?:"Bilinmeyen bir hata meydana geldi")
-        }
-    }
-
-    override suspend fun getBrandsByCategory(category: String): Resource<List<Chip>> {
-        return try {
-            val response = productDao.getBrandsByCategory(category)
-            response?.let {brandList->
-                val uniqueBrands = brandList.distinct()
-                val chipBrandList = uniqueBrands.map { Chip(it) }
-                Resource.Success(chipBrandList)
-            }?: Resource.Error(null,"Marka bulunamadı")
-        } catch (e: Exception) {
-            Resource.Error(null,e.localizedMessage?:"Bilinmeyen bir hata meydana geldi")
-        }
-    }
+     */
 }

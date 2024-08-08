@@ -39,6 +39,12 @@ import com.hasanalic.ecommerce.feature_home.domain.use_case.favorite_use_cases.G
 import com.hasanalic.ecommerce.feature_home.domain.use_case.favorite_use_cases.InsertFavoriteAndGetIdUseCase
 import com.hasanalic.ecommerce.feature_home.data.repository.ShoppingCartRepositoryImp
 import com.hasanalic.ecommerce.feature_home.domain.repository.ShoppingCartRepository
+import com.hasanalic.ecommerce.feature_home.domain.use_case.home_use_cases.GetBrandsByCategoryUseCase
+import com.hasanalic.ecommerce.feature_home.domain.use_case.home_use_cases.GetBrandsUseCase
+import com.hasanalic.ecommerce.feature_home.domain.use_case.home_use_cases.GetCategoriesUseCase
+import com.hasanalic.ecommerce.feature_home.domain.use_case.home_use_cases.GetProductEntityIdByBarcodeUseCase
+import com.hasanalic.ecommerce.feature_home.domain.use_case.home_use_cases.GetProductsByUserIdUseCase
+import com.hasanalic.ecommerce.feature_home.domain.use_case.home_use_cases.HomeUseCases
 import com.hasanalic.ecommerce.feature_home.domain.use_case.shopping_cart_use_cases.CheckShoppingCartEntityByProductIdUseCase
 import com.hasanalic.ecommerce.feature_home.domain.use_case.shopping_cart_use_cases.DeleteShoppingCartItemEntitiesByProductIdListUseCase
 import com.hasanalic.ecommerce.feature_home.domain.use_case.shopping_cart_use_cases.DeleteShoppingCartItemEntityUseCase
@@ -107,12 +113,9 @@ object AppModule {
     @Singleton
     @Provides
     fun provideHomeRepository(
-        favoritesDao: FavoritesDao,
         productDao: ProductDao,
-        shoppingCartItemsDao: ShoppingCartItemsDao,
-        reviewDao: ReviewDao
     ): HomeRepository {
-        return HomeRepositoryImp(favoritesDao, productDao, shoppingCartItemsDao, reviewDao)
+        return HomeRepositoryImp(productDao)
     }
 
     @Singleton
@@ -217,6 +220,18 @@ object AppModule {
             insertAllShoppingCartItemEntitiesUseCase = InsertAllShoppingCartItemEntitiesUseCase(shoppingCartRepository),
             insertShoppingCartItemEntityUseCase = InsertShoppingCartItemEntityUseCase(shoppingCartRepository),
             updateShoppingCartItemEntityUseCase = UpdateShoppingCartItemEntityUseCase(shoppingCartRepository)
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideHomeUseCases(homeRepository: HomeRepository): HomeUseCases {
+        return HomeUseCases(
+            getProductsByUserIdUseCase = GetProductsByUserIdUseCase(homeRepository),
+            getCategoriesUseCase = GetCategoriesUseCase(homeRepository),
+            getBrandsUseCase = GetBrandsUseCase(homeRepository),
+            getBrandsByCategoryUseCase = GetBrandsByCategoryUseCase(homeRepository),
+            getProductEntityIdByBarcodeUseCase = GetProductEntityIdByBarcodeUseCase(homeRepository)
         )
     }
 }

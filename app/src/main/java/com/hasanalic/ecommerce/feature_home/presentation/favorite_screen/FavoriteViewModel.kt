@@ -99,14 +99,14 @@ class FavoriteViewModel @Inject constructor(
     private fun handleAddProductToCartError(error: DataError.Local) {
         when (error) {
             DataError.Local.INSERTION_FAILED -> {
-                _favoriteState.value = FavoriteState(
-                    actionError = "Ürün alışveriş sepetine eklenemedi."
+                _favoriteState.value = _favoriteState.value!!.copy(
+                    actionError = "Ürün, alışveriş sepetine eklenemedi."
                 )
             }
 
             DataError.Local.UNKNOWN -> {
-                _favoriteState.value = FavoriteState(
-                    actionError = "Bilinmeyen bir hata meydana geldi."
+                _favoriteState.value = _favoriteState.value!!.copy(
+                    actionError = "Ürün, alışveriş sepetine eklenemedi."
                 )
             }
 

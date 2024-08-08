@@ -4,8 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hasanalic.ecommerce.feature_home.domain.model.Brand
+import com.hasanalic.ecommerce.feature_home.domain.model.Category
 import com.hasanalic.ecommerce.feature_home.domain.repository.HomeRepository
-import com.hasanalic.ecommerce.feature_home.domain.model.Chip
 import com.hasanalic.ecommerce.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -16,18 +17,18 @@ class FilterViewModel @Inject constructor(
     private val homeRepository: HomeRepository
 ): ViewModel() {
 
-    private var _stateCategoryList = MutableLiveData<List<Chip>>()
-    val stateCategoryList: LiveData<List<Chip>>
+    private var _stateCategoryList = MutableLiveData<List<Category>>()
+    val stateCategoryList: LiveData<List<Category>>
         get() = _stateCategoryList
 
-    private var _stateBrandList = MutableLiveData<List<Chip>>()
-    val stateBrandList: LiveData<List<Chip>>
+    private var _stateBrandList = MutableLiveData<List<Brand>>()
+    val stateBrandList: LiveData<List<Brand>>
         get() = _stateBrandList
 
     fun selectCategory(category: String) {
         _stateCategoryList.value?.let {
             for (chip in it) {
-                if (chip.value == category) {
+                if (chip.category == category) {
                     chip.isSelected = true
                     getBrandsByCategory(category)
                 } else {
@@ -40,7 +41,7 @@ class FilterViewModel @Inject constructor(
     fun selectBrand(brand: String) {
         _stateBrandList.value?.let {
             for (chip in it) {
-                if (chip.value == brand) {
+                if (chip.brand == brand) {
                     chip.isSelected = true
                 } else {
                     chip.isSelected = false
@@ -55,6 +56,7 @@ class FilterViewModel @Inject constructor(
     }
 
     private fun getCategories() {
+        /*
         viewModelScope.launch {
             val response = homeRepository.getCategories()
             if (response is Resource.Success) {
@@ -63,9 +65,12 @@ class FilterViewModel @Inject constructor(
                 _stateCategoryList.value = emptyList()
             }
         }
+
+         */
     }
 
     private fun getBrands() {
+        /*
         viewModelScope.launch {
             val response = homeRepository.getBrands()
             if (response is Resource.Success) {
@@ -74,9 +79,12 @@ class FilterViewModel @Inject constructor(
                 _stateBrandList.value = emptyList()
             }
         }
+
+         */
     }
 
     private fun getBrandsByCategory(category: String) {
+        /*
         viewModelScope.launch {
             val response = homeRepository.getBrandsByCategory(category)
             if (response is Resource.Success) {
@@ -85,5 +93,7 @@ class FilterViewModel @Inject constructor(
                 _stateBrandList.value = emptyList()
             }
         }
+
+         */
     }
 }

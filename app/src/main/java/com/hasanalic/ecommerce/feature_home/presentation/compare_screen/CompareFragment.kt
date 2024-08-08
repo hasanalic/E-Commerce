@@ -75,7 +75,7 @@ class CompareFragment: Fragment() {
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
             val productId = comparedAdapter.comparedProducts[viewHolder.layoutPosition].productId
-            viewModel.removeFromComparedProductList(productId)
+            //viewModel.removeFromComparedProductList(productId)
             comparedAdapter.notifyChanges()
         }
     }
@@ -98,8 +98,8 @@ class CompareFragment: Fragment() {
 
         viewModel = ViewModelProvider(requireActivity())[HomeViewModel::class.java]
         sharedViewModel = ViewModelProvider(requireActivity())[SharedViewModel::class.java]
-        viewModel.getComparedProductList()
-        viewModel.getShoppingCartCount(userId)
+        //viewModel.getComparedProductList()
+        //viewModel.getShoppingCartCount(userId)
 
         setRecyclerView()
 
@@ -107,6 +107,7 @@ class CompareFragment: Fragment() {
     }
 
     private fun observe() {
+        /*
         viewModel.stateComparedProductList.observe(viewLifecycleOwner) {
             comparedAdapter.comparedProducts = it
         }
@@ -114,6 +115,8 @@ class CompareFragment: Fragment() {
         viewModel.stateShoppingCartItemSize.observe(viewLifecycleOwner) {
             sharedViewModel.updateCartItemCount(it)
         }
+
+         */
     }
 
     private fun setRecyclerView() {
@@ -130,7 +133,7 @@ class CompareFragment: Fragment() {
     }
 
     private val launcherToProductDetail = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-        viewModel.getShoppingCartCount(userId)
+        //viewModel.getShoppingCartCount(userId)
     }
 
     override fun onDestroyView() {

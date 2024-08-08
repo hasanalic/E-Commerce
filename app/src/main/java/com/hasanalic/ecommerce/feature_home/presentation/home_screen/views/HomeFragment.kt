@@ -1,4 +1,4 @@
-package com.hasanalic.ecommerce.feature_home.presentation.home_screen
+package com.hasanalic.ecommerce.feature_home.presentation.home_screen.views
 
 import android.Manifest
 import android.app.Activity
@@ -23,20 +23,15 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.hasanalic.ecommerce.R
 import com.hasanalic.ecommerce.databinding.FragmentHomeBinding
-import com.hasanalic.ecommerce.feature_auth.presentation.AuthActivity
-import com.hasanalic.ecommerce.feature_product_detail.presentation.ProductDetailActivity
 import com.hasanalic.ecommerce.feature_filter.presentation.FilterActivity
-import com.hasanalic.ecommerce.feature_filter.presentation.util.FilterSingleton
 import com.hasanalic.ecommerce.feature_home.presentation.SharedViewModel
 import com.hasanalic.ecommerce.feature_home.presentation.barcode_screen.BarcodeScannerActivity
 import com.hasanalic.ecommerce.feature_home.presentation.filtered_category_screen.CategoryAdapter
 import com.hasanalic.ecommerce.feature_home.presentation.HomeActivity
+import com.hasanalic.ecommerce.feature_home.presentation.home_screen.HomeViewModel
 import com.hasanalic.ecommerce.feature_home.presentation.util.SearchQuery
 import com.hasanalic.ecommerce.utils.Constants.ANOMIM_USER_ID
 import com.hasanalic.ecommerce.utils.ItemDecoration
-import com.hasanalic.ecommerce.utils.Resource
-import com.hasanalic.ecommerce.utils.hide
-import com.hasanalic.ecommerce.utils.show
 import com.hasanalic.ecommerce.utils.toast
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
@@ -110,8 +105,8 @@ class HomeFragment: Fragment() {
         sharedViewModel = ViewModelProvider(requireActivity())[SharedViewModel::class.java]
         viewModel = ViewModelProvider(requireActivity())[HomeViewModel::class.java]
         viewModel.getProducts(userId)
-        viewModel.getShoppingCartCount(userId)
-        viewModel.resetProductIdStatus()
+        //viewModel.getShoppingCartCount(userId)
+        //viewModel.resetProductIdStatus()
 
         binding.materialViewFilter.setOnClickListener {
             val intent = Intent(requireActivity(), FilterActivity::class.java)
@@ -128,9 +123,10 @@ class HomeFragment: Fragment() {
         setCategoryFilterRecyclerView()
         setProductsRecyclerView()
 
-        observer()
+        //observer()
     }
 
+    /*
     private fun observer() {
         viewModel.stateCategories.observe(viewLifecycleOwner) {
             categoryAdapter.chipList = it
@@ -185,6 +181,8 @@ class HomeFragment: Fragment() {
         }
     }
 
+     */
+
     private fun setCategoryFilterRecyclerView() {
         binding.recyclerViewCategory.adapter = categoryAdapter
         binding.recyclerViewCategory.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL,false)
@@ -200,6 +198,7 @@ class HomeFragment: Fragment() {
         binding.recyclerViewHome.adapter = homeAdapter
         binding.recyclerViewHome.layoutManager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
 
+        /*
         homeAdapter.setAddCartButtonClickListener {
             viewModel.addShoppingCart(userId,it)
             homeAdapter.notifyChanges()
@@ -237,6 +236,8 @@ class HomeFragment: Fragment() {
             intent.putExtra(getString(R.string.product_id),it)
             launcher.launch(intent)
         }
+
+         */
     }
 
     private fun setFabMenu() {
@@ -304,7 +305,7 @@ class HomeFragment: Fragment() {
             data?.let {
                 val barcode = data.getStringExtra(getString(R.string.barcode))
                 barcode?.let {
-                    viewModel.getProductIdByBarcode(barcode)
+                    //viewModel.getProductIdByBarcode(barcode)
                 }
             }
         } else {
@@ -322,7 +323,7 @@ class HomeFragment: Fragment() {
             data?.let {
                 val res: ArrayList<String> = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS) as ArrayList<String>
                 SearchQuery.searchQuery = res.toList().joinToString()
-                viewModel.getFilteredProductsBySearchQuery(userId,res.toList().joinToString())
+                //viewModel.getFilteredProductsBySearchQuery(userId,res.toList().joinToString())
                 Navigation.findNavController(binding.root).navigate(R.id.action_homeFragment_to_filteredProductsFragment)
             }
         }
@@ -330,7 +331,7 @@ class HomeFragment: Fragment() {
 
     private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         viewModel.getProducts(userId)
-        viewModel.getShoppingCartCount(userId)
+        //viewModel.getShoppingCartCount(userId)
     }
 
     private val launcherFilterActivity = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {result ->
@@ -339,7 +340,7 @@ class HomeFragment: Fragment() {
             data?.let {
                 val receivedData = data.getBooleanExtra(requireActivity().getString(R.string.should_move_to_filtered_fragment), false)
                 if (receivedData) {
-                    viewModel.getFilteredProductsByFilter(userId, FilterSingleton.filter!!)
+                    //viewModel.getFilteredProductsByFilter(userId, FilterSingleton.filter!!)
                     Navigation.findNavController(binding.root).navigate(R.id.action_homeFragment_to_filteredProductsFragment)
                 }
             }

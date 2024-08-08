@@ -19,7 +19,7 @@ import com.hasanalic.ecommerce.feature_auth.presentation.AuthActivity
 import com.hasanalic.ecommerce.feature_product_detail.presentation.ProductDetailActivity
 import com.hasanalic.ecommerce.feature_home.presentation.home_screen.HomeViewModel
 import com.hasanalic.ecommerce.feature_home.presentation.SharedViewModel
-import com.hasanalic.ecommerce.feature_home.presentation.home_screen.HomeAdapter
+import com.hasanalic.ecommerce.feature_home.presentation.home_screen.views.HomeAdapter
 import com.hasanalic.ecommerce.feature_home.presentation.HomeActivity
 import com.hasanalic.ecommerce.utils.Constants
 import com.hasanalic.ecommerce.utils.Resource
@@ -61,7 +61,7 @@ class FilteredProductsByCategoryFragment: Fragment() {
         activity?.onBackPressedDispatcher?.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 Navigation.findNavController(binding.root).popBackStack()
-                viewModel.resetFilteredProductsStatus()
+                //viewModel.resetFilteredProductsStatus()
             }
         })
     }
@@ -90,16 +90,16 @@ class FilteredProductsByCategoryFragment: Fragment() {
 
         viewModel = ViewModelProvider(requireActivity())[HomeViewModel::class.java]
         sharedViewModel = ViewModelProvider(requireActivity())[SharedViewModel::class.java]
-        viewModel.getShoppingCartCount(userId)
+        //viewModel.getShoppingCartCount(userId)
 
         arguments?.getString("category")?.let {
-            viewModel.getFilteredProductsByCategory(userId,it)
+            //viewModel.getFilteredProductsByCategory(userId,it)
             binding.toolBarFilteredProductsByCategory.title = "Kategoriler/$it"
         }
 
         binding.toolBarFilteredProductsByCategory.setNavigationOnClickListener {
             Navigation.findNavController(it).popBackStack()
-            viewModel.resetFilteredProductsStatus()
+            //viewModel.resetFilteredProductsStatus()
         }
 
         binding.materialCardCompare.setOnClickListener {
@@ -112,6 +112,7 @@ class FilteredProductsByCategoryFragment: Fragment() {
     }
 
     private fun observe() {
+        /*
         viewModel.stateFilteredProducts.observe(viewLifecycleOwner) {
             when(it) {
                 is Resource.Success -> {
@@ -149,9 +150,12 @@ class FilteredProductsByCategoryFragment: Fragment() {
                 binding.materialCardCompare.hide()
             }
         }
+
+         */
     }
 
     private fun setRecyclerView() {
+        /*
         binding.recyclerViewFiltered.adapter = adapter
         binding.recyclerViewFiltered.layoutManager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
 
@@ -194,10 +198,12 @@ class FilteredProductsByCategoryFragment: Fragment() {
             intent.putExtra(getString(R.string.product_id),it)
             launcherToProductDetail.launch(intent)
         }
+
+         */
     }
 
     private val launcherToProductDetail = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-        viewModel.getShoppingCartCount(userId)
+        //viewModel.getShoppingCartCount(userId)
     }
 
     override fun onDestroyView() {

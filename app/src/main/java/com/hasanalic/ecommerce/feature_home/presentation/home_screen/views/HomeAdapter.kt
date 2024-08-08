@@ -1,4 +1,4 @@
-package com.hasanalic.ecommerce.feature_home.presentation.home_screen
+package com.hasanalic.ecommerce.feature_home.presentation.home_screen.views
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

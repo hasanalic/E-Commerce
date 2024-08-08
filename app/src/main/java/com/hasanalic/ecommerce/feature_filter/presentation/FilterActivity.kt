@@ -82,6 +82,7 @@ class FilterActivity : AppCompatActivity() {
     }
 
     private fun observe() {
+        /*
         viewModel.stateCategoryList.observe(this) {
             categoryFilterAdapter.chipList = it
             categoryFilterAdapter.notifyChanges()
@@ -91,6 +92,8 @@ class FilterActivity : AppCompatActivity() {
             brandFilterAdapter.chipList = it
             brandFilterAdapter.notifyChanges()
         }
+
+         */
     }
 
     private fun setRecyclerView() {

@@ -140,9 +140,9 @@ class ProductDetailFragment: Fragment() {
         binding.textViewPrice.text = "${product.productPriceWhole}.${product.productPriceCent.toCent()} TL"
         binding.textViewRate.text = product.productRate.toString()
         binding.textViewReviewCount.text = "(${product.productReviewCount})"
-        binding.textViewShipping.text = product.productShipping
-        binding.textViewStore.text = product.productStore
-        binding.textViewStoreRate.text = product.productStoreRate
+        //binding.textViewShipping.text = product.productShipping
+        //binding.textViewStore.text = product.productStore
+        //binding.textViewStoreRate.text = product.productStoreRate
         if (product.productRate < 4.0) {
             binding.imageViewStar.setImageResource(R.drawable.star_half)
         } else {

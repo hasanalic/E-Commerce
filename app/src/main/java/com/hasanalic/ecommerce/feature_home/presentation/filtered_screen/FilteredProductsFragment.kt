@@ -21,7 +21,7 @@ import com.hasanalic.ecommerce.feature_auth.presentation.AuthActivity
 import com.hasanalic.ecommerce.feature_product_detail.presentation.ProductDetailActivity
 import com.hasanalic.ecommerce.feature_home.presentation.home_screen.HomeViewModel
 import com.hasanalic.ecommerce.feature_home.presentation.SharedViewModel
-import com.hasanalic.ecommerce.feature_home.presentation.home_screen.HomeAdapter
+import com.hasanalic.ecommerce.feature_home.presentation.home_screen.views.HomeAdapter
 import com.hasanalic.ecommerce.feature_home.presentation.HomeActivity
 import com.hasanalic.ecommerce.feature_home.presentation.util.SearchQuery
 import com.hasanalic.ecommerce.utils.Constants
@@ -61,7 +61,7 @@ class FilteredProductsFragment: Fragment() {
         activity?.onBackPressedDispatcher?.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 Navigation.findNavController(binding.root).popBackStack()
-                viewModel.resetFilteredProductsStatus()
+                //viewModel.resetFilteredProductsStatus()
             }
         })
     }
@@ -101,7 +101,7 @@ class FilteredProductsFragment: Fragment() {
 
         viewModel = ViewModelProvider(requireActivity())[HomeViewModel::class.java]
         sharedViewModel = ViewModelProvider(requireActivity())[SharedViewModel::class.java]
-        viewModel.getShoppingCartCount(userId)
+        //viewModel.getShoppingCartCount(userId)
 
         SearchQuery.searchQuery?.let {
             binding.editTextSearch.setText(it)
@@ -112,7 +112,7 @@ class FilteredProductsFragment: Fragment() {
             if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
                 searchQuery = binding.editTextSearch.text.toString()
                 binding.result.text = "\"$searchQuery\" için sonuçlar"
-                viewModel.getFilteredProductsBySearchQuery(userId,searchQuery!!)
+                //viewModel.getFilteredProductsBySearchQuery(userId,searchQuery!!)
 
                 // Klavyeyi kapatmak için InputMethodManager kullanın
                 val imm = v.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -125,7 +125,7 @@ class FilteredProductsFragment: Fragment() {
 
         binding.textInputLayoutSearch.setStartIconOnClickListener {
             Navigation.findNavController(it).popBackStack()
-            viewModel.resetFilteredProductsStatus()
+            //viewModel.resetFilteredProductsStatus()
         }
 
         binding.materialCardCompare.setOnClickListener {
@@ -138,6 +138,7 @@ class FilteredProductsFragment: Fragment() {
     }
 
     private fun observe() {
+        /*
         viewModel.stateFilteredProducts.observe(viewLifecycleOwner) {
             when(it) {
                 is Resource.Success -> {
@@ -175,9 +176,12 @@ class FilteredProductsFragment: Fragment() {
                 binding.materialCardCompare.hide()
             }
         }
+
+         */
     }
 
     private fun setRecyclerView() {
+        /*
         binding.recyclerViewFiltered.adapter = adapter
         binding.recyclerViewFiltered.layoutManager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
 
@@ -220,10 +224,12 @@ class FilteredProductsFragment: Fragment() {
             intent.putExtra(getString(R.string.product_id),it)
             launcherToProductDetail.launch(intent)
         }
+
+         */
     }
 
     private val launcherToProductDetail = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-        viewModel.getShoppingCartCount(userId)
+        //viewModel.getShoppingCartCount(userId)
     }
 
     override fun onDestroyView() {

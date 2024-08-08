@@ -27,9 +27,12 @@ class ProductDetailViewModel @Inject constructor (
     val stateReviewList: LiveData<Resource<List<ReviewEntity>>>
         get() = _stateReviewList
 
+
     fun getProduct(userId: String, productId: String) {
+        /*
         _stateProduct.value = Resource.Loading()
         viewModelScope.launch {
+
             val response = homeRepository.getProductById(productId)
             if (response is Resource.Success) {
                 val responseFromShoppingCart = homeRepository.getShoppingCartByProductId(userId, productId)
@@ -62,17 +65,20 @@ class ProductDetailViewModel @Inject constructor (
                 _stateProduct.value = Resource.Error(null,response.message?:"")
             }
         }
+
+         */
     }
 
     fun getReviews(productId: String) {
         _stateReviewList.value = Resource.Loading()
         viewModelScope.launch {
-            val response = homeRepository.getReviewsByProductId(productId)
-            _stateReviewList.value = response
+            //val response = homeRepository.getReviewsByProductId(productId)
+            //_stateReviewList.value = response
         }
     }
 
     fun addToShoppingCart(userId: String, productId: String) {
+        /*
         viewModelScope.launch {
             val response = homeRepository.insertShoppingCartItems(ShoppingCartItemsEntity(userId,productId,1))
             if (response is Resource.Success) {
@@ -83,9 +89,12 @@ class ProductDetailViewModel @Inject constructor (
                 _stateProduct.value = Resource.Error(null,"Alışveriş sepetine eklenemedi.")
             }
         }
+
+         */
     }
 
     fun removeFromShoppingCart(userId: String, productId: String) {
+        /*
         viewModelScope.launch {
             val response = homeRepository.deleteShoppingCartItem(userId,productId)
             if (response is Resource.Success) {
@@ -96,9 +105,12 @@ class ProductDetailViewModel @Inject constructor (
                 _stateProduct.value = Resource.Error(null,"Alışveriş sepetinden silinemedi.")
             }
         }
+
+         */
     }
 
     fun addToFavorites(userId: String, productId: String) {
+        /*
         viewModelScope.launch {
             val response = homeRepository.insertFavorite(FavoritesEntity(userId,productId))
             if (response is Resource.Success) {
@@ -109,9 +121,12 @@ class ProductDetailViewModel @Inject constructor (
                 _stateProduct.value = Resource.Error(null,"Favorilere eklenemedi.")
             }
         }
+
+         */
     }
 
     fun removeFromFavorites(userId: String, productId: String) {
+        /*
         viewModelScope.launch {
             val response = homeRepository.deleteFavorite(userId,productId)
             if (response is Resource.Success) {
@@ -121,6 +136,8 @@ class ProductDetailViewModel @Inject constructor (
             } else {
                 _stateProduct.value = Resource.Error(null,"Favorilerden kaldırılamadı.")
             }
-        }
+        }i
+
+         */
     }
 }

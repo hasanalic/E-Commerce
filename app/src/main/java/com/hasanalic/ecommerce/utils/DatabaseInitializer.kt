@@ -321,7 +321,7 @@ class DatabaseInitializer @Inject constructor(
                 "9.1"
             ),
         )
-        homeRepository.insertProducts(*arrayOfProducts)
+        //homeRepository.insertProducts(*arrayOfProducts)
     }
 
     suspend fun initializeReviews() {
@@ -777,6 +777,6 @@ class DatabaseInitializer @Inject constructor(
             ),
 
         )
-        homeRepository.insertAllReviews(*arrayOfReviews)
+        //homeRepository.insertAllReviews(*arrayOfReviews)
     }
 }

@@ -1,6 +1,6 @@
 package com.hasanalic.ecommerce.feature_home.domain.model
 
-data class Chip(
-    var value: String,
+data class Category(
+    var category: String,
     var isSelected: Boolean = false
 )

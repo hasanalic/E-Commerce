@@ -6,32 +6,32 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.hasanalic.ecommerce.databinding.RecyclerItemCategoryBinding
-import com.hasanalic.ecommerce.feature_home.domain.model.Chip
+import com.hasanalic.ecommerce.feature_home.domain.model.Category
 
 class CategoryAdapter: RecyclerView.Adapter<CategoryAdapter.MyViewHolder>() {
 
-    private val diffUtil = object : DiffUtil.ItemCallback<Chip>() {
-        override fun areItemsTheSame(oldItem: Chip, newItem: Chip): Boolean {
+    private val diffUtil = object : DiffUtil.ItemCallback<Category>() {
+        override fun areItemsTheSame(oldItem: Category, newItem: Category): Boolean {
             return oldItem == newItem
         }
-        override fun areContentsTheSame(oldItem: Chip, newItem: Chip): Boolean {
+        override fun areContentsTheSame(oldItem: Category, newItem: Category): Boolean {
             return oldItem == newItem
         }
     }
 
     private val recyclerListDiffer = AsyncListDiffer(this,diffUtil)
 
-    var chipList: List<Chip>
+    var chipList: List<Category>
         get() = recyclerListDiffer.currentList
         set(value) = recyclerListDiffer.submitList(value)
 
     inner class MyViewHolder(private val binding: RecyclerItemCategoryBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Chip) {
-            binding.chip.text = item.value
+        fun bind(item: Category) {
+            binding.chip.text = item.category
 
             binding.chip.setOnClickListener {
                 onChipClickListener?.let {
-                    it(item.value)
+                    it(item.category)
                 }
             }
         }

@@ -11,10 +11,7 @@ data class Product(
     val productRate: Double,
     val productReviewCount: String,
     var productBarcode: String,
-    var addedToShoppingCart: Boolean = false,
-    var addedToFavorites: Boolean = false,
-    var addedToCompare: Boolean = false,
-    var productShipping: String? = null,
-    var productStore: String? = null,
-    var productStoreRate: String? = null
+    var addedToShoppingCart: Boolean,
+    var addedToFavorites: Boolean,
+    var addedToCompare: Boolean = false
 )

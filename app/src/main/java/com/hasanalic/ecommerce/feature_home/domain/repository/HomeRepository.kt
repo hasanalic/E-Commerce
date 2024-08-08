@@ -1,62 +1,45 @@
 package com.hasanalic.ecommerce.feature_home.domain.repository
 
-import com.hasanalic.ecommerce.feature_home.data.local.entity.FavoritesEntity
+import com.hasanalic.ecommerce.core.domain.model.DataError
+import com.hasanalic.ecommerce.core.domain.model.Result
 import com.hasanalic.ecommerce.feature_home.data.local.entity.ProductEntity
-import com.hasanalic.ecommerce.feature_product_detail.data.entity.ReviewEntity
-import com.hasanalic.ecommerce.feature_home.data.local.entity.ShoppingCartItemsEntity
-import com.hasanalic.ecommerce.feature_home.domain.model.Chip
 import com.hasanalic.ecommerce.feature_filter.presentation.util.Filter
+import com.hasanalic.ecommerce.feature_home.domain.model.Brand
+import com.hasanalic.ecommerce.feature_home.domain.model.Category
+import com.hasanalic.ecommerce.feature_home.domain.model.Product
 import com.hasanalic.ecommerce.utils.Resource
 
 interface HomeRepository {
 
-    suspend fun getProducts(): Resource<List<ProductEntity>>
+    suspend fun getProductsByUserId(userId: String): Result<List<Product>, DataError.Local>
 
-    suspend fun insertProducts(vararg products: ProductEntity): Resource<Boolean>
+    suspend fun getCategories(): Result<List<Category>, DataError.Local>
 
-    suspend fun getShoppingCartItems(userId: String): Resource<List<ShoppingCartItemsEntity>>
+    suspend fun getBrands(): Result<List<Brand>, DataError.Local>
 
-    suspend fun getShoppingCartCount(userId: String): Resource<Int>
+    suspend fun getBrandsByCategory(category: String): Result<List<Brand>, DataError.Local>
 
-    suspend fun insertShoppingCartItems(shoppingCartItemsEntity: ShoppingCartItemsEntity): Resource<Boolean>
+    suspend fun getProductEntityIdByBarcode(productBarcode: String): Result<Int, DataError.Local>
 
-    suspend fun insertAllShoppingCartItems(vararg shoppingCartItemsEntities: ShoppingCartItemsEntity): Resource<Boolean>
+    // Db initialize
+    suspend fun insertAllProductEntities(vararg products: ProductEntity): Result<Unit, DataError.Local>
 
-    suspend fun updateShoppingCartItem(userId: String, productId: String, quantity: String): Resource<Boolean>
+    // Filter
+    suspend fun getProductEntitiesBySearchQuery(searchQuery: String): Resource<List<ProductEntity>>
 
-    suspend fun deleteShoppingCartItem(userId: String, productId: String): Resource<Boolean>
-
-    suspend fun getFavorites(userId: String): Resource<List<FavoritesEntity>>
-
-    suspend fun insertFavorite(favoritesEntity: FavoritesEntity): Resource<Boolean>
-
-    suspend fun deleteFavorite(userId: String, productId: String): Resource<Boolean>
-
-    suspend fun getFavoriteProducts(favoriteProductIds: List<String>): Resource<List<ProductEntity>>
-
-    suspend fun getProductsBySearchQuery(searchQuery: String): Resource<List<ProductEntity>>
-
-    suspend fun getProductsByCategory(productCategory: String): Resource<List<ProductEntity>>
-
-    suspend fun getProductIdByBarcode(productBarcode: String): Resource<Int>
-
-    suspend fun getProductById(productId: String): Resource<ProductEntity>
-
-    suspend fun getReviewsByProductId(productId: String): Resource<List<ReviewEntity>>
-
-    suspend fun insertAllReviews(vararg reviews: ReviewEntity): Resource<Boolean>
-
-    suspend fun getFavoriteByProductId(userId: String, productId: String): Resource<Boolean>
-
-    suspend fun getShoppingCartByProductId(userId: String, productId: String): Resource<Boolean>
+    suspend fun getProductEntitiesByCategory(productCategory: String): Resource<List<ProductEntity>>
 
     suspend fun getProductsByFilter(filter: Filter): Resource<List<ProductEntity>>
 
-    suspend fun getShoppingCartItemCount(userId: String): Resource<Int>
 
-    suspend fun getCategories(): Resource<List<Chip>>
 
-    suspend fun getBrands(): Resource<List<Chip>>
+    //suspend fun getProductEntities(): Resource<List<ProductEntity>>
 
-    suspend fun getBrandsByCategory(category: String): Resource<List<Chip>>
+    //suspend fun getFavoriteByProductId(userId: String, productId: String): Resource<Boolean>
+
+    //suspend fun getShoppingCartByProductId(userId: String, productId: String): Resource<Boolean>
+
+    //suspend fun getReviewsByProductId(productId: String): Resource<List<ReviewEntity>>
+
+    //suspend fun insertAllReviews(vararg reviews: ReviewEntity): Resource<Boolean>
 }
