@@ -29,7 +29,7 @@ class HomeViewModel @Inject constructor(
         getCategories()
     }
 
-    private fun getCategories() {
+    fun getCategories() {
         viewModelScope.launch {
             when(val result = homeUseCases.getCategoriesUseCase()) {
                 is Result.Error -> handleGetCategoriesError(result.error)

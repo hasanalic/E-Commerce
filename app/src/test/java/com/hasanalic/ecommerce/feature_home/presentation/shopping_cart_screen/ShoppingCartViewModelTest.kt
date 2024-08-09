@@ -88,7 +88,7 @@ class ShoppingCartViewModelTest {
     }
 
     @Test
-    fun `removeItemFromShoppingCart returns action error when deletion fails`() = runBlocking {
+    fun `removeItemFromShoppingCart triggers action error when deletion fails`() = runBlocking {
         shoppingCartViewModel.getShoppingCartItemList("1")
         shoppingCartViewModel.removeItemFromShoppingCart("1","2",0)
 

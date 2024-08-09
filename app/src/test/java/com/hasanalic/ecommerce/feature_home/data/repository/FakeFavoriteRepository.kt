@@ -47,6 +47,6 @@ class FakeFavoriteRepository : FavoriteRepository {
         userId: String,
         productId: String
     ): Result<Unit, DataError.Local> {
-        return Result.Success(Unit)
+        return if (productId == mutableFavoriteProductDtoList[0].productId.toString()) Result.Success(Unit) else Result.Error(DataError.Local.DELETION_FAILED)
     }
 }
