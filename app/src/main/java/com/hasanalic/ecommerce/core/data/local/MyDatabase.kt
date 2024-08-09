@@ -9,7 +9,7 @@ import com.hasanalic.ecommerce.feature_orders.data.entity.OrderEntity
 import com.hasanalic.ecommerce.feature_orders.data.entity.OrderProductsEntity
 import com.hasanalic.ecommerce.feature_checkout.data.local.entity.PaymentEntity
 import com.hasanalic.ecommerce.feature_home.data.local.entity.ProductEntity
-import com.hasanalic.ecommerce.feature_product_detail.data.entity.ReviewEntity
+import com.hasanalic.ecommerce.feature_product_detail.data.local.entity.ReviewEntity
 import com.hasanalic.ecommerce.feature_home.data.local.entity.ShoppingCartItemsEntity
 import com.hasanalic.ecommerce.feature_auth.data.local.entities.UserEntity
 import com.hasanalic.ecommerce.feature_auth.data.local.UserDao

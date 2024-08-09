@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hasanalic.ecommerce.feature_home.data.local.entity.FavoritesEntity
 import com.hasanalic.ecommerce.feature_home.domain.model.Product
-import com.hasanalic.ecommerce.feature_product_detail.data.entity.ReviewEntity
+import com.hasanalic.ecommerce.feature_product_detail.data.local.entity.ReviewEntity
 import com.hasanalic.ecommerce.feature_home.data.local.entity.ShoppingCartItemsEntity
 import com.hasanalic.ecommerce.feature_home.domain.repository.HomeRepository
 import com.hasanalic.ecommerce.utils.Resource

@@ -2,7 +2,7 @@ package com.hasanalic.ecommerce.utils
 
 import android.content.Context
 import com.hasanalic.ecommerce.feature_home.data.local.entity.ProductEntity
-import com.hasanalic.ecommerce.feature_product_detail.data.entity.ReviewEntity
+import com.hasanalic.ecommerce.feature_product_detail.data.local.entity.ReviewEntity
 import com.hasanalic.ecommerce.feature_home.domain.repository.HomeRepository
 import javax.inject.Inject
 
