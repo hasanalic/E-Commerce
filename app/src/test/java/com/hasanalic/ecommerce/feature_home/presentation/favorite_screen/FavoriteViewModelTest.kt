@@ -90,6 +90,23 @@ class FavoriteViewModelTest {
 
         val state = favoriteViewModel.favoriteState.getOrAwaitValue()
         assertThat(state.favoriteProductList).isEmpty()
+
+        assertThat(state.isLoading).isFalse()
+        assertThat(state.dataError).isNull()
+        assertThat(state.actionError).isNull()
+    }
+
+    @Test
+    fun `removeProductFromFavorites triggers action error when deletion fails`() {
+        favoriteViewModel.getUserFavoriteProducts("1")
+        favoriteViewModel.removeProductFromFavorites("1","2",0)
+
+        val state = favoriteViewModel.favoriteState.getOrAwaitValue()
+        assertThat(state.favoriteProductList).isNotEmpty()
+        assertThat(state.actionError).isNotEmpty()
+
+        assertThat(state.isLoading).isFalse()
+        assertThat(state.dataError).isNull()
     }
 
     @Test
@@ -99,14 +116,40 @@ class FavoriteViewModelTest {
 
         val state = favoriteViewModel.favoriteState.getOrAwaitValue()
         assertThat(state.favoriteProductList[0].addedToShoppingCart).isTrue()
+
+        assertThat(state.favoriteProductList).isNotEmpty()
+        assertThat(state.isLoading).isFalse()
+        assertThat(state.dataError).isNull()
+        assertThat(state.actionError).isNull()
     }
 
     @Test
     fun `removeProductFromCart successfuly removes item from cart`() {
         favoriteViewModel.getUserFavoriteProducts("1")
+        favoriteViewModel.addProductToCart("1","1", 0)
         favoriteViewModel.removeProductFromCart("1","1",0)
 
         val state = favoriteViewModel.favoriteState.getOrAwaitValue()
         assertThat(state.favoriteProductList[0].addedToShoppingCart).isFalse()
+
+        assertThat(state.favoriteProductList).isNotEmpty()
+        assertThat(state.isLoading).isFalse()
+        assertThat(state.dataError).isNull()
+        assertThat(state.actionError).isNull()
+    }
+
+    @Test
+    fun `removeProductFromCart triggers action error when deletion fails`() {
+        favoriteViewModel.getUserFavoriteProducts("1")
+        favoriteViewModel.addProductToCart("1","1", 0)
+        favoriteViewModel.removeProductFromCart("1","2",0)
+
+        val state = favoriteViewModel.favoriteState.getOrAwaitValue()
+        assertThat(state.favoriteProductList[0].addedToShoppingCart).isTrue()
+        assertThat(state.actionError).isNotEmpty()
+
+        assertThat(state.favoriteProductList).isNotEmpty()
+        assertThat(state.isLoading).isFalse()
+        assertThat(state.dataError).isNull()
     }
 }

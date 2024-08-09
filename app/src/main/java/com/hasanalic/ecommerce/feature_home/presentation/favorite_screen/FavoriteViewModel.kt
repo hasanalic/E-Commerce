@@ -126,13 +126,13 @@ class FavoriteViewModel @Inject constructor(
     private fun handleRemoveProductFromCartError(error: DataError.Local) {
         when (error) {
             DataError.Local.DELETION_FAILED -> {
-                _favoriteState.value = FavoriteState(
-                    actionError = "Bilinmeyen bir hata meydana geldi."
+                _favoriteState.value = _favoriteState.value!!.copy(
+                    actionError = "Ürün sepetten kaldırılamadı.."
                 )
             }
 
             DataError.Local.UNKNOWN -> {
-                _favoriteState.value = FavoriteState(
+                _favoriteState.value = _favoriteState.value!!.copy(
                     actionError = "Bilinmeyen bir hata meydana geldi."
                 )
             }
