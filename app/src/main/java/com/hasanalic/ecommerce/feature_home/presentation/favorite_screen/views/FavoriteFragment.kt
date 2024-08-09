@@ -89,12 +89,12 @@ class FavoriteFragment: Fragment() {
 
         favoriteAdapter.setOnRemoveFromFavoriteClickListener { productId, position ->
             showRemoveFromFavoriteWarningDialog(userId, productId, position)
-            favoriteAdapter.notifyChanges()
+            favoriteAdapter.notifyItemRemovedInAdapter(position)
         }
 
         favoriteAdapter.setOnAddCartButtonClickListener { productId, position ->
             viewModel.addProductToCart(userId, productId, position)
-            favoriteAdapter.notifyChanges()
+            favoriteAdapter.notifyItemChangedInAdapter(position)
         }
 
         favoriteAdapter.setOnRemoveFromCartButtonClickListener { productId, position ->
@@ -113,11 +113,9 @@ class FavoriteFragment: Fragment() {
         alertDialogBuilder.setMessage("Ürünü favorilerden kaldırmak istediğine emin misin?")
         alertDialogBuilder.setPositiveButton("Kaldır") { _, _ ->
             viewModel.removeProductFromFavorites(userId, productId, itemIndex)
-            favoriteAdapter.notifyChanges()
+            favoriteAdapter.notifyItemRemovedInAdapter(itemIndex)
         }
-        alertDialogBuilder.setNegativeButton("Vazgeç") { _, _ ->
-            favoriteAdapter.notifyChanges()
-        }
+        alertDialogBuilder.setNegativeButton("Vazgeç") { _, _ -> }
 
         alertDialogBuilder.create().show()
     }
@@ -151,7 +149,7 @@ class FavoriteFragment: Fragment() {
                 binding.emptyFavorite.hide()
                 favoriteAdapter.favoriteProducts = it.toList()
             }
-            favoriteAdapter.notifyChanges()
+            favoriteAdapter.notifyDataSetChangedInAdapter()
         }
 
         state.dataError?.let {
@@ -193,27 +191,6 @@ class FavoriteFragment: Fragment() {
 
         viewModel.stateShoppingCartItemSize.observe(viewLifecycleOwner) {
             sharedViewModel.updateCartItemCount(it)
-        }
-    }
-     */
-
-    /*
-    private fun setRecyclerView() {
-        binding.recyclerViewFavorite.adapter = favoriteAdapter
-        binding.recyclerViewFavorite.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-
-        favoriteAdapter.setOnFavoriteClickListener {
-            showUnFavoriteWarning(userId, , 1)
-            favoriteAdapter.notifyChanges()
-        }
-        favoriteAdapter.setOnCartButtonClickListener {
-            viewModel.changeAddToShoppingCart(userId,it)
-            favoriteAdapter.notifyChanges()
-        }
-        favoriteAdapter.setOnCardClickListener {
-            val intent = Intent(requireActivity(), ProductDetailActivity::class.java)
-            intent.putExtra(getString(R.string.product_id),it)
-            launcher.launch(intent)
         }
     }
      */

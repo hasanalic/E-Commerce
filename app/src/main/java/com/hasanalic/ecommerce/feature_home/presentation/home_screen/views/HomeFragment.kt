@@ -23,15 +23,20 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.hasanalic.ecommerce.R
 import com.hasanalic.ecommerce.databinding.FragmentHomeBinding
+import com.hasanalic.ecommerce.feature_auth.presentation.AuthActivity
 import com.hasanalic.ecommerce.feature_filter.presentation.FilterActivity
 import com.hasanalic.ecommerce.feature_home.presentation.SharedViewModel
 import com.hasanalic.ecommerce.feature_home.presentation.barcode_screen.BarcodeScannerActivity
 import com.hasanalic.ecommerce.feature_home.presentation.filtered_category_screen.CategoryAdapter
 import com.hasanalic.ecommerce.feature_home.presentation.HomeActivity
+import com.hasanalic.ecommerce.feature_home.presentation.home_screen.HomeState
 import com.hasanalic.ecommerce.feature_home.presentation.home_screen.HomeViewModel
 import com.hasanalic.ecommerce.feature_home.presentation.util.SearchQuery
+import com.hasanalic.ecommerce.feature_product_detail.presentation.ProductDetailActivity
 import com.hasanalic.ecommerce.utils.Constants.ANOMIM_USER_ID
 import com.hasanalic.ecommerce.utils.ItemDecoration
+import com.hasanalic.ecommerce.utils.hide
+import com.hasanalic.ecommerce.utils.show
 import com.hasanalic.ecommerce.utils.toast
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
@@ -46,10 +51,6 @@ class HomeFragment: Fragment() {
 
     private var isFabMenuOpen: Boolean = false
 
-    /*
-    private lateinit var auth: FirebaseAuth
-
-     */
     private var userId: String = ANOMIM_USER_ID
 
     private val homeAdapter by lazy {
@@ -84,15 +85,6 @@ class HomeFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        /*
-        auth = FirebaseAuth.getInstance()
-        val currentUser = auth.currentUser
-        currentUser?.let {
-            userId = it.uid
-        }
-
-         */
-
         permissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) {result ->
             if (result) {
                 val intent = Intent(requireActivity(), BarcodeScannerActivity::class.java)
@@ -108,146 +100,25 @@ class HomeFragment: Fragment() {
         //viewModel.getShoppingCartCount(userId)
         //viewModel.resetProductIdStatus()
 
-        binding.materialViewFilter.setOnClickListener {
-            val intent = Intent(requireActivity(), FilterActivity::class.java)
-            launcherFilterActivity.launch(intent)
-        }
-        binding.editTextSearch.setOnClickListener {
-            Navigation.findNavController(it).navigate(R.id.action_homeFragment_to_filteredProductsFragment)
-        }
-        binding.materialCardCompare.setOnClickListener {
-            Navigation.findNavController(it).navigate(R.id.action_homeFragment_to_compareFragment)
-        }
 
-        setFabMenu()
-        setCategoryFilterRecyclerView()
-        setProductsRecyclerView()
+        setupFloatingActionButtons()
 
-        //observer()
+        setupListeners()
+
+        setupRecyclerViewCategory()
+
+        setupRecyclerViewHome()
+
+        setupObservers()
     }
 
-    /*
-    private fun observer() {
-        viewModel.stateCategories.observe(viewLifecycleOwner) {
-            categoryAdapter.chipList = it
-            categoryAdapter.notifyChanges()
-        }
-
-        viewModel.stateProduct.observe(viewLifecycleOwner) {
-            when(it) {
-                is Resource.Success -> {
-                    binding.progressBarHome.hide()
-                    homeAdapter.products = it.data?.toList()?: listOf()
-                    homeAdapter.notifyChanges()
-                }
-                is Resource.Error -> {
-                    binding.progressBarHome.hide()
-                    toast(requireContext(),it.message?:"hata var!",false)
-                }
-                is Resource.Loading -> {
-                    binding.progressBarHome.show()
-                }
-            }
-        }
-
-        viewModel.stateCompareCounter.observe(viewLifecycleOwner) {
-            if (it != 0) {
-                binding.materialCardCompare.show()
-            } else {
-                binding.materialCardCompare.hide()
-            }
-        }
-
-        viewModel.stateProductId.observe(viewLifecycleOwner) {
-            when(it) {
-                is Resource.Success -> {
-                    binding.progressBarHome.hide()
-                    val intent = Intent(requireActivity(), ProductDetailActivity::class.java)
-                    intent.putExtra(getString(R.string.product_id),it.data.toString())
-                    launcher.launch(intent)
-                }
-                is Resource.Loading -> {
-                    binding.progressBarHome.show()
-                }
-                is Resource.Error -> {
-                    binding.progressBarHome.hide()
-                    toast(requireContext(),it.message!!,false)
-                }
-            }
-        }
-
-        viewModel.stateShoppingCartItemSize.observe(viewLifecycleOwner) {
-            sharedViewModel.updateCartItemCount(it)
-        }
-    }
-
-     */
-
-    private fun setCategoryFilterRecyclerView() {
-        binding.recyclerViewCategory.adapter = categoryAdapter
-        binding.recyclerViewCategory.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL,false)
-        binding.recyclerViewCategory.addItemDecoration(ItemDecoration(0,16,0))
-
-        categoryAdapter.setOnChipClickListener {
-            val action = HomeFragmentDirections.actionHomeFragmentToFilteredProductsByCategoryFragment(it)
-            findNavController().navigate(action)
-        }
-    }
-
-    private fun setProductsRecyclerView() {
-        binding.recyclerViewHome.adapter = homeAdapter
-        binding.recyclerViewHome.layoutManager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
-
-        /*
-        homeAdapter.setAddCartButtonClickListener {
-            viewModel.addShoppingCart(userId,it)
-            homeAdapter.notifyChanges()
-        }
-        homeAdapter.setRemoveCartButtonClickListener {
-            viewModel.removeFromShoppingCart(userId,it)
-            homeAdapter.notifyChanges()
-        }
-        homeAdapter.setOnCompareClickListener {
-            viewModel.clickOnCompare(it)
-            homeAdapter.notifyChanges()
-        }
-        homeAdapter.setAddFavoriteClickListener {
-            if (userId != ANOMIM_USER_ID) {
-                viewModel.addFavorite(userId,it)
-            } else {
-                toast(requireContext(),"Favori işlemleri için giriş yapmalısınız.",false)
-                val intent = Intent(requireActivity(), AuthActivity::class.java)
-                startActivity(intent)
-                requireActivity().finish()
-            }
-        }
-        homeAdapter.removeFavoriteClickListener {
-            if (userId != ANOMIM_USER_ID) {
-                viewModel.removeFromFavorite(userId,it)
-            } else {
-                toast(requireContext(),"Favori işlemleri için giriş yapmalısınız.",false)
-                val intent = Intent(requireActivity(), AuthActivity::class.java)
-                startActivity(intent)
-                requireActivity().finish()
-            }
-        }
-        homeAdapter.setOnProductClickListener {
-            val intent = Intent(requireActivity(), ProductDetailActivity::class.java)
-            intent.putExtra(getString(R.string.product_id),it)
-            launcher.launch(intent)
-        }
-
-         */
-    }
-
-    private fun setFabMenu() {
+    private fun setupFloatingActionButtons() {
         binding.extendedFabSettings.hide()
         binding.floatingActionButtonBarcode.hide()
         binding.floatingActionButtonVoice.hide()
 
         binding.floatingActionButtonMainAdd.setOnClickListener {
             toggleFabMenu()
-
         }
         binding.extendedFabSettings.setOnClickListener {
             toggleFabMenu()
@@ -284,6 +155,121 @@ class HomeFragment: Fragment() {
             binding.floatingActionButtonBarcode.show()
         }
         isFabMenuOpen = !isFabMenuOpen
+    }
+
+    private fun setupListeners() {
+        binding.materialViewFilter.setOnClickListener {
+            val intent = Intent(requireActivity(), FilterActivity::class.java)
+            launcherFilterActivity.launch(intent)
+        }
+        binding.editTextSearch.setOnClickListener {
+            Navigation.findNavController(it).navigate(R.id.action_homeFragment_to_filteredProductsFragment)
+        }
+        binding.materialCardCompare.setOnClickListener {
+            Navigation.findNavController(it).navigate(R.id.action_homeFragment_to_compareFragment)
+        }
+    }
+
+    private fun setupRecyclerViewCategory() {
+        binding.recyclerViewCategory.adapter = categoryAdapter
+        binding.recyclerViewCategory.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL,false)
+        binding.recyclerViewCategory.addItemDecoration(ItemDecoration(0,16,0))
+
+        categoryAdapter.setOnChipClickListener {
+            val action = HomeFragmentDirections.actionHomeFragmentToFilteredProductsByCategoryFragment(it)
+            findNavController().navigate(action)
+        }
+    }
+
+    private fun setupRecyclerViewHome() {
+        binding.recyclerViewHome.adapter = homeAdapter
+        binding.recyclerViewHome.layoutManager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
+
+        homeAdapter.setAddProductToCartButtonClickListener { productId, position ->
+            viewModel.addProductToCart(userId, productId, position)
+            homeAdapter.notifyItemChangedInAdapter(position)
+        }
+
+        homeAdapter.setRemoveProductFromCartButtonClickListener { productId, position ->
+            viewModel.removeProductFromCart(userId, productId, position)
+            homeAdapter.notifyItemChangedInAdapter(position)
+        }
+
+        homeAdapter.setAddProductToFavoritesClickListener { productId, position ->
+            if (userId != ANOMIM_USER_ID) {
+                viewModel.addProductToFavorites(userId, productId, position)
+                homeAdapter.notifyItemChangedInAdapter(position)
+            } else {
+                toast(requireContext(),"Favori işlemleri için giriş yapmalısınız.",false)
+                val intent = Intent(requireActivity(), AuthActivity::class.java)
+                startActivity(intent)
+                requireActivity().finish()
+            }
+        }
+
+        homeAdapter.setRemoveProductFromFavoritesClickListener { productId, position ->
+            if (userId != ANOMIM_USER_ID) {
+                viewModel.removeProductFromFavorites(userId, productId, position)
+                homeAdapter.notifyItemChangedInAdapter(position)
+            } else {
+                toast(requireContext(),"Favori işlemleri için giriş yapmalısınız.",false)
+                val intent = Intent(requireActivity(), AuthActivity::class.java)
+                startActivity(intent)
+                requireActivity().finish()
+            }
+        }
+
+        homeAdapter.setAddProductToCompareClickListener { productId, position ->
+            TODO()
+        }
+
+        homeAdapter.setRemoveProductFromCompareClickListener { productId, position ->
+            TODO()
+        }
+
+        homeAdapter.setOnProductClickListener { productId ->
+            val intent = Intent(requireActivity(), ProductDetailActivity::class.java)
+            intent.putExtra(getString(R.string.product_id),productId)
+            launcher.launch(intent)
+        }
+    }
+
+    private fun setupObservers() {
+        viewModel.homeState.observe(viewLifecycleOwner) { state ->
+            handleHomeState(state)
+        }
+    }
+
+    private fun handleHomeState(state: HomeState) {
+        if (state.isLoading) {
+            binding.progressBarHome.show()
+            binding.recyclerViewHome.hide()
+            binding.recyclerViewCategory.hide()
+        } else {
+            binding.progressBarHome.hide()
+            binding.recyclerViewHome.show()
+            binding.recyclerViewCategory.show()
+        }
+
+        state.productList.let {
+            homeAdapter.products = it.toList()
+            homeAdapter.notifyDataSetChangedInAdapter()
+        }
+
+        state.categoryList.let {
+            categoryAdapter.categoryList = it.toList()
+            categoryAdapter.notifyChanges()
+        }
+
+        state.dataError?.let {
+            binding.recyclerViewHome.hide()
+            binding.recyclerViewCategory.hide()
+            TODO("DATA ERROR TEXTVIEW")
+        }
+
+        state.actionError?.let {
+            toast(requireContext(), it, false)
+        }
     }
 
     private fun speachToTextAndSearch() {

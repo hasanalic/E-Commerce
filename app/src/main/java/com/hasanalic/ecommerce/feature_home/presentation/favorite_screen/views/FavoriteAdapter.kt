@@ -118,8 +118,16 @@ class FavoriteAdapter: RecyclerView.Adapter<FavoriteAdapter.MyViewHolder>() {
         onRemoveFromFavoriteClickListener = listener
     }
 
-    fun notifyChanges() {
+    fun notifyDataSetChangedInAdapter() {
         notifyDataSetChanged()
+    }
+
+    fun notifyItemChangedInAdapter(position: Int) {
+        notifyItemChanged(position)
+    }
+
+    fun notifyItemRemovedInAdapter(position: Int) {
+        notifyItemRemoved(position)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {

@@ -30,14 +30,14 @@ class HomeAdapter: RecyclerView.Adapter<HomeAdapter.MyViewHolder>() {
         set(value) = recyclerListDiffer.submitList(value)
 
     inner class MyViewHolder(private val binding: RecyclerItemProductBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(product: Product) {
+        fun bind(product: Product, position: Int) {
             binding.imageViewProduct.glide(product.productPhoto, placeHolderProgressBar(binding.root.context))
             binding.textViewProductBrand.text = product.productBrand
             binding.textViewProductDetail.text = product.productDetail
             binding.textViewProductPrice.text = "${product.productPriceWhole}.${product.productPriceCent.toCent()} TL"
+            binding.textViewReviewCount.text = "(${product.productReviewCount})"
             binding.textViewRate.text = product.productRate.toString()
             setStarsByProductRate(product.productRate.toString())
-            binding.textViewReviewCount.text = "(${product.productReviewCount})"
 
             if (product.addedToCompare) {
                 binding.checkboxCompare.isChecked = true
@@ -62,7 +62,7 @@ class HomeAdapter: RecyclerView.Adapter<HomeAdapter.MyViewHolder>() {
                 binding.buttonAddCart.setBackgroundColor(binding.root.resources.getColor(R.color.color_primary))
             }
 
-            setClickListeners(product)
+            setClickListeners(product, position)
         }
 
         private fun setStarsByProductRate(productRate: String) {
@@ -88,32 +88,38 @@ class HomeAdapter: RecyclerView.Adapter<HomeAdapter.MyViewHolder>() {
             }
         }
 
-        private fun setClickListeners(product: Product) {
+        private fun setClickListeners(product: Product, position: Int) {
             binding.buttonAddCart.setOnClickListener {
                 if (product.addedToShoppingCart) {
-                    removeCartButtonClickListener?.let {
-                        it(product.productId)
+                    removeProductFromCartButtonClickListener?.let {
+                        it(product.productId, position)
                     }
                 } else {
-                    addCartButtonClickListener?.let {
-                        it(product.productId)
+                    addProductToCartButtonClickListener?.let {
+                        it(product.productId, position)
                     }
                 }
             }
             binding.imageViewFavorite.setOnClickListener {
                 if (product.addedToFavorites) {
-                    removeFavoriteClickListener?.let {
-                        it(product.productId)
+                    removeProductFromFavoritesClickListener?.let {
+                        it(product.productId, position)
                     }
                 } else {
-                    addFavoriteClickListener?.let {
-                        it(product.productId)
+                    addProductToFavoritesClickListener?.let {
+                        it(product.productId, position)
                     }
                 }
             }
             binding.checkboxCompare.setOnClickListener {
-                onCompareClickListener?.let {
-                    it(product.productId)
+                if (product.addedToCompare) {
+                    removeProductFromCompareClickListener?.let {
+                        it(product.productId, position)
+                    }
+                } else {
+                    addProductToCompareClickListener?.let {
+                        it(product.productId, position)
+                    }
                 }
             }
             binding.materialCardProductItem.setOnClickListener {
@@ -124,34 +130,52 @@ class HomeAdapter: RecyclerView.Adapter<HomeAdapter.MyViewHolder>() {
         }
     }
 
-    private var addCartButtonClickListener: ((String) -> Unit)? = null
-    private var removeCartButtonClickListener: ((String) -> Unit)? = null
+    private var addProductToCartButtonClickListener: ((String, Int) -> Unit)? = null
+    private var removeProductFromCartButtonClickListener: ((String, Int) -> Unit)? = null
     private var onProductClickListener: ((String) -> Unit)? = null
-    private var addFavoriteClickListener: ((String) -> Unit)? = null
-    private var removeFavoriteClickListener: ((String) -> Unit)? = null
-    private var onCompareClickListener: ((String) -> Unit)? = null
+    private var addProductToFavoritesClickListener: ((String, Int) -> Unit)? = null
+    private var removeProductFromFavoritesClickListener: ((String, Int) -> Unit)? = null
+    private var removeProductFromCompareClickListener: ((String, Int) -> Unit)? = null
+    private var addProductToCompareClickListener: ((String, Int) -> Unit)? = null
 
-    fun setAddCartButtonClickListener(listener: (String) -> Unit) {
-        addCartButtonClickListener = listener
+    fun setAddProductToCartButtonClickListener(listener: (String, Int) -> Unit) {
+        addProductToCartButtonClickListener = listener
     }
-    fun setRemoveCartButtonClickListener(listener: (String) -> Unit) {
-        removeCartButtonClickListener = listener
+
+    fun setRemoveProductFromCartButtonClickListener(listener: (String, Int) -> Unit) {
+        removeProductFromCartButtonClickListener = listener
     }
+
+    fun setAddProductToFavoritesClickListener(listener: (String, Int) -> Unit) {
+        addProductToFavoritesClickListener = listener
+    }
+
+    fun setRemoveProductFromFavoritesClickListener(listener: (String, Int) -> Unit) {
+        removeProductFromFavoritesClickListener = listener
+    }
+
+    fun setAddProductToCompareClickListener(listener: (String, Int) -> Unit) {
+        addProductToCompareClickListener = listener
+    }
+
+    fun setRemoveProductFromCompareClickListener(listener: (String, Int) -> Unit) {
+        removeProductFromCompareClickListener = listener
+    }
+
     fun setOnProductClickListener(listener: (String) -> Unit) {
         onProductClickListener = listener
     }
-    fun setAddFavoriteClickListener(listener: (String) -> Unit) {
-        addFavoriteClickListener = listener
-    }
-    fun removeFavoriteClickListener(listener: (String) -> Unit) {
-        removeFavoriteClickListener = listener
-    }
-    fun setOnCompareClickListener(listener: (String) -> Unit) {
-        onCompareClickListener = listener
+
+    fun notifyDataSetChangedInAdapter() {
+        notifyDataSetChanged()
     }
 
-    fun notifyChanges() {
-        notifyDataSetChanged()
+    fun notifyItemChangedInAdapter(position: Int) {
+        notifyItemChanged(position)
+    }
+
+    fun notifyItemRemovedInAdapter(position: Int) {
+        notifyItemRemoved(position)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -163,6 +187,6 @@ class HomeAdapter: RecyclerView.Adapter<HomeAdapter.MyViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.bind(products[position])
+        holder.bind(products[position], position)
     }
 }

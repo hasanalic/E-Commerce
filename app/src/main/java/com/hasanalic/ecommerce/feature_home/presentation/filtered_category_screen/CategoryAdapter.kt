@@ -21,7 +21,7 @@ class CategoryAdapter: RecyclerView.Adapter<CategoryAdapter.MyViewHolder>() {
 
     private val recyclerListDiffer = AsyncListDiffer(this,diffUtil)
 
-    var chipList: List<Category>
+    var categoryList: List<Category>
         get() = recyclerListDiffer.currentList
         set(value) = recyclerListDiffer.submitList(value)
 
@@ -52,10 +52,10 @@ class CategoryAdapter: RecyclerView.Adapter<CategoryAdapter.MyViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return chipList.size
+        return categoryList.size
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.bind(chipList[position])
+        holder.bind(categoryList[position])
     }
 }
