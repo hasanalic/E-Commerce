@@ -28,8 +28,17 @@ interface ProductDao {
     """)
     suspend fun getProductsByUserId(userId: String): List<ProductDto>?
 
-    @Query("SELECT * FROM Product")
-    suspend fun getProductEntities(): List<ProductEntity>?
+    @Query("""
+        SELECT 
+            p.*, 
+            CASE WHEN sc.product_id IS NOT NULL THEN 1 ELSE 0 END AS inCart,
+            CASE WHEN f.product_id IS NOT NULL THEN 1 ELSE 0 END AS inFavorite
+        FROM Product p
+        LEFT JOIN ShoppingCartItems sc ON p.productId = sc.product_id AND sc.user_id = :userId
+        LEFT JOIN Favorites f ON p.productId = f.product_id AND f.user_id = :userId
+        WHERE p.productId = :productId
+    """)
+    suspend fun getProductByUserIdAndProductId(userId: String, productId: String): ProductDto?
 
     @Query("SELECT * FROM Product WHERE productId = :productId")
     suspend fun getProductEntityById(productId: String): ProductEntity?

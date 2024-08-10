@@ -42,20 +42,4 @@ class FakeHomeRepository : HomeRepository {
     override suspend fun getProductEntityIdByBarcode(productBarcode: String): Result<Int, DataError.Local> {
         TODO("Not yet implemented")
     }
-
-    override suspend fun insertAllProductEntities(vararg products: ProductEntity): Result<Unit, DataError.Local> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun getProductEntitiesBySearchQuery(searchQuery: String): Resource<List<ProductEntity>> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun getProductEntitiesByCategory(productCategory: String): Resource<List<ProductEntity>> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun getProductsByFilter(filter: Filter): Resource<List<ProductEntity>> {
-        TODO("Not yet implemented")
-    }
 }

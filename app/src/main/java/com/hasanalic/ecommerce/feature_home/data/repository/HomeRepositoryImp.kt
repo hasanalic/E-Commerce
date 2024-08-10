@@ -78,56 +78,6 @@ class HomeRepositoryImp @Inject constructor(
         }
     }
 
-    override suspend fun insertAllProductEntities(vararg products: ProductEntity): Result<Unit, DataError.Local> {
-        return try {
-            val result = productDao.insertAllProductEntities(*products)
-            if (result.isNotEmpty()) Result.Success(Unit)
-            else Result.Error(DataError.Local.INSERTION_FAILED)
-        } catch (e: Exception) {
-            Result.Error(DataError.Local.UNKNOWN)
-        }
-    }
-
-    override suspend fun getProductEntitiesBySearchQuery(searchQuery: String): Resource<List<ProductEntity>> {
-        return try {
-            val response = productDao.getProductEntitiesBySearchQuery(searchQuery)
-            response?.let {
-                Resource.Success(it)
-            }?: Resource.Error(null,"Failed to fetch searched products")
-        } catch (e: Exception) {
-            Resource.Error(null,e.localizedMessage?:"")
-        }
-    }
-
-    override suspend fun getProductEntitiesByCategory(productCategory: String): Resource<List<ProductEntity>> {
-        return try {
-            val response = productDao.getProductEntitiesByCategory(productCategory)
-            response?.let {
-                Resource.Success(it)
-            }?: Resource.Error(null,"Failed to fetch category filtered products")
-        } catch (e: Exception) {
-            Resource.Error(null,e.localizedMessage?:"")
-        }
-    }
-
-    override suspend fun getProductsByFilter(filter: Filter): Resource<List<ProductEntity>> {
-        return try {
-            val response = productDao.filterProductEntities(
-                category = filter.category,
-                brand = filter.brand,
-                minPrice = filter.minPrice,
-                maxPrice = filter.maxPrice,
-                minStar = filter.minStar,
-                maxStar = filter.maxStar
-            )
-            response?.let {
-                Resource.Success(it)
-            }?: Resource.Error(null,"Failed to fetch product")
-        } catch (e: Exception) {
-            Resource.Error(null,e.localizedMessage?:"Bilinmeyen bir hata meydana geldi")
-        }
-    }
-
     /*
     override suspend fun getProductEntities(): Resource<List<ProductEntity>> {
         return try {

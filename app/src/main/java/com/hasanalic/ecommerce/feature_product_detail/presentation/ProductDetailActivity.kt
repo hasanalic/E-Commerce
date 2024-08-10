@@ -3,6 +3,7 @@ package com.hasanalic.ecommerce.feature_product_detail.presentation
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.hasanalic.ecommerce.R
+import com.hasanalic.ecommerce.feature_product_detail.presentation.views.ProductDetailFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

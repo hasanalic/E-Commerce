@@ -54,6 +54,10 @@ import com.hasanalic.ecommerce.feature_home.domain.use_case.shopping_cart_use_ca
 import com.hasanalic.ecommerce.feature_home.domain.use_case.shopping_cart_use_cases.InsertShoppingCartItemEntityUseCase
 import com.hasanalic.ecommerce.feature_home.domain.use_case.shopping_cart_use_cases.ShoppingCartUseCases
 import com.hasanalic.ecommerce.feature_home.domain.use_case.shopping_cart_use_cases.UpdateShoppingCartItemEntityUseCase
+import com.hasanalic.ecommerce.feature_product_detail.domain.repository.ProductDetailRepository
+import com.hasanalic.ecommerce.feature_product_detail.domain.use_cases.GetProductDetailByUserIdAndProductIdUseCase
+import com.hasanalic.ecommerce.feature_product_detail.domain.use_cases.GetReviewsByProductIdUseCase
+import com.hasanalic.ecommerce.feature_product_detail.domain.use_cases.ProductDetailUseCases
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -232,6 +236,15 @@ object AppModule {
             getBrandsUseCase = GetBrandsUseCase(homeRepository),
             getBrandsByCategoryUseCase = GetBrandsByCategoryUseCase(homeRepository),
             getProductEntityIdByBarcodeUseCase = GetProductEntityIdByBarcodeUseCase(homeRepository)
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideProductDetailUseCases(productDetailRepository: ProductDetailRepository): ProductDetailUseCases {
+        return ProductDetailUseCases(
+            getProductDetailByUserIdAndProductIdUseCase = GetProductDetailByUserIdAndProductIdUseCase(productDetailRepository),
+            getReviewsByProductIdUseCase = GetReviewsByProductIdUseCase(productDetailRepository)
         )
     }
 }

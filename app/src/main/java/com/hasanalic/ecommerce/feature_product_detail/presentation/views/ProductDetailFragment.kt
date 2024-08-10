@@ -1,4 +1,4 @@
-package com.hasanalic.ecommerce.feature_product_detail.presentation
+package com.hasanalic.ecommerce.feature_product_detail.presentation.views
 
 import android.content.Intent
 import android.os.Bundle
@@ -13,6 +13,7 @@ import com.hasanalic.ecommerce.R
 import com.hasanalic.ecommerce.databinding.FragmentProductDetailBinding
 import com.hasanalic.ecommerce.feature_home.domain.model.Product
 import com.hasanalic.ecommerce.feature_auth.presentation.AuthActivity
+import com.hasanalic.ecommerce.feature_product_detail.presentation.ProductDetailViewModel
 import com.hasanalic.ecommerce.utils.Constants
 import com.hasanalic.ecommerce.utils.ItemDecoration
 import com.hasanalic.ecommerce.utils.Resource
