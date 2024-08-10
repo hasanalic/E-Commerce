@@ -61,7 +61,7 @@ class ProductDetailViewModel @Inject constructor (
         }
     }
 
-    private fun getProductReviews(productId: String) {
+    fun getProductReviews(productId: String) {
         viewModelScope.launch {
             when(val result = productDetailUseCases.getReviewsByProductIdUseCase(productId)) {
                 is Result.Error -> handleGetProductReviews(result.error)
