@@ -54,6 +54,7 @@ import com.hasanalic.ecommerce.feature_home.domain.use_case.shopping_cart_use_ca
 import com.hasanalic.ecommerce.feature_home.domain.use_case.shopping_cart_use_cases.InsertShoppingCartItemEntityUseCase
 import com.hasanalic.ecommerce.feature_home.domain.use_case.shopping_cart_use_cases.ShoppingCartUseCases
 import com.hasanalic.ecommerce.feature_home.domain.use_case.shopping_cart_use_cases.UpdateShoppingCartItemEntityUseCase
+import com.hasanalic.ecommerce.feature_product_detail.data.repository.ProductDetailRepositoryImp
 import com.hasanalic.ecommerce.feature_product_detail.domain.repository.ProductDetailRepository
 import com.hasanalic.ecommerce.feature_product_detail.domain.use_cases.GetProductDetailByUserIdAndProductIdUseCase
 import com.hasanalic.ecommerce.feature_product_detail.domain.use_cases.GetReviewsByProductIdUseCase
@@ -186,6 +187,12 @@ object AppModule {
     @Provides
     fun provideShoppingCartRepository(shoppingCartItemsDao: ShoppingCartItemsDao): ShoppingCartRepository {
         return ShoppingCartRepositoryImp(shoppingCartItemsDao)
+    }
+
+    @Singleton
+    @Provides
+    fun provideProductDetailRepository(productDao: ProductDao, reviewDao: ReviewDao): ProductDetailRepository {
+        return ProductDetailRepositoryImp(productDao, reviewDao)
     }
 
     @Singleton

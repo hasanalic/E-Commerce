@@ -78,8 +78,8 @@ class ProductDetailFragment: Fragment() {
 
         arguments?.let {
             productId = it.getString(requireActivity().getString(R.string.product_id))
-            viewModel.getProduct(userId,productId ?: "")
-            viewModel.getReviews(productId ?: "")
+           // viewModel.getProduct(userId,productId ?: "")
+           // viewModel.getReviews(productId ?: "")
         }
 
         setRecyclerView()
@@ -88,6 +88,7 @@ class ProductDetailFragment: Fragment() {
     }
 
     private fun observer() {
+        /*
         viewModel.stateProduct.observe(viewLifecycleOwner) {
             when(it) {
                 is Resource.Success -> {
@@ -131,6 +132,8 @@ class ProductDetailFragment: Fragment() {
                 }
             }
         }
+
+         */
     }
 
     private fun setProductView(product: Product) {
@@ -171,9 +174,9 @@ class ProductDetailFragment: Fragment() {
         binding.imageViewFavorite.setOnClickListener {
             if (userId != Constants.ANOMIM_USER_ID) {
                 if (product.addedToFavorites) {
-                    viewModel.removeFromFavorites(userId,product.productId)
+                   // viewModel.removeFromFavorites(userId,product.productId)
                 } else {
-                    viewModel.addToFavorites(userId,product.productId)
+                   // viewModel.addToFavorites(userId,product.productId)
                 }
             } else {
                 toast(requireContext(),"Favori işlemleri için giriş yapmalısınız.",false)
@@ -185,9 +188,9 @@ class ProductDetailFragment: Fragment() {
 
         binding.buttonAddCart.setOnClickListener {
             if (product.addedToShoppingCart) {
-                viewModel.removeFromShoppingCart(userId,product.productId)
+               // viewModel.removeFromShoppingCart(userId,product.productId)
             } else {
-                viewModel.addToShoppingCart(userId,product.productId)
+               // viewModel.addToShoppingCart(userId,product.productId)
             }
         }
     }
