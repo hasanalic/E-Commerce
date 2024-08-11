@@ -19,11 +19,11 @@ import com.google.android.gms.location.LocationSettingsResponse
 import com.google.android.gms.location.SettingsClient
 import com.google.android.gms.tasks.Task
 import com.hasanalic.ecommerce.databinding.ActivityLocationBinding
+import com.hasanalic.ecommerce.feature_location.presentation.views.LocationAdapter
 import com.hasanalic.ecommerce.utils.Constants
 import com.hasanalic.ecommerce.utils.Constants.ANOMIM_USER_ID
 import com.hasanalic.ecommerce.utils.Constants.REQUEST_CHECK_SETTINGS
 import com.hasanalic.ecommerce.utils.ItemDecoration
-import com.hasanalic.ecommerce.utils.Resource
 import com.hasanalic.ecommerce.utils.hide
 import com.hasanalic.ecommerce.utils.show
 import dagger.hilt.android.AndroidEntryPoint
@@ -48,13 +48,19 @@ class LocationActivity : AppCompatActivity() {
         binding = ActivityLocationBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setRecyclerView()
-
         viewModel = ViewModelProvider(this)[LocationViewModel::class.java]
-        //viewModel.getAddressList(userId)
+        viewModel.getAddressEntityList(userId)
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
 
+        setupListeners()
+
+        setupRecyclerView()
+
+        setupObservers()
+    }
+
+    private fun setupListeners() {
         binding.topAppBarHome.setNavigationOnClickListener {
             finish()
         }
@@ -66,78 +72,64 @@ class LocationActivity : AppCompatActivity() {
         binding.buttonSave.setOnClickListener {
             val address = binding.textInputEditTextAddress.text.toString()
             val addressTitle = binding.textInputEditTextAddressTitle.text.toString()
+
             if (address.isEmpty() || addressTitle.isEmpty()) {
                 Toast.makeText(this,"Lütfen alanları doldurun",Toast.LENGTH_SHORT).show()
             } else {
-                //viewModel.saveAddress(userId,address, addressTitle)
-            }
-        }
-
-        observe()
-    }
-
-    private fun observe() {
-        viewModel.statusAddressList.observe(this) {
-            when(it) {
-                is Resource.Success -> {
-                    binding.progressBarLocation.hide()
-                    locationAdapter.addressList = it.data ?: listOf()
-                    locationAdapter.notifyChanges()
-                }
-                is Resource.Loading -> {
-                    binding.progressBarLocation.show()
-                }
-                is Resource.Error -> {
-                    binding.progressBarLocation.hide()
-                    Toast.makeText(this,it.message?:"hata",Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
-
-        viewModel.statusSaveAddress.observe(this) {
-            when(it) {
-                is Resource.Success -> {
-                    binding.progressBarLocation.hide()
-                    Toast.makeText(this,"Adres kaydedildi",Toast.LENGTH_SHORT).show()
-                    finish()
-                }
-                is Resource.Error -> {
-                    binding.progressBarLocation.hide()
-                    Toast.makeText(this,it.message,Toast.LENGTH_SHORT).show()
-                }
-                is Resource.Loading -> {
-                    binding.progressBarLocation.show()
-                }
-            }
-        }
-
-        viewModel.statusDeleteAddress.observe(this) {
-            when(it) {
-                is Resource.Success -> {
-                    binding.progressBarLocation.hide()
-                    Toast.makeText(this,"Adres silindi",Toast.LENGTH_SHORT).show()
-                    locationAdapter.notifyChanges()
-                }
-                is Resource.Error -> {
-                    binding.progressBarLocation.hide()
-                    Toast.makeText(this,it.message,Toast.LENGTH_SHORT).show()
-                }
-                is Resource.Loading -> {
-                    binding.progressBarLocation.show()
-                }
+                viewModel.insertAddressEntity(userId, address, addressTitle)
             }
         }
     }
 
-    private fun setRecyclerView() {
+    private fun setupRecyclerView() {
         binding.recyclerViewAddress.adapter = locationAdapter
         binding.recyclerViewAddress.layoutManager = LinearLayoutManager(this,
             LinearLayoutManager.VERTICAL,false)
         binding.recyclerViewAddress.addItemDecoration(ItemDecoration(40,40,40))
 
-        locationAdapter.setOnDeleteClickListener {
-            //viewModel.deleteAddress(userId, it)
+        locationAdapter.setOnDeleteClickListener { addressId, position ->
+            viewModel.deleteAddressEntity(userId, addressId, position)
             locationAdapter.notifyChanges()
+        }
+    }
+
+    private fun setupObservers() {
+        viewModel.locationState.observe(this) { state ->
+            handleLocationState(state)
+        }
+    }
+
+    private fun handleLocationState(state: LocationState) {
+        if (state.isLoading) {
+            binding.progressBarLocation.show()
+            binding.buttonSave.isEnabled = false
+            binding.buttonFindLocation.isEnabled = false
+        } else {
+            binding.progressBarLocation.hide()
+            binding.buttonSave.isEnabled = true
+            binding.buttonFindLocation.isEnabled = true
+        }
+
+        state.addressEntityList.let {
+            locationAdapter.addressList = it
+            locationAdapter.notifyChanges()
+        }
+
+        if (state.isAddressDeletionSuccessful) {
+            Toast.makeText(this, "Adres silindi.", Toast.LENGTH_SHORT).show()
+        }
+
+        if (state.isAddressInsertionSuccessful) {
+            Toast.makeText(this, "Yeni adres eklendi.", Toast.LENGTH_SHORT).show()
+            finish()
+        }
+
+        state.dataError?.let {
+            TODO("error text view")
+        }
+
+        state.actionError?.let {
+            Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -161,8 +153,9 @@ class LocationActivity : AppCompatActivity() {
                         val geocoder = Geocoder(this, Locale.getDefault())
                         val addressList: List<Address> = geocoder.getFromLocation(location.latitude, location.longitude, 1)!!
                         val address = addressList[0].getAddressLine(0)
-                        val city = addressList[0].locality
-                        val country = addressList[0].countryName
+                        //val city = addressList[0].locality
+                        //val country = addressList[0].countryName
+
                         binding.textInputEditTextAddress.setText(address)
                     }
                 }

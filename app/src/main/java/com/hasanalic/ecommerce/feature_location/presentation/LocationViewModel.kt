@@ -4,67 +4,116 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hasanalic.ecommerce.core.domain.model.DataError
+import com.hasanalic.ecommerce.core.domain.model.Result
 import com.hasanalic.ecommerce.feature_location.data.local.entity.AddressEntity
-import com.hasanalic.ecommerce.core.domain.model.Address
-import com.hasanalic.ecommerce.feature_checkout.domain.repository.CheckoutRepository
-import com.hasanalic.ecommerce.utils.Resource
+import com.hasanalic.ecommerce.feature_location.domain.use_cases.AddressUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class LocationViewModel @Inject constructor(
-    private val checkoutRepository: CheckoutRepository
+    private val addressUseCases: AddressUseCases
 ): ViewModel() {
 
-    private var _statusSaveAddress = MutableLiveData<Resource<Boolean>>()
-    val statusSaveAddress: LiveData<Resource<Boolean>>
-        get() = _statusSaveAddress
+    private var _locationState = MutableLiveData(LocationState())
+    val locationState: LiveData<LocationState> = _locationState
 
-    private var _statusAddressList = MutableLiveData<Resource<List<Address>>>()
-    val statusAddressList: LiveData<Resource<List<Address>>>
-        get() = _statusAddressList
-
-    private var _statusDeleteAddress = MutableLiveData<Resource<Boolean>>()
-    val statusDeleteAddress: LiveData<Resource<Boolean>>
-        get() = _statusDeleteAddress
-
-    fun saveAddress(userId: String, address: String, addressTitle: String) {
-        _statusSaveAddress.value = Resource.Loading()
+    fun getAddressEntityList(userId: String) {
+        _locationState.value = LocationState(isLoading = true)
         viewModelScope.launch {
-            val response = checkoutRepository.insertAddress(
-                AddressEntity(
-                userId, addressTitle, address
-            )
-            )
-            _statusSaveAddress.value = response
-        }
-    }
-
-    fun getAddressList(userId: String) {
-        _statusAddressList.value = Resource.Loading()
-        viewModelScope.launch {
-            val response = checkoutRepository.getAddressesByUserId(userId)
-            _statusAddressList.value = response
-        }
-    }
-
-    fun deleteAddress(userId: String, addressId: String) {
-        _statusDeleteAddress.value = Resource.Loading()
-        viewModelScope.launch {
-            val response = checkoutRepository.deleteAddress(userId, addressId)
-            if (response is Resource.Success) {
-                deleteAddressFromList(addressId)
+            when(val result = addressUseCases.getAddressEntityListByUserIdUseCase(userId)) {
+                is Result.Error -> handleGetAddressEntityListError(result.error)
+                is Result.Success -> {
+                    _locationState.value = LocationState(
+                        addressEntityList = result.data.toMutableList()
+                    )
+                }
             }
-            _statusDeleteAddress.value = response
         }
     }
 
-    private fun deleteAddressFromList(addressId: String) {
-        var tempAddressList = _statusAddressList.value!!.data
-        tempAddressList = tempAddressList?.filterIndexed { _, address ->
-            address.addressId != addressId
+    private fun handleGetAddressEntityListError(error: DataError.Local) {
+        when(error) {
+            DataError.Local.NOT_FOUND -> {
+                _locationState.value = LocationState(
+                    dataError = "Adresler getirilemedi."
+                )
+            }
+            DataError.Local.UNKNOWN -> {
+                _locationState.value = LocationState(
+                    dataError = "Bilinmeyen bir hata meydana geldi."
+                )
+            }
+            else -> {}
         }
-        _statusAddressList.value = Resource.Success(tempAddressList!!)
+    }
+
+    fun deleteAddressEntity(userId: String, addressId: String, itemIndex: Int) {
+        viewModelScope.launch {
+            when(val result = addressUseCases.deleteUserAddressUseCase(userId, addressId)) {
+                is Result.Error -> handleDeleteAddressEntityError(result.error)
+                is Result.Success -> removeAddressFromList(itemIndex)
+            }
+        }
+    }
+
+    private fun handleDeleteAddressEntityError(error: DataError.Local) {
+        when(error) {
+            DataError.Local.DELETION_FAILED -> {
+                _locationState.value = LocationState(
+                    dataError = "Adres silinemedi."
+                )
+            }
+            DataError.Local.UNKNOWN -> {
+                _locationState.value = LocationState(
+                    dataError = "Bilinmeyen bir hata meydana geldi."
+                )
+            }
+            else -> {}
+        }
+    }
+
+    private fun removeAddressFromList(itemIndex: Int) {
+        val currentAddressList = _locationState.value!!.addressEntityList
+
+        currentAddressList.removeAt(itemIndex)
+
+        _locationState.value = _locationState.value!!.copy(
+            addressEntityList = currentAddressList,
+            isAddressDeletionSuccessful = true
+        )
+    }
+
+    fun insertAddressEntity(userId: String, title: String, detail: String) {
+        viewModelScope.launch {
+            val addressEntity = AddressEntity(userId, title, detail)
+            when(val result = addressUseCases.insertAddressEntityUseCase(addressEntity)) {
+                is Result.Error -> handleInsertAddressEntityError(result.error)
+                is Result.Success -> {
+                    _locationState.value = _locationState.value!!.copy(
+                        isAddressInsertionSuccessful = true
+                    )
+                    getAddressEntityList(userId)
+                }
+            }
+        }
+    }
+
+    private fun handleInsertAddressEntityError(error: DataError.Local) {
+        when(error) {
+            DataError.Local.INSERTION_FAILED -> {
+                _locationState.value = LocationState(
+                    dataError = "Adres kaydedilemedi."
+                )
+            }
+            DataError.Local.UNKNOWN -> {
+                _locationState.value = LocationState(
+                    dataError = "Bilinmeyen bir hata meydana geldi."
+                )
+            }
+            else -> {}
+        }
     }
 }

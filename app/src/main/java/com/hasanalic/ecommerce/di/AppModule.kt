@@ -54,6 +54,7 @@ import com.hasanalic.ecommerce.feature_home.domain.use_case.shopping_cart_use_ca
 import com.hasanalic.ecommerce.feature_home.domain.use_case.shopping_cart_use_cases.InsertShoppingCartItemEntityUseCase
 import com.hasanalic.ecommerce.feature_home.domain.use_case.shopping_cart_use_cases.ShoppingCartUseCases
 import com.hasanalic.ecommerce.feature_home.domain.use_case.shopping_cart_use_cases.UpdateShoppingCartItemEntityUseCase
+import com.hasanalic.ecommerce.feature_location.data.repository.AddressRepositoryImp
 import com.hasanalic.ecommerce.feature_location.domain.repository.AddressRepository
 import com.hasanalic.ecommerce.feature_location.domain.use_cases.AddressUseCases
 import com.hasanalic.ecommerce.feature_location.domain.use_cases.DeleteUserAddressUseCase
@@ -200,6 +201,12 @@ object AppModule {
     @Provides
     fun provideProductDetailRepository(productDao: ProductDao, reviewDao: ReviewDao): ProductDetailRepository {
         return ProductDetailRepositoryImp(productDao, reviewDao)
+    }
+
+    @Singleton
+    @Provides
+    fun provideAddressRepository(addressDao: AddressDao): AddressRepository {
+        return AddressRepositoryImp(addressDao)
     }
 
     @Singleton
