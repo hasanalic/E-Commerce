@@ -20,6 +20,7 @@ import com.google.android.gms.location.SettingsClient
 import com.google.android.gms.tasks.Task
 import com.hasanalic.ecommerce.databinding.ActivityLocationBinding
 import com.hasanalic.ecommerce.utils.Constants
+import com.hasanalic.ecommerce.utils.Constants.ANOMIM_USER_ID
 import com.hasanalic.ecommerce.utils.Constants.REQUEST_CHECK_SETTINGS
 import com.hasanalic.ecommerce.utils.ItemDecoration
 import com.hasanalic.ecommerce.utils.Resource
@@ -36,11 +37,7 @@ class LocationActivity : AppCompatActivity() {
 
     private lateinit var viewModel: LocationViewModel
 
-    /*
-    private lateinit var auth: FirebaseAuth
     private var userId: String = ANOMIM_USER_ID
-
-     */
 
     private val locationAdapter by lazy {
         LocationAdapter()
@@ -50,15 +47,6 @@ class LocationActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLocationBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        /*
-        auth = FirebaseAuth.getInstance()
-        val currentUser = auth.currentUser
-        currentUser?.let {
-            userId = it.uid
-        }
-
-         */
 
         setRecyclerView()
 

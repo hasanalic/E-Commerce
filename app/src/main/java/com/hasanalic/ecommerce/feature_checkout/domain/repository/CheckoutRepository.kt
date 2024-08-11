@@ -1,6 +1,6 @@
 package com.hasanalic.ecommerce.feature_checkout.domain.repository
 
-import com.hasanalic.ecommerce.feature_location.data.entity.AddressEntity
+import com.hasanalic.ecommerce.feature_location.data.local.entity.AddressEntity
 import com.hasanalic.ecommerce.feature_orders.data.entity.OrderEntity
 import com.hasanalic.ecommerce.feature_orders.data.entity.OrderProductsEntity
 import com.hasanalic.ecommerce.feature_checkout.data.local.entity.PaymentEntity

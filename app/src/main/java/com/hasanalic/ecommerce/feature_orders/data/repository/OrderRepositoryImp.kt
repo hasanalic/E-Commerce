@@ -1,6 +1,6 @@
 package com.hasanalic.ecommerce.feature_orders.data.repository
 
-import com.hasanalic.ecommerce.feature_location.data.entity.AddressEntity
+import com.hasanalic.ecommerce.feature_location.data.local.entity.AddressEntity
 import com.hasanalic.ecommerce.feature_orders.data.entity.OrderEntity
 import com.hasanalic.ecommerce.feature_orders.data.entity.OrderProductsEntity
 import com.hasanalic.ecommerce.feature_checkout.data.local.entity.PaymentEntity
@@ -22,14 +22,15 @@ class OrderRepositoryImp @Inject constructor(
         userId: String,
         addressId: String
     ): Resource<AddressEntity> {
-        return try {
-            val response = addressDao.getAddressByUserIdAndAddressId(userId, addressId)
-            response?.let {
-                Resource.Success(it)
-            }?: Resource.Error(null,"Adres bilgisi bulunamadı.")
-        } catch (e: Exception) {
-            Resource.Error(null,e.localizedMessage?:"Bilinmeyen bir hata meydana geldi.")
-        }
+//        return try {
+//            val response = addressDao.getAddressByUserIdAndAddressId(userId, addressId)
+//            response?.let {
+//                Resource.Success(it)
+//            }?: Resource.Error(null,"Adres bilgisi bulunamadı.")
+//        } catch (e: Exception) {
+//            Resource.Error(null,e.localizedMessage?:"Bilinmeyen bir hata meydana geldi.")
+//        }
+        TODO()
     }
 
     override suspend fun getOrdersByUserId(userId: String): Resource<List<OrderEntity>> {

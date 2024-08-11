@@ -54,6 +54,13 @@ import com.hasanalic.ecommerce.feature_home.domain.use_case.shopping_cart_use_ca
 import com.hasanalic.ecommerce.feature_home.domain.use_case.shopping_cart_use_cases.InsertShoppingCartItemEntityUseCase
 import com.hasanalic.ecommerce.feature_home.domain.use_case.shopping_cart_use_cases.ShoppingCartUseCases
 import com.hasanalic.ecommerce.feature_home.domain.use_case.shopping_cart_use_cases.UpdateShoppingCartItemEntityUseCase
+import com.hasanalic.ecommerce.feature_location.domain.repository.AddressRepository
+import com.hasanalic.ecommerce.feature_location.domain.use_cases.AddressUseCases
+import com.hasanalic.ecommerce.feature_location.domain.use_cases.DeleteUserAddressUseCase
+import com.hasanalic.ecommerce.feature_location.domain.use_cases.GetAddressEntityByUserIdAndAddressIdUseCase
+import com.hasanalic.ecommerce.feature_location.domain.use_cases.GetAddressEntityListByUserIdUseCase
+import com.hasanalic.ecommerce.feature_location.domain.use_cases.GetAddressListByUserIdUseCase
+import com.hasanalic.ecommerce.feature_location.domain.use_cases.InsertAddressEntityUseCase
 import com.hasanalic.ecommerce.feature_product_detail.data.repository.ProductDetailRepositoryImp
 import com.hasanalic.ecommerce.feature_product_detail.domain.repository.ProductDetailRepository
 import com.hasanalic.ecommerce.feature_product_detail.domain.use_cases.GetProductDetailByUserIdAndProductIdUseCase
@@ -243,6 +250,18 @@ object AppModule {
             getBrandsUseCase = GetBrandsUseCase(homeRepository),
             getBrandsByCategoryUseCase = GetBrandsByCategoryUseCase(homeRepository),
             getProductEntityIdByBarcodeUseCase = GetProductEntityIdByBarcodeUseCase(homeRepository)
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideAddressUseCases(addressRepository: AddressRepository): AddressUseCases {
+        return AddressUseCases(
+            deleteUserAddressUseCase = DeleteUserAddressUseCase(addressRepository),
+            getAddressEntityByUserIdAndAddressIdUseCase = GetAddressEntityByUserIdAndAddressIdUseCase(addressRepository),
+            getAddressEntityListByUserIdUseCase = GetAddressEntityListByUserIdUseCase(addressRepository),
+            getAddressListByUserIdUseCase = GetAddressListByUserIdUseCase(addressRepository),
+            insertAddressEntityUseCase = InsertAddressEntityUseCase(addressRepository)
         )
     }
 

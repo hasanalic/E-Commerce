@@ -1,6 +1,6 @@
 package com.hasanalic.ecommerce.feature_checkout.data.repository
 
-import com.hasanalic.ecommerce.feature_location.data.entity.AddressEntity
+import com.hasanalic.ecommerce.feature_location.data.local.entity.AddressEntity
 import com.hasanalic.ecommerce.feature_orders.data.entity.OrderEntity
 import com.hasanalic.ecommerce.feature_orders.data.entity.OrderProductsEntity
 import com.hasanalic.ecommerce.feature_checkout.data.local.entity.PaymentEntity
@@ -22,27 +22,29 @@ class CheckoutRepositoryImp (
     private val shoppingCartItemsDao: ShoppingCartItemsDao
 ) : CheckoutRepository {
     override suspend fun getAddressesByUserId(userId: String): Resource<List<Address>> {
-        return try {
-            val response = addressDao.getAddressesByUserId(userId)
-            response?.let {
-                return@let Resource.Success(it.map { addressEntity ->  addressEntity.toAddress() })
-            }?: Resource.Error(null,"Address bilgisi bulunamadı.")
-        } catch (e: Exception) {
-            Resource.Error(null,e.localizedMessage?:"Bilinmeyen bir hata meydana geldi")
-        }
+//        return try {
+//            val response = addressDao.getAddressesByUserId(userId)
+//            response?.let {
+//                return@let Resource.Success(it.map { addressEntity ->  addressEntity.toAddress() })
+//            }?: Resource.Error(null,"Address bilgisi bulunamadı.")
+//        } catch (e: Exception) {
+//            Resource.Error(null,e.localizedMessage?:"Bilinmeyen bir hata meydana geldi")
+//        }
+        TODO()
     }
 
     override suspend fun insertAddress(addressEntity: AddressEntity): Resource<Boolean> {
-        return try {
-            val response = addressDao.insertAddress(addressEntity)
-            if (response > 0) {
-                Resource.Success(true)
-            } else {
-                Resource.Error(false,"Adres kaydedilemedi.")
-            }
-        } catch (e: Exception) {
-            Resource.Error(null,e.localizedMessage?:"Bilinmeyen bir hata meydana geldi")
-        }
+//        return try {
+//            val response = addressDao.insertAddress(addressEntity)
+//            if (response > 0) {
+//                Resource.Success(true)
+//            } else {
+//                Resource.Error(false,"Adres kaydedilemedi.")
+//            }
+//        } catch (e: Exception) {
+//            Resource.Error(null,e.localizedMessage?:"Bilinmeyen bir hata meydana geldi")
+//        }
+        TODO()
     }
 
     override suspend fun insertOrder(orderEntity: OrderEntity): Resource<Long> {
