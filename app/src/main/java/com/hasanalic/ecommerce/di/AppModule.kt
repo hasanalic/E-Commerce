@@ -57,6 +57,7 @@ import com.hasanalic.ecommerce.feature_home.domain.use_case.shopping_cart_use_ca
 import com.hasanalic.ecommerce.feature_location.data.repository.AddressRepositoryImp
 import com.hasanalic.ecommerce.feature_location.domain.repository.AddressRepository
 import com.hasanalic.ecommerce.feature_location.domain.use_cases.AddressUseCases
+import com.hasanalic.ecommerce.feature_location.domain.use_cases.AddressValidatorUseCase
 import com.hasanalic.ecommerce.feature_location.domain.use_cases.DeleteUserAddressUseCase
 import com.hasanalic.ecommerce.feature_location.domain.use_cases.GetAddressEntityByUserIdAndAddressIdUseCase
 import com.hasanalic.ecommerce.feature_location.domain.use_cases.GetAddressEntityListByUserIdUseCase
@@ -268,7 +269,8 @@ object AppModule {
             getAddressEntityByUserIdAndAddressIdUseCase = GetAddressEntityByUserIdAndAddressIdUseCase(addressRepository),
             getAddressEntityListByUserIdUseCase = GetAddressEntityListByUserIdUseCase(addressRepository),
             getAddressListByUserIdUseCase = GetAddressListByUserIdUseCase(addressRepository),
-            insertAddressEntityUseCase = InsertAddressEntityUseCase(addressRepository)
+            insertAddressEntityUseCase = InsertAddressEntityUseCase(addressRepository),
+            addressValidatorUseCase = AddressValidatorUseCase()
         )
     }
 

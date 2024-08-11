@@ -5,5 +5,6 @@ data class AddressUseCases(
     val getAddressEntityByUserIdAndAddressIdUseCase: GetAddressEntityByUserIdAndAddressIdUseCase,
     val getAddressEntityListByUserIdUseCase: GetAddressEntityListByUserIdUseCase,
     val getAddressListByUserIdUseCase: GetAddressListByUserIdUseCase,
-    val insertAddressEntityUseCase: InsertAddressEntityUseCase
+    val insertAddressEntityUseCase: InsertAddressEntityUseCase,
+    val addressValidatorUseCase: AddressValidatorUseCase
 )

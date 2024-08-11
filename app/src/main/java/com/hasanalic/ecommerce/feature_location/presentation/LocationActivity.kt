@@ -124,6 +124,10 @@ class LocationActivity : AppCompatActivity() {
             finish()
         }
 
+        state.validationError?.let {
+            Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+        }
+
         state.dataError?.let {
             TODO("error text view")
         }

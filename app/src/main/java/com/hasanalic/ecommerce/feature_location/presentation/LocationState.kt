@@ -7,6 +7,7 @@ data class LocationState (
     val addressEntityList: MutableList<AddressEntity> = mutableListOf(),
     val isAddressInsertionSuccessful: Boolean = false,
     val isAddressDeletionSuccessful: Boolean = false,
+    val validationError: String? = null,
     val dataError: String? = null,
     val actionError: String? = null
 )
