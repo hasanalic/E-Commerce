@@ -87,7 +87,7 @@ class ProductDetailViewModelTest {
 
     @Test
     fun `getProductDetail successfuly returns product detail`() {
-        productDetailViewModel.getProductDetail("1","1")
+        productDetailViewModel.getProductDetailAndReviews("1","1")
         val state = productDetailViewModel.productDetailState.getOrAwaitValue()
 
         assertThat(state.productDetail).isNotNull()
@@ -98,7 +98,7 @@ class ProductDetailViewModelTest {
 
     @Test
     fun `getProductDetail triggers data error when product id not found`() {
-        productDetailViewModel.getProductDetail("1","invalid")
+        productDetailViewModel.getProductDetailAndReviews("1","invalid")
         val state = productDetailViewModel.productDetailState.getOrAwaitValue()
 
         assertThat(state.productDetail).isNull()
@@ -120,7 +120,7 @@ class ProductDetailViewModelTest {
 
     @Test
     fun `addProductToCart successfuly adds product to cart and update the product detail`() {
-        productDetailViewModel.getProductDetail("1","1")
+        productDetailViewModel.getProductDetailAndReviews("1","1")
         productDetailViewModel.addProductToCart("1","1")
 
         val state = productDetailViewModel.productDetailState.getOrAwaitValue()
@@ -135,7 +135,7 @@ class ProductDetailViewModelTest {
 
     @Test
     fun `removeProductFromCart successfuly removes product from cart and update the product detail`() {
-        productDetailViewModel.getProductDetail("1","1")
+        productDetailViewModel.getProductDetailAndReviews("1","1")
         productDetailViewModel.addProductToCart("1","1")
         productDetailViewModel.removeProductFromCart("1","1")
 
@@ -151,7 +151,7 @@ class ProductDetailViewModelTest {
 
     @Test
     fun `removeProductFromCart triggers action error when deletion fails`() {
-        productDetailViewModel.getProductDetail("1","1")
+        productDetailViewModel.getProductDetailAndReviews("1","1")
         productDetailViewModel.addProductToCart("1","1")
         productDetailViewModel.removeProductFromCart("1","invalid")
 
@@ -167,7 +167,7 @@ class ProductDetailViewModelTest {
 
     @Test
     fun `addProductToFavorites successfuly adds product to favorites and update the product detail`() {
-        productDetailViewModel.getProductDetail("1","1")
+        productDetailViewModel.getProductDetailAndReviews("1","1")
         productDetailViewModel.addProductToFavorites("1","1")
 
         val state = productDetailViewModel.productDetailState.getOrAwaitValue()
@@ -183,7 +183,7 @@ class ProductDetailViewModelTest {
 
     @Test
     fun `removeProductFromFavorites successfuly removes product from favorites and update the product detail`() {
-        productDetailViewModel.getProductDetail("1","1")
+        productDetailViewModel.getProductDetailAndReviews("1","1")
         productDetailViewModel.addProductToFavorites("1","1")
         productDetailViewModel.removeProductFromFavorites("1","1")
 
@@ -200,7 +200,7 @@ class ProductDetailViewModelTest {
 
     @Test
     fun `removeProductFromFavorites triggers action error when deletion fails`() {
-        productDetailViewModel.getProductDetail("1","1")
+        productDetailViewModel.getProductDetailAndReviews("1","1")
         productDetailViewModel.addProductToFavorites("1","1")
         productDetailViewModel.removeProductFromFavorites("1","invalid")
 

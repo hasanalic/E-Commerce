@@ -14,6 +14,9 @@ fun ProductDto.toProductDetail() =
         productPriceCent = this.productPriceCent,
         productRate = this.productRate,
         productReviewCount = this.productReviewCount,
+        productShipping = this.productShipping,
+        productStore = this.productStore,
+        productStoreRate = this.productStoreRate,
         addedToShoppingCart = this.inCart,
         addedToFavorites = this.inFavorite
     )

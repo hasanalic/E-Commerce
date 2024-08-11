@@ -10,6 +10,9 @@ data class ProductDetail(
     val productPriceCent: Int,
     val productRate: Double,
     val productReviewCount: String,
+    val productShipping: String,
+    val productStore: String,
+    val productStoreRate: String,
     var addedToShoppingCart: Boolean,
     var addedToFavorites: Boolean,
 )

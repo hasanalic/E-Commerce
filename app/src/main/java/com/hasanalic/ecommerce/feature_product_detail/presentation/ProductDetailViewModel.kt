@@ -25,7 +25,7 @@ class ProductDetailViewModel @Inject constructor (
     private var _productDetailState = MutableLiveData(ProductDetailState())
     val productDetailState: LiveData<ProductDetailState> = _productDetailState
 
-    fun getProductDetail(userId: String, productId: String) {
+    fun getProductDetailAndReviews(userId: String, productId: String) {
         _productDetailState.value = ProductDetailState(isLoading = true)
         viewModelScope.launch {
             val result = productDetailUseCases.getProductDetailByUserIdAndProductIdUseCase(userId, productId)

@@ -14,7 +14,7 @@ class FakeProductDetailRepository : ProductDetailRepository {
         "photo","brand",
         "detail",1,
         1,1.0,
-        "1",false,false)
+        "1","shipping", "store","",false,false)
 
     override suspend fun getProductDetailByUserIdAndProductId(
         userId: String,

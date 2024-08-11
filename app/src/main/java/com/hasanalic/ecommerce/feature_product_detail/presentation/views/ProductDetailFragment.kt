@@ -11,12 +11,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hasanalic.ecommerce.R
 import com.hasanalic.ecommerce.databinding.FragmentProductDetailBinding
-import com.hasanalic.ecommerce.feature_home.domain.model.Product
 import com.hasanalic.ecommerce.feature_auth.presentation.AuthActivity
+import com.hasanalic.ecommerce.feature_product_detail.domain.model.ProductDetail
+import com.hasanalic.ecommerce.feature_product_detail.presentation.ProductDetailState
 import com.hasanalic.ecommerce.feature_product_detail.presentation.ProductDetailViewModel
 import com.hasanalic.ecommerce.utils.Constants
 import com.hasanalic.ecommerce.utils.ItemDecoration
-import com.hasanalic.ecommerce.utils.Resource
 import com.hasanalic.ecommerce.utils.glide
 import com.hasanalic.ecommerce.utils.hide
 import com.hasanalic.ecommerce.utils.placeHolderProgressBar
@@ -35,7 +35,6 @@ class ProductDetailFragment: Fragment() {
 
     private var productId: String? = null
 
-    //private lateinit var auth: FirebaseAuth
     private var userId: String = Constants.ANOMIM_USER_ID
 
     private val reviewAdapter by lazy {
@@ -54,15 +53,21 @@ class ProductDetailFragment: Fragment() {
         binding.scrollViewProductDetail.fullScroll(View.FOCUS_UP)
         binding.scrollViewProductDetail.smoothScrollTo(0,0)
 
-        /*
-        auth = FirebaseAuth.getInstance()
-        val currentUser = auth.currentUser
-        currentUser?.let {
-            userId = it.uid
+        viewModel = ViewModelProvider(requireActivity())[ProductDetailViewModel::class.java]
+
+        arguments?.let {
+            productId = it.getString(requireActivity().getString(R.string.product_id))
+           viewModel.getProductDetailAndReviews(userId,productId ?: "")
         }
 
-         */
+        setupListeners(view)
 
+        setupRecyclerView()
+
+        setupObservers()
+    }
+
+    private fun setupListeners(view: View) {
         binding.toolBarProductDetail.setNavigationOnClickListener {
             requireActivity().finish()
         }
@@ -73,92 +78,77 @@ class ProductDetailFragment: Fragment() {
             }
             false
         }
-
-        viewModel = ViewModelProvider(requireActivity())[ProductDetailViewModel::class.java]
-
-        arguments?.let {
-            productId = it.getString(requireActivity().getString(R.string.product_id))
-           // viewModel.getProduct(userId,productId ?: "")
-           // viewModel.getReviews(productId ?: "")
-        }
-
-        setRecyclerView()
-
-        observer()
     }
 
-    private fun observer() {
-        /*
-        viewModel.stateProduct.observe(viewLifecycleOwner) {
-            when(it) {
-                is Resource.Success -> {
-                    setProductView(it.data!!)
-                    binding.progressBarProductDetail.hide()
-                }
-                is Resource.Loading -> {
-                    binding.progressBarProductDetail.show()
-                }
-                is Resource.Error -> {
-                    binding.progressBarProductDetail.hide()
-                }
+    private fun setupRecyclerView() {
+        binding.recyclerViewProductDetail.adapter = reviewAdapter
+        binding.recyclerViewProductDetail.layoutManager = LinearLayoutManager(requireContext(),
+            LinearLayoutManager.VERTICAL,false)
+        binding.recyclerViewProductDetail.addItemDecoration(ItemDecoration(40,40,30))
+    }
+
+    private fun setupObservers() {
+        viewModel.productDetailState.observe(viewLifecycleOwner) { state ->
+            handleProductDetailState(state)
+        }
+    }
+
+    private fun handleProductDetailState(state: ProductDetailState) {
+        if (state.isLoading) {
+            binding.progressBarProductDetail.show()
+        } else {
+            binding.progressBarProductDetail.hide()
+        }
+
+        state.productDetail?.let {
+            setupProductDetail(it)
+        }
+
+        state.reviewList.let {
+            if (it.isEmpty()) {
+                binding.textViewReviewContentCount.text = "Değerlendirme (0)"
+                binding.emptyReview.show()
+            } else {
+                reviewAdapter.reviewList = it
+                binding.textViewReviewContentCount.text = "Değerlendirme (${it.size})"
+                binding.emptyReview.hide()
             }
         }
 
-        viewModel.stateReviewList.observe(viewLifecycleOwner) {
-            when(it) {
-                is Resource.Success -> {
-                    binding.progressBarProductDetail.hide()
-                    val reviewList = it.data?.toList()
-
-                    if (reviewList.isNullOrEmpty()) {
-                        reviewAdapter.reviewList = listOf()
-                        // değerlendirme yok yazısı göster
-                        binding.textViewReviewContentCount.text = "Değerlendirme (0)"
-                        binding.emptyReview.show()
-                    } else {
-                        // değerlendirme yok yazısını kaldır.
-                        reviewAdapter.reviewList = reviewList
-                        binding.textViewReviewContentCount.text = "Değerlendirme (${reviewList.size})"
-                        binding.emptyReview.hide()
-                    }
-                    reviewAdapter.notifyChanges()
-                }
-                is Resource.Loading -> {
-                    binding.progressBarProductDetail.show()
-                }
-                is Resource.Error -> {
-                    binding.progressBarProductDetail.hide()
-                    toast(requireContext(),it.message?:"Değerlendirmeler alınamadı.",false)
-                }
-            }
+        state.dataError?.let {
+            TODO()
         }
 
-         */
+        state.actionError?.let {
+            toast(requireContext(), it, false)
+        }
     }
 
-    private fun setProductView(product: Product) {
-        binding.toolBarProductDetail.title = "Kategoriler/ ${product.productCategory}"
-        binding.imageViewProductPhoto.glide(product.productPhoto, placeHolderProgressBar(binding.root.context))
-        binding.textViewProductBrand.text = product.productBrand
-        binding.textViewProductDetail.text = product.productDetail
-        binding.textViewPrice.text = "${product.productPriceWhole}.${product.productPriceCent.toCent()} TL"
-        binding.textViewRate.text = product.productRate.toString()
-        binding.textViewReviewCount.text = "(${product.productReviewCount})"
-        //binding.textViewShipping.text = product.productShipping
-        //binding.textViewStore.text = product.productStore
-        //binding.textViewStoreRate.text = product.productStoreRate
-        if (product.productRate < 4.0) {
+    private fun setupProductDetail(productDetail: ProductDetail) {
+        binding.toolBarProductDetail.title = "Kategoriler/ ${productDetail.productCategory}"
+        binding.imageViewProductPhoto.glide(productDetail.productPhoto, placeHolderProgressBar(binding.root.context))
+        binding.textViewProductBrand.text = productDetail.productBrand
+        binding.textViewProductDetail.text = productDetail.productDetail
+        binding.textViewPrice.text = "${productDetail.productPriceWhole}.${productDetail.productPriceCent.toCent()} TL"
+        binding.textViewRate.text = productDetail.productRate.toString()
+        binding.textViewReviewCount.text = "(${productDetail.productReviewCount})"
+        binding.textViewShipping.text = productDetail.productShipping
+        binding.textViewStore.text = productDetail.productStore
+        binding.textViewStoreRate.text = productDetail.productStoreRate
+
+        if (productDetail.productRate < 4.0) {
             binding.imageViewStar.setImageResource(R.drawable.star_half)
         } else {
             binding.imageViewStar.setImageResource(R.drawable.star)
         }
 
-        if (product.addedToFavorites) {
+        if (productDetail.addedToFavorites) {
             binding.imageViewFavorite.setImageResource(R.drawable.favorite_orange)
         } else {
             binding.imageViewFavorite.setImageResource(R.drawable.favorite_border_orange)
         }
-        if (product.addedToShoppingCart) {
+
+        if (productDetail.addedToShoppingCart) {
             binding.buttonAddCart.text = "Kaldır"
             binding.buttonAddCart.setBackgroundColor(binding.root.resources.getColor(R.color.font_third))
         } else {
@@ -167,16 +157,16 @@ class ProductDetailFragment: Fragment() {
         }
 
         binding.imageViewShare.setOnClickListener {
-            val link = "https://www.eticaretuygulamasi.com/urun_detay?id=${product.productId}"
+            val link = "https://www.eticaretuygulamasi.com/urun_detay?id=${productDetail.productId}"
             shareContent("title", link)
         }
 
         binding.imageViewFavorite.setOnClickListener {
             if (userId != Constants.ANOMIM_USER_ID) {
-                if (product.addedToFavorites) {
-                   // viewModel.removeFromFavorites(userId,product.productId)
+                if (productDetail.addedToFavorites) {
+                    viewModel.removeProductFromFavorites(userId, productDetail.productId)
                 } else {
-                   // viewModel.addToFavorites(userId,product.productId)
+                    viewModel.addProductToFavorites(userId, productDetail.productId)
                 }
             } else {
                 toast(requireContext(),"Favori işlemleri için giriş yapmalısınız.",false)
@@ -187,10 +177,10 @@ class ProductDetailFragment: Fragment() {
         }
 
         binding.buttonAddCart.setOnClickListener {
-            if (product.addedToShoppingCart) {
-               // viewModel.removeFromShoppingCart(userId,product.productId)
+            if (productDetail.addedToShoppingCart) {
+                viewModel.removeProductFromCart(userId, productDetail.productId)
             } else {
-               // viewModel.addToShoppingCart(userId,product.productId)
+                viewModel.addProductToCart(userId, productDetail.productId)
             }
         }
     }
@@ -201,13 +191,6 @@ class ProductDetailFragment: Fragment() {
         intent.putExtra(Intent.EXTRA_SUBJECT, title)
         intent.putExtra(Intent.EXTRA_TEXT, url)
         startActivity(Intent.createChooser(intent, "Paylaş"))
-    }
-
-    private fun setRecyclerView() {
-        binding.recyclerViewProductDetail.adapter = reviewAdapter
-        binding.recyclerViewProductDetail.layoutManager = LinearLayoutManager(requireContext(),
-            LinearLayoutManager.VERTICAL,false)
-        binding.recyclerViewProductDetail.addItemDecoration(ItemDecoration(40,40,30))
     }
 
     override fun onDestroyView() {
