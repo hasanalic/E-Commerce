@@ -19,24 +19,8 @@ class FakeHomeRepository : HomeRepository {
             "123456789",false,false,false)
     )
 
-    private val categories = mutableListOf(
-        Category("Elektronik"), Category("Bahçe")
-    )
-
     override suspend fun getProductsByUserId(userId: String): Result<List<Product>, DataError.Local> {
         return Result.Success(products)
-    }
-
-    override suspend fun getCategories(): Result<List<Category>, DataError.Local> {
-        return Result.Success(categories)
-    }
-
-    override suspend fun getBrands(): Result<List<Brand>, DataError.Local> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun getBrandsByCategory(category: String): Result<List<Brand>, DataError.Local> {
-        TODO("Not yet implemented")
     }
 
     override suspend fun getProductEntityIdByBarcode(productBarcode: String): Result<Int, DataError.Local> {

@@ -29,6 +29,9 @@ import com.hasanalic.ecommerce.feature_auth.domain.use_cases.InsertUserUseCase
 import com.hasanalic.ecommerce.feature_auth.domain.use_cases.UserEmailValidatorUseCase
 import com.hasanalic.ecommerce.feature_auth.domain.use_cases.UserInputValidatorUseCase
 import com.hasanalic.ecommerce.feature_auth.domain.use_cases.UserPasswordValidatorUseCase
+import com.hasanalic.ecommerce.feature_filter.data.repository.FilterRepositoryImp
+import com.hasanalic.ecommerce.feature_filter.domain.repository.FilterRepository
+import com.hasanalic.ecommerce.feature_filter.domain.use_cases.FilterUseCases
 import com.hasanalic.ecommerce.feature_home.data.repository.FavoriteRepositoryImp
 import com.hasanalic.ecommerce.feature_home.domain.repository.FavoriteRepository
 import com.hasanalic.ecommerce.feature_home.domain.use_case.favorite_use_cases.DeleteFavoriteUseCase
@@ -39,9 +42,9 @@ import com.hasanalic.ecommerce.feature_home.domain.use_case.favorite_use_cases.G
 import com.hasanalic.ecommerce.feature_home.domain.use_case.favorite_use_cases.InsertFavoriteAndGetIdUseCase
 import com.hasanalic.ecommerce.feature_home.data.repository.ShoppingCartRepositoryImp
 import com.hasanalic.ecommerce.feature_home.domain.repository.ShoppingCartRepository
-import com.hasanalic.ecommerce.feature_home.domain.use_case.home_use_cases.GetBrandsByCategoryUseCase
-import com.hasanalic.ecommerce.feature_home.domain.use_case.home_use_cases.GetBrandsUseCase
-import com.hasanalic.ecommerce.feature_home.domain.use_case.home_use_cases.GetCategoriesUseCase
+import com.hasanalic.ecommerce.feature_filter.domain.use_cases.GetBrandsByCategoryUseCase
+import com.hasanalic.ecommerce.feature_filter.domain.use_cases.GetBrandsUseCase
+import com.hasanalic.ecommerce.feature_filter.domain.use_cases.GetCategoriesUseCase
 import com.hasanalic.ecommerce.feature_home.domain.use_case.home_use_cases.GetProductEntityIdByBarcodeUseCase
 import com.hasanalic.ecommerce.feature_home.domain.use_case.home_use_cases.GetProductsByUserIdUseCase
 import com.hasanalic.ecommerce.feature_home.domain.use_case.home_use_cases.HomeUseCases
@@ -212,6 +215,12 @@ object AppModule {
 
     @Singleton
     @Provides
+    fun provideFilterRepository(productDao: ProductDao): FilterRepository {
+        return FilterRepositoryImp(productDao)
+    }
+
+    @Singleton
+    @Provides
     fun provideAuthUseCases(authRepository: AuthenticationRepository): AuthUseCases {
         return AuthUseCases(
             insertUserUseCase = InsertUserUseCase(authRepository),
@@ -254,9 +263,6 @@ object AppModule {
     fun provideHomeUseCases(homeRepository: HomeRepository): HomeUseCases {
         return HomeUseCases(
             getProductsByUserIdUseCase = GetProductsByUserIdUseCase(homeRepository),
-            getCategoriesUseCase = GetCategoriesUseCase(homeRepository),
-            getBrandsUseCase = GetBrandsUseCase(homeRepository),
-            getBrandsByCategoryUseCase = GetBrandsByCategoryUseCase(homeRepository),
             getProductEntityIdByBarcodeUseCase = GetProductEntityIdByBarcodeUseCase(homeRepository)
         )
     }
@@ -271,6 +277,16 @@ object AppModule {
             getAddressListByUserIdUseCase = GetAddressListByUserIdUseCase(addressRepository),
             insertAddressEntityUseCase = InsertAddressEntityUseCase(addressRepository),
             addressValidatorUseCase = AddressValidatorUseCase()
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideFilterUseCases(filterRepository: FilterRepository): FilterUseCases {
+        return FilterUseCases(
+            getBrandsUseCase = GetBrandsUseCase(filterRepository),
+            getBrandsByCategoryUseCase = GetBrandsByCategoryUseCase(filterRepository),
+            getCategoriesUseCase = GetCategoriesUseCase(filterRepository)
         )
     }
 

@@ -28,45 +28,6 @@ class HomeRepositoryImp @Inject constructor(
         }
     }
 
-    override suspend fun getCategories(): Result<List<Category>, DataError.Local> {
-        return try {
-            val result = productDao.getCategories()
-            result?.let { categoryList->
-                val uniqueCategories = categoryList.distinct()
-                val chipCategoryList = uniqueCategories.map { Category(it) }
-                Result.Success(chipCategoryList)
-            }?: Result.Error(DataError.Local.NOT_FOUND)
-        } catch (e: Exception) {
-            Result.Error(DataError.Local.UNKNOWN)
-        }
-    }
-
-    override suspend fun getBrands(): Result<List<Brand>, DataError.Local> {
-        return try {
-            val result = productDao.getBrands()
-            result?.let { brandList->
-                val uniqueBrands = brandList.distinct()
-                val chipBrandList = uniqueBrands.map { Brand(it) }
-                Result.Success(chipBrandList)
-            }?: Result.Error(DataError.Local.NOT_FOUND)
-        } catch (e: Exception) {
-            Result.Error(DataError.Local.UNKNOWN)
-        }
-    }
-
-    override suspend fun getBrandsByCategory(category: String): Result<List<Brand>, DataError.Local> {
-        return try {
-            val result = productDao.getBrandsByCategory(category)
-            result?.let { brandList->
-                val uniqueBrands = brandList.distinct()
-                val chipBrandList = uniqueBrands.map { Brand(it) }
-                Result.Success(chipBrandList)
-            }?: Result.Error(DataError.Local.NOT_FOUND)
-        } catch (e: Exception) {
-            Result.Error(DataError.Local.UNKNOWN)
-        }
-    }
-
     override suspend fun getProductEntityIdByBarcode(productBarcode: String): Result<Int, DataError.Local> {
         return try {
             val result = productDao.getProductEntityIdByBarcode(productBarcode)

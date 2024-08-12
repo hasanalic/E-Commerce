@@ -3,6 +3,9 @@ package com.hasanalic.ecommerce.feature_home.presentation.home_screen
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import com.hasanalic.ecommerce.MainCoroutineRule
+import com.hasanalic.ecommerce.feature_filter.data.FakeFilterRepository
+import com.hasanalic.ecommerce.feature_filter.domain.repository.FilterRepository
+import com.hasanalic.ecommerce.feature_filter.domain.use_cases.FilterUseCases
 import com.hasanalic.ecommerce.feature_home.data.repository.FakeFavoriteRepository
 import com.hasanalic.ecommerce.feature_home.data.repository.FakeHomeRepository
 import com.hasanalic.ecommerce.feature_home.data.repository.FakeShoppingCartRepository
@@ -15,9 +18,9 @@ import com.hasanalic.ecommerce.feature_home.domain.use_case.favorite_use_cases.G
 import com.hasanalic.ecommerce.feature_home.domain.use_case.favorite_use_cases.GetFavoriteListByUserIdUseCase
 import com.hasanalic.ecommerce.feature_home.domain.use_case.favorite_use_cases.GetFavoriteProductsUseCase
 import com.hasanalic.ecommerce.feature_home.domain.use_case.favorite_use_cases.InsertFavoriteAndGetIdUseCase
-import com.hasanalic.ecommerce.feature_home.domain.use_case.home_use_cases.GetBrandsByCategoryUseCase
-import com.hasanalic.ecommerce.feature_home.domain.use_case.home_use_cases.GetBrandsUseCase
-import com.hasanalic.ecommerce.feature_home.domain.use_case.home_use_cases.GetCategoriesUseCase
+import com.hasanalic.ecommerce.feature_filter.domain.use_cases.GetBrandsByCategoryUseCase
+import com.hasanalic.ecommerce.feature_filter.domain.use_cases.GetBrandsUseCase
+import com.hasanalic.ecommerce.feature_filter.domain.use_cases.GetCategoriesUseCase
 import com.hasanalic.ecommerce.feature_home.domain.use_case.home_use_cases.GetProductEntityIdByBarcodeUseCase
 import com.hasanalic.ecommerce.feature_home.domain.use_case.home_use_cases.GetProductsByUserIdUseCase
 import com.hasanalic.ecommerce.feature_home.domain.use_case.home_use_cases.HomeUseCases
@@ -46,10 +49,12 @@ class HomeViewModelTest {
     var mainCoroutineRule = MainCoroutineRule()
 
     private lateinit var homeRepository: HomeRepository
+    private lateinit var filterRepository: FilterRepository
     private lateinit var shoppingCartRepository: ShoppingCartRepository
     private lateinit var favoriteRepository: FavoriteRepository
 
     private lateinit var homeUseCases: HomeUseCases
+    private lateinit var filterUseCases: FilterUseCases
     private lateinit var shoppingCartUseCases: ShoppingCartUseCases
     private lateinit var favoriteUseCases: FavoriteUseCases
 
@@ -58,15 +63,19 @@ class HomeViewModelTest {
     @Before
     fun setup() {
         homeRepository = FakeHomeRepository()
+        filterRepository = FakeFilterRepository()
         shoppingCartRepository = FakeShoppingCartRepository()
         favoriteRepository = FakeFavoriteRepository()
 
         homeUseCases = HomeUseCases(
             getProductsByUserIdUseCase = GetProductsByUserIdUseCase(homeRepository),
-            getCategoriesUseCase = GetCategoriesUseCase(homeRepository),
-            getBrandsUseCase = GetBrandsUseCase(homeRepository),
-            getBrandsByCategoryUseCase = GetBrandsByCategoryUseCase(homeRepository),
             getProductEntityIdByBarcodeUseCase = GetProductEntityIdByBarcodeUseCase(homeRepository)
+        )
+
+        filterUseCases = FilterUseCases(
+            getBrandsUseCase = GetBrandsUseCase(filterRepository),
+            getBrandsByCategoryUseCase = GetBrandsByCategoryUseCase(filterRepository),
+            getCategoriesUseCase = GetCategoriesUseCase(filterRepository)
         )
 
         shoppingCartUseCases = ShoppingCartUseCases(
@@ -88,7 +97,7 @@ class HomeViewModelTest {
             insertFavoriteAndGetIdUseCase = InsertFavoriteAndGetIdUseCase(favoriteRepository)
         )
 
-        homeViewModel = HomeViewModel(homeUseCases, shoppingCartUseCases, favoriteUseCases)
+        homeViewModel = HomeViewModel(homeUseCases, filterUseCases, shoppingCartUseCases, favoriteUseCases)
     }
 
     @Test

@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hasanalic.ecommerce.core.domain.model.DataError
 import com.hasanalic.ecommerce.core.domain.model.Result
+import com.hasanalic.ecommerce.feature_filter.domain.use_cases.FilterUseCases
 import com.hasanalic.ecommerce.feature_home.data.local.entity.FavoritesEntity
 import com.hasanalic.ecommerce.feature_home.data.local.entity.ShoppingCartItemsEntity
 import com.hasanalic.ecommerce.feature_home.domain.use_case.favorite_use_cases.FavoriteUseCases
@@ -18,6 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val homeUseCases: HomeUseCases,
+    private val filterUseCases: FilterUseCases,
     private val shoppingCartUseCases: ShoppingCartUseCases,
     private val favoriteUseCases: FavoriteUseCases
 ) : ViewModel() {
@@ -31,7 +33,7 @@ class HomeViewModel @Inject constructor(
 
     fun getCategories() {
         viewModelScope.launch {
-            when(val result = homeUseCases.getCategoriesUseCase()) {
+            when(val result = filterUseCases.getCategoriesUseCase()) {
                 is Result.Error -> handleGetCategoriesError(result.error)
                 is Result.Success -> {
                     _homeState.value = _homeState.value!!.copy(

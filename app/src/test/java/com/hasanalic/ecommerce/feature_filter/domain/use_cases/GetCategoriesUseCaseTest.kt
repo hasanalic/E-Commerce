@@ -1,11 +1,11 @@
-package com.hasanalic.ecommerce.feature_home.domain.use_case.home_use_cases
+package com.hasanalic.ecommerce.feature_filter.domain.use_cases
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import com.hasanalic.ecommerce.MainCoroutineRule
 import com.hasanalic.ecommerce.core.domain.model.Result
-import com.hasanalic.ecommerce.feature_home.data.repository.FakeHomeRepository
-import com.hasanalic.ecommerce.feature_home.domain.repository.HomeRepository
+import com.hasanalic.ecommerce.feature_filter.data.FakeFilterRepository
+import com.hasanalic.ecommerce.feature_filter.domain.repository.FilterRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
@@ -21,12 +21,12 @@ class GetCategoriesUseCaseTest {
     @get:Rule
     var mainCoroutineRule = MainCoroutineRule()
 
-    private lateinit var homeRepository: HomeRepository
+    private lateinit var homeRepository: FilterRepository
     private lateinit var getCategoriesUseCase: GetCategoriesUseCase
 
     @Before
     fun setup() {
-        homeRepository = FakeHomeRepository()
+        homeRepository = FakeFilterRepository()
         getCategoriesUseCase = GetCategoriesUseCase(homeRepository)
     }
 
