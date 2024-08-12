@@ -63,13 +63,13 @@ class LocationViewModel @Inject constructor(
     private fun handleDeleteAddressEntityError(error: DataError.Local) {
         when(error) {
             DataError.Local.DELETION_FAILED -> {
-                _locationState.value = LocationState(
-                    dataError = "Adres silinemedi."
+                _locationState.value = _locationState.value!!.copy(
+                    actionError = "Adres silinemedi."
                 )
             }
             DataError.Local.UNKNOWN -> {
-                _locationState.value = LocationState(
-                    dataError = "Bilinmeyen bir hata meydana geldi."
+                _locationState.value = _locationState.value!!.copy(
+                    actionError = "Bilinmeyen bir hata meydana geldi."
                 )
             }
             else -> {}
