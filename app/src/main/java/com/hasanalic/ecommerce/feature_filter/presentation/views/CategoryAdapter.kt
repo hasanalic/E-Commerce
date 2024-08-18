@@ -1,4 +1,4 @@
-package com.hasanalic.ecommerce.feature_home.presentation.filtered_screen
+package com.hasanalic.ecommerce.feature_filter.presentation.views
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,7 +10,7 @@ import com.hasanalic.ecommerce.R
 import com.hasanalic.ecommerce.databinding.RecyclerItemFilterBinding
 import com.hasanalic.ecommerce.feature_home.domain.model.Category
 
-class FilterAdapter: RecyclerView.Adapter<FilterAdapter.MyViewHolder>() {
+class CategoryAdapter: RecyclerView.Adapter<CategoryAdapter.MyViewHolder>() {
 
     private val diffUtil = object : DiffUtil.ItemCallback<Category>() {
         override fun areItemsTheSame(oldItem: Category, newItem: Category): Boolean {
@@ -23,12 +23,12 @@ class FilterAdapter: RecyclerView.Adapter<FilterAdapter.MyViewHolder>() {
 
     private val recyclerListDiffer = AsyncListDiffer(this,diffUtil)
 
-    var chipList: List<Category>
+    var categoryList: List<Category>
         get() = recyclerListDiffer.currentList
         set(value) = recyclerListDiffer.submitList(value)
 
     inner class MyViewHolder(private val binding: RecyclerItemFilterBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Category) {
+        fun bind(item: Category, position: Int) {
             binding.chip.text = item.category
             if (item.isSelected) {
                 binding.chip.chipBackgroundColor = ContextCompat.getColorStateList(binding.root.context,R.color.color_primary)
@@ -39,17 +39,17 @@ class FilterAdapter: RecyclerView.Adapter<FilterAdapter.MyViewHolder>() {
             }
 
             binding.chip.setOnClickListener {
-                onChipClickListener?.let {
-                    it(item.category)
+                onCategoryClickListener?.let {
+                    it(item.category, position)
                 }
             }
         }
     }
 
-    private var onChipClickListener: ((String) -> Unit)? = null
+    private var onCategoryClickListener: ((String, Int) -> Unit)? = null
 
-    fun setOnChipClickListener(listener: (String) -> Unit) {
-        onChipClickListener = listener
+    fun setOnCategoryClickListener(listener: (String, Int) -> Unit) {
+        onCategoryClickListener = listener
     }
 
     fun notifyChanges() {
@@ -61,10 +61,10 @@ class FilterAdapter: RecyclerView.Adapter<FilterAdapter.MyViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return chipList.size
+        return categoryList.size
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.bind(chipList[position])
+        holder.bind(categoryList[position], position)
     }
 }

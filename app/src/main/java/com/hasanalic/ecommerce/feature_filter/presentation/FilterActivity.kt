@@ -3,6 +3,7 @@ package com.hasanalic.ecommerce.feature_filter.presentation
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -11,8 +12,11 @@ import com.hasanalic.ecommerce.R
 import com.hasanalic.ecommerce.databinding.ActivityFilterBinding
 import com.hasanalic.ecommerce.feature_filter.presentation.util.Filter
 import com.hasanalic.ecommerce.feature_filter.presentation.util.FilterSingleton
-import com.hasanalic.ecommerce.feature_home.presentation.filtered_screen.FilterAdapter
+import com.hasanalic.ecommerce.feature_filter.presentation.views.BrandAdapter
+import com.hasanalic.ecommerce.feature_filter.presentation.views.CategoryAdapter
 import com.hasanalic.ecommerce.utils.ItemDecoration
+import com.hasanalic.ecommerce.utils.hide
+import com.hasanalic.ecommerce.utils.show
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -22,12 +26,12 @@ class FilterActivity : AppCompatActivity() {
 
     private lateinit var viewModel: FilterViewModel
 
-    private val categoryFilterAdapter by lazy {
-        FilterAdapter()
+    private val categoryAdapter by lazy {
+        CategoryAdapter()
     }
 
-    private val brandFilterAdapter by lazy {
-        FilterAdapter()
+    private val brandAdapter by lazy {
+        BrandAdapter()
     }
 
     private lateinit var filter: Filter
@@ -37,11 +41,22 @@ class FilterActivity : AppCompatActivity() {
         binding = ActivityFilterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val intent = Intent()
         filter = Filter()
 
         viewModel = ViewModelProvider(this)[FilterViewModel::class.java]
         viewModel.getCategoryAndBrandList()
+
+        setupListeners()
+
+        setupRecyclerViewCategory()
+
+        setupRecyclerViewBrand()
+
+        setupObservers()
+    }
+
+    private fun setupListeners() {
+        val intent = Intent()
 
         binding.buttonApply.setOnClickListener {
             val minPrice = binding.textInputEditTextMinPrice.text.toString()
@@ -74,50 +89,74 @@ class FilterActivity : AppCompatActivity() {
             }
         })
 
-        setRecyclerView()
-
         setRadioButtons()
-
-        observe()
     }
 
-    private fun observe() {
-        /*
-        viewModel.stateCategoryList.observe(this) {
-            categoryFilterAdapter.chipList = it
-            categoryFilterAdapter.notifyChanges()
-        }
-
-        viewModel.stateBrandList.observe(this) {
-            brandFilterAdapter.chipList = it
-            brandFilterAdapter.notifyChanges()
-        }
-
-         */
-    }
-
-    private fun setRecyclerView() {
-        binding.recyclerViewCategory.adapter = categoryFilterAdapter
-        binding.recyclerViewCategory.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,false)
+    private fun setupRecyclerViewCategory() {
+        binding.recyclerViewCategory.adapter = categoryAdapter
+        binding.recyclerViewCategory.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.recyclerViewCategory.addItemDecoration(ItemDecoration(0,16,0))
-        categoryFilterAdapter.setOnChipClickListener {
-            filter.category = it
-            //viewModel.selectCategory(it)
-            filter.brand = null
-            categoryFilterAdapter.notifyChanges()
-        }
 
-        binding.recyclerViewBrand.adapter = brandFilterAdapter
+        categoryAdapter.setOnCategoryClickListener { category, position ->
+            filter.category = category
+            filter.brand = null
+            viewModel.selectCategory(position, category)
+            categoryAdapter.notifyChanges()
+        }
+    }
+
+    private fun setupRecyclerViewBrand() {
+        binding.recyclerViewBrand.adapter = brandAdapter
         binding.recyclerViewBrand.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,false)
         binding.recyclerViewBrand.addItemDecoration(ItemDecoration(0,16,0))
-        brandFilterAdapter.setOnChipClickListener {
-            if (it == "Hepsi") {
+
+        brandAdapter.setOnBrandClickListener { brand, position ->
+            if (brand == "Hepsi") {
                 filter.brand = null
             } else {
-                filter.brand = it
+                filter.brand = brand
             }
-            //viewModel.selectBrand(it)
-            brandFilterAdapter.notifyChanges()
+
+            viewModel.selectBrand(position)
+            brandAdapter.notifyChanges()
+        }
+    }
+
+    private fun setupObservers() {
+        viewModel.filterState.observe(this) { filterState ->
+            handleFilterState(filterState)
+        }
+    }
+
+    private fun handleFilterState(state: FilterState) {
+        if (state.isLoading) {
+            binding.progressBarFilter.show()
+            binding.buttonReset.isEnabled = false
+            binding.buttonApply.isEnabled = false
+        } else {
+            binding.progressBarFilter.hide()
+            binding.buttonReset.isEnabled = true
+            binding.buttonApply.isEnabled = true
+        }
+
+        state.categoryList.let {
+            categoryAdapter.categoryList = it
+            categoryAdapter.notifyChanges()
+        }
+
+        state.brandList.let {
+            brandAdapter.brandList = it
+            brandAdapter.notifyChanges()
+        }
+
+        state.dataError?.let {
+            binding.recyclerViewBrand.hide()
+            binding.recyclerViewCategory.hide()
+            TODO("DATA ERROR TEXTVIEW")
+        }
+
+        state.actionError?.let {
+            Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -187,8 +226,8 @@ class FilterActivity : AppCompatActivity() {
     private fun reset() {
         filter = Filter()
         viewModel.getCategoryAndBrandList()
-        categoryFilterAdapter.notifyChanges()
-        brandFilterAdapter.notifyChanges()
+        categoryAdapter.notifyChanges()
+        brandAdapter.notifyChanges()
         binding.recyclerViewBrand.scrollToPosition(0)
         binding.recyclerViewCategory.scrollToPosition(0)
 

@@ -25,9 +25,9 @@ import com.hasanalic.ecommerce.R
 import com.hasanalic.ecommerce.databinding.FragmentHomeBinding
 import com.hasanalic.ecommerce.feature_auth.presentation.AuthActivity
 import com.hasanalic.ecommerce.feature_filter.presentation.FilterActivity
+import com.hasanalic.ecommerce.feature_filter.presentation.views.CategoryAdapter
 import com.hasanalic.ecommerce.feature_home.presentation.SharedViewModel
 import com.hasanalic.ecommerce.feature_home.presentation.barcode_screen.BarcodeScannerActivity
-import com.hasanalic.ecommerce.feature_home.presentation.filtered_category_screen.CategoryAdapter
 import com.hasanalic.ecommerce.feature_home.presentation.HomeActivity
 import com.hasanalic.ecommerce.feature_home.presentation.home_screen.HomeState
 import com.hasanalic.ecommerce.feature_home.presentation.home_screen.HomeViewModel
@@ -175,8 +175,8 @@ class HomeFragment: Fragment() {
         binding.recyclerViewCategory.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL,false)
         binding.recyclerViewCategory.addItemDecoration(ItemDecoration(0,16,0))
 
-        categoryAdapter.setOnChipClickListener {
-            val action = HomeFragmentDirections.actionHomeFragmentToFilteredProductsByCategoryFragment(it)
+        categoryAdapter.setOnCategoryClickListener { category, position ->
+            val action = HomeFragmentDirections.actionHomeFragmentToFilteredProductsByCategoryFragment(category)
             findNavController().navigate(action)
         }
     }
