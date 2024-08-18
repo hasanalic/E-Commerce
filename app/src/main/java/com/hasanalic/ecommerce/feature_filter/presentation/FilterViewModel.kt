@@ -4,96 +4,105 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hasanalic.ecommerce.feature_home.domain.model.Brand
-import com.hasanalic.ecommerce.feature_home.domain.model.Category
-import com.hasanalic.ecommerce.feature_home.domain.repository.HomeRepository
-import com.hasanalic.ecommerce.utils.Resource
+import com.hasanalic.ecommerce.core.domain.model.DataError
+import com.hasanalic.ecommerce.core.domain.model.Result
+import com.hasanalic.ecommerce.feature_filter.domain.use_cases.FilterUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class FilterViewModel @Inject constructor(
-    private val homeRepository: HomeRepository
+    private val filterUseCases: FilterUseCases
 ): ViewModel() {
 
-    private var _stateCategoryList = MutableLiveData<List<Category>>()
-    val stateCategoryList: LiveData<List<Category>>
-        get() = _stateCategoryList
-
-    private var _stateBrandList = MutableLiveData<List<Brand>>()
-    val stateBrandList: LiveData<List<Brand>>
-        get() = _stateBrandList
-
-    fun selectCategory(category: String) {
-        _stateCategoryList.value?.let {
-            for (chip in it) {
-                if (chip.category == category) {
-                    chip.isSelected = true
-                    getBrandsByCategory(category)
-                } else {
-                    chip.isSelected = false
-                }
-            }
-        }
-    }
-
-    fun selectBrand(brand: String) {
-        _stateBrandList.value?.let {
-            for (chip in it) {
-                if (chip.brand == brand) {
-                    chip.isSelected = true
-                } else {
-                    chip.isSelected = false
-                }
-            }
-        }
-    }
+    private var _filterState = MutableLiveData(FilterState())
+    val filterState: LiveData<FilterState> = _filterState
 
     fun getCategoryAndBrandList() {
-        getCategories()
-        getBrands()
+        _filterState.value = FilterState(isLoading = true)
+        viewModelScope.launch {
+            getCategoryList()
+        }
     }
 
-    private fun getCategories() {
-        /*
-        viewModelScope.launch {
-            val response = homeRepository.getCategories()
-            if (response is Resource.Success) {
-                _stateCategoryList.value = response.data!!
-            } else if (response is Resource.Error) {
-                _stateCategoryList.value = emptyList()
+    private suspend fun getCategoryList() {
+        when(val result = filterUseCases.getCategoriesUseCase()) {
+            is Result.Error -> handleGetCategoryListError(result.error)
+            is Result.Success -> {
+                _filterState.value = FilterState(categoryList = result.data)
+                getBrandList()
             }
         }
-
-         */
     }
 
-    private fun getBrands() {
-        /*
-        viewModelScope.launch {
-            val response = homeRepository.getBrands()
-            if (response is Resource.Success) {
-                _stateBrandList.value = response.data!!
-            } else {
-                _stateBrandList.value = emptyList()
-            }
+    private fun handleGetCategoryListError(error: DataError.Local) {
+        val message = when(error) {
+            DataError.Local.NOT_FOUND -> "Kategori listesi alınamadı."
+            DataError.Local.UNKNOWN -> "Bilinmeyen bir hata meydana geldi."
+            else -> null
         }
-
-         */
+        _filterState.value = FilterState(dataError = message)
     }
 
-    private fun getBrandsByCategory(category: String) {
-        /*
-        viewModelScope.launch {
-            val response = homeRepository.getBrandsByCategory(category)
-            if (response is Resource.Success) {
-                _stateBrandList.value = response.data!!
-            } else {
-                _stateBrandList.value = emptyList()
+    private suspend fun getBrandList() {
+        when(val result = filterUseCases.getBrandsUseCase()) {
+            is Result.Error -> handleGetBrandListError(result.error)
+            is Result.Success -> {
+                _filterState.value = _filterState.value!!.copy(
+                    brandList = result.data
+                )
             }
         }
+    }
 
-         */
+    private fun handleGetBrandListError(error: DataError.Local) {
+        val message = when(error) {
+            DataError.Local.NOT_FOUND -> "Marka listesi alınamadı."
+            DataError.Local.UNKNOWN -> "Bilinmeyen bir hata meydana geldi."
+            else -> null
+        }
+        _filterState.value = FilterState(dataError = message)
+    }
+
+    fun selectCategory(itemIndex: Int, categoryValue: String) {
+        val currentCategoryList = _filterState.value!!.categoryList
+
+        for ((index, category) in currentCategoryList.withIndex()) {
+            if (index == itemIndex) category.isSelected = true
+            else category.isSelected = false
+        }
+
+        _filterState.value = _filterState.value!!.copy(
+            categoryList = currentCategoryList
+        )
+
+        getBrandListByCategory(categoryValue)
+    }
+
+    private fun getBrandListByCategory(category: String) {
+        viewModelScope.launch {
+            when(val result = filterUseCases.getBrandsByCategoryUseCase(category)) {
+                is Result.Error -> handleGetBrandListError(result.error)
+                is Result.Success -> {
+                    _filterState.value = _filterState.value!!.copy(
+                        brandList = result.data
+                    )
+                }
+            }
+        }
+    }
+
+    fun selectBrand(itemIndex: Int) {
+        val currentBrandList = _filterState.value!!.brandList
+
+        for ((index, brand) in currentBrandList.withIndex()) {
+            if (index == itemIndex) brand.isSelected = true
+            else brand.isSelected = false
+        }
+
+        _filterState.value = _filterState.value!!.copy(
+            brandList = currentBrandList
+        )
     }
 }
