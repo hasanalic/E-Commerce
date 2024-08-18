@@ -11,11 +11,11 @@ import com.hasanalic.ecommerce.feature_home.domain.model.Category
 class FakeFilterRepository : FilterRepository {
 
     private val categories = mutableListOf(
-        Category("Elektronik"), Category("Bahçe")
+        Category("category"), Category("category2")
     )
 
     private val brands = mutableListOf(
-        Brand("Brand1"), Brand("Brand2")
+        Brand("brand"), Brand("brand2")
     )
 
     override suspend fun getCategories(): Result<List<Category>, DataError.Local> {

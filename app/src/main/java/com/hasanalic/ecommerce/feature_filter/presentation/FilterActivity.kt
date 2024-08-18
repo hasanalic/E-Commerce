@@ -102,7 +102,7 @@ class FilterActivity : AppCompatActivity() {
         binding.recyclerViewCategory.addItemDecoration(ItemDecoration(0,16,0))
         categoryFilterAdapter.setOnChipClickListener {
             filter.category = it
-            viewModel.selectCategory(it)
+            //viewModel.selectCategory(it)
             filter.brand = null
             categoryFilterAdapter.notifyChanges()
         }
@@ -116,7 +116,7 @@ class FilterActivity : AppCompatActivity() {
             } else {
                 filter.brand = it
             }
-            viewModel.selectBrand(it)
+            //viewModel.selectBrand(it)
             brandFilterAdapter.notifyChanges()
         }
     }
