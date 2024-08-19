@@ -4,7 +4,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.hasanalic.ecommerce.feature_location.data.local.entity.AddressEntity
 import com.hasanalic.ecommerce.feature_home.data.local.entity.FavoritesEntity
-import com.hasanalic.ecommerce.feature_notification.data.entity.NotificationEntity
+import com.hasanalic.ecommerce.feature_notification.data.local.entity.NotificationEntity
 import com.hasanalic.ecommerce.feature_orders.data.entity.OrderEntity
 import com.hasanalic.ecommerce.feature_orders.data.entity.OrderProductsEntity
 import com.hasanalic.ecommerce.feature_checkout.data.local.entity.PaymentEntity

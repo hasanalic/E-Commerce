@@ -1,6 +1,6 @@
 package com.hasanalic.ecommerce.core.domain.repository
 
-import com.hasanalic.ecommerce.feature_notification.data.entity.NotificationEntity
+import com.hasanalic.ecommerce.feature_notification.data.local.entity.NotificationEntity
 import com.hasanalic.ecommerce.utils.Resource
 
 interface ServiceRepository {

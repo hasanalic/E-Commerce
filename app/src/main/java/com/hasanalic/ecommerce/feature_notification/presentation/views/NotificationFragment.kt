@@ -1,4 +1,4 @@
-package com.hasanalic.ecommerce.feature_notification.presentation
+package com.hasanalic.ecommerce.feature_notification.presentation.views
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hasanalic.ecommerce.databinding.FragmentNotificationBinding
+import com.hasanalic.ecommerce.feature_notification.presentation.NotificationViewModel
 import com.hasanalic.ecommerce.utils.ItemDecoration
 import com.hasanalic.ecommerce.utils.Resource
 import com.hasanalic.ecommerce.utils.hide
