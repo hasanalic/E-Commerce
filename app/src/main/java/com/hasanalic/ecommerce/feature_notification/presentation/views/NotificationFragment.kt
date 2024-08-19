@@ -8,12 +8,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hasanalic.ecommerce.databinding.FragmentNotificationBinding
+import com.hasanalic.ecommerce.feature_notification.presentation.NotificationState
 import com.hasanalic.ecommerce.feature_notification.presentation.NotificationViewModel
 import com.hasanalic.ecommerce.utils.ItemDecoration
-import com.hasanalic.ecommerce.utils.Resource
 import com.hasanalic.ecommerce.utils.hide
 import com.hasanalic.ecommerce.utils.show
-import com.hasanalic.ecommerce.utils.toast
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -37,39 +36,48 @@ class NotificationFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = ViewModelProvider(requireActivity())[NotificationViewModel::class.java]
+        viewModel.getUserNotifications("1")
 
+        setupListeners()
+
+        setupRecyclerView()
+
+        setupObservers()
+    }
+
+    private fun setupListeners() {
         binding.toolBarNotifications.setNavigationOnClickListener {
             requireActivity().finish()
         }
-
-        setRecyclerView()
-
-        observer()
     }
 
-    private fun observer() {
-        viewModel.stateNotificationList.observe(viewLifecycleOwner) {
-            when(it) {
-                is Resource.Loading -> {
-                    binding.progressBarNotifications.show()
-                }
-                is Resource.Success -> {
-                    binding.progressBarNotifications.hide()
-                    notificationAdapter.notificationList = it.data?.toList()?: listOf()
-                    notificationAdapter.notifyChanges()
-                }
-                is Resource.Error -> {
-                    binding.progressBarNotifications.hide()
-                    toast(requireContext(),it.message?:"hata",false)
-                }
-            }
-        }
-    }
-
-    private fun setRecyclerView() {
+    private fun setupRecyclerView() {
         binding.recyclerViewNotification.adapter = notificationAdapter
         binding.recyclerViewNotification.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
         binding.recyclerViewNotification.addItemDecoration(ItemDecoration(40,30,60))
+    }
+
+    private fun setupObservers() {
+        viewModel.notificationState.observe(viewLifecycleOwner) { notificationState ->
+            handleNotificationState(notificationState)
+        }
+    }
+
+    private fun handleNotificationState(state: NotificationState) {
+        if (state.isLoading) {
+            binding.progressBarNotifications.show()
+        } else {
+            binding.progressBarNotifications.hide()
+        }
+
+        state.notificationList.let {
+            notificationAdapter.notificationList = it
+            notificationAdapter.notifyChanges()
+        }
+
+        state.dataError?.let {
+            TODO()
+        }
     }
 
     override fun onDestroyView() {
