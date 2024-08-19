@@ -66,6 +66,11 @@ import com.hasanalic.ecommerce.feature_location.domain.use_cases.GetAddressEntit
 import com.hasanalic.ecommerce.feature_location.domain.use_cases.GetAddressEntityListByUserIdUseCase
 import com.hasanalic.ecommerce.feature_location.domain.use_cases.GetAddressListByUserIdUseCase
 import com.hasanalic.ecommerce.feature_location.domain.use_cases.InsertAddressEntityUseCase
+import com.hasanalic.ecommerce.feature_notification.data.repository.NotificationRepositoryImp
+import com.hasanalic.ecommerce.feature_notification.domain.repository.NotificationRepository
+import com.hasanalic.ecommerce.feature_notification.domain.use_cases.GetUserNotificationsUseCase
+import com.hasanalic.ecommerce.feature_notification.domain.use_cases.InsertNotificationEntityUseCase
+import com.hasanalic.ecommerce.feature_notification.domain.use_cases.NotificationUseCases
 import com.hasanalic.ecommerce.feature_product_detail.data.repository.ProductDetailRepositoryImp
 import com.hasanalic.ecommerce.feature_product_detail.domain.repository.ProductDetailRepository
 import com.hasanalic.ecommerce.feature_product_detail.domain.use_cases.GetProductDetailByUserIdAndProductIdUseCase
@@ -221,6 +226,12 @@ object AppModule {
 
     @Singleton
     @Provides
+    fun provideNotificationRepository(notificationDao: NotificationDao): NotificationRepository {
+        return NotificationRepositoryImp(notificationDao)
+    }
+
+    @Singleton
+    @Provides
     fun provideAuthUseCases(authRepository: AuthenticationRepository): AuthUseCases {
         return AuthUseCases(
             insertUserUseCase = InsertUserUseCase(authRepository),
@@ -296,6 +307,15 @@ object AppModule {
         return ProductDetailUseCases(
             getProductDetailByUserIdAndProductIdUseCase = GetProductDetailByUserIdAndProductIdUseCase(productDetailRepository),
             getReviewsByProductIdUseCase = GetReviewsByProductIdUseCase(productDetailRepository)
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideNotificationUseCases(notificationRepository: NotificationRepository): NotificationUseCases {
+        return NotificationUseCases(
+            getUserNotificationsUseCase = GetUserNotificationsUseCase(notificationRepository),
+            insertNotificationEntityUseCase = InsertNotificationEntityUseCase(notificationRepository)
         )
     }
 }

@@ -12,7 +12,7 @@ class NotificationRepositoryImp @Inject constructor(
 ) : NotificationRepository {
     override suspend fun getUserNotifications(userId: String): Result<List<NotificationEntity>, DataError.Local> {
         return try {
-            val result = notificationDao.getNotifications()
+            val result = notificationDao.getNotifications(userId)
             result?.let {
                 Result.Success(it)
             }?: Result.Error(DataError.Local.NOT_FOUND)

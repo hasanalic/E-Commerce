@@ -7,8 +7,8 @@ import com.hasanalic.ecommerce.feature_notification.data.local.entity.Notificati
 
 @Dao
 interface NotificationDao {
-    @Query("SELECT * FROM Notifications ORDER BY notification_time DESC")
-    suspend fun getNotifications(): List<NotificationEntity>?
+    @Query("SELECT * FROM Notifications WHERE notification_user_id = :userId ORDER BY notification_time DESC")
+    suspend fun getNotifications(userId: String): List<NotificationEntity>?
 
     @Insert
     suspend fun insertNotification(notificationEntity: NotificationEntity): Long

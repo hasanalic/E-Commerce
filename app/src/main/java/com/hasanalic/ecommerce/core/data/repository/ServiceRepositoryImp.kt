@@ -18,7 +18,7 @@ class ServiceRepositoryImp @Inject constructor (
 
     override suspend fun getNotifications(): Resource<List<NotificationEntity>> {
         return try {
-            val response = notificationDao.getNotifications()
+            val response = notificationDao.getNotifications("1")
             response?.let {
                 Resource.Success(it)
             }?: Resource.Error(null,"Bildirim bilgisi bulunamadı.")
