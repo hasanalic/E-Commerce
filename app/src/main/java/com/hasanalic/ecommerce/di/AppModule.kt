@@ -71,6 +71,11 @@ import com.hasanalic.ecommerce.feature_notification.domain.repository.Notificati
 import com.hasanalic.ecommerce.feature_notification.domain.use_cases.GetUserNotificationsUseCase
 import com.hasanalic.ecommerce.feature_notification.domain.use_cases.InsertNotificationEntityUseCase
 import com.hasanalic.ecommerce.feature_notification.domain.use_cases.NotificationUseCases
+import com.hasanalic.ecommerce.feature_orders.domain.use_cases.GetOrderDetailUseCase
+import com.hasanalic.ecommerce.feature_orders.domain.use_cases.GetOrdersByUserUseCase
+import com.hasanalic.ecommerce.feature_orders.domain.use_cases.InsertOrderUseCase
+import com.hasanalic.ecommerce.feature_orders.domain.use_cases.OrderUseCases
+import com.hasanalic.ecommerce.feature_orders.domain.use_cases.UpdateOrderStatusUseCase
 import com.hasanalic.ecommerce.feature_product_detail.data.repository.ProductDetailRepositoryImp
 import com.hasanalic.ecommerce.feature_product_detail.domain.repository.ProductDetailRepository
 import com.hasanalic.ecommerce.feature_product_detail.domain.use_cases.GetProductDetailByUserIdAndProductIdUseCase
@@ -311,6 +316,17 @@ object AppModule {
         return NotificationUseCases(
             getUserNotificationsUseCase = GetUserNotificationsUseCase(notificationRepository),
             insertNotificationEntityUseCase = InsertNotificationEntityUseCase(notificationRepository)
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideOrderUseCases(orderRepository: OrderRepository): OrderUseCases {
+        return OrderUseCases(
+            getOrderDetailUseCase = GetOrderDetailUseCase(orderRepository),
+            getOrdersByUserUseCase = GetOrdersByUserUseCase(orderRepository),
+            insertOrderUseCase = InsertOrderUseCase(orderRepository),
+            updateOrderStatusUseCase = UpdateOrderStatusUseCase(orderRepository)
         )
     }
 }
