@@ -1,4 +1,4 @@
-package com.hasanalic.ecommerce.feature_orders.data.entity
+package com.hasanalic.ecommerce.feature_orders.data.local.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

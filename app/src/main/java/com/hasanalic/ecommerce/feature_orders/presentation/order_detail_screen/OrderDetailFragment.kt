@@ -1,6 +1,5 @@
-package com.hasanalic.ecommerce.feature_orders.presentation.views
+package com.hasanalic.ecommerce.feature_orders.presentation.order_detail_screen
 
-import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,24 +9,16 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.hasanalic.ecommerce.R
 import com.hasanalic.ecommerce.databinding.FragmentOrderDetailBinding
-import com.hasanalic.ecommerce.feature_orders.domain.model.Order
-import com.hasanalic.ecommerce.feature_orders.presentation.OrderSingleton
 import com.hasanalic.ecommerce.feature_orders.presentation.OrderViewModel
-import com.hasanalic.ecommerce.utils.Constants.BANK_OR_CREDIT_CARD
 import com.hasanalic.ecommerce.utils.Constants.DATE_FORMAT
-import com.hasanalic.ecommerce.utils.Constants.ORDER_CANCELLED
 import com.hasanalic.ecommerce.utils.Constants.ORDER_CARGO
 import com.hasanalic.ecommerce.utils.Constants.ORDER_DELIVERED
 import com.hasanalic.ecommerce.utils.Constants.ORDER_PREPARE
 import com.hasanalic.ecommerce.utils.Constants.ORDER_RECEIVED
-import com.hasanalic.ecommerce.utils.Constants.ORDER_RETURN
 import com.hasanalic.ecommerce.utils.OrderStatus
-import com.hasanalic.ecommerce.utils.Resource
 import com.hasanalic.ecommerce.utils.TimeAndDate
 import com.hasanalic.ecommerce.utils.hide
-import com.hasanalic.ecommerce.utils.maskCreditCard
 import com.hasanalic.ecommerce.utils.show
-import com.hasanalic.ecommerce.utils.toast
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -48,6 +39,7 @@ class OrderDetailFragment: Fragment() {
 
         viewModel = ViewModelProvider(requireActivity())[OrderViewModel::class.java]
 
+        /*
         val order = OrderSingleton.order
         order?.let {
             viewModel.getAddressDetail(it.orderUserId,it.orderAddressId)
@@ -67,13 +59,16 @@ class OrderDetailFragment: Fragment() {
             setOrderDetails(it)
         }
 
+         */
+
         binding.topAppBarOrderDetail.setNavigationOnClickListener {
             Navigation.findNavController(it).popBackStack()
         }
 
-        observe()
+        //observe()
     }
 
+    /*
     private fun observe() {
         viewModel.statusAddress.observe(viewLifecycleOwner) {
             when(it) {
@@ -115,6 +110,9 @@ class OrderDetailFragment: Fragment() {
         }
     }
 
+     */
+
+    /*
     private fun setOrderDetails(order: Order) {
         binding.textViewOrderNo.text = order.orderNo.subSequence(0,10).toString().uppercase()
         binding.textViewOrderDate.text = order.orderDate
@@ -153,6 +151,8 @@ class OrderDetailFragment: Fragment() {
             setOrderStatusConstrait(order.orderTimeStamp, order.orderDate)
         }
     }
+
+     */
 
     private fun setOrderStatusConstrait(orderTimestamp: Long, orderDate: String) {
         val orderCurrentStatus = OrderStatus.getOrderCurrrentStatus(orderTimestamp, System.currentTimeMillis())
@@ -224,6 +224,7 @@ class OrderDetailFragment: Fragment() {
         }
     }
 
+    /*
     private fun showCancelOrderWarning(userId: String, orderId: String) {
         val alertDialogBuilder = AlertDialog.Builder(requireContext())
         alertDialogBuilder.setMessage("Siparişi iptal etmek istediğinizden emin misiniz?")
@@ -237,6 +238,9 @@ class OrderDetailFragment: Fragment() {
         alertDialogBuilder.create().show()
     }
 
+     */
+
+    /*
     private fun showReturnOrderWarning(userId: String, orderId: String) {
         val alertDialogBuilder = AlertDialog.Builder(requireContext())
         alertDialogBuilder.setMessage("Siparişi iade etmek istediğinizden emin misiniz?")
@@ -249,6 +253,8 @@ class OrderDetailFragment: Fragment() {
 
         alertDialogBuilder.create().show()
     }
+
+     */
 
     override fun onDestroyView() {
         super.onDestroyView()

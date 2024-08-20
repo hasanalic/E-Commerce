@@ -160,14 +160,9 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideOrderRepository(
-        addressDao: AddressDao,
-        orderDao: OrderDao,
-        orderProductsDao: OrderProductsDao,
-        paymentDao: PaymentDao
-    ): OrderRepository {
+    fun provideOrderRepository(orderDao: OrderDao): OrderRepository {
         return OrderRepositoryImp(
-            addressDao, orderDao, orderProductsDao, paymentDao
+           orderDao
         )
     }
 

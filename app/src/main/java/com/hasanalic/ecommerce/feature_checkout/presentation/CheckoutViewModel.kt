@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hasanalic.ecommerce.feature_orders.data.entity.OrderEntity
-import com.hasanalic.ecommerce.feature_orders.data.entity.OrderProductsEntity
+import com.hasanalic.ecommerce.feature_orders.data.local.entity.OrderEntity
+import com.hasanalic.ecommerce.feature_orders.data.local.entity.OrderProductsEntity
 import com.hasanalic.ecommerce.feature_checkout.data.local.entity.PaymentEntity
 import com.hasanalic.ecommerce.core.domain.model.Address
 import com.hasanalic.ecommerce.feature_home.domain.model.ShoppingCartItem
@@ -62,8 +62,11 @@ class CheckoutViewModel @Inject constructor(
     }
 
     fun setOrderAddressAndUserId(addressId: String, userId: String) {
+        /*
         val order = OrderEntity(orderUserId = userId, orderAddressId = addressId)
         _statusOrder.value = order
+
+         */
     }
 
     fun setOrderCargo(cargo: String) {

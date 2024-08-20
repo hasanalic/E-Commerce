@@ -1,4 +1,4 @@
-package com.hasanalic.ecommerce.feature_orders.presentation.views
+package com.hasanalic.ecommerce.feature_orders.presentation.orders_screen
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hasanalic.ecommerce.R
 import com.hasanalic.ecommerce.databinding.RecyclerItemOrderBinding
-import com.hasanalic.ecommerce.feature_orders.domain.model.Order
 import com.hasanalic.ecommerce.utils.Constants
 import com.hasanalic.ecommerce.utils.Constants.ORDER_CARGO
 import com.hasanalic.ecommerce.utils.Constants.ORDER_DELIVERED
@@ -17,7 +16,9 @@ import com.hasanalic.ecommerce.utils.Constants.ORDER_RECEIVED
 import com.hasanalic.ecommerce.utils.OrderStatus
 import com.hasanalic.ecommerce.utils.hide
 
+/*
 class OrderAdapter: RecyclerView.Adapter<OrderAdapter.MyViewHolder>() {
+
 
     private val viewPool = RecyclerView.RecycledViewPool()
 
@@ -113,3 +114,5 @@ class OrderAdapter: RecyclerView.Adapter<OrderAdapter.MyViewHolder>() {
         holder.binding.recyclerViewProducts.setRecycledViewPool(viewPool)
     }
 }
+
+ */

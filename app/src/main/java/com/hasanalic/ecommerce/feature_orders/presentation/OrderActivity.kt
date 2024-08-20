@@ -1,4 +1,4 @@
-package com.hasanalic.ecommerce.feature_orders.presentation.views
+package com.hasanalic.ecommerce.feature_orders.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

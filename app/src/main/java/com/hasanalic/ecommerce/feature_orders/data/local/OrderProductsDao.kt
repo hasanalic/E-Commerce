@@ -3,7 +3,7 @@ package com.hasanalic.ecommerce.feature_orders.data.local
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import com.hasanalic.ecommerce.feature_orders.data.entity.OrderProductsEntity
+import com.hasanalic.ecommerce.feature_orders.data.local.entity.OrderProductsEntity
 
 @Dao
 interface OrderProductsDao {

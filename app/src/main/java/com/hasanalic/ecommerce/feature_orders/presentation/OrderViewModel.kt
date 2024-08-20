@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hasanalic.ecommerce.feature_location.data.local.entity.AddressEntity
 import com.hasanalic.ecommerce.feature_checkout.data.local.entity.PaymentEntity
-import com.hasanalic.ecommerce.feature_orders.domain.model.Order
 import com.hasanalic.ecommerce.feature_orders.domain.repository.OrderRepository
 import com.hasanalic.ecommerce.utils.Constants.ORDER_CANCELLED
 import com.hasanalic.ecommerce.utils.Constants.ORDER_RETURN
@@ -20,6 +19,7 @@ class OrderViewModel @Inject constructor(
     private val repository: OrderRepository
 ): ViewModel() {
 
+    /*
     private var _statusOrderList = MutableLiveData<Resource<List<Order>>>()
     val statusOrderList: LiveData<Resource<List<Order>>>
         get() = _statusOrderList
@@ -131,4 +131,6 @@ class OrderViewModel @Inject constructor(
     fun resetPaymentDetail() {
         _statusPayment = MutableLiveData<Resource<PaymentEntity>>()
     }
+
+     */
 }

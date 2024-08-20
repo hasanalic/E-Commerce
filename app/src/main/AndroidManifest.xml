@@ -52,7 +52,7 @@
         <activity android:name=".feature_home.presentation.HomeActivity" />
         <activity android:name=".feature_location.presentation.LocationActivity" />
         <activity android:name=".feature_notification.presentation.NotificationActivity" />
-        <activity android:name=".feature_orders.presentation.views.OrderActivity" />
+        <activity android:name=".feature_orders.presentation.OrderActivity" />
         <activity android:name=".feature_product_detail.presentation.ProductDetailActivity" />
 
     </application>

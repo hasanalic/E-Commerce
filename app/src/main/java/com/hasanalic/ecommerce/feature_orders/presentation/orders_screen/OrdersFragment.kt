@@ -1,4 +1,4 @@
-package com.hasanalic.ecommerce.feature_orders.presentation.views
+package com.hasanalic.ecommerce.feature_orders.presentation.orders_screen
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,13 +10,8 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hasanalic.ecommerce.R
 import com.hasanalic.ecommerce.databinding.FragmentOrdersBinding
-import com.hasanalic.ecommerce.feature_orders.presentation.OrderSingleton
 import com.hasanalic.ecommerce.feature_orders.presentation.OrderViewModel
 import com.hasanalic.ecommerce.utils.ItemDecoration
-import com.hasanalic.ecommerce.utils.Resource
-import com.hasanalic.ecommerce.utils.hide
-import com.hasanalic.ecommerce.utils.show
-import com.hasanalic.ecommerce.utils.toast
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -30,9 +25,12 @@ class OrdersFragment: Fragment() {
     //private lateinit var auth: FirebaseAuth
     private lateinit var userId: String
 
+    /*
     private val orderAdapter by lazy {
         OrderAdapter()
     }
+
+     */
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentOrdersBinding.inflate(inflater)
@@ -52,7 +50,7 @@ class OrdersFragment: Fragment() {
          */
 
         viewModel = ViewModelProvider(requireActivity())[OrderViewModel::class.java]
-        viewModel.getOrderList(userId)
+        //viewModel.getOrderList(userId)
 
         binding.toolBarOrders.setNavigationOnClickListener {
             requireActivity().finish()
@@ -60,9 +58,10 @@ class OrdersFragment: Fragment() {
 
         setRecyclerView()
 
-        observe()
+        //observe()
     }
 
+    /*
     private fun observe() {
         viewModel.statusOrderList.observe(viewLifecycleOwner) {
             when(it) {
@@ -90,7 +89,10 @@ class OrdersFragment: Fragment() {
         }
     }
 
+     */
+
     private fun setRecyclerView() {
+        /*
         binding.recyclerViewOrders.adapter = orderAdapter
         binding.recyclerViewOrders.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
         binding.recyclerViewOrders.addItemDecoration(ItemDecoration(30,30,40))
@@ -99,6 +101,8 @@ class OrdersFragment: Fragment() {
             OrderSingleton.order = it
             Navigation.findNavController(binding.root).navigate(R.id.action_ordersFragment_to_orderDetailFragment)
         }
+
+         */
     }
 
     override fun onDestroyView() {
