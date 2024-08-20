@@ -29,7 +29,7 @@ class OrderRepositoryImp @Inject constructor(
 
     override suspend fun getOrderDetail(orderId: String): Result<OrderDetail, DataError.Local> {
         return try {
-            val result = orderDao.getOrderWithProducts(orderId)
+            val result = orderDao.getOrderDetail(orderId)
             result?.let {
                 Result.Success(result.toOrderDetail())
             }?: Result.Error(DataError.Local.NOT_FOUND)

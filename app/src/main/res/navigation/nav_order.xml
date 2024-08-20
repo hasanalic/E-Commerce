@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/orderDetailFragment"
-        android:name="com.hasanalic.ecommerce.feature_orders.presentation.order_detail_screen.OrderDetailFragment"
+        android:name="com.hasanalic.ecommerce.feature_orders.presentation.order_detail_screen.views.OrderDetailFragment"
         android:label="OrderDetailFragment"
         tools:layout="@layout/fragment_order_detail"/>
 </navigation>

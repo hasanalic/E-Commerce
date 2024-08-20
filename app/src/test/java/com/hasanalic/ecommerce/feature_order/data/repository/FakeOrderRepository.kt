@@ -11,7 +11,7 @@ import com.hasanalic.ecommerce.feature_orders.domain.repository.OrderRepository
 class FakeOrderRepository : OrderRepository{
 
     private val orderProductsEntity = OrderProductsEntity("1","1","1","1","url")
-    private val orderDetail = OrderDetail("1","","","","","","","","","",1L,"", listOf(orderProductsEntity))
+    private val orderDetail = OrderDetail("1","","","","","","","","","","","",1L,"", listOf(orderProductsEntity))
     private val orders = listOf(
         Order("1","1","","","","",1L,"", listOf(orderProductsEntity))
     )
