@@ -1,4 +1,4 @@
-package com.hasanalic.ecommerce.feature_orders.presentation.orders_screen
+package com.hasanalic.ecommerce.feature_orders.presentation.orders_screen.views
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

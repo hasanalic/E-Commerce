@@ -1,20 +1,4 @@
-package com.hasanalic.ecommerce.feature_orders.presentation.orders_screen
-
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import androidx.recyclerview.widget.AsyncListDiffer
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.hasanalic.ecommerce.R
-import com.hasanalic.ecommerce.databinding.RecyclerItemOrderBinding
-import com.hasanalic.ecommerce.utils.Constants
-import com.hasanalic.ecommerce.utils.Constants.ORDER_CARGO
-import com.hasanalic.ecommerce.utils.Constants.ORDER_DELIVERED
-import com.hasanalic.ecommerce.utils.Constants.ORDER_PREPARE
-import com.hasanalic.ecommerce.utils.Constants.ORDER_RECEIVED
-import com.hasanalic.ecommerce.utils.OrderStatus
-import com.hasanalic.ecommerce.utils.hide
+package com.hasanalic.ecommerce.feature_orders.presentation.orders_screen.views
 
 /*
 class OrderAdapter: RecyclerView.Adapter<OrderAdapter.MyViewHolder>() {

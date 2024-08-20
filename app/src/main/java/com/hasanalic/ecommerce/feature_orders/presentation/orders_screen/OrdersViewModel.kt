@@ -1,23 +1,46 @@
-package com.hasanalic.ecommerce.feature_orders.presentation
+package com.hasanalic.ecommerce.feature_orders.presentation.orders_screen
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hasanalic.ecommerce.feature_location.data.local.entity.AddressEntity
-import com.hasanalic.ecommerce.feature_checkout.data.local.entity.PaymentEntity
-import com.hasanalic.ecommerce.feature_orders.domain.repository.OrderRepository
-import com.hasanalic.ecommerce.utils.Constants.ORDER_CANCELLED
-import com.hasanalic.ecommerce.utils.Constants.ORDER_RETURN
-import com.hasanalic.ecommerce.utils.Resource
+import com.hasanalic.ecommerce.core.domain.model.DataError
+import com.hasanalic.ecommerce.core.domain.model.Result
+import com.hasanalic.ecommerce.feature_orders.domain.use_cases.OrderUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class OrderViewModel @Inject constructor(
-    private val repository: OrderRepository
+class OrdersViewModel @Inject constructor(
+    private val orderUseCases: OrderUseCases
 ): ViewModel() {
+
+    private var _ordersState = MutableLiveData(OrdersState())
+    val ordersState: LiveData<OrdersState> = _ordersState
+
+    fun getOrders(userId: String) {
+        _ordersState.value = OrdersState(isLoading = true)
+        viewModelScope.launch {
+            when(val result = orderUseCases.getOrdersByUserUseCase(userId)) {
+                is Result.Error -> handleGetOrdersError(result.error)
+                is Result.Success -> {
+                    _ordersState.value = OrdersState(
+                        orders = result.data
+                    )
+                }
+            }
+        }
+    }
+
+    private fun handleGetOrdersError(error: DataError.Local) {
+        val message = when(error) {
+            DataError.Local.NOT_FOUND -> "Sipariş bilgileri alınamadı."
+            DataError.Local.UNKNOWN -> "Bilinmeyen bir hata meydana geldi."
+            else -> null
+        }
+        _ordersState.value = OrdersState(dataError = message)
+    }
 
     /*
     private var _statusOrderList = MutableLiveData<Resource<List<Order>>>()
@@ -36,49 +59,6 @@ class OrderViewModel @Inject constructor(
     val statusUpdateOrderStatus: LiveData<Resource<String>>
         get() = _statusUpdateOrderStatus
 
-    fun getOrderList(userId: String) {
-        _statusOrderList.value = Resource.Loading()
-
-        viewModelScope.launch {
-            val responseFromOrder = repository.getOrdersByUserId(userId)
-
-            if (responseFromOrder is Resource.Success) {
-                var tempOrderList = mutableListOf<Order>()
-
-                responseFromOrder.data?.let {orderEntityList ->
-                    for (orderEntity in orderEntityList) {
-                        val responseFromOrderProducts = repository.getOrderProductsList(userId, orderEntity.orderId.toString())
-
-                        if (responseFromOrderProducts is Resource.Success) {
-                            tempOrderList.add(
-                                Order(
-                                orderId = orderEntity.orderId.toString(),
-                                orderUserId = orderEntity.orderUserId!!,
-                                orderTotal = orderEntity.orderTotal!!,
-                                orderProductCount = orderEntity.orderProductCount!!,
-                                orderDate = orderEntity.orderDate!!,
-                                orderStatus = orderEntity.orderStatus!!,
-                                orderNo = orderEntity.orderNo!!,
-                                orderCargo = orderEntity.orderCargo!!,
-                                orderAddressId = orderEntity.orderAddressId!!,
-                                orderPaymentId = orderEntity.orderPaymentId,
-                                orderPaymentType = orderEntity.orderPaymentType!!,
-                                orderTimeStamp = orderEntity.orderTimeStamp!!,
-                                orderTime = orderEntity.orderTime!!,
-                                orderProductsList = responseFromOrderProducts.data!!
-                            )
-                            )
-                        } else {
-                            _statusOrderList.value = Resource.Error(null,responseFromOrderProducts.message?:"hata")
-                        }
-                    }
-                    _statusOrderList.value = Resource.Success(tempOrderList)
-                }
-            } else {
-                _statusOrderList.value = Resource.Error(null,responseFromOrder.message?:"hata")
-            }
-        }
-    }
 
     fun getAddressDetail(userId: String, addressId: String) {
         _statusAddress.value = Resource.Loading()

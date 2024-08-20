@@ -1,4 +1,4 @@
-package com.hasanalic.ecommerce.feature_orders.presentation.orders_screen
+package com.hasanalic.ecommerce.feature_orders.presentation.orders_screen.views
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,12 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.hasanalic.ecommerce.R
 import com.hasanalic.ecommerce.databinding.FragmentOrdersBinding
-import com.hasanalic.ecommerce.feature_orders.presentation.OrderViewModel
-import com.hasanalic.ecommerce.utils.ItemDecoration
+import com.hasanalic.ecommerce.feature_orders.presentation.orders_screen.OrdersViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -20,7 +16,7 @@ class OrdersFragment: Fragment() {
     private var _binding: FragmentOrdersBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var viewModel: OrderViewModel
+    private lateinit var viewModel: OrdersViewModel
 
     //private lateinit var auth: FirebaseAuth
     private lateinit var userId: String
@@ -49,7 +45,7 @@ class OrdersFragment: Fragment() {
 
          */
 
-        viewModel = ViewModelProvider(requireActivity())[OrderViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity())[OrdersViewModel::class.java]
         //viewModel.getOrderList(userId)
 
         binding.toolBarOrders.setNavigationOnClickListener {

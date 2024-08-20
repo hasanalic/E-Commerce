@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.hasanalic.ecommerce.R
 import com.hasanalic.ecommerce.databinding.FragmentOrderDetailBinding
-import com.hasanalic.ecommerce.feature_orders.presentation.OrderViewModel
+import com.hasanalic.ecommerce.feature_orders.presentation.orders_screen.OrdersViewModel
 import com.hasanalic.ecommerce.utils.Constants.DATE_FORMAT
 import com.hasanalic.ecommerce.utils.Constants.ORDER_CARGO
 import com.hasanalic.ecommerce.utils.Constants.ORDER_DELIVERED
@@ -27,7 +27,7 @@ class OrderDetailFragment: Fragment() {
     private var _binding: FragmentOrderDetailBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var viewModel: OrderViewModel
+    private lateinit var viewModel: OrdersViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentOrderDetailBinding.inflate(inflater)
@@ -37,7 +37,7 @@ class OrderDetailFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProvider(requireActivity())[OrderViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity())[OrdersViewModel::class.java]
 
         /*
         val order = OrderSingleton.order
