@@ -9,7 +9,7 @@ import javax.inject.Inject
 class GetOrderDetailUseCase @Inject constructor(
     private val orderRepository: OrderRepository
 ) {
-    suspend operator fun invoke(orderId: Int): Result<OrderDetail, DataError.Local> {
+    suspend operator fun invoke(orderId: String): Result<OrderDetail, DataError.Local> {
         return orderRepository.getOrderDetail(orderId)
     }
 }

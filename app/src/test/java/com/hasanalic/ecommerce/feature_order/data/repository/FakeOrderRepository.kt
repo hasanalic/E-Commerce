@@ -20,7 +20,7 @@ class FakeOrderRepository : OrderRepository{
         return Result.Success(Unit)
     }
 
-    override suspend fun getOrderDetail(orderId: Int): Result<OrderDetail, DataError.Local> {
+    override suspend fun getOrderDetail(orderId: String): Result<OrderDetail, DataError.Local> {
         return Result.Success(orderDetail)
     }
 

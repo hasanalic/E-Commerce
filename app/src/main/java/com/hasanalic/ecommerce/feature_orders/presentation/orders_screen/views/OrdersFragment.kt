@@ -6,8 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.hasanalic.ecommerce.R
 import com.hasanalic.ecommerce.databinding.FragmentOrdersBinding
+import com.hasanalic.ecommerce.feature_orders.presentation.orders_screen.OrdersState
 import com.hasanalic.ecommerce.feature_orders.presentation.orders_screen.OrdersViewModel
+import com.hasanalic.ecommerce.utils.ItemDecoration
+import com.hasanalic.ecommerce.utils.hide
+import com.hasanalic.ecommerce.utils.show
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -18,15 +25,11 @@ class OrdersFragment: Fragment() {
 
     private lateinit var viewModel: OrdersViewModel
 
-    //private lateinit var auth: FirebaseAuth
     private lateinit var userId: String
 
-    /*
     private val orderAdapter by lazy {
         OrderAdapter()
     }
-
-     */
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentOrdersBinding.inflate(inflater)
@@ -35,70 +38,55 @@ class OrdersFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        /*
-        auth = FirebaseAuth.getInstance()
-        val currentUser = auth.currentUser
-        currentUser?.let {
-            userId = it.uid
-        }
-
-         */
-
         viewModel = ViewModelProvider(requireActivity())[OrdersViewModel::class.java]
-        //viewModel.getOrderList(userId)
+        viewModel.getOrders(userId)
 
         binding.toolBarOrders.setNavigationOnClickListener {
             requireActivity().finish()
         }
 
-        setRecyclerView()
+        setupRecyclerView()
 
-        //observe()
+        setupObservers()
     }
 
-    /*
-    private fun observe() {
-        viewModel.statusOrderList.observe(viewLifecycleOwner) {
-            when(it) {
-                is Resource.Success -> {
-                    binding.progressBarOrder.hide()
-                    val orderList = it.data?.toList()
-
-                    if (orderList.isNullOrEmpty()) {
-                        orderAdapter.orderList = listOf()
-                        binding.emptyOrder.show()
-                    } else {
-                        binding.emptyOrder.hide()
-                        orderAdapter.orderList = orderList
-                    }
-                    orderAdapter.notifyChanges()
-                }
-                is Resource.Error -> {
-                    binding.progressBarOrder.hide()
-                    toast(requireContext(),it.message?:"hata",false)
-                }
-                is Resource.Loading -> {
-                    binding.progressBarOrder.show()
-                }
-            }
-        }
-    }
-
-     */
-
-    private fun setRecyclerView() {
-        /*
+    private fun setupRecyclerView() {
         binding.recyclerViewOrders.adapter = orderAdapter
         binding.recyclerViewOrders.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
         binding.recyclerViewOrders.addItemDecoration(ItemDecoration(30,30,40))
 
-        orderAdapter.setOnOrderClickListener {
-            OrderSingleton.order = it
+        orderAdapter.setOnOrderClickListener { orderId ->
+            TODO("order id nav argument")
             Navigation.findNavController(binding.root).navigate(R.id.action_ordersFragment_to_orderDetailFragment)
         }
+    }
 
-         */
+    private fun setupObservers() {
+        viewModel.ordersState.observe(viewLifecycleOwner) {
+            handleOrdersState(it)
+        }
+    }
+
+    private fun handleOrdersState(state: OrdersState) {
+        if (state.isLoading) {
+            binding.progressBarOrder.show()
+        } else {
+            binding.progressBarOrder.hide()
+        }
+
+        state.orders.let {
+            if (it.isEmpty()) {
+                binding.emptyOrder.show()
+            } else {
+                binding.emptyOrder.hide()
+                orderAdapter.orderList = it
+            }
+            orderAdapter.notifyChanges()
+        }
+
+        state.dataError?.let {
+            TODO()
+        }
     }
 
     override fun onDestroyView() {

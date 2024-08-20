@@ -14,7 +14,7 @@ interface OrderDao {
 
     @Transaction
     @Query("SELECT * FROM `Order` WHERE orderId = :orderId")
-    suspend fun getOrderWithProducts(orderId: Int): OrderWithProductsDto?
+    suspend fun getOrderWithProducts(orderId: String): OrderWithProductsDto?
 
     @Transaction
     @Query("SELECT * FROM `Order` WHERE order_user_id = :userId")

@@ -10,7 +10,7 @@ interface OrderRepository {
 
     suspend fun insertOrder(order: OrderEntity): Result<Unit, DataError.Local>
 
-    suspend fun getOrderDetail(orderId: Int): Result<OrderDetail, DataError.Local>
+    suspend fun getOrderDetail(orderId: String): Result<OrderDetail, DataError.Local>
 
     suspend fun getOrdersByUser(userId: String): Result<List<Order>, DataError.Local>
 

@@ -34,7 +34,7 @@ class GetOrderDetailUseCaseTest {
 
     @Test
     fun `Get Order Detail returns success with OrderDetail when found`() = runBlocking {
-        val result = getOrderDetailUseCase(1)
+        val result = getOrderDetailUseCase("1")
 
         assertThat(result).isInstanceOf(Result.Success::class.java)
         assertThat((result as Result.Success).data).isInstanceOf(OrderDetail::class.java)
