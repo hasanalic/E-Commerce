@@ -47,7 +47,8 @@ class OrderDetailViewModel @Inject constructor(
             when(result) {
                 is Result.Error -> handleUpdateOrderStatusError(result.error)
                 is Result.Success -> _orderDetailState.value = _orderDetailState.value!!.copy(
-                    isOrderStatusUpdateSuccessful = true
+                    isOrderStatusUpdateSuccessful = true,
+                    isLoading = false
                 )
             }
         }
@@ -60,7 +61,8 @@ class OrderDetailViewModel @Inject constructor(
             when(result) {
                 is Result.Error -> handleUpdateOrderStatusError(result.error)
                 is Result.Success -> _orderDetailState.value = _orderDetailState.value!!.copy(
-                    isOrderStatusUpdateSuccessful = true
+                    isOrderStatusUpdateSuccessful = true,
+                    isLoading = false
                 )
             }
         }
