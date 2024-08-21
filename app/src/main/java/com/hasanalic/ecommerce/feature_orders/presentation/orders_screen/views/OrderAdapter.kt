@@ -45,7 +45,7 @@ class OrderAdapter: RecyclerView.Adapter<OrderAdapter.MyViewHolder>() {
             if (order.orderStatus == Constants.ORDER_CANCELLED) {
                 binding.textViewOrderStatus.text = order.orderStatus
                 binding.imageViewCheck.setImageResource(R.drawable.cancel_red)
-            } else if (order.orderStatus == Constants.ORDER_RETURN) {
+            } else if (order.orderStatus == Constants.ORDER_RETURNED) {
                 binding.textViewOrderStatus.text = order.orderStatus
                 binding.imageViewCheck.setImageResource(R.drawable.return_back)
             } else {

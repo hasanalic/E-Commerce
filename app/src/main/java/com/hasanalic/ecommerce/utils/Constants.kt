@@ -40,7 +40,7 @@ object Constants {
     const val ORDER_CARGO = "Kargoya Verildi"
     const val ORDER_DELIVERED = "Teslim Edildi"
     const val ORDER_CANCELLED = "İptal Edildi"
-    const val ORDER_RETURN = "İade Edildi"
+    const val ORDER_RETURNED = "İade Edildi"
 
     // Payment Type
     const val BANK_OR_CREDIT_CARD = "Banka/ Kredi Kartı"
