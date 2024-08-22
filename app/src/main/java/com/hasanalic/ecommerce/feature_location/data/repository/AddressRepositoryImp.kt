@@ -1,6 +1,6 @@
 package com.hasanalic.ecommerce.feature_location.data.repository
 
-import com.hasanalic.ecommerce.core.domain.model.Address
+import com.hasanalic.ecommerce.feature_checkout.domain.model.Address
 import com.hasanalic.ecommerce.core.domain.model.DataError
 import com.hasanalic.ecommerce.core.domain.model.Result
 import com.hasanalic.ecommerce.feature_location.data.local.AddressDao

@@ -14,7 +14,7 @@ data class OrderEntity(
     @ColumnInfo(name = "order_no") var orderNo: String,
     @ColumnInfo(name = "order_cargo") var orderCargo: String,
     @ColumnInfo(name = "order_address_id") var orderAddressId: String,
-    @ColumnInfo(name = "order_payment_id") var orderPaymentId: String? = null,
+    @ColumnInfo(name = "order_card_id") var orderCardId: String? = null,
     @ColumnInfo(name = "order_payment_type") var orderPaymentType: String,
     @ColumnInfo(name = "order_timestamp") var orderTimeStamp: Long,
     @ColumnInfo(name = "order_time") var orderTime: String

@@ -1,4 +1,4 @@
-package com.hasanalic.ecommerce.core.domain.model
+package com.hasanalic.ecommerce.feature_checkout.domain.model
 
 data class Address(
     var addressId: String,

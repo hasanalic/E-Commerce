@@ -1,4 +1,4 @@
-package com.hasanalic.ecommerce.feature_checkout.presentation.views
+package com.hasanalic.ecommerce.feature_checkout.presentation.address_screen.views
 
 import android.content.Intent
 import android.os.Bundle

@@ -7,7 +7,6 @@ import com.hasanalic.ecommerce.feature_location.data.local.entity.AddressEntity
 
 @Dao
 interface AddressDao {
-
     @Query("SELECT * FROM Address WHERE address_user_id = :userId")
     suspend fun getAddressEntityListByUserId(userId: String): List<AddressEntity>?
 

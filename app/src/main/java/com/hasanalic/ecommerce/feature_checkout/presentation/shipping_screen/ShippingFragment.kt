@@ -1,4 +1,4 @@
-package com.hasanalic.ecommerce.feature_checkout.presentation.views
+package com.hasanalic.ecommerce.feature_checkout.presentation.shipping_screen
 
 import android.os.Bundle
 import android.view.LayoutInflater

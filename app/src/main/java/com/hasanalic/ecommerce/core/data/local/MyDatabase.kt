@@ -7,13 +7,13 @@ import com.hasanalic.ecommerce.feature_home.data.local.entity.FavoritesEntity
 import com.hasanalic.ecommerce.feature_notification.data.local.entity.NotificationEntity
 import com.hasanalic.ecommerce.feature_orders.data.local.entity.OrderEntity
 import com.hasanalic.ecommerce.feature_orders.data.local.entity.OrderProductsEntity
-import com.hasanalic.ecommerce.feature_checkout.data.local.entity.PaymentEntity
+import com.hasanalic.ecommerce.feature_checkout.data.local.entity.CardEntity
 import com.hasanalic.ecommerce.feature_home.data.local.entity.ProductEntity
 import com.hasanalic.ecommerce.feature_product_detail.data.local.entity.ReviewEntity
 import com.hasanalic.ecommerce.feature_home.data.local.entity.ShoppingCartItemsEntity
 import com.hasanalic.ecommerce.feature_auth.data.local.entities.UserEntity
 import com.hasanalic.ecommerce.feature_auth.data.local.UserDao
-import com.hasanalic.ecommerce.feature_checkout.data.local.PaymentDao
+import com.hasanalic.ecommerce.feature_checkout.data.local.CardDao
 import com.hasanalic.ecommerce.feature_home.data.local.FavoritesDao
 import com.hasanalic.ecommerce.feature_home.data.local.ProductDao
 import com.hasanalic.ecommerce.feature_location.data.local.AddressDao
@@ -25,7 +25,7 @@ import com.hasanalic.ecommerce.feature_home.data.local.ShoppingCartItemsDao
 
 @Database(entities = [UserEntity::class, FavoritesEntity::class, OrderEntity::class,
     OrderProductsEntity::class, ProductEntity::class, ShoppingCartItemsEntity::class,
-    ReviewEntity::class, AddressEntity::class, PaymentEntity::class, NotificationEntity::class], version = 1)
+    ReviewEntity::class, AddressEntity::class, CardEntity::class, NotificationEntity::class], version = 1)
 abstract class MyDatabase: RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun favoritesDao(): FavoritesDao
@@ -35,6 +35,6 @@ abstract class MyDatabase: RoomDatabase() {
     abstract fun shoppingCartItemsDao(): ShoppingCartItemsDao
     abstract fun reviewDao(): ReviewDao
     abstract fun addressDao(): AddressDao
-    abstract fun paymentDao(): PaymentDao
+    abstract fun cardDao(): CardDao
     abstract fun notificationDao(): NotificationDao
 }

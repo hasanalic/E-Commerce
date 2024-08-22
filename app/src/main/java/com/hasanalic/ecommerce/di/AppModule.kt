@@ -7,16 +7,13 @@ import com.hasanalic.ecommerce.feature_home.data.local.FavoritesDao
 import com.hasanalic.ecommerce.core.data.local.MyDatabase
 import com.hasanalic.ecommerce.feature_notification.data.local.NotificationDao
 import com.hasanalic.ecommerce.feature_orders.data.local.OrderDao
-import com.hasanalic.ecommerce.feature_orders.data.local.OrderProductsDao
-import com.hasanalic.ecommerce.feature_checkout.data.local.PaymentDao
+import com.hasanalic.ecommerce.feature_checkout.data.local.CardDao
 import com.hasanalic.ecommerce.feature_home.data.local.ProductDao
 import com.hasanalic.ecommerce.feature_product_detail.data.local.ReviewDao
 import com.hasanalic.ecommerce.feature_home.data.local.ShoppingCartItemsDao
-import com.hasanalic.ecommerce.feature_checkout.data.repository.CheckoutRepositoryImp
 import com.hasanalic.ecommerce.feature_home.data.repository.HomeRepositoryImp
 import com.hasanalic.ecommerce.feature_orders.data.repository.OrderRepositoryImp
 import com.hasanalic.ecommerce.core.data.repository.ServiceRepositoryImp
-import com.hasanalic.ecommerce.feature_checkout.domain.repository.CheckoutRepository
 import com.hasanalic.ecommerce.feature_home.domain.repository.HomeRepository
 import com.hasanalic.ecommerce.feature_orders.domain.repository.OrderRepository
 import com.hasanalic.ecommerce.core.domain.repository.ServiceRepository
@@ -29,6 +26,7 @@ import com.hasanalic.ecommerce.feature_auth.domain.use_cases.InsertUserUseCase
 import com.hasanalic.ecommerce.feature_auth.domain.use_cases.UserEmailValidatorUseCase
 import com.hasanalic.ecommerce.feature_auth.domain.use_cases.UserInputValidatorUseCase
 import com.hasanalic.ecommerce.feature_auth.domain.use_cases.UserPasswordValidatorUseCase
+import com.hasanalic.ecommerce.feature_checkout.data.repository.CardRepositoryImp
 import com.hasanalic.ecommerce.feature_filter.data.repository.FilterRepositoryImp
 import com.hasanalic.ecommerce.feature_filter.domain.repository.FilterRepository
 import com.hasanalic.ecommerce.feature_filter.domain.use_cases.FilterUseCases
@@ -131,7 +129,7 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun providePaymentDao(database: MyDatabase) = database.paymentDao()
+    fun provideCardDao(database: MyDatabase) = database.cardDao()
 
     @Singleton
     @Provides
@@ -143,24 +141,6 @@ object AppModule {
         productDao: ProductDao,
     ): HomeRepository {
         return HomeRepositoryImp(productDao)
-    }
-
-    @Singleton
-    @Provides
-    fun provideCheckoutRepository(
-        addressDao: AddressDao,
-        orderDao: OrderDao,
-        orderProductsDao: OrderProductsDao,
-        paymentDao: PaymentDao,
-        shoppingCartItemsDao: ShoppingCartItemsDao
-    ): CheckoutRepository {
-        return CheckoutRepositoryImp(
-            addressDao,
-            orderDao,
-            orderProductsDao,
-            paymentDao,
-            shoppingCartItemsDao
-        )
     }
 
     @Singleton
@@ -228,6 +208,12 @@ object AppModule {
     @Provides
     fun provideNotificationRepository(notificationDao: NotificationDao): NotificationRepository {
         return NotificationRepositoryImp(notificationDao)
+    }
+
+    @Singleton
+    @Provides
+    fun provideCardRepository(cardDao: CardDao): CardRepositoryImp {
+        return CardRepositoryImp(cardDao)
     }
 
     @Singleton
