@@ -26,26 +26,26 @@ class AddressAdapter: RecyclerView.Adapter<AddressAdapter.MyViewHolder>() {
         set(value) = recyclerListDiffer.submitList(value)
 
     inner class MyViewHolder(private val binding: RecyclerItemAddressBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(address: Address) {
+        fun bind(address: Address, position: Int) {
             binding.textViewAddressTitle.text = address.addressTitle
             binding.textViewAddressDetail.text = address.addressDetail
             binding.radioButton.isChecked = address.isSelected
             binding.materialCardAddress.setOnClickListener {
                 onCardClickListener?.let {
-                    it(address.addressId)
+                    it(position, address.addressId)
                 }
             }
             binding.radioButton.setOnClickListener {
                 onCardClickListener?.let {
-                    it(address.addressId)
+                    it(position, address.addressId)
                 }
             }
         }
     }
 
-    private var onCardClickListener: ((String) -> Unit)? = null
+    private var onCardClickListener: ((Int, String) -> Unit)? = null
 
-    fun setOnCardClickListener(listener: (String) -> Unit) {
+    fun setOnCardClickListener(listener: (Int, String) -> Unit) {
         onCardClickListener = listener
     }
 
@@ -62,6 +62,6 @@ class AddressAdapter: RecyclerView.Adapter<AddressAdapter.MyViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.bind(addressList[position])
+        holder.bind(addressList[position], position)
     }
 }
