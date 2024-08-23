@@ -21,6 +21,8 @@ import com.google.android.material.textfield.TextInputEditText
 import com.hasanalic.ecommerce.databinding.FragmentPaymentCardBinding
 import com.hasanalic.ecommerce.feature_checkout.presentation.CheckoutViewModel
 import com.hasanalic.ecommerce.feature_checkout.presentation.ShoppingCartList
+import com.hasanalic.ecommerce.feature_checkout.presentation.payment_card_screen.PaymentCardState
+import com.hasanalic.ecommerce.feature_checkout.presentation.payment_card_screen.PaymentCardViewModel
 import com.hasanalic.ecommerce.utils.Constants
 import com.hasanalic.ecommerce.utils.Constants.ANOMIM_USER_ID
 import com.hasanalic.ecommerce.utils.Constants.CHANNEL_DESCRIPTION_TEXT
@@ -40,9 +42,9 @@ class PaymentCardFragment: Fragment() {
     private var _binding: FragmentPaymentCardBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var viewModel: CheckoutViewModel
+    private lateinit var viewModel: PaymentCardViewModel
 
-    private var userId: String = Constants.ANOMIM_USER_ID
+    private var userId: String = ANOMIM_USER_ID
 
     private lateinit var randomNumber: String
 
@@ -54,16 +56,19 @@ class PaymentCardFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProvider(requireActivity())[CheckoutViewModel::class.java]
-        if (userId != ANOMIM_USER_ID) {
-            viewModel.getCards(userId)
-        } else {
-            binding.checkBoxSave.hide()
-            binding.imageViewMasterpass.hide()
-        }
+        viewModel = ViewModelProvider(requireActivity())[PaymentCardViewModel::class.java]
+        viewModel.checkIfUserHaveAnyCard(userId)
 
         createNotificationChannel()
 
+        setupListeners()
+
+        setupObservers()
+
+        observe()
+    }
+
+    private fun setupListeners() {
         binding.toolBarCard.setNavigationOnClickListener {
             Navigation.findNavController(it).popBackStack()
         }
@@ -79,18 +84,35 @@ class PaymentCardFragment: Fragment() {
                         val cardName = binding.textInputEditTextCardName.text.toString()
                         val cardNumber = binding.textInputEditTextCardNumber.text.toString()
 
-                        viewModel.setOrderTypeAsCardAndSaveCardAndInitialize(cardName,cardNumber)
+                        //viewModel.setOrderTypeAsCardAndSaveCardAndInitialize(cardName,cardNumber)
                     } else {
-                        viewModel.setOrderTypeAsCardAndInitialize()
+                        //viewModel.setOrderTypeAsCardAndInitialize()
                     }
                 }
             }
         }
+    }
 
-        observe()
+    private fun setupObservers() {
+        viewModel.paymentCardState.observe(viewLifecycleOwner) {
+
+        }
+    }
+
+    private fun handlePaymentCardState(state: PaymentCardState) {
+        if (state.isLoading) {
+            binding.progressBarPaymentCard.show()
+        } else {
+            binding.progressBarPaymentCard.hide()
+        }
+
+        if (state.doesUserHaveCards) {
+
+        }
     }
 
     private fun observe() {
+        /*
         viewModel.statusPayment.observe(viewLifecycleOwner) {
             when(it) {
                 is Resource.Success -> {
@@ -124,6 +146,8 @@ class PaymentCardFragment: Fragment() {
                 }
             }
         }
+
+         */
     }
 
     private fun validateFields(): Boolean {
@@ -188,9 +212,9 @@ class PaymentCardFragment: Fragment() {
                 if (binding.checkBoxSave.isChecked) {
                     val cardName = binding.textInputEditTextCardName.text.toString()
                     val cardNumber = binding.textInputEditTextCardNumber.text.toString()
-                    viewModel.setOrderTypeAsCardAndSaveCardAndInitialize(cardName,cardNumber)
+                    //viewModel.setOrderTypeAsCardAndSaveCardAndInitialize(cardName,cardNumber)
                 } else {
-                    viewModel.setOrderTypeAsCardAndInitialize()
+                    //viewModel.setOrderTypeAsCardAndInitialize()
                 }
             } else {
                 toast(requireContext(),"Güvenlik kodu yanlış, tekrar deneyiniz.",false)
