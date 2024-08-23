@@ -19,7 +19,7 @@ import com.hasanalic.ecommerce.feature_home.data.local.ProductDao
 import com.hasanalic.ecommerce.feature_location.data.local.AddressDao
 import com.hasanalic.ecommerce.feature_notification.data.local.NotificationDao
 import com.hasanalic.ecommerce.feature_orders.data.local.OrderDao
-import com.hasanalic.ecommerce.feature_orders.data.local.OrderProductsDao
+import com.hasanalic.ecommerce.feature_checkout.data.local.OrderProductsDao
 import com.hasanalic.ecommerce.feature_product_detail.data.local.ReviewDao
 import com.hasanalic.ecommerce.feature_home.data.local.ShoppingCartItemsDao
 

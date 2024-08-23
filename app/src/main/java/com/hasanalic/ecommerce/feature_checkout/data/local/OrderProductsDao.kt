@@ -1,4 +1,4 @@
-package com.hasanalic.ecommerce.feature_orders.data.local
+package com.hasanalic.ecommerce.feature_checkout.data.local
 
 import androidx.room.Dao
 import androidx.room.Insert
