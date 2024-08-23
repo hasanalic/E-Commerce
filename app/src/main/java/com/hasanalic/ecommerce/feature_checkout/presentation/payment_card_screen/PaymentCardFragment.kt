@@ -1,4 +1,4 @@
-package com.hasanalic.ecommerce.feature_checkout.presentation.payment_card_fragment
+package com.hasanalic.ecommerce.feature_checkout.presentation.payment_card_screen
 
 import android.app.NotificationChannel
 import android.app.NotificationManager

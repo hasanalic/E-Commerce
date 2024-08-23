@@ -37,7 +37,7 @@
     </fragment>
     <fragment
         android:id="@+id/paymentCardFragment"
-        android:name="com.hasanalic.ecommerce.feature_checkout.presentation.payment_card_fragment.PaymentCardFragment"
+        android:name="com.hasanalic.ecommerce.feature_checkout.presentation.payment_card_screen.PaymentCardFragment"
         android:label="CardFragment"
         tools:layout="@layout/fragment_payment_card">
         <action

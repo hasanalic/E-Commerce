@@ -53,6 +53,4 @@ class AddressViewModel @Inject constructor(
             addressList = currentAddressList
         )
     }
-
-
 }
