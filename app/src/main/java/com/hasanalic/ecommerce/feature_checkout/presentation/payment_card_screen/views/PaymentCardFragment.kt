@@ -1,4 +1,4 @@
-package com.hasanalic.ecommerce.feature_checkout.presentation.payment_card_screen
+package com.hasanalic.ecommerce.feature_checkout.presentation.payment_card_screen.views
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -42,7 +42,6 @@ class PaymentCardFragment: Fragment() {
 
     private lateinit var viewModel: CheckoutViewModel
 
-    //private lateinit var auth: FirebaseAuth
     private var userId: String = Constants.ANOMIM_USER_ID
 
     private lateinit var randomNumber: String
@@ -54,15 +53,6 @@ class PaymentCardFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        /*
-        auth = FirebaseAuth.getInstance()
-        val currentUser = auth.currentUser
-        currentUser?.let {
-            userId = it.uid
-        }
-
-         */
 
         viewModel = ViewModelProvider(requireActivity())[CheckoutViewModel::class.java]
         if (userId != ANOMIM_USER_ID) {
