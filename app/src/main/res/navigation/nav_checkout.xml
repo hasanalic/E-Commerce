@@ -54,7 +54,7 @@
         tools:layout="@layout/fragment_success"/>
     <fragment
         android:id="@+id/cardsFragment"
-        android:name="com.hasanalic.ecommerce.feature_checkout.presentation.cards_screen.CardsFragment"
+        android:name="com.hasanalic.ecommerce.feature_checkout.presentation.cards_screen.views.CardsFragment"
         android:label="CardsFragment"
         tools:layout="@layout/fragment_cards">
         <action

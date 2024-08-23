@@ -27,6 +27,11 @@ import com.hasanalic.ecommerce.feature_auth.domain.use_cases.UserEmailValidatorU
 import com.hasanalic.ecommerce.feature_auth.domain.use_cases.UserInputValidatorUseCase
 import com.hasanalic.ecommerce.feature_auth.domain.use_cases.UserPasswordValidatorUseCase
 import com.hasanalic.ecommerce.feature_checkout.data.repository.CardRepositoryImp
+import com.hasanalic.ecommerce.feature_checkout.domain.repository.CardRepository
+import com.hasanalic.ecommerce.feature_checkout.domain.use_cases.CardUseCases
+import com.hasanalic.ecommerce.feature_checkout.domain.use_cases.GetCardByUserIdAndCardIdUseCase
+import com.hasanalic.ecommerce.feature_checkout.domain.use_cases.GetCardsByUserIdUseCase
+import com.hasanalic.ecommerce.feature_checkout.domain.use_cases.InsertCardEntityUseCase
 import com.hasanalic.ecommerce.feature_filter.data.repository.FilterRepositoryImp
 import com.hasanalic.ecommerce.feature_filter.domain.repository.FilterRepository
 import com.hasanalic.ecommerce.feature_filter.domain.use_cases.FilterUseCases
@@ -212,7 +217,7 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideCardRepository(cardDao: CardDao): CardRepositoryImp {
+    fun provideCardRepository(cardDao: CardDao): CardRepository {
         return CardRepositoryImp(cardDao)
     }
 
@@ -313,6 +318,16 @@ object AppModule {
             getOrdersByUserUseCase = GetOrdersByUserUseCase(orderRepository),
             insertOrderUseCase = InsertOrderUseCase(orderRepository),
             updateOrderStatusUseCase = UpdateOrderStatusUseCase(orderRepository)
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideCardUseCases(cardRepository: CardRepository): CardUseCases {
+        return CardUseCases(
+            getCardByUserIdAndCardIdUseCase = GetCardByUserIdAndCardIdUseCase(cardRepository),
+            getCardsByUserIdUseCase = GetCardsByUserIdUseCase(cardRepository),
+            insertCardEntityUseCase = InsertCardEntityUseCase(cardRepository)
         )
     }
 }
