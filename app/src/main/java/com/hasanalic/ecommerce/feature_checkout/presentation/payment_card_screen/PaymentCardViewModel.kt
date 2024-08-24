@@ -59,25 +59,25 @@ class PaymentCardViewModel @Inject constructor(
 
     fun onClickConfirmWithSaveCard(cardName: String, cardNumber: String, month: String, year: String, cvv: String, userId: String) {
         _paymentCardState.value = _paymentCardState.value!!.copy(isLoading = true)
-        val result = cardUseCases.cardValidatorUseCase(cardName, cardNumber, month, year, cvv)
-        when(result) {
-            is Result.Error -> handleCardCalidationError(result.error)
-            is Result.Success -> saveCard(cardName, cardNumber, userId)
+        viewModelScope.launch {
+            val result = cardUseCases.cardValidatorUseCase(cardName, cardNumber, month, year, cvv)
+            when(result) {
+                is Result.Error -> handleCardCalidationError(result.error)
+                is Result.Success -> saveCard(cardName, cardNumber, userId)
+            }
         }
     }
 
-    private fun saveCard(cardName: String, cardNumber: String, userId: String) {
-        viewModelScope.launch {
-            val cardEntity = CardEntity(cardName, cardNumber, userId)
-            when(val result = cardUseCases.insertCardEntityUseCase(cardEntity)) {
-                is Result.Error -> handleSaveCardError(result.error)
-                is Result.Success -> {
-                    _paymentCardState.value = _paymentCardState.value!!.copy(
-                        isLoading = false,
-                        canUserContinueToNextStep = true,
-                        cardId = result.data
-                    )
-                }
+    private suspend fun saveCard(cardName: String, cardNumber: String, userId: String) {
+        val cardEntity = CardEntity(cardName, cardNumber, userId)
+        when(val result = cardUseCases.insertCardEntityUseCase(cardEntity)) {
+            is Result.Error -> handleSaveCardError(result.error)
+            is Result.Success -> {
+                _paymentCardState.value = _paymentCardState.value!!.copy(
+                    isLoading = false,
+                    canUserContinueToNextStep = true,
+                    cardId = result.data
+                )
             }
         }
     }
