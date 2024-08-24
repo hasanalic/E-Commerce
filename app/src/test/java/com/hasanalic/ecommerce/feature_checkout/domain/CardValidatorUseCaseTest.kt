@@ -22,6 +22,18 @@ class CardValidatorUseCaseTest {
     }
 
     @Test
+    fun `valid inputs returns success`() {
+        val cardName = "user name"
+        val cardNumber = "1234123412341234"
+        val month= "12"
+        val year = "14"
+        val cvv = "123"
+
+        val result = cardValidatorUseCase(cardName, cardNumber, month, year, cvv)
+        assertThat(result).isInstanceOf(Result.Success::class.java)
+    }
+
+    @Test
     fun `empty card name returns CardValidationError EMPTY_CARD_NAME`() {
         val cardName = ""
         val cardNumber = "1234123412341234"
@@ -61,7 +73,7 @@ class CardValidatorUseCaseTest {
     }
 
     @Test
-    fun `short card number returns CardValidationError SHORT_CARD_NUMBER`() {
+    fun `short card number returns CardValidationError INVALID_CARD_NUMBER`() {
         val cardName = "name"
         val cardNumber = "123412341234"
         val month= "12"
@@ -70,7 +82,7 @@ class CardValidatorUseCaseTest {
 
         val result = cardValidatorUseCase(cardName, cardNumber, month, year, cvv)
         assertThat(result).isInstanceOf(Result.Error::class.java)
-        assertThat((result as Result.Error).error).isEqualTo(CardValidationError.SHORT_CARD_NUMBER)
+        assertThat((result as Result.Error).error).isEqualTo(CardValidationError.INVALID_CARD_NUMBER)
     }
 
     @Test
@@ -87,7 +99,7 @@ class CardValidatorUseCaseTest {
     }
 
     @Test
-    fun `short month returns CardValidationError SHORT_MONTH`() {
+    fun `short month returns CardValidationError INVALID_MONTH`() {
         val cardName = "name"
         val cardNumber = "1234123412341234"
         val month= "1"
@@ -96,7 +108,7 @@ class CardValidatorUseCaseTest {
 
         val result = cardValidatorUseCase(cardName, cardNumber, month, year, cvv)
         assertThat(result).isInstanceOf(Result.Error::class.java)
-        assertThat((result as Result.Error).error).isEqualTo(CardValidationError.SHORT_MONTH)
+        assertThat((result as Result.Error).error).isEqualTo(CardValidationError.INVALID_MONTH)
     }
 
     @Test
@@ -113,7 +125,7 @@ class CardValidatorUseCaseTest {
     }
 
     @Test
-    fun `short year returns CardValidationError SHORT_MONTH`() {
+    fun `short year returns CardValidationError INVALID_YEAR`() {
         val cardName = "name"
         val cardNumber = "1234123412341234"
         val month= "12"
@@ -122,7 +134,7 @@ class CardValidatorUseCaseTest {
 
         val result = cardValidatorUseCase(cardName, cardNumber, month, year, cvv)
         assertThat(result).isInstanceOf(Result.Error::class.java)
-        assertThat((result as Result.Error).error).isEqualTo(CardValidationError.SHORT_YEAR)
+        assertThat((result as Result.Error).error).isEqualTo(CardValidationError.INVALID_YEAR)
     }
 
     @Test
@@ -139,7 +151,7 @@ class CardValidatorUseCaseTest {
     }
 
     @Test
-    fun `short cvv returns CardValidationError SHORT_MONTH`() {
+    fun `short cvv returns CardValidationError INVALID_CVV`() {
         val cardName = "name"
         val cardNumber = "1234123412341234"
         val month= "12"
@@ -148,6 +160,6 @@ class CardValidatorUseCaseTest {
 
         val result = cardValidatorUseCase(cardName, cardNumber, month, year, cvv)
         assertThat(result).isInstanceOf(Result.Error::class.java)
-        assertThat((result as Result.Error).error).isEqualTo(CardValidationError.SHORT_CVV)
+        assertThat((result as Result.Error).error).isEqualTo(CardValidationError.INVALID_CVV)
     }
 }

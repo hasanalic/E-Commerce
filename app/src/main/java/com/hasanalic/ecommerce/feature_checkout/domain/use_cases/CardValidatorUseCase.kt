@@ -18,7 +18,7 @@ class CardValidatorUseCase {
         }
 
         if (cardNumber.length != 16) {
-            return Result.Error(CardValidationError.SHORT_CARD_NUMBER)
+            return Result.Error(CardValidationError.INVALID_CARD_NUMBER)
         }
 
         if (month.isEmpty()) {
@@ -26,7 +26,7 @@ class CardValidatorUseCase {
         }
 
         if (month.length != 2) {
-            return Result.Error(CardValidationError.SHORT_MONTH)
+            return Result.Error(CardValidationError.INVALID_MONTH)
         }
 
         if (year.isEmpty()) {
@@ -34,7 +34,7 @@ class CardValidatorUseCase {
         }
 
         if (year.length != 2) {
-            return Result.Error(CardValidationError.SHORT_YEAR)
+            return Result.Error(CardValidationError.INVALID_YEAR)
         }
 
         if (cvv.isEmpty()) {
@@ -42,7 +42,7 @@ class CardValidatorUseCase {
         }
 
         if (cvv.length != 3) {
-            return Result.Error(CardValidationError.SHORT_CVV)
+            return Result.Error(CardValidationError.INVALID_CVV)
         }
 
         return Result.Success(Unit)

@@ -6,6 +6,7 @@ import com.hasanalic.ecommerce.MainCoroutineRule
 import com.hasanalic.ecommerce.feature_checkout.data.repository.FakeCardRepository
 import com.hasanalic.ecommerce.feature_checkout.domain.repository.CardRepository
 import com.hasanalic.ecommerce.feature_checkout.domain.use_cases.CardUseCases
+import com.hasanalic.ecommerce.feature_checkout.domain.use_cases.CardValidatorUseCase
 import com.hasanalic.ecommerce.feature_checkout.domain.use_cases.GetCardByUserIdAndCardIdUseCase
 import com.hasanalic.ecommerce.feature_checkout.domain.use_cases.GetCardsByUserIdUseCase
 import com.hasanalic.ecommerce.feature_checkout.domain.use_cases.InsertCardEntityUseCase
@@ -34,7 +35,8 @@ class CardsViewModelTest {
         cardUseCases = CardUseCases(
             getCardByUserIdAndCardIdUseCase = GetCardByUserIdAndCardIdUseCase(cardRepository),
             getCardsByUserIdUseCase = GetCardsByUserIdUseCase(cardRepository),
-            insertCardEntityUseCase = InsertCardEntityUseCase(cardRepository)
+            insertCardEntityUseCase = InsertCardEntityUseCase(cardRepository),
+            cardValidatorUseCase = CardValidatorUseCase()
         )
         cardsViewModel = CardsViewModel(cardUseCases)
     }

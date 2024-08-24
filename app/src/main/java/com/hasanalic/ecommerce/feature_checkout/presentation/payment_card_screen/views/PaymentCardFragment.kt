@@ -74,22 +74,27 @@ class PaymentCardFragment: Fragment() {
         }
 
         binding.buttonConfirm.setOnClickListener {
-            if (validateFields()) {
-                if (binding.checkBoxSecure.isChecked) {
-                    randomNumber = generateRandomNumber().toString()
-                    showNotification(randomNumber)
-                    showSecurePopUp()
-                } else {
-                    if (binding.checkBoxSave.isChecked) {
-                        val cardName = binding.textInputEditTextCardName.text.toString()
-                        val cardNumber = binding.textInputEditTextCardNumber.text.toString()
-
-                        //viewModel.setOrderTypeAsCardAndSaveCardAndInitialize(cardName,cardNumber)
-                    } else {
-                        //viewModel.setOrderTypeAsCardAndInitialize()
-                    }
-                }
+            if (binding.checkBoxSecure.isChecked) {
+                randomNumber = generateRandomNumber().toString()
+                showNotification(randomNumber)
+                showSecurePopUp()
+            } else {
+                onClickButtonConfirmByCheckBoxSave()
             }
+        }
+    }
+
+    private fun onClickButtonConfirmByCheckBoxSave() {
+        val cardName = binding.textInputEditTextCardName.text.toString()
+        val cardNumber = binding.textInputEditTextCardNumber.text.toString()
+        val month = binding.textInputEditTextCardMonth.text.toString()
+        val year = binding.textInputEditTextCardYear.text.toString()
+        val cvv = binding.textInputEditTextCardCvv.text.toString()
+
+        if (binding.checkBoxSave.isChecked) {
+            viewModel.onClickConfirmWithSaveCard(cardName, cardNumber, month, year, cvv, userId)
+        } else {
+            viewModel.onClickConfirm(cardName, cardNumber, month, year, cvv)
         }
     }
 
@@ -107,7 +112,28 @@ class PaymentCardFragment: Fragment() {
         }
 
         if (state.doesUserHaveCards) {
+            showAvailableCardsPopUp()
+        }
 
+        if (state.canUserContinueToNextStep) {
+            if (state.cardId != null) {
+                // set card id
+                // buy
+            } else {
+                // buy
+            }
+        }
+
+        state.validationError?.let {
+            toast(requireContext(), it, false)
+        }
+
+        state.dataError?.let {
+            TODO()
+        }
+
+        state.actionError?.let {
+            toast(requireContext(), it, false)
         }
     }
 
@@ -148,21 +174,6 @@ class PaymentCardFragment: Fragment() {
         }
 
          */
-    }
-
-    private fun validateFields(): Boolean {
-        if (binding.textInputEditTextCardMonth.text.toString().isEmpty() ||
-            binding.textInputEditTextCardYear.text.toString().isEmpty() ||
-            binding.textInputEditTextCardCvv.text.toString().isEmpty() ||
-            binding.textInputEditTextCardName.text.toString().isEmpty() ||
-            binding.textInputEditTextCardNumber.text.toString().isEmpty()) {
-            toast(requireContext(),"Lütfen, tüm bilgileri eksiksiz doldurun",false)
-            return false
-        } else if (binding.textInputEditTextCardNumber.text.toString().length != 16) {
-            toast(requireContext(),"Lütfen, kart numarasını kontrol ediniz",false)
-            return false
-        }
-        return true
     }
 
     private fun showAvailableCardsPopUp() {
@@ -209,13 +220,7 @@ class PaymentCardFragment: Fragment() {
         buttonSend.setOnClickListener {
             val inputSecureCode = editTextSecureCode.text.toString()
             if (randomNumber == inputSecureCode) {
-                if (binding.checkBoxSave.isChecked) {
-                    val cardName = binding.textInputEditTextCardName.text.toString()
-                    val cardNumber = binding.textInputEditTextCardNumber.text.toString()
-                    //viewModel.setOrderTypeAsCardAndSaveCardAndInitialize(cardName,cardNumber)
-                } else {
-                    //viewModel.setOrderTypeAsCardAndInitialize()
-                }
+                onClickButtonConfirmByCheckBoxSave()
             } else {
                 toast(requireContext(),"Güvenlik kodu yanlış, tekrar deneyiniz.",false)
             }

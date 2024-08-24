@@ -40,13 +40,14 @@ class PaymentMethodsFragment: Fragment() {
             Navigation.findNavController(it).navigate(R.id.action_paymentMethodsFragment_to_cardFragment)
         }
         binding.materialCardDoor.setOnClickListener {
-            viewModel.setOrderTypeAsDoorAndInitialize()
+            //viewModel.setOrderTypeAsDoorAndInitialize()
         }
 
         observe()
     }
 
     private fun observe() {
+        /*
         viewModel.statusPayment.observe(viewLifecycleOwner) {
             when(it) {
                 is Resource.Success -> {
@@ -62,6 +63,8 @@ class PaymentMethodsFragment: Fragment() {
                 }
             }
         }
+
+         */
     }
 
     override fun onDestroyView() {

@@ -3,31 +3,36 @@ package com.hasanalic.ecommerce.feature_checkout.presentation
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.hasanalic.ecommerce.feature_orders.data.local.entity.OrderEntity
-import com.hasanalic.ecommerce.feature_orders.data.local.entity.OrderProductsEntity
-import com.hasanalic.ecommerce.feature_checkout.data.local.entity.CardEntity
-import com.hasanalic.ecommerce.feature_checkout.domain.model.Address
-import com.hasanalic.ecommerce.feature_home.domain.model.ShoppingCartItem
-import com.hasanalic.ecommerce.feature_checkout.domain.repository.CheckoutRepository
-import com.hasanalic.ecommerce.utils.Constants
-import com.hasanalic.ecommerce.utils.Constants.AT_DOOR
-import com.hasanalic.ecommerce.utils.Constants.BANK_OR_CREDIT_CARD
-import com.hasanalic.ecommerce.utils.Constants.BKM_EXPRESS
-import com.hasanalic.ecommerce.utils.Constants.DATE_FORMAT
-import com.hasanalic.ecommerce.utils.Constants.PAYPAL
-import com.hasanalic.ecommerce.utils.Resource
-import com.hasanalic.ecommerce.utils.TimeAndDate
+import com.hasanalic.ecommerce.feature_checkout.domain.use_cases.InsertAllOrderProductsUseCase
+import com.hasanalic.ecommerce.feature_home.domain.use_case.shopping_cart_use_cases.ShoppingCartUseCases
+import com.hasanalic.ecommerce.feature_orders.domain.use_cases.OrderUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
-import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
 class CheckoutViewModel @Inject constructor(
-
+    private val orderUseCases: OrderUseCases,
+    private val insertAllOrderProductsUseCase: InsertAllOrderProductsUseCase,
+    private val shoppingCartUseCases: ShoppingCartUseCases
 ): ViewModel() {
 
+    private var _checkoutState = MutableLiveData(CheckoutState())
+    val checkoutState: LiveData<CheckoutState> = _checkoutState
+
+    fun setOrderUserIdAndAddressId(userId: String, addressId: String) {
+        _checkoutState.value = _checkoutState.value!!.copy(
+            userId = userId,
+            addressId = addressId
+        )
+    }
+
+    fun setOrderCargo(cargo: String) {
+        _checkoutState.value = _checkoutState.value!!.copy(
+            cargo = cargo
+        )
+    }
+
+    /*
     private var _statusAddressList = MutableLiveData<Resource<List<Address>>>()
     val statusAddressList: LiveData<Resource<List<Address>>>
         get() = _statusAddressList
@@ -41,53 +46,6 @@ class CheckoutViewModel @Inject constructor(
     private var _statusPayment = MutableLiveData<Resource<Boolean>>()
     val statusPayment: LiveData<Resource<Boolean>>
         get() = _statusPayment
-
-    fun getAddressList(userId: String) {
-        /*
-        _statusAddressList.value = Resource.Loading()
-        viewModelScope.launch {
-            val response = checkoutRepository.getAddressesByUserId(userId)
-            _statusAddressList.value = response
-        }
-
-         */
-    }
-
-    fun setAddress(addressId: String) {
-        val tempAddressList = _statusAddressList.value!!.data
-
-        tempAddressList?.let {addresses ->
-            for (address in addresses) {
-                address.isSelected = address.addressId == addressId
-            }
-            _statusAddressList.value = Resource.Success(tempAddressList)
-        }
-    }
-
-    fun setOrderAddressAndUserId(addressId: String, userId: String) {
-        /*
-        val order = OrderEntity(orderUserId = userId, orderAddressId = addressId)
-        _statusOrder.value = order
-
-         */
-    }
-
-    fun setOrderCargo(cargo: String) {
-        val order = _statusOrder.value!!
-        order.orderCargo = cargo
-        _statusOrder.value = order
-    }
-
-    fun getCards(userId: String) {
-        /*
-        _statusCards.value = Resource.Loading()
-        viewModelScope.launch {
-            val response = checkoutRepository.getCardsByUserId(userId)
-            _statusCards.value = response
-        }
-
-         */
-    }
 
     fun setOrderTypeAsDoorAndInitialize() {
         /*
@@ -387,4 +345,6 @@ class CheckoutViewModel @Inject constructor(
         }
         return orderProductsList.toTypedArray()
     }
+
+     */
 }

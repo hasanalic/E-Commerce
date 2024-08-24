@@ -26,9 +26,13 @@ import com.hasanalic.ecommerce.feature_auth.domain.use_cases.InsertUserUseCase
 import com.hasanalic.ecommerce.feature_auth.domain.use_cases.UserEmailValidatorUseCase
 import com.hasanalic.ecommerce.feature_auth.domain.use_cases.UserInputValidatorUseCase
 import com.hasanalic.ecommerce.feature_auth.domain.use_cases.UserPasswordValidatorUseCase
+import com.hasanalic.ecommerce.feature_checkout.data.local.OrderProductsDao
 import com.hasanalic.ecommerce.feature_checkout.data.repository.CardRepositoryImp
+import com.hasanalic.ecommerce.feature_checkout.data.repository.OrderProductsRepositoryImp
 import com.hasanalic.ecommerce.feature_checkout.domain.repository.CardRepository
+import com.hasanalic.ecommerce.feature_checkout.domain.repository.OrderProductsRepository
 import com.hasanalic.ecommerce.feature_checkout.domain.use_cases.CardUseCases
+import com.hasanalic.ecommerce.feature_checkout.domain.use_cases.CardValidatorUseCase
 import com.hasanalic.ecommerce.feature_checkout.domain.use_cases.GetCardByUserIdAndCardIdUseCase
 import com.hasanalic.ecommerce.feature_checkout.domain.use_cases.GetCardsByUserIdUseCase
 import com.hasanalic.ecommerce.feature_checkout.domain.use_cases.InsertCardEntityUseCase
@@ -223,6 +227,12 @@ object AppModule {
 
     @Singleton
     @Provides
+    fun provideOrderProductsRepository(orderProductsDao: OrderProductsDao): OrderProductsRepository {
+        return OrderProductsRepositoryImp(orderProductsDao)
+    }
+
+    @Singleton
+    @Provides
     fun provideAuthUseCases(authRepository: AuthenticationRepository): AuthUseCases {
         return AuthUseCases(
             insertUserUseCase = InsertUserUseCase(authRepository),
@@ -327,7 +337,8 @@ object AppModule {
         return CardUseCases(
             getCardByUserIdAndCardIdUseCase = GetCardByUserIdAndCardIdUseCase(cardRepository),
             getCardsByUserIdUseCase = GetCardsByUserIdUseCase(cardRepository),
-            insertCardEntityUseCase = InsertCardEntityUseCase(cardRepository)
+            insertCardEntityUseCase = InsertCardEntityUseCase(cardRepository),
+            cardValidatorUseCase = CardValidatorUseCase()
         )
     }
 }
