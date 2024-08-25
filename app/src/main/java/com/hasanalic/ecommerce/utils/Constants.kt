@@ -45,8 +45,6 @@ object Constants {
     // Payment Type
     const val BANK_OR_CREDIT_CARD = "Banka/ Kredi Kartı"
     const val AT_DOOR = "Kapıda Ödeme"
-    const val PAYPAL = "Paypal"
-    const val BKM_EXPRESS = "BKM Express"
 }
 
 

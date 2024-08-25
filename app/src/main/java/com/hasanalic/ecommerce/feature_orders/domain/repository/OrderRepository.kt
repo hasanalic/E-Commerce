@@ -8,7 +8,7 @@ import com.hasanalic.ecommerce.feature_orders.domain.model.OrderDetail
 
 interface OrderRepository {
 
-    suspend fun insertOrder(order: OrderEntity): Result<Unit, DataError.Local>
+    suspend fun insertOrder(order: OrderEntity): Result<Long, DataError.Local>
 
     suspend fun getOrderDetail(orderId: String): Result<OrderDetail, DataError.Local>
 

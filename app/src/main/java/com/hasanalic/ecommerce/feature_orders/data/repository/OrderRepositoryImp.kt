@@ -14,11 +14,11 @@ import javax.inject.Inject
 class OrderRepositoryImp @Inject constructor(
     private val orderDao: OrderDao
 ): OrderRepository {
-    override suspend fun insertOrder(order: OrderEntity): Result<Unit, DataError.Local> {
+    override suspend fun insertOrder(order: OrderEntity): Result<Long, DataError.Local> {
         return try {
             val result = orderDao.insertOrder(order)
             if (result > 0) {
-                Result.Success(Unit)
+                Result.Success(result)
             } else {
                 Result.Error(DataError.Local.INSERTION_FAILED)
             }

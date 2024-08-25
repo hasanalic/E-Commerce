@@ -9,7 +9,7 @@ import javax.inject.Inject
 class InsertOrderUseCase @Inject constructor(
     private val orderRepository: OrderRepository
 ) {
-    suspend operator fun invoke(order: OrderEntity): Result<Unit, DataError.Local> {
+    suspend operator fun invoke(order: OrderEntity): Result<Long, DataError.Local> {
         return orderRepository.insertOrder(order)
     }
 }

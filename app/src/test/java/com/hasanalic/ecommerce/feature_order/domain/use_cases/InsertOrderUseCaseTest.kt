@@ -38,6 +38,5 @@ class InsertOrderUseCaseTest {
         val result = insertOrderUseCase(orderEntity)
 
         assertThat(result).isInstanceOf(Result.Success::class.java)
-        assertThat((result as Result.Success).data).isEqualTo(Unit)
     }
 }

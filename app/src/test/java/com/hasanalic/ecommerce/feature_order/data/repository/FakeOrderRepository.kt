@@ -16,8 +16,8 @@ class FakeOrderRepository : OrderRepository{
         Order("1","1","","","","",1L,"", listOf(orderProductsEntity))
     )
 
-    override suspend fun insertOrder(order: OrderEntity): Result<Unit, DataError.Local> {
-        return Result.Success(Unit)
+    override suspend fun insertOrder(order: OrderEntity): Result<Long, DataError.Local> {
+        return Result.Success(1L)
     }
 
     override suspend fun getOrderDetail(orderId: String): Result<OrderDetail, DataError.Local> {
