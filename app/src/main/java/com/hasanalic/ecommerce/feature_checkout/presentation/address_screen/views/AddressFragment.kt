@@ -12,6 +12,8 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hasanalic.ecommerce.R
 import com.hasanalic.ecommerce.databinding.FragmentAddressBinding
+import com.hasanalic.ecommerce.feature_checkout.presentation.CheckoutState
+import com.hasanalic.ecommerce.feature_checkout.presentation.CheckoutViewModel
 import com.hasanalic.ecommerce.feature_location.presentation.LocationActivity
 import com.hasanalic.ecommerce.feature_checkout.presentation.address_screen.AddressState
 import com.hasanalic.ecommerce.feature_checkout.presentation.address_screen.AddressViewModel
@@ -29,6 +31,7 @@ class AddressFragment: Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var viewModel: AddressViewModel
+    private lateinit var checkoutViewModel: CheckoutViewModel
 
     private var userId: String = ANOMIM_USER_ID
 
@@ -47,6 +50,7 @@ class AddressFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = ViewModelProvider(requireActivity())[AddressViewModel::class.java]
+        checkoutViewModel = ViewModelProvider(requireActivity())[CheckoutViewModel::class.java]
         viewModel.getAddressList(userId)
 
         setupListeners()
@@ -63,7 +67,7 @@ class AddressFragment: Fragment() {
 
         binding.buttonContinue.setOnClickListener {view->
             addressId?.let {
-                //viewModel.setOrderAddressAndUserId(it, userId)
+                checkoutViewModel.setOrderUserIdAndAddressId(userId, it)
                 Navigation.findNavController(view).navigate(R.id.action_addressFragment_to_shippingFragment)
             }?: toast(requireContext(),"Adres seçiniz",false)
         }

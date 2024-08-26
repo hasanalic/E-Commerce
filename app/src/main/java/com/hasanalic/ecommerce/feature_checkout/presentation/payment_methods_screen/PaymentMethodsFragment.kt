@@ -9,8 +9,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.hasanalic.ecommerce.R
 import com.hasanalic.ecommerce.databinding.FragmentPaymentMethodsBinding
+import com.hasanalic.ecommerce.feature_checkout.presentation.CheckoutState
 import com.hasanalic.ecommerce.feature_checkout.presentation.CheckoutViewModel
-import com.hasanalic.ecommerce.utils.Resource
 import com.hasanalic.ecommerce.utils.hide
 import com.hasanalic.ecommerce.utils.show
 import com.hasanalic.ecommerce.utils.toast
@@ -30,41 +30,47 @@ class PaymentMethodsFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel = ViewModelProvider(requireActivity())[CheckoutViewModel::class.java]
+
+        setupListeners()
+
+        setupObservers()
+    }
+
+    private fun setupListeners() {
         binding.toolBarPaymentMethods.setNavigationOnClickListener {
             Navigation.findNavController(it).popBackStack()
         }
 
-        viewModel = ViewModelProvider(requireActivity())[CheckoutViewModel::class.java]
-
         binding.materialCardBankOrCreditCard.setOnClickListener {
             Navigation.findNavController(it).navigate(R.id.action_paymentMethodsFragment_to_cardFragment)
         }
-        binding.materialCardDoor.setOnClickListener {
-            //viewModel.setOrderTypeAsDoorAndInitialize()
-        }
 
-        observe()
+        binding.materialCardDoor.setOnClickListener {
+            viewModel.buyOrderAtDoor()
+        }
     }
 
-    private fun observe() {
-        /*
-        viewModel.statusPayment.observe(viewLifecycleOwner) {
-            when(it) {
-                is Resource.Success -> {
-                    binding.progressBarPaymentMethods.hide()
-                    Navigation.findNavController(binding.root).navigate(R.id.action_paymentMethodsFragment_to_successFragment)
-                }
-                is Resource.Error -> {
-                    binding.progressBarPaymentMethods.hide()
-                    toast(requireContext(),it.message?:"hata",false)
-                }
-                is Resource.Loading -> {
-                    binding.progressBarPaymentMethods.show()
-                }
-            }
+    private fun setupObservers() {
+        viewModel.checkoutState.observe(viewLifecycleOwner) {
+            handleCheckoutState(it)
+        }
+    }
+
+    private fun handleCheckoutState(state: CheckoutState) {
+        if (state.isLoading) {
+            binding.progressBarPaymentMethods.show()
+        } else {
+            binding.progressBarPaymentMethods.hide()
         }
 
-         */
+        if (state.isPaymentSuccessful) {
+            Navigation.findNavController(binding.root).navigate(R.id.action_paymentMethodsFragment_to_successFragment)
+        }
+
+        state.dataError?.let {
+            toast(requireContext(), it, false)
+        }
     }
 
     override fun onDestroyView() {

@@ -19,6 +19,7 @@ import com.hasanalic.ecommerce.R
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import com.hasanalic.ecommerce.databinding.FragmentPaymentCardBinding
+import com.hasanalic.ecommerce.feature_checkout.presentation.CheckoutState
 import com.hasanalic.ecommerce.feature_checkout.presentation.CheckoutViewModel
 import com.hasanalic.ecommerce.feature_checkout.presentation.ShoppingCartList
 import com.hasanalic.ecommerce.feature_checkout.presentation.payment_card_screen.PaymentCardState
@@ -29,20 +30,22 @@ import com.hasanalic.ecommerce.utils.Constants.CHANNEL_DESCRIPTION_TEXT
 import com.hasanalic.ecommerce.utils.Constants.CHANNEL_ID
 import com.hasanalic.ecommerce.utils.Constants.CHANNEL_NAME
 import com.hasanalic.ecommerce.utils.Constants.NOTIFICATION_ID
-import com.hasanalic.ecommerce.utils.Resource
 import com.hasanalic.ecommerce.utils.TimeAndDate
 import com.hasanalic.ecommerce.utils.hide
 import com.hasanalic.ecommerce.utils.maskCreditCard
 import com.hasanalic.ecommerce.utils.show
 import com.hasanalic.ecommerce.utils.toast
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.Random
 
+@AndroidEntryPoint
 class PaymentCardFragment: Fragment() {
 
     private var _binding: FragmentPaymentCardBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var viewModel: PaymentCardViewModel
+    private lateinit var checkoutViewModel: CheckoutViewModel
 
     private var userId: String = ANOMIM_USER_ID
 
@@ -64,8 +67,6 @@ class PaymentCardFragment: Fragment() {
         setupListeners()
 
         setupObservers()
-
-        observe()
     }
 
     private fun setupListeners() {
@@ -100,7 +101,11 @@ class PaymentCardFragment: Fragment() {
 
     private fun setupObservers() {
         viewModel.paymentCardState.observe(viewLifecycleOwner) {
+            handlePaymentCardState(it)
+        }
 
+        checkoutViewModel.checkoutState.observe(viewLifecycleOwner) {
+            handleCheckoutState(it)
         }
     }
 
@@ -117,10 +122,9 @@ class PaymentCardFragment: Fragment() {
 
         if (state.canUserContinueToNextStep) {
             if (state.cardId != null) {
-                // set card id
-                // buy
+                checkoutViewModel.buyOrderWithSavedCard(state.cardId)
             } else {
-                // buy
+                checkoutViewModel.buyOrderWithCard()
             }
         }
 
@@ -137,43 +141,20 @@ class PaymentCardFragment: Fragment() {
         }
     }
 
-    private fun observe() {
-        /*
-        viewModel.statusPayment.observe(viewLifecycleOwner) {
-            when(it) {
-                is Resource.Success -> {
-                    binding.progressBarPaymentCard.hide()
-                    Navigation.findNavController(binding.root).navigate(R.id.action_cardFragment_to_successFragment)
-                }
-                is Resource.Error -> {
-                    binding.progressBarPaymentCard.hide()
-                    toast(requireContext(),it.message?:"hata",false)
-                }
-                is Resource.Loading -> {
-                    binding.progressBarPaymentCard.show()
-                }
-            }
+    private fun handleCheckoutState(state: CheckoutState) {
+        if (state.isLoading) {
+            binding.progressBarPaymentCard.show()
+        } else {
+            binding.progressBarPaymentCard.hide()
         }
 
-        viewModel.statusCards.observe(viewLifecycleOwner) {
-            when(it) {
-                is Resource.Success -> {
-                    binding.progressBarPaymentCard.hide()
-                    if (!(it.data.isNullOrEmpty())) {
-                        showAvailableCardsPopUp()
-                    }
-                }
-                is Resource.Error -> {
-                    binding.progressBarPaymentCard.hide()
-                    toast(requireContext(),it.message?:"hata",false)
-                }
-                is Resource.Loading -> {
-                    binding.progressBarPaymentCard.show()
-                }
-            }
+        if (state.isPaymentSuccessful) {
+            Navigation.findNavController(binding.root).navigate(R.id.action_paymentMethodsFragment_to_successFragment)
         }
 
-         */
+        state.dataError?.let {
+            toast(requireContext(), it, false)
+        }
     }
 
     private fun showAvailableCardsPopUp() {

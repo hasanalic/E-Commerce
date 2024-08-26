@@ -30,6 +30,10 @@ class ShippingFragment: Fragment() {
 
         viewModel = ViewModelProvider(requireActivity())[CheckoutViewModel::class.java]
 
+        setupListeners()
+    }
+
+    private fun setupListeners() {
         binding.toolBarShipping.setNavigationOnClickListener {
             Navigation.findNavController(it).popBackStack()
         }
@@ -40,16 +44,16 @@ class ShippingFragment: Fragment() {
         }
 
         binding.mngKargoRadioButton.setOnClickListener {
-            cargoName = "MNG Kargo"
+            cargoName = "Cargo 1"
         }
         binding.arasKargoRadioButton.setOnClickListener {
-            cargoName = "Aras Kargo"
+            cargoName = "Cargo 2"
         }
         binding.yurticiKargoRadioButton.setOnClickListener {
-            cargoName = "Yurtiçi Kargo"
+            cargoName = "Cargo 3"
         }
         binding.pttKargoRadioButton.setOnClickListener {
-            cargoName = "PTT Kargo"
+            cargoName = "Cargo 4"
         }
     }
 
