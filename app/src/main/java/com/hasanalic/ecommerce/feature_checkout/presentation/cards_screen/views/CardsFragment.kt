@@ -8,12 +8,16 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.hasanalic.ecommerce.R
 import com.hasanalic.ecommerce.databinding.FragmentCardsBinding
+import com.hasanalic.ecommerce.feature_checkout.presentation.CheckoutState
+import com.hasanalic.ecommerce.feature_checkout.presentation.CheckoutViewModel
 import com.hasanalic.ecommerce.feature_checkout.presentation.cards_screen.CardsState
 import com.hasanalic.ecommerce.feature_checkout.presentation.cards_screen.CardsViewModel
 import com.hasanalic.ecommerce.utils.ItemDecoration
 import com.hasanalic.ecommerce.utils.hide
 import com.hasanalic.ecommerce.utils.show
+import com.hasanalic.ecommerce.utils.toast
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -23,6 +27,7 @@ class CardsFragment: Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var viewModel: CardsViewModel
+    private lateinit var checkoutViewModel: CheckoutViewModel
 
     private val cardsAdapter by lazy {
         CardsAdapter()
@@ -37,6 +42,7 @@ class CardsFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = ViewModelProvider(requireActivity())[CardsViewModel::class.java]
+        checkoutViewModel = ViewModelProvider(requireActivity())[CheckoutViewModel::class.java]
 
         setupListeners()
 
@@ -56,14 +62,18 @@ class CardsFragment: Fragment() {
         binding.recyclerViewCards.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.recyclerViewCards.addItemDecoration(ItemDecoration(40,40,40))
 
-        cardsAdapter.setOnCardClickLisstener {
-            //viewModel.setOrderTypeAsCardByPaymentIdAndInitialize(it)
+        cardsAdapter.setOnCardClickLisstener { cardId ->
+            checkoutViewModel.buyOrderWithSavedCard(cardId)
         }
     }
 
     private fun setupObservers() {
         viewModel.cardsState.observe(viewLifecycleOwner) {
             handleCardsState(it)
+        }
+
+        checkoutViewModel.checkoutState.observe(viewLifecycleOwner) {
+            handleCheckoutState(it)
         }
     }
 
@@ -82,24 +92,22 @@ class CardsFragment: Fragment() {
         state.dataError?.let {
             TODO()
         }
+    }
 
-        TODO("CHECKOUT PROCESS")
-        /*
-        when(it) {
-                is Resource.Success -> {
-                    binding.progressBarCards.hide()
-                    Navigation.findNavController(binding.root).navigate(R.id.action_cardsFragment_to_successFragment)
-                }
-                is Resource.Error -> {
-                    binding.progressBarCards.hide()
-                    toast(requireContext(),it.message?:"hata",false)
-                }
-                is Resource.Loading -> {
-                    binding.progressBarCards.show()
-                }
-            }
-         */
+    private fun handleCheckoutState(state: CheckoutState) {
+        if (state.isLoading) {
+            binding.progressBarCards.show()
+        } else {
+            binding.progressBarCards.hide()
+        }
 
+        if (state.isPaymentSuccessful) {
+            Navigation.findNavController(binding.root).navigate(R.id.action_paymentMethodsFragment_to_successFragment)
+        }
+
+        state.dataError?.let {
+            toast(requireContext(), it, false)
+        }
     }
 
     override fun onDestroyView() {

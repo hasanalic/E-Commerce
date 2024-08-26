@@ -58,7 +58,9 @@ class CheckoutViewModel @Inject constructor(
     }
 
     private fun executeInsertOrder(paymentType: String, cardId: String? = null) {
-        _checkoutState.value = CheckoutState(isLoading = true)
+        _checkoutState.value = _checkoutState.value!!.copy(
+            isLoading = true
+        )
 
         viewModelScope.launch {
             val orderEntity = createOrderEntity(paymentType, cardId)
@@ -100,7 +102,7 @@ class CheckoutViewModel @Inject constructor(
         when(result) {
             is Result.Error -> handleError(result.error)
             is Result.Success -> _checkoutState.value = _checkoutState.value!!.copy(
-                isLoading = true,
+                isLoading = false,
                 isPaymentSuccessful = true
             )
         }
