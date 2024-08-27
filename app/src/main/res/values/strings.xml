@@ -42,10 +42,10 @@
     <string name="address">Adres</string>
     <string name="address_title">Adres Başlığı</string>
     <string name="address_info">Adres Bilgileri</string>
-    <string name="mng_kargo">MNG Kargo</string>
-    <string name="aras_kargo">Aras Kargo</string>
-    <string name="yurti_i_kargo">Yurtiçi Kargo</string>
-    <string name="ptt_kargo">PTT Kargo</string>
+    <string name="cargo_name_one">Kargo 1</string>
+    <string name="cargo_name_two">Kargo 2</string>
+    <string name="cargo_name_three">Kargo 3</string>
+    <string name="cargo_name_four">Kargo 4</string>
     <string name="bank_or_credit_card">Kart Numarası</string>
     <string name="add_card">Kart Ekle</string>
     <string name="others">Diğer</string>

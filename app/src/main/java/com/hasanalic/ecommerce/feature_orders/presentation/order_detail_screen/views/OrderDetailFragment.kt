@@ -131,7 +131,7 @@ class OrderDetailFragment: Fragment() {
         val orderStatus = order.status
 
         if (order.paymentType == BANK_OR_CREDIT_CARD) {
-            binding.imageViewPayment.setImageResource(R.drawable.masterpass)
+            binding.imageViewPayment.setImageResource(R.drawable.bank_card)
         } else {
             binding.imageViewPayment.hide()
             binding.textViewPayment.text = order.paymentType

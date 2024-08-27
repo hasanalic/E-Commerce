@@ -40,7 +40,7 @@
             <ImageView
                 android:layout_width="130dp"
                 android:layout_height="60dp"
-                android:src="@drawable/masterpass" />
+                android:src="@drawable/bank_card" />
 
         </LinearLayout>
 

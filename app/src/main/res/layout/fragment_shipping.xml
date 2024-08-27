@@ -112,20 +112,20 @@
             android:checked="true"
             android:layout_marginBottom="15dp"
             android:textSize="16sp"
-            android:text="@string/mng_kargo"
+            android:text="@string/cargo_name_one"
             android:paddingHorizontal="6dp"
-            android:drawableStart="@drawable/mng"
+            android:drawableStart="@drawable/delivery"
             android:drawablePadding="10dp"/>
 
         <RadioButton
             android:id="@+id/arasKargoRadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/aras_kargo"
+            android:text="@string/cargo_name_two"
             android:layout_marginBottom="15dp"
             android:textSize="16sp"
             android:paddingHorizontal="6dp"
-            android:drawableStart="@drawable/aras"
+            android:drawableStart="@drawable/delivery"
             android:drawablePadding="10dp"/>
 
         <RadioButton
@@ -133,9 +133,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
-            android:text="@string/yurti_i_kargo"
+            android:text="@string/cargo_name_three"
             android:layout_marginBottom="15dp"
-            android:drawableStart="@drawable/yurtici"
+            android:drawableStart="@drawable/delivery"
             android:drawablePadding="10dp"
             android:paddingHorizontal="6dp"/>
 
@@ -144,9 +144,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
-            android:text="@string/ptt_kargo"
+            android:text="@string/cargo_name_four"
             android:paddingHorizontal="6dp"
-            android:drawableStart="@drawable/ptt"
+            android:drawableStart="@drawable/delivery"
             android:drawablePadding="10dp"/>
 
     </RadioGroup>

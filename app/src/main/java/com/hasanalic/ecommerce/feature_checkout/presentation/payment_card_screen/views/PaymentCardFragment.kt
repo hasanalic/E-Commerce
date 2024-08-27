@@ -158,7 +158,7 @@ class PaymentCardFragment: Fragment() {
     }
 
     private fun showAvailableCardsPopUp() {
-        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.popup_masterpass, null)
+        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.popup_bank_card, null)
         val dialog = MaterialAlertDialogBuilder(requireContext()).setView(dialogView).create()
         dialogView.setBackgroundColor(requireActivity().getColor(R.color.white))
 

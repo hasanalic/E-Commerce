@@ -227,7 +227,7 @@
                     android:layout_width="wrap_content"
                     android:paddingStart="-80dp"
                     android:layout_height="28dp"
-                    android:src="@drawable/masterpass" />
+                    android:src="@drawable/bank_card" />
 
             </LinearLayout>
 

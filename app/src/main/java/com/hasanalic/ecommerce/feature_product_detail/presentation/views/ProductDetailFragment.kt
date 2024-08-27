@@ -145,7 +145,7 @@ class ProductDetailFragment: Fragment() {
         if (productDetail.addedToFavorites) {
             binding.imageViewFavorite.setImageResource(R.drawable.favorite_orange)
         } else {
-            binding.imageViewFavorite.setImageResource(R.drawable.favorite_border_orange)
+            binding.imageViewFavorite.setImageResource(R.drawable.favorite_white)
         }
 
         if (productDetail.addedToShoppingCart) {

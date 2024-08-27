@@ -15,5 +15,5 @@
     <item
         android:id="@+id/accountFragment"
         android:title="Hesabım"
-        android:icon="@drawable/person"></item>
+        android:icon="@drawable/user"></item>
 </menu>

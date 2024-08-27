@@ -285,7 +285,7 @@
                         android:id="@+id/imageViewMasterpass"
                         android:layout_width="180dp"
                         android:layout_height="36dp"
-                        android:src="@drawable/masterpass" />
+                        android:src="@drawable/bank_card" />
                 </LinearLayout>
 
                 <Button
