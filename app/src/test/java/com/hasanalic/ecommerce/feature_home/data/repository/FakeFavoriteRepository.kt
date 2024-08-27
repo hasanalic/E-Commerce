@@ -49,4 +49,14 @@ class FakeFavoriteRepository : FavoriteRepository {
     ): Result<Unit, DataError.Local> {
         return if (productId == mutableFavoriteProductDtoList[0].productId.toString()) Result.Success(Unit) else Result.Error(DataError.Local.DELETION_FAILED)
     }
+
+    override suspend fun checkFavoriteEntityByProductId(
+        userId: String,
+        productId: String
+    ): Result<Boolean, DataError.Local> {
+        val favoriteEntity = mutableFavoriteEntityList.find { favoriteEntity -> favoriteEntity.productId == productId }
+        favoriteEntity?.let {
+            return Result.Success(true)
+        }?: return Result.Success(false)
+    }
 }

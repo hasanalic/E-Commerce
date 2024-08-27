@@ -76,4 +76,18 @@ class FavoriteRepositoryImp @Inject constructor(
             Result.Error(DataError.Local.UNKNOWN)
         }
     }
+
+    override suspend fun checkFavoriteEntityByProductId(
+        userId: String,
+        productId: String
+    ): Result<Boolean, DataError.Local> {
+        return try {
+            val result = favoritesDao.getFavoriteByProductId(userId, productId)
+            result?.let {
+                Result.Success(true)
+            }?: Result.Success(false)
+        } catch (e: Exception) {
+            Result.Error(DataError.Local.UNKNOWN)
+        }
+    }
 }

@@ -5,5 +5,6 @@ data class FavoriteUseCases (
     val getFavoriteIdByUserIdAndProductIdUseCase: GetFavoriteIdByUserIdAndProductIdUseCase,
     val getFavoriteListByUserIdUseCase: GetFavoriteListByUserIdUseCase,
     val getFavoriteProductsUseCase: GetFavoriteProductsUseCase,
-    val insertFavoriteAndGetIdUseCase: InsertFavoriteAndGetIdUseCase
+    val insertFavoriteAndGetIdUseCase: InsertFavoriteAndGetIdUseCase,
+    val checkFavoriteEntityByProductId: CheckFavoriteEntityByProductId
 )

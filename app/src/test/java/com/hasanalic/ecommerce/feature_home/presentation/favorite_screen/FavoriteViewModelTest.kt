@@ -7,6 +7,7 @@ import com.hasanalic.ecommerce.feature_home.data.repository.FakeFavoriteReposito
 import com.hasanalic.ecommerce.feature_home.data.repository.FakeShoppingCartRepository
 import com.hasanalic.ecommerce.feature_home.domain.repository.FavoriteRepository
 import com.hasanalic.ecommerce.feature_home.domain.repository.ShoppingCartRepository
+import com.hasanalic.ecommerce.feature_home.domain.use_case.favorite_use_cases.CheckFavoriteEntityByProductId
 import com.hasanalic.ecommerce.feature_home.domain.use_case.favorite_use_cases.DeleteFavoriteUseCase
 import com.hasanalic.ecommerce.feature_home.domain.use_case.favorite_use_cases.FavoriteUseCases
 import com.hasanalic.ecommerce.feature_home.domain.use_case.favorite_use_cases.GetFavoriteIdByUserIdAndProductIdUseCase
@@ -54,7 +55,8 @@ class FavoriteViewModelTest {
             getFavoriteIdByUserIdAndProductIdUseCase = GetFavoriteIdByUserIdAndProductIdUseCase(favoriteRepository),
             getFavoriteListByUserIdUseCase = GetFavoriteListByUserIdUseCase(favoriteRepository),
             getFavoriteProductsUseCase = GetFavoriteProductsUseCase(favoriteRepository),
-            insertFavoriteAndGetIdUseCase = InsertFavoriteAndGetIdUseCase(favoriteRepository)
+            insertFavoriteAndGetIdUseCase = InsertFavoriteAndGetIdUseCase(favoriteRepository),
+            checkFavoriteEntityByProductId = CheckFavoriteEntityByProductId(favoriteRepository)
         )
 
         shoppingCartRepository = FakeShoppingCartRepository()

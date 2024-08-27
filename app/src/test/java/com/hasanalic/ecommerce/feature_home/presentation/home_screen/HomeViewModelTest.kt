@@ -21,6 +21,7 @@ import com.hasanalic.ecommerce.feature_home.domain.use_case.favorite_use_cases.I
 import com.hasanalic.ecommerce.feature_filter.domain.use_cases.GetBrandsByCategoryUseCase
 import com.hasanalic.ecommerce.feature_filter.domain.use_cases.GetBrandsUseCase
 import com.hasanalic.ecommerce.feature_filter.domain.use_cases.GetCategoriesUseCase
+import com.hasanalic.ecommerce.feature_home.domain.use_case.favorite_use_cases.CheckFavoriteEntityByProductId
 import com.hasanalic.ecommerce.feature_home.domain.use_case.home_use_cases.GetProductEntityIdByBarcodeUseCase
 import com.hasanalic.ecommerce.feature_home.domain.use_case.home_use_cases.GetProductsByUserIdUseCase
 import com.hasanalic.ecommerce.feature_home.domain.use_case.home_use_cases.HomeUseCases
@@ -94,7 +95,8 @@ class HomeViewModelTest {
             getFavoriteIdByUserIdAndProductIdUseCase = GetFavoriteIdByUserIdAndProductIdUseCase(favoriteRepository),
             getFavoriteListByUserIdUseCase = GetFavoriteListByUserIdUseCase(favoriteRepository),
             getFavoriteProductsUseCase = GetFavoriteProductsUseCase(favoriteRepository),
-            insertFavoriteAndGetIdUseCase = InsertFavoriteAndGetIdUseCase(favoriteRepository)
+            insertFavoriteAndGetIdUseCase = InsertFavoriteAndGetIdUseCase(favoriteRepository),
+            checkFavoriteEntityByProductId = CheckFavoriteEntityByProductId(favoriteRepository)
         )
 
         homeViewModel = HomeViewModel(homeUseCases, filterUseCases, shoppingCartUseCases, favoriteUseCases)

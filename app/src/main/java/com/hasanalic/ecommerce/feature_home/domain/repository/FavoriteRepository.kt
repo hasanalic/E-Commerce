@@ -16,4 +16,6 @@ interface FavoriteRepository {
     suspend fun insertFavoriteAndGetId(favoritesEntity: FavoritesEntity): Result<Long, DataError.Local>
 
     suspend fun deleteFavorite(userId: String, productId: String): Result<Unit, DataError.Local>
+
+    suspend fun checkFavoriteEntityByProductId(userId: String, productId: String): Result<Boolean, DataError.Local>
 }

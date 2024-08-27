@@ -15,6 +15,7 @@ class SharedViewModel: ViewModel() {
     private val _cartItemCount = MutableLiveData<Int>()
     val cartItemCount: LiveData<Int> = _cartItemCount
 
+
     fun updateCartItemCount(count: Int) {
         _cartItemCount.value = count
     }

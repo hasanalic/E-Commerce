@@ -37,10 +37,6 @@ class CompareFragment: Fragment() {
         CompareAdapter()
     }
 
-    /*
-    private lateinit var auth: FirebaseAuth
-
-     */
     private var userId: String = Constants.ANOMIM_USER_ID
 
     private var homeActivity: HomeActivity? = null
@@ -89,7 +85,6 @@ class CompareFragment: Fragment() {
         currentUser?.let {
             userId = it.uid
         }
-
          */
 
         binding.toolBarCompare.setNavigationOnClickListener {
@@ -99,7 +94,6 @@ class CompareFragment: Fragment() {
         viewModel = ViewModelProvider(requireActivity())[HomeViewModel::class.java]
         sharedViewModel = ViewModelProvider(requireActivity())[SharedViewModel::class.java]
         //viewModel.getComparedProductList()
-        //viewModel.getShoppingCartCount(userId)
 
         setRecyclerView()
 

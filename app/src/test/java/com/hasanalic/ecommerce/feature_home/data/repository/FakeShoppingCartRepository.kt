@@ -24,8 +24,8 @@ class FakeShoppingCartRepository : ShoppingCartRepository {
         userId: String,
         productId: String
     ): Result<Boolean, DataError.Local> {
-        val a = shoppingCartItemList.find { shoppingCartItem -> shoppingCartItem.productId == productId }
-        a?.let {
+        val shoppingCartItem = shoppingCartItemList.find { shoppingCartItem -> shoppingCartItem.productId == productId }
+        shoppingCartItem?.let {
             return Result.Success(true)
         }?: return Result.Success(false)
     }
