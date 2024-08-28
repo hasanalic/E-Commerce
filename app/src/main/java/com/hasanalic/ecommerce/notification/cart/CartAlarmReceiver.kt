@@ -1,4 +1,4 @@
-package com.hasanalic.ecommerce.utils.notification.cart
+package com.hasanalic.ecommerce.notification.cart
 
 import android.app.NotificationManager
 import android.content.BroadcastReceiver

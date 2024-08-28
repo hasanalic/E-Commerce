@@ -1,4 +1,4 @@
-package com.hasanalic.ecommerce.utils.notification
+package com.hasanalic.ecommerce.notification
 
 data class ReminderItem(
     val time: Long,

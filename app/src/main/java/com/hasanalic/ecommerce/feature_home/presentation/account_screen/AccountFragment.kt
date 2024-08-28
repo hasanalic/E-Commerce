@@ -7,15 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.hasanalic.ecommerce.core.presentation.utils.AlarmConstants.CART_ALARM_INTERVAL_TEST
+import com.hasanalic.ecommerce.core.presentation.utils.AlarmConstants.CART_ALARM_REQUEST_CODE
 import com.hasanalic.ecommerce.databinding.FragmentAccountBinding
 import com.hasanalic.ecommerce.feature_auth.presentation.AuthActivity
 import com.hasanalic.ecommerce.feature_home.presentation.HomeActivity
 import com.hasanalic.ecommerce.feature_orders.presentation.OrderActivity
-import com.hasanalic.ecommerce.utils.Constants.CART_ALARM_INTERVAL_TEST
-import com.hasanalic.ecommerce.utils.Constants.CART_ALARM_REQUEST_CODE
 import com.hasanalic.ecommerce.utils.CustomSharedPreferences
-import com.hasanalic.ecommerce.utils.notification.ReminderItem
-import com.hasanalic.ecommerce.utils.notification.cart.CartAlarmScheduler
+import com.hasanalic.ecommerce.notification.ReminderItem
+import com.hasanalic.ecommerce.notification.cart.CartAlarmScheduler
 
 class AccountFragment: Fragment() {
 

@@ -1,4 +1,4 @@
-package com.hasanalic.ecommerce.utils
+package com.hasanalic.ecommerce.core.presentation.utils
 
 import android.os.Build
 import java.sql.Timestamp

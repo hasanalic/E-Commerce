@@ -1,16 +1,11 @@
-package com.hasanalic.ecommerce.utils.notification.adds
+package com.hasanalic.ecommerce.notification.adds
 
 import android.app.Notification
 import android.app.NotificationManager
 import android.content.Context
 import androidx.core.app.NotificationCompat
-import androidx.room.Room
 import com.hasanalic.ecommerce.R
-import com.hasanalic.ecommerce.feature_notification.data.local.entity.NotificationEntity
-import com.hasanalic.ecommerce.core.data.local.MyDatabase
-import com.hasanalic.ecommerce.core.data.repository.ServiceRepositoryImp
-import com.hasanalic.ecommerce.utils.Resource
-import com.hasanalic.ecommerce.utils.notification.Notifier
+import com.hasanalic.ecommerce.notification.Notifier
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -31,11 +26,15 @@ class AddsNotifier(
         val notificationTitle = getNotificationTitle(randomIndex)
         val notificationMessage = getNotificationMessage(randomIndex)
 
+        /*
         val shoppingCartItemsDao = Room.databaseBuilder(context, MyDatabase::class.java, "MyDatabase").build().shoppingCartItemsDao()
         val notificationDao = Room.databaseBuilder(context, MyDatabase::class.java, "MyDatabase").build().notificationDao()
         val serviceRepository = ServiceRepositoryImp(shoppingCartItemsDao, notificationDao)
 
+         */
+
         CoroutineScope(Dispatchers.IO).launch {
+            /*
             val response = serviceRepository.insertNotification(
                 NotificationEntity(
                     userId = "",
@@ -47,6 +46,8 @@ class AddsNotifier(
 
             if (response is Resource.Error) {
             }
+
+             */
         }
 
         return NotificationCompat.Builder(context, notificationChannelId)

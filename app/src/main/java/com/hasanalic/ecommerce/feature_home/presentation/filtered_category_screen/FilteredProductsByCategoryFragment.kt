@@ -1,7 +1,6 @@
 package com.hasanalic.ecommerce.feature_home.presentation.filtered_category_screen
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,21 +10,13 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.hasanalic.ecommerce.R
+import com.hasanalic.ecommerce.core.presentation.utils.AlarmConstants.ANOMIM_USER_ID
 import com.hasanalic.ecommerce.databinding.FragmentFilteredProductsByCategoryBinding
-import com.hasanalic.ecommerce.feature_auth.presentation.AuthActivity
-import com.hasanalic.ecommerce.feature_product_detail.presentation.ProductDetailActivity
 import com.hasanalic.ecommerce.feature_home.presentation.home_screen.HomeViewModel
 import com.hasanalic.ecommerce.feature_home.presentation.SharedViewModel
 import com.hasanalic.ecommerce.feature_home.presentation.home_screen.views.HomeAdapter
 import com.hasanalic.ecommerce.feature_home.presentation.HomeActivity
-import com.hasanalic.ecommerce.utils.Constants
-import com.hasanalic.ecommerce.utils.Resource
-import com.hasanalic.ecommerce.utils.hide
-import com.hasanalic.ecommerce.utils.show
-import com.hasanalic.ecommerce.utils.toast
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -42,7 +33,7 @@ class FilteredProductsByCategoryFragment: Fragment() {
     private lateinit var auth: FirebaseAuth
 
      */
-    private var userId: String = Constants.ANOMIM_USER_ID
+    private var userId: String = ANOMIM_USER_ID
 
     private val adapter by lazy {
         HomeAdapter()

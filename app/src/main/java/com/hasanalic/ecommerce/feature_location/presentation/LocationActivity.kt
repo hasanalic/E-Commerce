@@ -18,12 +18,12 @@ import com.google.android.gms.location.LocationSettingsRequest
 import com.google.android.gms.location.LocationSettingsResponse
 import com.google.android.gms.location.SettingsClient
 import com.google.android.gms.tasks.Task
+import com.hasanalic.ecommerce.core.presentation.utils.AlarmConstants.ANOMIM_USER_ID
+import com.hasanalic.ecommerce.core.presentation.utils.AlarmConstants.REQUEST_CHECK_SETTINGS
+import com.hasanalic.ecommerce.core.presentation.utils.AlarmConstants.REQUEST_CODR
 import com.hasanalic.ecommerce.databinding.ActivityLocationBinding
 import com.hasanalic.ecommerce.feature_location.presentation.views.LocationAdapter
-import com.hasanalic.ecommerce.utils.Constants
-import com.hasanalic.ecommerce.utils.Constants.ANOMIM_USER_ID
-import com.hasanalic.ecommerce.utils.Constants.REQUEST_CHECK_SETTINGS
-import com.hasanalic.ecommerce.utils.ItemDecoration
+import com.hasanalic.ecommerce.core.presentation.utils.ItemDecoration
 import com.hasanalic.ecommerce.utils.hide
 import com.hasanalic.ecommerce.utils.show
 import dagger.hilt.android.AndroidEntryPoint
@@ -180,7 +180,7 @@ class LocationActivity : AppCompatActivity() {
     }
 
     private fun askForPermission() {
-        ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),Constants.REQUEST_CODR)
+        ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),REQUEST_CODR)
     }
 
     override fun onRequestPermissionsResult(
@@ -188,7 +188,7 @@ class LocationActivity : AppCompatActivity() {
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        if (requestCode == Constants.REQUEST_CODR) {
+        if (requestCode == REQUEST_CODR) {
             if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 findLocation()
             } else {

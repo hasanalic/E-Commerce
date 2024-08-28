@@ -8,15 +8,15 @@ import androidx.navigation.findNavController
 import androidx.navigation.navOptions
 import androidx.navigation.ui.setupWithNavController
 import com.hasanalic.ecommerce.R
+import com.hasanalic.ecommerce.core.presentation.utils.AlarmConstants.ANOMIM_USER_ID
+import com.hasanalic.ecommerce.core.presentation.utils.AlarmConstants.CART_ALARM_INTERVAL_TEST
+import com.hasanalic.ecommerce.core.presentation.utils.AlarmConstants.CART_ALARM_REQUEST_CODE
 import com.hasanalic.ecommerce.databinding.ActivityHomeBinding
 import com.hasanalic.ecommerce.feature_location.presentation.LocationActivity
 import com.hasanalic.ecommerce.feature_notification.presentation.NotificationActivity
-import com.hasanalic.ecommerce.utils.Constants
-import com.hasanalic.ecommerce.utils.Constants.CART_ALARM_INTERVAL_TEST
-import com.hasanalic.ecommerce.utils.Constants.CART_ALARM_REQUEST_CODE
 import com.hasanalic.ecommerce.utils.hide
-import com.hasanalic.ecommerce.utils.notification.ReminderItem
-import com.hasanalic.ecommerce.utils.notification.cart.CartAlarmScheduler
+import com.hasanalic.ecommerce.notification.ReminderItem
+import com.hasanalic.ecommerce.notification.cart.CartAlarmScheduler
 import com.hasanalic.ecommerce.utils.show
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -26,7 +26,7 @@ class HomeActivity : AppCompatActivity() {
     private var binding: ActivityHomeBinding? = null
 
     //private lateinit var auth: FirebaseAuth
-    private var userId: String = Constants.ANOMIM_USER_ID
+    private var userId: String = ANOMIM_USER_ID
 
     private lateinit var cartAlarmScheduler: CartAlarmScheduler
 

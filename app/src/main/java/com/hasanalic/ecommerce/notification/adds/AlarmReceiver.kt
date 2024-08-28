@@ -1,4 +1,4 @@
-package com.hasanalic.ecommerce.utils.notification.adds
+package com.hasanalic.ecommerce.notification.adds
 
 import android.app.NotificationManager
 import android.content.BroadcastReceiver

@@ -13,10 +13,8 @@ import com.hasanalic.ecommerce.feature_product_detail.data.local.ReviewDao
 import com.hasanalic.ecommerce.feature_home.data.local.ShoppingCartItemsDao
 import com.hasanalic.ecommerce.feature_home.data.repository.HomeRepositoryImp
 import com.hasanalic.ecommerce.feature_orders.data.repository.OrderRepositoryImp
-import com.hasanalic.ecommerce.core.data.repository.ServiceRepositoryImp
 import com.hasanalic.ecommerce.feature_home.domain.repository.HomeRepository
 import com.hasanalic.ecommerce.feature_orders.domain.repository.OrderRepository
-import com.hasanalic.ecommerce.core.domain.repository.ServiceRepository
 import com.hasanalic.ecommerce.feature_auth.data.local.UserDao
 import com.hasanalic.ecommerce.feature_auth.data.repository.AuthenticationRepositoryImp
 import com.hasanalic.ecommerce.feature_auth.domain.repository.AuthenticationRepository
@@ -158,17 +156,6 @@ object AppModule {
     fun provideOrderRepository(orderDao: OrderDao): OrderRepository {
         return OrderRepositoryImp(
            orderDao
-        )
-    }
-
-    @Singleton
-    @Provides
-    fun provideServiceRepository(
-        shoppingCartItemsDao: ShoppingCartItemsDao,
-        notificationDao: NotificationDao
-    ): ServiceRepository {
-        return ServiceRepositoryImp(
-            shoppingCartItemsDao, notificationDao
         )
     }
 

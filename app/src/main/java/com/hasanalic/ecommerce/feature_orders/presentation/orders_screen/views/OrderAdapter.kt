@@ -7,14 +7,15 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hasanalic.ecommerce.R
+import com.hasanalic.ecommerce.core.presentation.utils.OrderConstants.ORDER_CANCELLED
+import com.hasanalic.ecommerce.core.presentation.utils.OrderConstants.ORDER_CARGO
+import com.hasanalic.ecommerce.core.presentation.utils.OrderConstants.ORDER_DELIVERED
+import com.hasanalic.ecommerce.core.presentation.utils.OrderConstants.ORDER_PREPARE
+import com.hasanalic.ecommerce.core.presentation.utils.OrderConstants.ORDER_RECEIVED
+import com.hasanalic.ecommerce.core.presentation.utils.OrderConstants.ORDER_RETURNED
 import com.hasanalic.ecommerce.databinding.RecyclerItemOrderBinding
 import com.hasanalic.ecommerce.feature_orders.domain.model.Order
-import com.hasanalic.ecommerce.utils.Constants
-import com.hasanalic.ecommerce.utils.Constants.ORDER_CARGO
-import com.hasanalic.ecommerce.utils.Constants.ORDER_DELIVERED
-import com.hasanalic.ecommerce.utils.Constants.ORDER_PREPARE
-import com.hasanalic.ecommerce.utils.Constants.ORDER_RECEIVED
-import com.hasanalic.ecommerce.utils.OrderStatus
+import com.hasanalic.ecommerce.feature_orders.presentation.utils.OrderStatus
 import com.hasanalic.ecommerce.utils.hide
 
 class OrderAdapter: RecyclerView.Adapter<OrderAdapter.MyViewHolder>() {
@@ -42,10 +43,10 @@ class OrderAdapter: RecyclerView.Adapter<OrderAdapter.MyViewHolder>() {
             binding.textViewCost.text = order.orderTotal
             binding.textViewCount.text = "${order.orderProductCount} ürün"
 
-            if (order.orderStatus == Constants.ORDER_CANCELLED) {
+            if (order.orderStatus == ORDER_CANCELLED) {
                 binding.textViewOrderStatus.text = order.orderStatus
                 binding.imageViewCheck.setImageResource(R.drawable.cancel_red)
-            } else if (order.orderStatus == Constants.ORDER_RETURNED) {
+            } else if (order.orderStatus == ORDER_RETURNED) {
                 binding.textViewOrderStatus.text = order.orderStatus
                 binding.imageViewCheck.setImageResource(R.drawable.return_back)
             } else {

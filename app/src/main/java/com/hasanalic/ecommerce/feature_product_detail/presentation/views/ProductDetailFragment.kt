@@ -10,13 +10,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hasanalic.ecommerce.R
+import com.hasanalic.ecommerce.core.presentation.utils.AlarmConstants.ANOMIM_USER_ID
 import com.hasanalic.ecommerce.databinding.FragmentProductDetailBinding
 import com.hasanalic.ecommerce.feature_auth.presentation.AuthActivity
 import com.hasanalic.ecommerce.feature_product_detail.domain.model.ProductDetail
 import com.hasanalic.ecommerce.feature_product_detail.presentation.ProductDetailState
 import com.hasanalic.ecommerce.feature_product_detail.presentation.ProductDetailViewModel
-import com.hasanalic.ecommerce.utils.Constants
-import com.hasanalic.ecommerce.utils.ItemDecoration
+import com.hasanalic.ecommerce.core.presentation.utils.ItemDecoration
 import com.hasanalic.ecommerce.utils.glide
 import com.hasanalic.ecommerce.utils.hide
 import com.hasanalic.ecommerce.utils.placeHolderProgressBar
@@ -35,7 +35,7 @@ class ProductDetailFragment: Fragment() {
 
     private var productId: String? = null
 
-    private var userId: String = Constants.ANOMIM_USER_ID
+    private var userId: String = ANOMIM_USER_ID
 
     private val reviewAdapter by lazy {
         ReviewAdapter()
@@ -162,7 +162,7 @@ class ProductDetailFragment: Fragment() {
         }
 
         binding.imageViewFavorite.setOnClickListener {
-            if (userId != Constants.ANOMIM_USER_ID) {
+            if (userId != ANOMIM_USER_ID) {
                 if (productDetail.addedToFavorites) {
                     viewModel.removeProductFromFavorites(userId, productDetail.productId)
                 } else {

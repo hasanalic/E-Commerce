@@ -1,4 +1,4 @@
-package com.hasanalic.ecommerce.utils
+package com.hasanalic.ecommerce.core.presentation.utils
 
 import android.graphics.Rect
 import android.view.View

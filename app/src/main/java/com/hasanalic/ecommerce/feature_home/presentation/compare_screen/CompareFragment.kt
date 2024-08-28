@@ -14,13 +14,13 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hasanalic.ecommerce.R
+import com.hasanalic.ecommerce.core.presentation.utils.AlarmConstants.ANOMIM_USER_ID
 import com.hasanalic.ecommerce.databinding.FragmentCompareBinding
 import com.hasanalic.ecommerce.feature_product_detail.presentation.ProductDetailActivity
 import com.hasanalic.ecommerce.feature_home.presentation.home_screen.HomeViewModel
 import com.hasanalic.ecommerce.feature_home.presentation.SharedViewModel
 import com.hasanalic.ecommerce.feature_home.presentation.HomeActivity
-import com.hasanalic.ecommerce.utils.Constants
-import com.hasanalic.ecommerce.utils.ItemDecoration
+import com.hasanalic.ecommerce.core.presentation.utils.ItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -37,7 +37,7 @@ class CompareFragment: Fragment() {
         CompareAdapter()
     }
 
-    private var userId: String = Constants.ANOMIM_USER_ID
+    private var userId: String = ANOMIM_USER_ID
 
     private var homeActivity: HomeActivity? = null
 

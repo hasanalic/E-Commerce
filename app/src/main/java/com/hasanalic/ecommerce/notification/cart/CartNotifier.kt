@@ -1,17 +1,13 @@
-package com.hasanalic.ecommerce.utils.notification.cart
+package com.hasanalic.ecommerce.notification.cart
 
 import android.app.Notification
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import androidx.core.app.NotificationCompat
-import androidx.room.Room
 import com.hasanalic.ecommerce.R
-import com.hasanalic.ecommerce.core.data.local.MyDatabase
-import com.hasanalic.ecommerce.core.data.repository.ServiceRepositoryImp
 import com.hasanalic.ecommerce.feature_home.presentation.HomeActivity
-import com.hasanalic.ecommerce.utils.notification.Notifier
+import com.hasanalic.ecommerce.notification.Notifier
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -28,9 +24,12 @@ class CartNotifier(
     override val notificationId: Int = 300
 
     override fun buildNotification(): Notification? {
+        /*
         val shoppingCartItemsDao = Room.databaseBuilder(context, MyDatabase::class.java, "MyDatabase").build().shoppingCartItemsDao()
         val notificationDao = Room.databaseBuilder(context, MyDatabase::class.java, "MyDatabase").build().notificationDao()
         val serviceRepository = ServiceRepositoryImp(shoppingCartItemsDao, notificationDao)
+
+         */
 
         var shoppingItemCount = 0
 
@@ -44,6 +43,7 @@ class CartNotifier(
         val pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
 
         val job  = CoroutineScope(Dispatchers.IO).launch {
+            /*
             shoppingItemCount = serviceRepository.getShoppingCartCount(userId)
 
             if (shoppingItemCount > 0) {
@@ -55,6 +55,8 @@ class CartNotifier(
                     .setAutoCancel(true)
                     .build()
             }
+
+             */
         }
 
         runBlocking {

@@ -1,4 +1,4 @@
-package com.hasanalic.ecommerce.utils
+package com.hasanalic.ecommerce.feature_auth.utils
 
 import android.content.Context
 import com.hasanalic.ecommerce.feature_home.data.local.entity.ProductEntity

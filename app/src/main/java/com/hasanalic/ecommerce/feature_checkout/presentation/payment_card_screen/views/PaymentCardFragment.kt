@@ -18,19 +18,19 @@ import androidx.navigation.Navigation
 import com.hasanalic.ecommerce.R
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
+import com.hasanalic.ecommerce.core.presentation.utils.AlarmConstants.ANOMIM_USER_ID
+import com.hasanalic.ecommerce.core.presentation.utils.DateFormatConstants.DATE_FORMAT
 import com.hasanalic.ecommerce.databinding.FragmentPaymentCardBinding
 import com.hasanalic.ecommerce.feature_checkout.presentation.CheckoutState
 import com.hasanalic.ecommerce.feature_checkout.presentation.CheckoutViewModel
 import com.hasanalic.ecommerce.feature_checkout.presentation.ShoppingCartList
 import com.hasanalic.ecommerce.feature_checkout.presentation.payment_card_screen.PaymentCardState
 import com.hasanalic.ecommerce.feature_checkout.presentation.payment_card_screen.PaymentCardViewModel
-import com.hasanalic.ecommerce.utils.Constants
-import com.hasanalic.ecommerce.utils.Constants.ANOMIM_USER_ID
-import com.hasanalic.ecommerce.utils.Constants.CHANNEL_DESCRIPTION_TEXT
-import com.hasanalic.ecommerce.utils.Constants.CHANNEL_ID
-import com.hasanalic.ecommerce.utils.Constants.CHANNEL_NAME
-import com.hasanalic.ecommerce.utils.Constants.NOTIFICATION_ID
-import com.hasanalic.ecommerce.utils.TimeAndDate
+import com.hasanalic.ecommerce.core.presentation.utils.TimeAndDate
+import com.hasanalic.ecommerce.feature_checkout.presentation.payment_card_screen.utils.PaymentNotificationConstants.CHANNEL_DESCRIPTION_TEXT
+import com.hasanalic.ecommerce.feature_checkout.presentation.payment_card_screen.utils.PaymentNotificationConstants.CHANNEL_ID
+import com.hasanalic.ecommerce.feature_checkout.presentation.payment_card_screen.utils.PaymentNotificationConstants.CHANNEL_NAME
+import com.hasanalic.ecommerce.feature_checkout.presentation.payment_card_screen.utils.PaymentNotificationConstants.NOTIFICATION_ID
 import com.hasanalic.ecommerce.utils.hide
 import com.hasanalic.ecommerce.utils.maskCreditCard
 import com.hasanalic.ecommerce.utils.show
@@ -191,7 +191,7 @@ class PaymentCardFragment: Fragment() {
         val buttonSend = dialogView.findViewById<Button>(R.id.buttonSend)
 
         textViewCost.text = ShoppingCartList.totalPrice
-        textViewTime.text = "${TimeAndDate.getLocalDate(Constants.DATE_FORMAT)} ${TimeAndDate.getTime()}"
+        textViewTime.text = "${TimeAndDate.getLocalDate(DATE_FORMAT)} ${TimeAndDate.getTime()}"
         textViewCardNumber.text = binding.textInputEditTextCardNumber.text.toString().maskCreditCard()
 
         buttonCancel.setOnClickListener {

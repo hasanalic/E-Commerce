@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.hasanalic.ecommerce.databinding.FragmentNotificationBinding
 import com.hasanalic.ecommerce.feature_notification.presentation.NotificationState
 import com.hasanalic.ecommerce.feature_notification.presentation.NotificationViewModel
-import com.hasanalic.ecommerce.utils.ItemDecoration
+import com.hasanalic.ecommerce.core.presentation.utils.ItemDecoration
 import com.hasanalic.ecommerce.utils.hide
 import com.hasanalic.ecommerce.utils.show
 import dagger.hilt.android.AndroidEntryPoint

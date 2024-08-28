@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hasanalic.ecommerce.R
+import com.hasanalic.ecommerce.core.presentation.utils.AlarmConstants.ANOMIM_USER_ID
 import com.hasanalic.ecommerce.databinding.FragmentShoppingCartBinding
 import com.hasanalic.ecommerce.feature_checkout.presentation.CheckoutActivity
 import com.hasanalic.ecommerce.feature_home.presentation.HomeActivity
@@ -20,7 +21,6 @@ import com.hasanalic.ecommerce.feature_product_detail.presentation.ProductDetail
 import com.hasanalic.ecommerce.feature_home.presentation.SharedViewModel
 import com.hasanalic.ecommerce.feature_home.presentation.shopping_cart_screen.ShoppingCartState
 import com.hasanalic.ecommerce.feature_home.presentation.shopping_cart_screen.ShoppingCartViewModel
-import com.hasanalic.ecommerce.utils.Constants
 import com.hasanalic.ecommerce.utils.hide
 import com.hasanalic.ecommerce.utils.show
 import com.hasanalic.ecommerce.utils.toast
@@ -42,7 +42,7 @@ class ShoppingCartFragment: Fragment() {
 
     private var homeActivity: HomeActivity? = null
 
-    private var userId: String = Constants.ANOMIM_USER_ID
+    private var userId: String = ANOMIM_USER_ID
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -74,7 +74,7 @@ class ShoppingCartFragment: Fragment() {
     private fun setupListeners() {
         binding.buttonCompleteOrder.setOnClickListener {
             if (viewModel.shoppingCartState.value!!.shoppingCartItemList.size != 0) {
-                if (userId != Constants.ANOMIM_USER_ID) {
+                if (userId != ANOMIM_USER_ID) {
                     //viewModel.saveShoppinCartListToSingleton()
                     val intent = Intent(requireActivity(), CheckoutActivity::class.java)
                     launcherForCheckout.launch(intent)

@@ -14,7 +14,7 @@ import com.hasanalic.ecommerce.feature_checkout.presentation.CheckoutState
 import com.hasanalic.ecommerce.feature_checkout.presentation.CheckoutViewModel
 import com.hasanalic.ecommerce.feature_checkout.presentation.cards_screen.CardsState
 import com.hasanalic.ecommerce.feature_checkout.presentation.cards_screen.CardsViewModel
-import com.hasanalic.ecommerce.utils.ItemDecoration
+import com.hasanalic.ecommerce.core.presentation.utils.ItemDecoration
 import com.hasanalic.ecommerce.utils.hide
 import com.hasanalic.ecommerce.utils.show
 import com.hasanalic.ecommerce.utils.toast

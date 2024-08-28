@@ -1,4 +1,4 @@
-package com.hasanalic.ecommerce.utils
+package com.hasanalic.ecommerce.feature_home.presentation.util
 
 class TotalCost {
 

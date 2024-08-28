@@ -6,9 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hasanalic.ecommerce.core.domain.model.DataError
 import com.hasanalic.ecommerce.core.domain.model.Result
+import com.hasanalic.ecommerce.core.presentation.utils.OrderConstants.ORDER_CANCELLED
+import com.hasanalic.ecommerce.core.presentation.utils.OrderConstants.ORDER_RETURNED
 import com.hasanalic.ecommerce.feature_orders.domain.use_cases.OrderUseCases
-import com.hasanalic.ecommerce.utils.Constants.ORDER_CANCELLED
-import com.hasanalic.ecommerce.utils.Constants.ORDER_RETURNED
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
