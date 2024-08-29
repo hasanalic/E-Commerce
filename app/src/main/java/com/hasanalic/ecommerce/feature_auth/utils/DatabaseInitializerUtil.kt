@@ -1,17 +1,29 @@
 package com.hasanalic.ecommerce.feature_auth.utils
 
-import android.content.Context
+import com.hasanalic.ecommerce.core.domain.model.DataError
+import com.hasanalic.ecommerce.core.domain.model.Result
+import com.hasanalic.ecommerce.core.domain.repository.DatabaseInitializer
 import com.hasanalic.ecommerce.feature_home.data.local.entity.ProductEntity
 import com.hasanalic.ecommerce.feature_product_detail.data.local.entity.ReviewEntity
-import com.hasanalic.ecommerce.feature_home.domain.repository.HomeRepository
 import javax.inject.Inject
 
-class DatabaseInitializer @Inject constructor(
-    private val homeRepository: HomeRepository
+class DatabaseInitializerUtil @Inject constructor(
+    private val databaseInitializer: DatabaseInitializer
 ) {
+    suspend fun insertProductEntities() {
+        val arrayOfProducts = getProductEntityArray()
+        val result = databaseInitializer.insertDefaultProducts(*arrayOfProducts)
+        if (result is Result.Error) {
+            when(result.error) {
+                DataError.Local.INSERTION_FAILED -> throw Exception("Ürünler veritabanına kaydedilemedi.")
+                DataError.Local.UNKNOWN -> throw Exception("Bilinmeyen bir hata!")
+                else -> throw Exception("Bilinmeyen bir hata!")
+            }
+        }
+    }
 
-    suspend fun initializeProducts(context: Context) {
-        val arrayOfProducts = arrayOf(
+    private fun getProductEntityArray(): Array<ProductEntity> {
+        return arrayOf(
             ProductEntity(
                 "Elektronik",
                 "https://cdn.dsmcdn.com/ty376/product/media/images/20220330/19/79045113/430653100/2/2_org_zoom.jpg",
@@ -321,11 +333,22 @@ class DatabaseInitializer @Inject constructor(
                 "9.1"
             ),
         )
-        //homeRepository.insertProducts(*arrayOfProducts)
     }
 
-    suspend fun initializeReviews() {
-        val arrayOfReviews = arrayOf(
+    suspend fun insertReviews() {
+        val arrayOfReviews = getReviewEntityArray()
+        val result = databaseInitializer.insertDefaultReviews(*arrayOfReviews)
+        if (result is Result.Error) {
+            when(result.error) {
+                DataError.Local.INSERTION_FAILED -> throw Exception("Yorumlar veritabanına kaydedilemedi.")
+                DataError.Local.UNKNOWN -> throw Exception("Bilinmeyen bir hata!")
+                else -> throw Exception("Bilinmeyen bir hata!")
+            }
+        }
+    }
+
+    private fun getReviewEntityArray(): Array<ReviewEntity> {
+        return arrayOf(
             // 1
             ReviewEntity(
                 reviewProductId = "1",
@@ -776,7 +799,6 @@ class DatabaseInitializer @Inject constructor(
                 reviewStar = 2
             ),
 
-        )
-        //homeRepository.insertAllReviews(*arrayOfReviews)
+            )
     }
 }

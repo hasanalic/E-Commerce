@@ -5,6 +5,8 @@ import androidx.room.Room
 import com.hasanalic.ecommerce.feature_location.data.local.AddressDao
 import com.hasanalic.ecommerce.feature_home.data.local.FavoritesDao
 import com.hasanalic.ecommerce.core.data.local.MyDatabase
+import com.hasanalic.ecommerce.core.data.repository.DatabaseInitializerImp
+import com.hasanalic.ecommerce.core.domain.repository.DatabaseInitializer
 import com.hasanalic.ecommerce.feature_notification.data.local.NotificationDao
 import com.hasanalic.ecommerce.feature_orders.data.local.OrderDao
 import com.hasanalic.ecommerce.feature_checkout.data.local.CardDao
@@ -142,6 +144,12 @@ object AppModule {
     @Singleton
     @Provides
     fun provideNotificationDao(database: MyDatabase) = database.notificationDao()
+
+    @Singleton
+    @Provides
+    fun provideDatabaseInitializer(productDao: ProductDao, reviewDao: ReviewDao): DatabaseInitializer {
+        return DatabaseInitializerImp(productDao, reviewDao)
+    }
 
     @Singleton
     @Provides

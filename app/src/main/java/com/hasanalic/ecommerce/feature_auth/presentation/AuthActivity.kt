@@ -3,14 +3,17 @@ package com.hasanalic.ecommerce.feature_auth.presentation
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.hasanalic.ecommerce.R
 import com.hasanalic.ecommerce.core.presentation.utils.AlarmConstants.ADDS_ALARM_INTERVAL_TEST
 import com.hasanalic.ecommerce.core.presentation.utils.AlarmConstants.ADDS_ALARM_REQUEST_CODE
 import com.hasanalic.ecommerce.feature_auth.presentation.login.views.LoginFragment
 import com.hasanalic.ecommerce.feature_product_detail.presentation.ProductDetailActivity
 import com.hasanalic.ecommerce.utils.CustomSharedPreferences
-import com.hasanalic.ecommerce.feature_auth.utils.DatabaseInitializer
+import com.hasanalic.ecommerce.feature_auth.utils.DatabaseInitializerUtil
 import com.hasanalic.ecommerce.notification.ReminderItem
 import com.hasanalic.ecommerce.notification.adds.AddsAlarmSchedular
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,7 +26,7 @@ import javax.inject.Inject
 class AuthActivity : AppCompatActivity() {
 
     @Inject
-    lateinit var databaseInitializer: DatabaseInitializer
+    lateinit var databaseInitializerUtil: DatabaseInitializerUtil
 
     private val addsAlarmScheduler by lazy {
         AddsAlarmSchedular(this)
@@ -71,9 +74,13 @@ class AuthActivity : AppCompatActivity() {
     }
 
     private fun startDatabaseInitialization() {
-        CoroutineScope(Dispatchers.Default).launch {
-            databaseInitializer.initializeProducts(this@AuthActivity)
-            databaseInitializer.initializeReviews()
+        lifecycleScope.launch {
+            try {
+                databaseInitializerUtil.insertProductEntities()
+                databaseInitializerUtil.insertReviews()
+            } catch (e: Exception) {
+                Toast.makeText(this@AuthActivity, e.message, Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }
