@@ -2,7 +2,6 @@ package com.hasanalic.ecommerce.feature_home.presentation.home_screen.views
 
 import android.Manifest
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -29,12 +28,13 @@ import com.hasanalic.ecommerce.feature_filter.presentation.FilterActivity
 import com.hasanalic.ecommerce.feature_filter.presentation.views.CategoryAdapter
 import com.hasanalic.ecommerce.feature_home.presentation.SharedViewModel
 import com.hasanalic.ecommerce.feature_home.presentation.barcode_screen.BarcodeScannerActivity
-import com.hasanalic.ecommerce.feature_home.presentation.HomeActivity
 import com.hasanalic.ecommerce.feature_home.presentation.home_screen.HomeState
 import com.hasanalic.ecommerce.feature_home.presentation.home_screen.HomeViewModel
 import com.hasanalic.ecommerce.feature_home.presentation.util.SearchQuery
 import com.hasanalic.ecommerce.feature_product_detail.presentation.ProductDetailActivity
 import com.hasanalic.ecommerce.core.presentation.utils.ItemDecoration
+import com.hasanalic.ecommerce.feature_location.presentation.LocationActivity
+import com.hasanalic.ecommerce.feature_notification.presentation.NotificationActivity
 import com.hasanalic.ecommerce.utils.hide
 import com.hasanalic.ecommerce.utils.show
 import com.hasanalic.ecommerce.utils.toast
@@ -46,8 +46,6 @@ class HomeFragment: Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-
-    private var homeActivity: HomeActivity? = null
 
     private var isFabMenuOpen: Boolean = false
 
@@ -66,16 +64,6 @@ class HomeFragment: Fragment() {
     private lateinit var sharedViewModel: SharedViewModel
 
     private lateinit var permissionLauncher: ActivityResultLauncher<String>
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        homeActivity = context as HomeActivity
-    }
-
-    override fun onStart() {
-        super.onStart()
-        homeActivity?.showToolBar()
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentHomeBinding.inflate(inflater)
@@ -158,13 +146,25 @@ class HomeFragment: Fragment() {
     }
 
     private fun setupListeners() {
+        binding.materialCardLocation.setOnClickListener {
+            val intent = Intent(requireActivity(), LocationActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.materialCardNotification.setOnClickListener {
+            val intent = Intent(requireActivity(), NotificationActivity::class.java)
+            startActivity(intent)
+        }
+
         binding.materialViewFilter.setOnClickListener {
             val intent = Intent(requireActivity(), FilterActivity::class.java)
             launcherFilterActivity.launch(intent)
         }
+
         binding.editTextSearch.setOnClickListener {
             Navigation.findNavController(it).navigate(R.id.action_homeFragment_to_filteredProductsFragment)
         }
+
         binding.materialCardCompare.setOnClickListener {
             Navigation.findNavController(it).navigate(R.id.action_homeFragment_to_compareFragment)
         }

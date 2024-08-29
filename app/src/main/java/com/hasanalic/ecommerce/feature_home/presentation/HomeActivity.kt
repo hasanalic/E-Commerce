@@ -1,6 +1,5 @@
 package com.hasanalic.ecommerce.feature_home.presentation
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
@@ -12,12 +11,8 @@ import com.hasanalic.ecommerce.core.presentation.utils.AlarmConstants.ANOMIM_USE
 import com.hasanalic.ecommerce.core.presentation.utils.AlarmConstants.CART_ALARM_INTERVAL_TEST
 import com.hasanalic.ecommerce.core.presentation.utils.AlarmConstants.CART_ALARM_REQUEST_CODE
 import com.hasanalic.ecommerce.databinding.ActivityHomeBinding
-import com.hasanalic.ecommerce.feature_location.presentation.LocationActivity
-import com.hasanalic.ecommerce.feature_notification.presentation.NotificationActivity
-import com.hasanalic.ecommerce.utils.hide
 import com.hasanalic.ecommerce.notification.ReminderItem
 import com.hasanalic.ecommerce.notification.cart.CartAlarmScheduler
-import com.hasanalic.ecommerce.utils.show
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -25,7 +20,6 @@ class HomeActivity : AppCompatActivity() {
 
     private var binding: ActivityHomeBinding? = null
 
-    //private lateinit var auth: FirebaseAuth
     private var userId: String = ANOMIM_USER_ID
 
     private lateinit var cartAlarmScheduler: CartAlarmScheduler
@@ -42,15 +36,6 @@ class HomeActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(this)[SharedViewModel::class.java]
 
-        /*
-        auth = FirebaseAuth.getInstance()
-        val currentUser = auth.currentUser
-        currentUser?.let {
-            userId = it.uid
-        }
-
-         */
-
         cartAlarmScheduler = CartAlarmScheduler(this, userId)
 
         intent?.let {
@@ -65,16 +50,6 @@ class HomeActivity : AppCompatActivity() {
                     }
                 )
             }
-        }
-
-        binding?.materialCardLocation?.setOnClickListener {
-            val intent = Intent(this, LocationActivity::class.java)
-            startActivity(intent)
-        }
-
-        binding?.materialCardNotification?.setOnClickListener {
-            val intent = Intent(this, NotificationActivity::class.java)
-            startActivity(intent)
         }
 
         launchCartAlarm()
@@ -102,13 +77,5 @@ class HomeActivity : AppCompatActivity() {
         } else {
             badge?.isVisible = false
         }
-    }
-
-    fun showToolBar() {
-        binding?.topAppBarHome?.show()
-    }
-
-    fun hideToolBar() {
-        binding?.topAppBarHome?.hide()
     }
 }

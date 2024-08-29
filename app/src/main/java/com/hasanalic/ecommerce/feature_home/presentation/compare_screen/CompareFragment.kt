@@ -1,6 +1,5 @@
 package com.hasanalic.ecommerce.feature_home.presentation.compare_screen
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -19,7 +18,6 @@ import com.hasanalic.ecommerce.databinding.FragmentCompareBinding
 import com.hasanalic.ecommerce.feature_product_detail.presentation.ProductDetailActivity
 import com.hasanalic.ecommerce.feature_home.presentation.home_screen.HomeViewModel
 import com.hasanalic.ecommerce.feature_home.presentation.SharedViewModel
-import com.hasanalic.ecommerce.feature_home.presentation.HomeActivity
 import com.hasanalic.ecommerce.core.presentation.utils.ItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -38,18 +36,6 @@ class CompareFragment: Fragment() {
     }
 
     private var userId: String = ANOMIM_USER_ID
-
-    private var homeActivity: HomeActivity? = null
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        homeActivity = context as HomeActivity
-    }
-
-    override fun onStart() {
-        super.onStart()
-        homeActivity?.hideToolBar()
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

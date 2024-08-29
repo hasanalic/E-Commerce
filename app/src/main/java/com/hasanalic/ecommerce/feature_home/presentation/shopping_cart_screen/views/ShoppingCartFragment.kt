@@ -1,7 +1,6 @@
 package com.hasanalic.ecommerce.feature_home.presentation.shopping_cart_screen.views
 
 import android.app.AlertDialog
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,7 +14,6 @@ import com.hasanalic.ecommerce.R
 import com.hasanalic.ecommerce.core.presentation.utils.AlarmConstants.ANOMIM_USER_ID
 import com.hasanalic.ecommerce.databinding.FragmentShoppingCartBinding
 import com.hasanalic.ecommerce.feature_checkout.presentation.CheckoutActivity
-import com.hasanalic.ecommerce.feature_home.presentation.HomeActivity
 import com.hasanalic.ecommerce.feature_auth.presentation.AuthActivity
 import com.hasanalic.ecommerce.feature_product_detail.presentation.ProductDetailActivity
 import com.hasanalic.ecommerce.feature_home.presentation.SharedViewModel
@@ -40,19 +38,7 @@ class ShoppingCartFragment: Fragment() {
         ShoppingCartAdapter()
     }
 
-    private var homeActivity: HomeActivity? = null
-
     private var userId: String = ANOMIM_USER_ID
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        homeActivity = context as HomeActivity
-    }
-
-    override fun onStart() {
-        super.onStart()
-        homeActivity?.hideToolBar()
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentShoppingCartBinding.inflate(inflater)

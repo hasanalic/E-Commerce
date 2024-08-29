@@ -1,6 +1,5 @@
 package com.hasanalic.ecommerce.feature_home.presentation.account_screen
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,7 +10,6 @@ import com.hasanalic.ecommerce.core.presentation.utils.AlarmConstants.CART_ALARM
 import com.hasanalic.ecommerce.core.presentation.utils.AlarmConstants.CART_ALARM_REQUEST_CODE
 import com.hasanalic.ecommerce.databinding.FragmentAccountBinding
 import com.hasanalic.ecommerce.feature_auth.presentation.AuthActivity
-import com.hasanalic.ecommerce.feature_home.presentation.HomeActivity
 import com.hasanalic.ecommerce.feature_orders.presentation.OrderActivity
 import com.hasanalic.ecommerce.utils.CustomSharedPreferences
 import com.hasanalic.ecommerce.notification.ReminderItem
@@ -22,25 +20,10 @@ class AccountFragment: Fragment() {
     private var _binding: FragmentAccountBinding? = null
     private val binding get() = _binding!!
 
-    private var homeActivity: HomeActivity? = null
-
-    /*
-    private lateinit var mGoogleSignInClient: GoogleSignInClient
-    private lateinit var mAuth: FirebaseAuth
-
-     */
-
     private lateinit var cartAlarmScheduler: CartAlarmScheduler
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        homeActivity = context as HomeActivity
-    }
 
     override fun onStart() {
         super.onStart()
-        homeActivity?.hideToolBar()
-
         /*
         val currentUser = FirebaseAuth.getInstance().currentUser
         val userId = currentUser?.uid ?: ANOMIM_USER_ID
@@ -52,7 +35,6 @@ class AccountFragment: Fragment() {
             toast(requireContext(),"Hesap bilgilerini görüntülemek için hesabınıza giriş yapınız.",false)
             requireActivity().finish()
         }
-
          */
     }
 

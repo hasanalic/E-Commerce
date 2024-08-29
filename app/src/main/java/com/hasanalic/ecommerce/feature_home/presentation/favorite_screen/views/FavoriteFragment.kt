@@ -1,7 +1,6 @@
 package com.hasanalic.ecommerce.feature_home.presentation.favorite_screen.views
 
 import android.app.AlertDialog
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,7 +14,6 @@ import com.hasanalic.ecommerce.R
 import com.hasanalic.ecommerce.databinding.FragmentFavoriteBinding
 import com.hasanalic.ecommerce.feature_home.presentation.favorite_screen.FavoriteState
 import com.hasanalic.ecommerce.feature_home.presentation.favorite_screen.FavoriteViewModel
-import com.hasanalic.ecommerce.feature_home.presentation.HomeActivity
 import com.hasanalic.ecommerce.feature_product_detail.presentation.ProductDetailActivity
 import com.hasanalic.ecommerce.feature_home.presentation.SharedViewModel
 import com.hasanalic.ecommerce.utils.hide
@@ -38,16 +36,7 @@ class FavoriteFragment: Fragment() {
         FavoriteAdapter()
     }
 
-    private var homeActivity: HomeActivity? = null
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        TODO("HomeActivity Toolbar'ını HomeFragment'a taşı")
-
-        homeActivity = context as HomeActivity
-    }
-
+    /*
     override fun onStart() {
         super.onStart()
         homeActivity?.hideToolBar()
@@ -64,6 +53,7 @@ class FavoriteFragment: Fragment() {
 
          */
     }
+     */
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentFavoriteBinding.inflate(inflater)
@@ -77,7 +67,7 @@ class FavoriteFragment: Fragment() {
         sharedViewModel = ViewModelProvider(requireActivity())[SharedViewModel::class.java]
 
         //viewModel.getShoppingCartCount(userId)
-        viewModel.getUserFavoriteProducts(userId)
+        //viewModel.getUserFavoriteProducts(userId)
 
         setupRecyclerView()
         setupObservers()

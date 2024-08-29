@@ -49,7 +49,7 @@ class HomeAdapter: RecyclerView.Adapter<HomeAdapter.MyViewHolder>() {
             if (product.addedToFavorites) {
                 binding.imageViewFavorite.setImageResource(R.drawable.favorite_orange)
             } else {
-                binding.imageViewFavorite.setImageResource(R.drawable.favorite_white)
+                binding.imageViewFavorite.setImageResource(R.drawable.favorite_empty)
             }
 
             binding.materialCardProductItem.strokeWidth = 1

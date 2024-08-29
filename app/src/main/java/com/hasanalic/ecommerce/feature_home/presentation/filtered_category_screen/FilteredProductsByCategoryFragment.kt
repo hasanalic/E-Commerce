@@ -1,6 +1,5 @@
 package com.hasanalic.ecommerce.feature_home.presentation.filtered_category_screen
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +15,6 @@ import com.hasanalic.ecommerce.databinding.FragmentFilteredProductsByCategoryBin
 import com.hasanalic.ecommerce.feature_home.presentation.home_screen.HomeViewModel
 import com.hasanalic.ecommerce.feature_home.presentation.SharedViewModel
 import com.hasanalic.ecommerce.feature_home.presentation.home_screen.views.HomeAdapter
-import com.hasanalic.ecommerce.feature_home.presentation.HomeActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -29,21 +27,10 @@ class FilteredProductsByCategoryFragment: Fragment() {
 
     private lateinit var sharedViewModel: SharedViewModel
 
-    /*
-    private lateinit var auth: FirebaseAuth
-
-     */
     private var userId: String = ANOMIM_USER_ID
 
     private val adapter by lazy {
         HomeAdapter()
-    }
-
-    private var homeActivity: HomeActivity? = null
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        homeActivity = context as HomeActivity
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,11 +42,6 @@ class FilteredProductsByCategoryFragment: Fragment() {
                 //viewModel.resetFilteredProductsStatus()
             }
         })
-    }
-
-    override fun onStart() {
-        super.onStart()
-        homeActivity?.hideToolBar()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
