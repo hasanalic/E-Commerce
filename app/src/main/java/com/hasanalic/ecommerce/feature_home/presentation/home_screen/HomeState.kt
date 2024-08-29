@@ -5,6 +5,7 @@ import com.hasanalic.ecommerce.feature_home.domain.model.Product
 
 data class HomeState(
     val isLoading: Boolean = false,
+    val scannedProductId: String? = null,
     val productList: MutableList<Product> = mutableListOf(),
     val categoryList: MutableList<Category> = mutableListOf(),
     val isCompareButtonVisible: Boolean = false,

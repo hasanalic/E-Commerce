@@ -228,4 +228,28 @@ class HomeViewModelTest {
         assertThat(state.dataError).isNull()
     }
 
+    @Test
+    fun `getProductIdByBarcode successfuly fetches productId and update the state`() {
+        homeViewModel.getProductIdByBarcode("123412341234")
+        val state = homeViewModel.homeState.getOrAwaitValue()
+
+        assertThat(state.scannedProductId).isNotEmpty()
+        assertThat(state.actionError).isNull()
+
+        assertThat(state.isLoading).isFalse()
+        assertThat(state.dataError).isNull()
+    }
+
+    @Test
+    fun `setScannedProductIdToNull sets scannedProductId to null and update the state`() {
+        homeViewModel.getProductIdByBarcode("123412341234")
+        homeViewModel.setScannedProductIdToNull()
+        val state = homeViewModel.homeState.getOrAwaitValue()
+
+        assertThat(state.scannedProductId).isNull()
+        assertThat(state.actionError).isNull()
+
+        assertThat(state.isLoading).isFalse()
+        assertThat(state.dataError).isNull()
+    }
 }

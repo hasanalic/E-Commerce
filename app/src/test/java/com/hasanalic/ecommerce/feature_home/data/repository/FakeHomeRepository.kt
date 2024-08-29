@@ -19,6 +19,6 @@ class FakeHomeRepository : HomeRepository {
     }
 
     override suspend fun getProductEntityIdByBarcode(productBarcode: String): Result<Int, DataError.Local> {
-        TODO("Not yet implemented")
+        return Result.Success(1)
     }
 }

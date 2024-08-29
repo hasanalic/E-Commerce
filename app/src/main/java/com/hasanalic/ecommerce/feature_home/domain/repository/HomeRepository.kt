@@ -8,8 +8,4 @@ interface HomeRepository {
     suspend fun getProductsByUserId(userId: String): Result<List<Product>, DataError.Local>
 
     suspend fun getProductEntityIdByBarcode(productBarcode: String): Result<Int, DataError.Local>
-
-    //suspend fun getFavoriteByProductId(userId: String, productId: String): Resource<Boolean>
-
-    //suspend fun getShoppingCartByProductId(userId: String, productId: String): Resource<Boolean>
 }

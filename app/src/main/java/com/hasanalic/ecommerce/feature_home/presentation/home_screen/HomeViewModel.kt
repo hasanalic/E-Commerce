@@ -212,24 +212,42 @@ class HomeViewModel @Inject constructor(
         )
     }
 
-
-    /*
-    private var _stateProductId = MutableLiveData<Resource<Int>>()
-    val stateProductId: LiveData<Resource<Int>>
-        get() = _stateProductId
-
-    /// FILTERED PRODUCTS FRAGMENT ///
-
     fun getProductIdByBarcode(barcode: String) {
-        _stateProductId.value = Resource.Loading()
+        _homeState.value = _homeState.value!!.copy(isLoading = true)
         viewModelScope.launch {
-            _stateProductId.value = homeRepository.getProductIdByBarcode(barcode)
+            when(val result = homeUseCases.getProductEntityIdByBarcodeUseCase(barcode)) {
+                is Result.Error -> handleGetProductIdByBarcodeError(result.error)
+                is Result.Success -> {
+                    _homeState.value = _homeState.value!!.copy(
+                        isLoading = false,
+                        scannedProductId = result.data.toString()
+                    )
+                }
+            }
         }
     }
 
-    fun resetProductIdStatus() {
-        _stateProductId = MutableLiveData<Resource<Int>>()
+    private fun handleGetProductIdByBarcodeError(error: DataError.Local) {
+        val message = when(error) {
+            DataError.Local.NOT_FOUND -> "Bu barkoda sahip bir ürün bulunamadı."
+            DataError.Local.UNKNOWN -> "Bilinmeyen bir hata meydana geldi."
+            else -> null
+        }
+        _homeState.value = _homeState.value!!.copy(
+            isLoading = false,
+            actionError = message
+        )
     }
+
+    fun setScannedProductIdToNull() {
+        _homeState.value = _homeState.value!!.copy(
+            scannedProductId = null
+        )
+    }
+
+
+    /*
+    /// FILTERED PRODUCTS FRAGMENT ///
 
     fun resetFilteredProductsStatus() {
         _stateFilteredProducts = MutableLiveData<Resource<MutableList<Product>>>()

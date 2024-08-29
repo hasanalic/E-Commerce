@@ -251,6 +251,13 @@ class HomeFragment: Fragment() {
             binding.recyclerViewCategory.show()
         }
 
+        state.scannedProductId?.let {
+            val intent = Intent(requireActivity(), ProductDetailActivity::class.java)
+            intent.putExtra(getString(R.string.product_id), it)
+            launcher.launch(intent)
+            viewModel.setScannedProductIdToNull()
+        }
+
         state.productList.let {
             homeAdapter.products = it.toList()
             homeAdapter.notifyDataSetChangedInAdapter()
@@ -291,7 +298,7 @@ class HomeFragment: Fragment() {
             data?.let {
                 val barcode = data.getStringExtra(getString(R.string.barcode))
                 barcode?.let {
-                    //viewModel.getProductIdByBarcode(barcode)
+                    viewModel.getProductIdByBarcode(barcode)
                 }
             }
         } else {
