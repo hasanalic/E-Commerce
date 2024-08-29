@@ -1,4 +1,4 @@
-package com.hasanalic.ecommerce.feature_auth.utils
+package com.hasanalic.ecommerce.core.domain.utils
 
 import com.hasanalic.ecommerce.core.domain.model.DataError
 import com.hasanalic.ecommerce.core.domain.model.Result
