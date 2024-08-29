@@ -5,25 +5,24 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.ViewModelProvider
 import com.hasanalic.ecommerce.R
 import com.hasanalic.ecommerce.core.presentation.utils.AlarmConstants.ADDS_ALARM_INTERVAL_TEST
 import com.hasanalic.ecommerce.core.presentation.utils.AlarmConstants.ADDS_ALARM_REQUEST_CODE
+import com.hasanalic.ecommerce.databinding.ActivityAuthBinding
 import com.hasanalic.ecommerce.feature_auth.presentation.login.views.LoginFragment
 import com.hasanalic.ecommerce.feature_product_detail.presentation.ProductDetailActivity
-import com.hasanalic.ecommerce.utils.CustomSharedPreferences
-import com.hasanalic.ecommerce.core.domain.utils.DatabaseInitializerUtil
 import com.hasanalic.ecommerce.notification.ReminderItem
 import com.hasanalic.ecommerce.notification.adds.AddsAlarmSchedular
+import com.hasanalic.ecommerce.utils.hide
+import com.hasanalic.ecommerce.utils.show
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class AuthActivity : AppCompatActivity() {
 
-    @Inject
-    lateinit var databaseInitializerUtil: DatabaseInitializerUtil
+    private lateinit var binding: ActivityAuthBinding
+    private lateinit var viewModel: AuthViewModel
 
     private val addsAlarmScheduler by lazy {
         AddsAlarmSchedular(this)
@@ -31,18 +30,38 @@ class AuthActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityAuthBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        if (CustomSharedPreferences(this).getDatabaseInitialization() as Boolean) {
-            startDatabaseInitialization()
-            CustomSharedPreferences(this).setDatabaseInitialization(false)
-        }
-
-        showFragment(LoginFragment())
+        viewModel = ViewModelProvider(this)[AuthViewModel::class.java]
 
         handleDeepLink(intent)
 
-        //launchAddsAlarm()
+        handleAlarms()
+
+        setupObservers()
+    }
+
+    private fun setupObservers() {
+        viewModel.authState.observe(this) { authState ->
+            if (authState.isLoading) {
+                binding.progressBarAuth.show()
+            } else {
+                binding.progressBarAuth.hide()
+            }
+
+            if (authState.isDatabaseInitialized) {
+                showFragment(LoginFragment())
+            }
+
+            authState.dataError?.let {
+                Toast.makeText(this@AuthActivity, it, Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun handleAlarms() {
+        // launchAddsAlarm()
     }
 
     private fun launchAddsAlarm() {
@@ -67,17 +86,6 @@ class AuthActivity : AppCompatActivity() {
         fragmentTransaction.apply {
             replace(R.id.fragmentContainerViewMainActivity, fragment)
             commit()
-        }
-    }
-
-    private fun startDatabaseInitialization() {
-        lifecycleScope.launch {
-            try {
-                databaseInitializerUtil.insertProductEntities()
-                databaseInitializerUtil.insertReviews()
-            } catch (e: Exception) {
-                Toast.makeText(this@AuthActivity, e.message, Toast.LENGTH_SHORT).show()
-            }
         }
     }
 }

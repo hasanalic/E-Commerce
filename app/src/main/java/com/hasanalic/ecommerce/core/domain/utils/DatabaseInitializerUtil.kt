@@ -1,28 +1,10 @@
 package com.hasanalic.ecommerce.core.domain.utils
 
-import com.hasanalic.ecommerce.core.domain.model.DataError
-import com.hasanalic.ecommerce.core.domain.model.Result
-import com.hasanalic.ecommerce.core.domain.repository.DatabaseInitializer
 import com.hasanalic.ecommerce.feature_home.data.local.entity.ProductEntity
 import com.hasanalic.ecommerce.feature_product_detail.data.local.entity.ReviewEntity
-import javax.inject.Inject
 
-class DatabaseInitializerUtil @Inject constructor(
-    private val databaseInitializer: DatabaseInitializer
-) {
-    suspend fun insertProductEntities() {
-        val arrayOfProducts = getProductEntityArray()
-        val result = databaseInitializer.insertDefaultProducts(*arrayOfProducts)
-        if (result is Result.Error) {
-            when(result.error) {
-                DataError.Local.INSERTION_FAILED -> throw Exception("Ürünler veritabanına kaydedilemedi.")
-                DataError.Local.UNKNOWN -> throw Exception("Bilinmeyen bir hata!")
-                else -> throw Exception("Bilinmeyen bir hata!")
-            }
-        }
-    }
-
-    private fun getProductEntityArray(): Array<ProductEntity> {
+object DatabaseInitializerUtil {
+    fun getProductEntityArray(): Array<ProductEntity> {
         return arrayOf(
             ProductEntity(
                 "Elektronik",
@@ -335,19 +317,7 @@ class DatabaseInitializerUtil @Inject constructor(
         )
     }
 
-    suspend fun insertReviews() {
-        val arrayOfReviews = getReviewEntityArray()
-        val result = databaseInitializer.insertDefaultReviews(*arrayOfReviews)
-        if (result is Result.Error) {
-            when(result.error) {
-                DataError.Local.INSERTION_FAILED -> throw Exception("Yorumlar veritabanına kaydedilemedi.")
-                DataError.Local.UNKNOWN -> throw Exception("Bilinmeyen bir hata!")
-                else -> throw Exception("Bilinmeyen bir hata!")
-            }
-        }
-    }
-
-    private fun getReviewEntityArray(): Array<ReviewEntity> {
+    fun getReviewEntityArray(): Array<ReviewEntity> {
         return arrayOf(
             // 1
             ReviewEntity(

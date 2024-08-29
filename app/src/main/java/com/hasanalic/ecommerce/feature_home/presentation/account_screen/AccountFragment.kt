@@ -11,7 +11,6 @@ import com.hasanalic.ecommerce.core.presentation.utils.AlarmConstants.CART_ALARM
 import com.hasanalic.ecommerce.databinding.FragmentAccountBinding
 import com.hasanalic.ecommerce.feature_auth.presentation.AuthActivity
 import com.hasanalic.ecommerce.feature_orders.presentation.OrderActivity
-import com.hasanalic.ecommerce.utils.CustomSharedPreferences
 import com.hasanalic.ecommerce.notification.ReminderItem
 import com.hasanalic.ecommerce.notification.cart.CartAlarmScheduler
 
@@ -22,22 +21,6 @@ class AccountFragment: Fragment() {
 
     private lateinit var cartAlarmScheduler: CartAlarmScheduler
 
-    override fun onStart() {
-        super.onStart()
-        /*
-        val currentUser = FirebaseAuth.getInstance().currentUser
-        val userId = currentUser?.uid ?: ANOMIM_USER_ID
-        cartAlarmScheduler = CartAlarmScheduler(requireContext(), userId)
-
-        if (currentUser == null) {
-            val intent = Intent(requireActivity(), MainActivity::class.java)
-            startActivity(intent)
-            toast(requireContext(),"Hesap bilgilerini görüntülemek için hesabınıza giriş yapınız.",false)
-            requireActivity().finish()
-        }
-         */
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentAccountBinding.inflate(inflater)
         return binding.root
@@ -45,15 +28,6 @@ class AccountFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        /*
-        mAuth = FirebaseAuth.getInstance()
-        mAuth.currentUser?.let {currentUser ->
-            binding.textViewUserEmail.text = currentUser.email
-        }
-         */
-
-        val signInFrom = CustomSharedPreferences(requireContext()).getSignInWithSocialMediaType(requireContext())?:""
 
         binding.textViewSupport.setOnClickListener {
             //val intent = Intent(requireContext(), CustomerService::class.java)
@@ -71,7 +45,7 @@ class AccountFragment: Fragment() {
         }
 
         binding.textViewLogout.setOnClickListener {
-            signOutAndNavigateToLoginFragment(signInFrom)
+            signOutAndNavigateToLoginFragment()
             cancelCartAlarm()
         }
     }
@@ -81,8 +55,8 @@ class AccountFragment: Fragment() {
         cartAlarmScheduler.cancel(reminderItemCart)
     }
 
-    private fun signOutAndNavigateToLoginFragment(signInFrom: String) {
-        //mAuth.signOut()
+    private fun signOutAndNavigateToLoginFragment() {
+
     }
 
     private fun moveToMainActivity() {

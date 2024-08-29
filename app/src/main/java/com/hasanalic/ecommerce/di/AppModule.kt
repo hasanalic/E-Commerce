@@ -1,12 +1,23 @@
 package com.hasanalic.ecommerce.di
 
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.room.Room
 import com.hasanalic.ecommerce.feature_location.data.local.AddressDao
 import com.hasanalic.ecommerce.feature_home.data.local.FavoritesDao
 import com.hasanalic.ecommerce.core.data.local.MyDatabase
 import com.hasanalic.ecommerce.core.data.repository.DatabaseInitializerImp
+import com.hasanalic.ecommerce.core.data.repository.SharedPreferencesDataSourceImp
 import com.hasanalic.ecommerce.core.domain.repository.DatabaseInitializer
+import com.hasanalic.ecommerce.core.domain.repository.SharedPreferencesDataSource
+import com.hasanalic.ecommerce.core.domain.use_cases.database_initilization.DatabaseInitializerUseCases
+import com.hasanalic.ecommerce.core.domain.use_cases.database_initilization.InsertDefaultProductsUseCase
+import com.hasanalic.ecommerce.core.domain.use_cases.database_initilization.InsertDefaultReviewsUseCase
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.GetUserIdUseCase
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.IsDatabaseInitializedUseCase
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.SaveUserIdUseCase
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.SetDatabaseInitializedUseCase
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.SharedPreferencesUseCases
 import com.hasanalic.ecommerce.feature_notification.data.local.NotificationDao
 import com.hasanalic.ecommerce.feature_orders.data.local.OrderDao
 import com.hasanalic.ecommerce.feature_checkout.data.local.CardDao
@@ -104,6 +115,40 @@ object AppModule {
     fun provideRoomDatabase(@ApplicationContext context: Context) = Room.databaseBuilder(
         context, MyDatabase::class.java, "MyDatabase"
     ).build()
+
+    @UserPrefs
+    @Singleton
+    @Provides
+    fun provideUserSharedPreferences(@ApplicationContext context: Context): SharedPreferences {
+        return context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+    }
+
+    @DbPrefs
+    @Singleton
+    @Provides
+    fun provideDatabaseSharedPreferences(@ApplicationContext context: Context): SharedPreferences {
+        return context.getSharedPreferences("db_prefs", Context.MODE_PRIVATE)
+    }
+
+    @Singleton
+    @Provides
+    fun provideSharedPreferencesDataSource(
+        @UserPrefs userSharedPreferences: SharedPreferences,
+        @DbPrefs databaseSharedPreferences: SharedPreferences
+    ): SharedPreferencesDataSource {
+        return SharedPreferencesDataSourceImp(userSharedPreferences, databaseSharedPreferences)
+    }
+
+    @Singleton
+    @Provides
+    fun provideSharedPreferencesUseCase(sharedPreferencesDataSource: SharedPreferencesDataSource): SharedPreferencesUseCases {
+        return SharedPreferencesUseCases(
+            getUserIdUseCase = GetUserIdUseCase(sharedPreferencesDataSource),
+            isDatabaseInitializedUseCase = IsDatabaseInitializedUseCase(sharedPreferencesDataSource),
+            saveUserIdUseCase = SaveUserIdUseCase(sharedPreferencesDataSource),
+            setDatabaseInitializedUseCase = SetDatabaseInitializedUseCase(sharedPreferencesDataSource)
+        )
+    }
 
     @Singleton
     @Provides
@@ -225,6 +270,15 @@ object AppModule {
     @Provides
     fun provideOrderProductsRepository(orderProductsDao: OrderProductsDao): OrderProductsRepository {
         return OrderProductsRepositoryImp(orderProductsDao)
+    }
+
+    @Singleton
+    @Provides
+    fun provideDatabaseInitializerUseCases(databaseInitializer: DatabaseInitializer): DatabaseInitializerUseCases {
+        return DatabaseInitializerUseCases(
+            insertDefaultProductsUseCase = InsertDefaultProductsUseCase(databaseInitializer),
+            insertDefaultReviewsUseCase = InsertDefaultReviewsUseCase(databaseInitializer)
+        )
     }
 
     @Singleton
