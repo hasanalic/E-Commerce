@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hasanalic.ecommerce.core.domain.model.DataError
 import com.hasanalic.ecommerce.core.domain.model.Result
-import com.hasanalic.ecommerce.core.domain.use_cases.database_initilization.DatabaseInitializerUseCases
+import com.hasanalic.ecommerce.core.domain.use_cases.database_initialization.DatabaseInitializerUseCases
 import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.SharedPreferencesUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch

@@ -10,9 +10,9 @@ import com.hasanalic.ecommerce.core.data.repository.DatabaseInitializerImp
 import com.hasanalic.ecommerce.core.data.repository.SharedPreferencesDataSourceImp
 import com.hasanalic.ecommerce.core.domain.repository.DatabaseInitializer
 import com.hasanalic.ecommerce.core.domain.repository.SharedPreferencesDataSource
-import com.hasanalic.ecommerce.core.domain.use_cases.database_initilization.DatabaseInitializerUseCases
-import com.hasanalic.ecommerce.core.domain.use_cases.database_initilization.InsertDefaultProductsUseCase
-import com.hasanalic.ecommerce.core.domain.use_cases.database_initilization.InsertDefaultReviewsUseCase
+import com.hasanalic.ecommerce.core.domain.use_cases.database_initialization.DatabaseInitializerUseCases
+import com.hasanalic.ecommerce.core.domain.use_cases.database_initialization.InsertDefaultProductsUseCase
+import com.hasanalic.ecommerce.core.domain.use_cases.database_initialization.InsertDefaultReviewsUseCase
 import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.GetUserIdUseCase
 import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.IsDatabaseInitializedUseCase
 import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.SaveUserIdUseCase

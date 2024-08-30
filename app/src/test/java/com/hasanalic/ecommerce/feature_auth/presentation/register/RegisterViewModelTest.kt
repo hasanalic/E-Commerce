@@ -3,6 +3,13 @@ package com.hasanalic.ecommerce.feature_auth.presentation.register
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import com.hasanalic.ecommerce.MainCoroutineRule
+import com.hasanalic.ecommerce.core.data.FakeSharedPreferencesDataSourceImp
+import com.hasanalic.ecommerce.core.domain.repository.SharedPreferencesDataSource
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.GetUserIdUseCase
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.IsDatabaseInitializedUseCase
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.SaveUserIdUseCase
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.SetDatabaseInitializedUseCase
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.SharedPreferencesUseCases
 import com.hasanalic.ecommerce.feature_auth.data.repository.FakeAuthenticationRepository
 import com.hasanalic.ecommerce.feature_auth.domain.repository.AuthenticationRepository
 import com.hasanalic.ecommerce.feature_auth.domain.use_cases.AuthUseCases
@@ -26,21 +33,35 @@ class RegisterViewModelTest {
     @get:Rule
     var mainCoroutineRule = MainCoroutineRule()
 
-    private lateinit var fakeAuthenticationRepository: AuthenticationRepository
+    private lateinit var authenticationRepository: AuthenticationRepository
+    private lateinit var sharedPreferencesDataSource: SharedPreferencesDataSource
+
     private lateinit var authUseCases: AuthUseCases
+    private lateinit var sharedPreferencesUseCases: SharedPreferencesUseCases
+
     private lateinit var registerViewModel: RegisterViewModel
 
     @Before
     fun setup() {
-        fakeAuthenticationRepository = FakeAuthenticationRepository()
+        authenticationRepository = FakeAuthenticationRepository()
+        sharedPreferencesDataSource = FakeSharedPreferencesDataSourceImp()
+
+        sharedPreferencesUseCases = SharedPreferencesUseCases(
+            getUserIdUseCase = GetUserIdUseCase(sharedPreferencesDataSource),
+            isDatabaseInitializedUseCase = IsDatabaseInitializedUseCase(sharedPreferencesDataSource),
+            saveUserIdUseCase = SaveUserIdUseCase(sharedPreferencesDataSource),
+            setDatabaseInitializedUseCase = SetDatabaseInitializedUseCase(sharedPreferencesDataSource)
+        )
+
         authUseCases = AuthUseCases(
-            insertUserUseCase = InsertUserUseCase(fakeAuthenticationRepository),
-            getUserByEmailAndPassUseCase = GetUserByEmailAndPassUseCase(fakeAuthenticationRepository),
+            insertUserUseCase = InsertUserUseCase(authenticationRepository),
+            getUserByEmailAndPassUseCase = GetUserByEmailAndPassUseCase(authenticationRepository),
             userEmailValidatorUseCase = UserEmailValidatorUseCase(),
             userInputValidatorUseCase = UserInputValidatorUseCase(),
             userPasswordValidatorUseCase = UserPasswordValidatorUseCase()
         )
-        registerViewModel = RegisterViewModel(authUseCases)
+
+        registerViewModel = RegisterViewModel(sharedPreferencesUseCases ,authUseCases)
     }
 
     @Test
