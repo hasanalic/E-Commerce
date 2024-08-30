@@ -24,17 +24,6 @@ class LoginFragment: Fragment() {
 
     lateinit var viewModel: LoginViewModel
 
-    override fun onStart() {
-        super.onStart()
-        /*
-        val currentUser = auth.currentUser
-
-        if (currentUser != null) {
-            moveToHomeActivity()
-        }
-         */
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
         return binding.root

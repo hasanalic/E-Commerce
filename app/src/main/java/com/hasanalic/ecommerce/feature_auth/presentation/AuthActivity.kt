@@ -16,6 +16,7 @@ import com.hasanalic.ecommerce.notification.ReminderItem
 import com.hasanalic.ecommerce.notification.adds.AddsAlarmSchedular
 import com.hasanalic.ecommerce.core.utils.hide
 import com.hasanalic.ecommerce.core.utils.show
+import com.hasanalic.ecommerce.feature_home.presentation.HomeActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -44,6 +45,10 @@ class AuthActivity : AppCompatActivity() {
 
     private fun setupObservers() {
         viewModel.authState.observe(this) { authState ->
+            if (authState.isUserAlreadyLoggedIn) {
+                navigateToHomeActivity()
+            }
+
             if (authState.isLoading) {
                 binding.progressBarAuth.show()
             } else {
@@ -87,5 +92,11 @@ class AuthActivity : AppCompatActivity() {
             replace(R.id.fragmentContainerViewMainActivity, fragment)
             commit()
         }
+    }
+
+    private fun navigateToHomeActivity() {
+        val intent = Intent(this, HomeActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 }

@@ -22,20 +22,29 @@ class AuthViewModel @Inject constructor(
     val authState: LiveData<AuthState> = _authState
 
     init {
+        checkIfUserAlreadyLoggedIn()
         checkIsDatabaseInitialized()
     }
 
+    private fun checkIfUserAlreadyLoggedIn() {
+        val userId = sharedPreferencesUseCases.getUserIdUseCase()
+        if (userId != null) {
+            _authState.value = _authState.value!!.copy(
+                isUserAlreadyLoggedIn = true
+            )
+        }
+    }
+
     private fun checkIsDatabaseInitialized() {
-        _authState.value = AuthState(isLoading = true)
+        _authState.value = _authState.value!!.copy(isLoading = true)
         viewModelScope.launch {
             val isDatabaseInitialized = sharedPreferencesUseCases.isDatabaseInitializedUseCase()
             if (isDatabaseInitialized) {
-                _authState.value = AuthState(isDatabaseInitialized = true)
+                _authState.value = _authState.value!!.copy(isDatabaseInitialized = true)
             } else {
                 insertProductAndReviewEntities()
             }
         }
-
     }
 
     private suspend fun insertProductAndReviewEntities() {

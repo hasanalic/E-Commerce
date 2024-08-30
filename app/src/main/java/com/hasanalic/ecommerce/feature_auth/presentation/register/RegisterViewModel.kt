@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.hasanalic.ecommerce.core.domain.model.DataError
 import com.hasanalic.ecommerce.feature_auth.domain.model.PasswordValidationError
 import com.hasanalic.ecommerce.core.domain.model.Result
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.SharedPreferencesUseCases
 import com.hasanalic.ecommerce.feature_auth.domain.model.EmailValidationError
 import com.hasanalic.ecommerce.feature_auth.domain.model.InputValidationError
 import com.hasanalic.ecommerce.feature_auth.domain.use_cases.AuthUseCases
@@ -16,6 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
+    private val sharedPreferencesUseCases: SharedPreferencesUseCases,
     private val authUseCases: AuthUseCases,
 ): ViewModel() {
 
@@ -89,12 +91,17 @@ class RegisterViewModel @Inject constructor(
             when(val result = authUseCases.insertUserUseCase(name, email, password)) {
                 is Result.Error -> handleRegisterError(result.error)
                 is Result.Success -> {
-                    _registerState.value = RegisterState(
-                        isRegistrationSuccessful = true
-                    )
+                    setIsRegistrationSuccessfulToTrueAndSaveUserId(result.data.toString())
                 }
             }
         }
+    }
+
+    private fun setIsRegistrationSuccessfulToTrueAndSaveUserId(userId: String) {
+        sharedPreferencesUseCases.saveUserIdUseCase(userId)
+        _registerState.value = RegisterState(
+            isRegistrationSuccessful = true
+        )
     }
 
     private fun handleRegisterError(dataError: DataError.Local) {
