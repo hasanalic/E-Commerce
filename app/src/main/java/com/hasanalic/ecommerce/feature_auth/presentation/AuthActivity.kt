@@ -14,8 +14,8 @@ import com.hasanalic.ecommerce.feature_auth.presentation.login.views.LoginFragme
 import com.hasanalic.ecommerce.feature_product_detail.presentation.ProductDetailActivity
 import com.hasanalic.ecommerce.notification.ReminderItem
 import com.hasanalic.ecommerce.notification.adds.AddsAlarmSchedular
-import com.hasanalic.ecommerce.utils.hide
-import com.hasanalic.ecommerce.utils.show
+import com.hasanalic.ecommerce.core.utils.hide
+import com.hasanalic.ecommerce.core.utils.show
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

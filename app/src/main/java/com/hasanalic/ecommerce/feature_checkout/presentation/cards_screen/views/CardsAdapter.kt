@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.hasanalic.ecommerce.feature_checkout.data.local.entity.CardEntity
 import com.hasanalic.ecommerce.databinding.RecyclerItemCardBinding
-import com.hasanalic.ecommerce.utils.maskCreditCard
+import com.hasanalic.ecommerce.core.utils.maskCreditCard
 
 class CardsAdapter: RecyclerView.Adapter<CardsAdapter.MyViewHolder>()  {
 

@@ -16,9 +16,9 @@ import com.hasanalic.ecommerce.feature_home.presentation.favorite_screen.Favorit
 import com.hasanalic.ecommerce.feature_home.presentation.favorite_screen.FavoriteViewModel
 import com.hasanalic.ecommerce.feature_product_detail.presentation.ProductDetailActivity
 import com.hasanalic.ecommerce.feature_home.presentation.SharedViewModel
-import com.hasanalic.ecommerce.utils.hide
-import com.hasanalic.ecommerce.utils.show
-import com.hasanalic.ecommerce.utils.toast
+import com.hasanalic.ecommerce.core.utils.hide
+import com.hasanalic.ecommerce.core.utils.show
+import com.hasanalic.ecommerce.core.utils.toast
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

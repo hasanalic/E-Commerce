@@ -23,9 +23,9 @@ import com.hasanalic.ecommerce.feature_orders.presentation.order_detail_screen.O
 import com.hasanalic.ecommerce.feature_orders.presentation.order_detail_screen.OrderDetailViewModel
 import com.hasanalic.ecommerce.feature_orders.presentation.utils.OrderStatus
 import com.hasanalic.ecommerce.core.presentation.utils.TimeAndDate
-import com.hasanalic.ecommerce.utils.hide
-import com.hasanalic.ecommerce.utils.show
-import com.hasanalic.ecommerce.utils.toast
+import com.hasanalic.ecommerce.core.utils.hide
+import com.hasanalic.ecommerce.core.utils.show
+import com.hasanalic.ecommerce.core.utils.toast
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

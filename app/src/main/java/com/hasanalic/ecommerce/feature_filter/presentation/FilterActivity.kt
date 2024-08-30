@@ -15,8 +15,8 @@ import com.hasanalic.ecommerce.feature_filter.presentation.util.FilterSingleton
 import com.hasanalic.ecommerce.feature_filter.presentation.views.BrandAdapter
 import com.hasanalic.ecommerce.feature_filter.presentation.views.CategoryAdapter
 import com.hasanalic.ecommerce.core.presentation.utils.ItemDecoration
-import com.hasanalic.ecommerce.utils.hide
-import com.hasanalic.ecommerce.utils.show
+import com.hasanalic.ecommerce.core.utils.hide
+import com.hasanalic.ecommerce.core.utils.show
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

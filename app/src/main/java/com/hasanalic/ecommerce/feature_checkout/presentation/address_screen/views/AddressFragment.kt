@@ -18,9 +18,9 @@ import com.hasanalic.ecommerce.feature_location.presentation.LocationActivity
 import com.hasanalic.ecommerce.feature_checkout.presentation.address_screen.AddressState
 import com.hasanalic.ecommerce.feature_checkout.presentation.address_screen.AddressViewModel
 import com.hasanalic.ecommerce.core.presentation.utils.ItemDecoration
-import com.hasanalic.ecommerce.utils.hide
-import com.hasanalic.ecommerce.utils.show
-import com.hasanalic.ecommerce.utils.toast
+import com.hasanalic.ecommerce.core.utils.hide
+import com.hasanalic.ecommerce.core.utils.show
+import com.hasanalic.ecommerce.core.utils.toast
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

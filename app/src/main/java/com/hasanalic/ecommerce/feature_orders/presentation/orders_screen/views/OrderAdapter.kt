@@ -16,7 +16,7 @@ import com.hasanalic.ecommerce.core.presentation.utils.OrderConstants.ORDER_RETU
 import com.hasanalic.ecommerce.databinding.RecyclerItemOrderBinding
 import com.hasanalic.ecommerce.feature_orders.domain.model.Order
 import com.hasanalic.ecommerce.feature_orders.presentation.utils.OrderStatus
-import com.hasanalic.ecommerce.utils.hide
+import com.hasanalic.ecommerce.core.utils.hide
 
 class OrderAdapter: RecyclerView.Adapter<OrderAdapter.MyViewHolder>() {
 

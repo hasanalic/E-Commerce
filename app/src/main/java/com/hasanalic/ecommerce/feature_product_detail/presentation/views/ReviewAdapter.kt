@@ -8,9 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hasanalic.ecommerce.R
 import com.hasanalic.ecommerce.databinding.RecyclerItemReviewBinding
 import com.hasanalic.ecommerce.feature_product_detail.data.local.entity.ReviewEntity
-import com.hasanalic.ecommerce.utils.glide
-import com.hasanalic.ecommerce.utils.hide
-import com.hasanalic.ecommerce.utils.placeHolderProgressBar
+import com.hasanalic.ecommerce.core.utils.glide
+import com.hasanalic.ecommerce.core.utils.hide
+import com.hasanalic.ecommerce.core.utils.placeHolderProgressBar
 
 class ReviewAdapter: RecyclerView.Adapter<ReviewAdapter.MyViewHolder>() {
 

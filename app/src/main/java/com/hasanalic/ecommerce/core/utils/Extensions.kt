@@ -1,4 +1,4 @@
-package com.hasanalic.ecommerce.utils
+package com.hasanalic.ecommerce.core.utils
 
 import android.content.Context
 import android.view.View

@@ -17,12 +17,12 @@ import com.hasanalic.ecommerce.feature_product_detail.domain.model.ProductDetail
 import com.hasanalic.ecommerce.feature_product_detail.presentation.ProductDetailState
 import com.hasanalic.ecommerce.feature_product_detail.presentation.ProductDetailViewModel
 import com.hasanalic.ecommerce.core.presentation.utils.ItemDecoration
-import com.hasanalic.ecommerce.utils.glide
-import com.hasanalic.ecommerce.utils.hide
-import com.hasanalic.ecommerce.utils.placeHolderProgressBar
-import com.hasanalic.ecommerce.utils.show
-import com.hasanalic.ecommerce.utils.toCent
-import com.hasanalic.ecommerce.utils.toast
+import com.hasanalic.ecommerce.core.utils.glide
+import com.hasanalic.ecommerce.core.utils.hide
+import com.hasanalic.ecommerce.core.utils.placeHolderProgressBar
+import com.hasanalic.ecommerce.core.utils.show
+import com.hasanalic.ecommerce.core.utils.toCent
+import com.hasanalic.ecommerce.core.utils.toast
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

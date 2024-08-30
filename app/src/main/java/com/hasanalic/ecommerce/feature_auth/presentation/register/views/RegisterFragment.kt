@@ -11,9 +11,9 @@ import com.hasanalic.ecommerce.feature_auth.presentation.login.views.LoginFragme
 import com.hasanalic.ecommerce.feature_auth.presentation.register.RegisterState
 import com.hasanalic.ecommerce.feature_auth.presentation.register.RegisterViewModel
 import com.hasanalic.ecommerce.feature_home.presentation.HomeActivity
-import com.hasanalic.ecommerce.utils.hide
-import com.hasanalic.ecommerce.utils.show
-import com.hasanalic.ecommerce.utils.toast
+import com.hasanalic.ecommerce.core.utils.hide
+import com.hasanalic.ecommerce.core.utils.show
+import com.hasanalic.ecommerce.core.utils.toast
 
 class RegisterFragment: BaseFragment<FragmentRegisterBinding>(
     bindingInflater = FragmentRegisterBinding::inflate

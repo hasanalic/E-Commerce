@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hasanalic.ecommerce.R
 import com.hasanalic.ecommerce.databinding.RecyclerItemComparedBinding
 import com.hasanalic.ecommerce.feature_home.domain.model.ComparedProduct
-import com.hasanalic.ecommerce.utils.glide
-import com.hasanalic.ecommerce.utils.placeHolderProgressBar
+import com.hasanalic.ecommerce.core.utils.glide
+import com.hasanalic.ecommerce.core.utils.placeHolderProgressBar
 
 class CompareAdapter: RecyclerView.Adapter<CompareAdapter.MyViewHolder>() {
 

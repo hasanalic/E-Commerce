@@ -7,8 +7,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.hasanalic.ecommerce.feature_orders.data.local.entity.OrderProductsEntity
 import com.hasanalic.ecommerce.databinding.RecyclerItemProductImageBinding
-import com.hasanalic.ecommerce.utils.glide
-import com.hasanalic.ecommerce.utils.placeHolderProgressBar
+import com.hasanalic.ecommerce.core.utils.glide
+import com.hasanalic.ecommerce.core.utils.placeHolderProgressBar
 
 class OrderImageAdapter: RecyclerView.Adapter<OrderImageAdapter.MyViewHolder>() {
 

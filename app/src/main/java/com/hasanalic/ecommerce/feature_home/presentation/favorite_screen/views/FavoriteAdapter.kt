@@ -8,9 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hasanalic.ecommerce.R
 import com.hasanalic.ecommerce.databinding.RecyclerItemFavoriteBinding
 import com.hasanalic.ecommerce.feature_home.domain.model.FavoriteProduct
-import com.hasanalic.ecommerce.utils.glide
-import com.hasanalic.ecommerce.utils.placeHolderProgressBar
-import com.hasanalic.ecommerce.utils.toCent
+import com.hasanalic.ecommerce.core.utils.glide
+import com.hasanalic.ecommerce.core.utils.placeHolderProgressBar
+import com.hasanalic.ecommerce.core.utils.toCent
 
 class FavoriteAdapter: RecyclerView.Adapter<FavoriteAdapter.MyViewHolder>() {
 

@@ -13,9 +13,9 @@ import com.hasanalic.ecommerce.feature_auth.presentation.login.LoginState
 import com.hasanalic.ecommerce.feature_auth.presentation.login.LoginViewModel
 import com.hasanalic.ecommerce.feature_auth.presentation.register.views.RegisterFragment
 import com.hasanalic.ecommerce.feature_home.presentation.HomeActivity
-import com.hasanalic.ecommerce.utils.hide
-import com.hasanalic.ecommerce.utils.show
-import com.hasanalic.ecommerce.utils.toast
+import com.hasanalic.ecommerce.core.utils.hide
+import com.hasanalic.ecommerce.core.utils.show
+import com.hasanalic.ecommerce.core.utils.toast
 
 class LoginFragment: Fragment() {
 

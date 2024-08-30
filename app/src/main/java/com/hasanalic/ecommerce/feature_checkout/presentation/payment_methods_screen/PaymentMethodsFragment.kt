@@ -11,9 +11,9 @@ import com.hasanalic.ecommerce.R
 import com.hasanalic.ecommerce.databinding.FragmentPaymentMethodsBinding
 import com.hasanalic.ecommerce.feature_checkout.presentation.CheckoutState
 import com.hasanalic.ecommerce.feature_checkout.presentation.CheckoutViewModel
-import com.hasanalic.ecommerce.utils.hide
-import com.hasanalic.ecommerce.utils.show
-import com.hasanalic.ecommerce.utils.toast
+import com.hasanalic.ecommerce.core.utils.hide
+import com.hasanalic.ecommerce.core.utils.show
+import com.hasanalic.ecommerce.core.utils.toast
 
 class PaymentMethodsFragment: Fragment() {
 

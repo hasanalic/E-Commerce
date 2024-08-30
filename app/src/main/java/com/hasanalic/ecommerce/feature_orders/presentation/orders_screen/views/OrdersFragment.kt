@@ -13,8 +13,8 @@ import com.hasanalic.ecommerce.databinding.FragmentOrdersBinding
 import com.hasanalic.ecommerce.feature_orders.presentation.orders_screen.OrdersState
 import com.hasanalic.ecommerce.feature_orders.presentation.orders_screen.OrdersViewModel
 import com.hasanalic.ecommerce.core.presentation.utils.ItemDecoration
-import com.hasanalic.ecommerce.utils.hide
-import com.hasanalic.ecommerce.utils.show
+import com.hasanalic.ecommerce.core.utils.hide
+import com.hasanalic.ecommerce.core.utils.show
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

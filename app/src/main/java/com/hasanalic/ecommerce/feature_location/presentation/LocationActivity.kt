@@ -24,8 +24,8 @@ import com.hasanalic.ecommerce.core.presentation.utils.AlarmConstants.REQUEST_CO
 import com.hasanalic.ecommerce.databinding.ActivityLocationBinding
 import com.hasanalic.ecommerce.feature_location.presentation.views.LocationAdapter
 import com.hasanalic.ecommerce.core.presentation.utils.ItemDecoration
-import com.hasanalic.ecommerce.utils.hide
-import com.hasanalic.ecommerce.utils.show
+import com.hasanalic.ecommerce.core.utils.hide
+import com.hasanalic.ecommerce.core.utils.show
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
 

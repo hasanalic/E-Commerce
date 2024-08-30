@@ -31,10 +31,10 @@ import com.hasanalic.ecommerce.feature_checkout.presentation.payment_card_screen
 import com.hasanalic.ecommerce.feature_checkout.presentation.payment_card_screen.utils.PaymentNotificationConstants.CHANNEL_ID
 import com.hasanalic.ecommerce.feature_checkout.presentation.payment_card_screen.utils.PaymentNotificationConstants.CHANNEL_NAME
 import com.hasanalic.ecommerce.feature_checkout.presentation.payment_card_screen.utils.PaymentNotificationConstants.NOTIFICATION_ID
-import com.hasanalic.ecommerce.utils.hide
-import com.hasanalic.ecommerce.utils.maskCreditCard
-import com.hasanalic.ecommerce.utils.show
-import com.hasanalic.ecommerce.utils.toast
+import com.hasanalic.ecommerce.core.utils.hide
+import com.hasanalic.ecommerce.core.utils.maskCreditCard
+import com.hasanalic.ecommerce.core.utils.show
+import com.hasanalic.ecommerce.core.utils.toast
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Random
 

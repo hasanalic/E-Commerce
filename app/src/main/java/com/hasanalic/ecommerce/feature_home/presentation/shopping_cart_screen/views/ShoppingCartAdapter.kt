@@ -7,9 +7,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.hasanalic.ecommerce.databinding.RecyclerItemShoppingCartBinding
 import com.hasanalic.ecommerce.feature_home.domain.model.ShoppingCartItem
-import com.hasanalic.ecommerce.utils.glide
-import com.hasanalic.ecommerce.utils.placeHolderProgressBar
-import com.hasanalic.ecommerce.utils.toCent
+import com.hasanalic.ecommerce.core.utils.glide
+import com.hasanalic.ecommerce.core.utils.placeHolderProgressBar
+import com.hasanalic.ecommerce.core.utils.toCent
 
 class ShoppingCartAdapter: RecyclerView.Adapter<ShoppingCartAdapter.MyViewHolder>() {
 
