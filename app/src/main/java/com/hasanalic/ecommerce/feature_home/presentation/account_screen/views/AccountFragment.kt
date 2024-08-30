@@ -1,4 +1,4 @@
-package com.hasanalic.ecommerce.feature_home.presentation.account_screen
+package com.hasanalic.ecommerce.feature_home.presentation.account_screen.views
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,10 +6,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.hasanalic.ecommerce.core.presentation.utils.AlarmConstants.CART_ALARM_INTERVAL_TEST
 import com.hasanalic.ecommerce.core.presentation.utils.AlarmConstants.CART_ALARM_REQUEST_CODE
+import com.hasanalic.ecommerce.core.utils.hide
+import com.hasanalic.ecommerce.core.utils.show
+import com.hasanalic.ecommerce.core.utils.toast
 import com.hasanalic.ecommerce.databinding.FragmentAccountBinding
 import com.hasanalic.ecommerce.feature_auth.presentation.AuthActivity
+import com.hasanalic.ecommerce.feature_home.presentation.account_screen.AccountState
+import com.hasanalic.ecommerce.feature_home.presentation.account_screen.AccountViewModel
 import com.hasanalic.ecommerce.feature_orders.presentation.OrderActivity
 import com.hasanalic.ecommerce.notification.ReminderItem
 import com.hasanalic.ecommerce.notification.cart.CartAlarmScheduler
@@ -18,6 +24,8 @@ class AccountFragment: Fragment() {
 
     private var _binding: FragmentAccountBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var viewModel: AccountViewModel
 
     private lateinit var cartAlarmScheduler: CartAlarmScheduler
 
@@ -29,23 +37,22 @@ class AccountFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.textViewSupport.setOnClickListener {
-            //val intent = Intent(requireContext(), CustomerService::class.java)
-            //startActivity(intent)
-        }
+        viewModel = ViewModelProvider(requireActivity())[AccountViewModel::class.java]
+        viewModel.getUser()
 
+        setupListeners()
+
+        setupObserver()
+    }
+
+    private fun setupListeners() {
         binding.textViewOrders.setOnClickListener {
             val intent = Intent(requireContext(), OrderActivity::class.java)
             startActivity(intent)
         }
 
-        binding.textViewFeedBack.setOnClickListener {
-            //val intent = Intent(requireContext(), FeedBackActivity::class.java)
-            //startActivity(intent)
-        }
-
         binding.textViewLogout.setOnClickListener {
-            signOutAndNavigateToLoginFragment()
+            viewModel.logOutUser()
             cancelCartAlarm()
         }
     }
@@ -55,11 +62,33 @@ class AccountFragment: Fragment() {
         cartAlarmScheduler.cancel(reminderItemCart)
     }
 
-    private fun signOutAndNavigateToLoginFragment() {
-
+    private fun setupObserver() {
+        viewModel.accountState.observe(viewLifecycleOwner) {
+            handleAccountState(it)
+        }
     }
 
-    private fun moveToMainActivity() {
+    private fun handleAccountState(state: AccountState) {
+        if (state.isLoading) {
+            binding.progressBarAccount.show()
+        } else {
+            binding.progressBarAccount.hide()
+        }
+
+        state.user?.let {
+
+        }
+
+        if (state.isUserLoggedOut) {
+            navigateToAuthActivity()
+        }
+
+        state.actionError?.let {
+            toast(requireContext(), it, false)
+        }
+    }
+
+    private fun navigateToAuthActivity() {
         val intent = Intent(requireContext(), AuthActivity::class.java)
         startActivity(intent)
         requireActivity().finish()

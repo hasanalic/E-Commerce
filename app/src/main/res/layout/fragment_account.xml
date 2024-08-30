@@ -2,9 +2,9 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <ImageView
         android:id="@+id/imageViewProfilePhoto"
@@ -16,17 +16,33 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textViewUserEmail"
+    <LinearLayout
+        android:id="@+id/user"
+        android:layout_marginStart="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:text="isim@gmail.com"
-        android:textColor="@color/font_secondary"
-        android:textSize="13sp"
+        android:orientation="vertical"
         app:layout_constraintTop_toTopOf="@id/imageViewProfilePhoto"
         app:layout_constraintBottom_toBottomOf="@id/imageViewProfilePhoto"
-        app:layout_constraintStart_toEndOf="@id/imageViewProfilePhoto"/>
+        app:layout_constraintStart_toEndOf="@id/imageViewProfilePhoto">
+
+        <TextView
+            android:id="@+id/textViewUserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="User Name"
+            android:textColor="@color/font_secondary"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/textViewUserEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="name@example.com"
+            android:textColor="@color/font_secondary"
+            android:textSize="13sp" />
+
+    </LinearLayout>
 
     <View
         android:id="@+id/view"
@@ -35,42 +51,20 @@
         android:layout_marginVertical="20dp"
         android:layout_marginHorizontal="12dp"
         android:background="@color/font_secondary"
-        app:layout_constraintTop_toBottomOf="@id/textViewUserEmail"
+        app:layout_constraintTop_toBottomOf="@id/user"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
-
-    <TextView
-        android:id="@+id/textViewSupport"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="@string/customer_service"
-        android:textColor="@color/font_secondary"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/imageViewProfilePhoto"
-        app:layout_constraintTop_toBottomOf="@+id/view" />
 
     <TextView
         android:id="@+id/textViewOrders"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:text="@string/my_orders"
         android:textColor="@color/font_secondary"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/imageViewProfilePhoto"
-        app:layout_constraintTop_toBottomOf="@+id/textViewSupport" />
-
-    <TextView
-        android:id="@+id/textViewFeedBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="@string/geri_bildirim"
-        android:textColor="@color/font_secondary"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/imageViewProfilePhoto"
-        app:layout_constraintTop_toBottomOf="@+id/textViewOrders" />
+        app:layout_constraintTop_toBottomOf="@+id/view" />
 
     <TextView
         android:id="@+id/textViewLogout"
@@ -80,7 +74,18 @@
         android:text="@string/logout"
         android:textColor="@color/font_secondary"
         android:textSize="19sp"
-        app:layout_constraintStart_toStartOf="@+id/imageViewProfilePhoto"
-        app:layout_constraintTop_toBottomOf="@+id/textViewFeedBack" />
+        app:layout_constraintStart_toStartOf="@+id/textViewOrders"
+        app:layout_constraintTop_toBottomOf="@+id/textViewOrders" />
+
+    <ProgressBar
+        android:id="@+id/progressBarAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:indeterminateTint="@color/color_primary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

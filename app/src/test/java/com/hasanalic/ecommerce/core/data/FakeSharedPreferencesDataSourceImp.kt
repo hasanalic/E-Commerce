@@ -15,6 +15,10 @@ class FakeSharedPreferencesDataSourceImp : SharedPreferencesDataSource {
         return fakeUserId
     }
 
+    override fun setUserNull() {
+        fakeUserId = null
+    }
+
     override fun setDatabaseInitialized(isInitialized: Boolean) {
         this.isInitialized = isInitialized
     }

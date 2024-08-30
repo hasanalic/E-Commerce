@@ -12,6 +12,7 @@ import com.hasanalic.ecommerce.core.domain.use_cases.database_initialization.Ins
 import com.hasanalic.ecommerce.core.domain.use_cases.database_initialization.InsertDefaultReviewsUseCase
 import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.GetUserIdUseCase
 import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.IsDatabaseInitializedUseCase
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.LogOutUserUseCase
 import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.SaveUserIdUseCase
 import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.SetDatabaseInitializedUseCase
 import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.SharedPreferencesUseCases
@@ -47,7 +48,8 @@ class AuthViewModelTest {
             getUserIdUseCase = GetUserIdUseCase(sharedPreferencesDataSource),
             isDatabaseInitializedUseCase = IsDatabaseInitializedUseCase(sharedPreferencesDataSource),
             saveUserIdUseCase = SaveUserIdUseCase(sharedPreferencesDataSource),
-            setDatabaseInitializedUseCase = SetDatabaseInitializedUseCase(sharedPreferencesDataSource)
+            setDatabaseInitializedUseCase = SetDatabaseInitializedUseCase(sharedPreferencesDataSource),
+            logOutUserUseCase = LogOutUserUseCase(sharedPreferencesDataSource)
         )
 
         databaseInitializerUseCases = DatabaseInitializerUseCases(

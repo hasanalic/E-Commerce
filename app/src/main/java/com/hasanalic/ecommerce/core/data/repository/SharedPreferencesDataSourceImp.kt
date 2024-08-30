@@ -18,6 +18,10 @@ class SharedPreferencesDataSourceImp @Inject constructor(
         return userSharedPreferences.getString("USER_ID", null)
     }
 
+    override fun setUserNull() {
+        userSharedPreferences.edit().putString("USER_ID", null).apply()
+    }
+
     override fun setDatabaseInitialized(isInitialized: Boolean) {
         databaseSharedPreferences.edit().putBoolean("DB_INITIALIZED", isInitialized).apply()
     }
