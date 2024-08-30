@@ -59,7 +59,7 @@ class AuthViewModel @Inject constructor(
             is Result.Error -> handleInsertDatabaseError(result.error)
             is Result.Success -> {
                 setDatabaseInitializedAsTrue()
-                _authState.value = AuthState(isDatabaseInitialized = true)
+                _authState.value = _authState.value!!.copy(isDatabaseInitialized = true)
             }
         }
     }
