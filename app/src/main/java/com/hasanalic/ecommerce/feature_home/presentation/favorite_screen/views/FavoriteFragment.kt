@@ -19,6 +19,7 @@ import com.hasanalic.ecommerce.feature_home.presentation.SharedViewModel
 import com.hasanalic.ecommerce.core.utils.hide
 import com.hasanalic.ecommerce.core.utils.show
 import com.hasanalic.ecommerce.core.utils.toast
+import com.hasanalic.ecommerce.feature_auth.presentation.AuthActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -36,25 +37,6 @@ class FavoriteFragment: Fragment() {
         FavoriteAdapter()
     }
 
-    /*
-    override fun onStart() {
-        super.onStart()
-        homeActivity?.hideToolBar()
-
-        /*
-        val currentUser = FirebaseAuth.getInstance().currentUser
-
-        if (currentUser == null) {
-            val intent = Intent(requireActivity(), MainActivity::class.java)
-            startActivity(intent)
-            toast(requireContext(),"Favorileri görüntülemek için hesabınıza giriş yapınız.",false)
-            requireActivity().finish()
-        }
-
-         */
-    }
-     */
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentFavoriteBinding.inflate(inflater)
         return binding.root
@@ -66,8 +48,8 @@ class FavoriteFragment: Fragment() {
         viewModel = ViewModelProvider(requireActivity())[FavoriteViewModel::class.java]
         sharedViewModel = ViewModelProvider(requireActivity())[SharedViewModel::class.java]
 
+        viewModel.getUserFavoriteProductsIfUserLoggedIn()
         //viewModel.getShoppingCartCount(userId)
-        //viewModel.getUserFavoriteProducts(userId)
 
         setupRecyclerView()
         setupObservers()
@@ -83,12 +65,12 @@ class FavoriteFragment: Fragment() {
         }
 
         favoriteAdapter.setOnAddCartButtonClickListener { productId, position ->
-            viewModel.addProductToCart(userId, productId, position)
+            viewModel.addProductToCart(productId, position)
             favoriteAdapter.notifyItemChangedInAdapter(position)
         }
 
         favoriteAdapter.setOnRemoveFromCartButtonClickListener { productId, position ->
-            viewModel.removeProductFromCart(userId, productId, position)
+            viewModel.removeProductFromCart(productId, position)
         }
 
         favoriteAdapter.setOnCardClickListener { productId ->
@@ -102,7 +84,7 @@ class FavoriteFragment: Fragment() {
         val alertDialogBuilder = AlertDialog.Builder(requireContext())
         alertDialogBuilder.setMessage("Ürünü favorilerden kaldırmak istediğine emin misin?")
         alertDialogBuilder.setPositiveButton("Kaldır") { _, _ ->
-            viewModel.removeProductFromFavorites(userId, productId, itemIndex)
+            viewModel.removeProductFromFavorites(productId, itemIndex)
             favoriteAdapter.notifyItemRemovedInAdapter(itemIndex)
         }
         alertDialogBuilder.setNegativeButton("Vazgeç") { _, _ -> }
@@ -111,7 +93,7 @@ class FavoriteFragment: Fragment() {
     }
 
     private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-        viewModel.getUserFavoriteProducts(userId)
+        //viewModel.getUserFavoriteProducts(userId)
         //viewModel.getShoppingCartCount(userId)
     }
 
@@ -128,6 +110,10 @@ class FavoriteFragment: Fragment() {
         } else {
             binding.progressBarFavorite.hide()
             binding.recyclerViewFavorite.show()
+        }
+
+        if (!state.isUserLoggedIn) {
+            navigateToAuthActivityAndFinish()
         }
 
         state.favoriteProductList.let {
@@ -152,38 +138,12 @@ class FavoriteFragment: Fragment() {
         }
     }
 
-    /*
-    private fun observe() {
-        viewModel.stateFavorites.observe(viewLifecycleOwner) {
-            when(it) {
-                is Resource.Success -> {
-                    binding.progressBarFavorite.hide()
-                    val favoriteList = it.data?.toList()
-
-                    if (favoriteList.isNullOrEmpty()) {
-                        favoriteAdapter.products = listOf()
-                        binding.emptyFavorite.show()
-                    } else {
-                        binding.emptyFavorite.hide()
-                        favoriteAdapter.products = favoriteList
-                    }
-
-                    favoriteAdapter.notifyChanges()
-                }
-                is Resource.Error -> {
-                    binding.progressBarFavorite.hide()
-                }
-                is Resource.Loading -> {
-                    binding.progressBarFavorite.show()
-                }
-            }
-        }
-
-        viewModel.stateShoppingCartItemSize.observe(viewLifecycleOwner) {
-            sharedViewModel.updateCartItemCount(it)
-        }
+    private fun navigateToAuthActivityAndFinish() {
+        val intent = Intent(requireActivity(), AuthActivity::class.java)
+        startActivity(intent)
+        toast(requireContext(),"Favorileri görüntülemek için hesabınıza giriş yapınız.",false)
+        requireActivity().finish()
     }
-     */
 
     override fun onDestroyView() {
         super.onDestroyView()

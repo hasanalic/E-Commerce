@@ -3,6 +3,14 @@ package com.hasanalic.ecommerce.feature_home.presentation.favorite_screen
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import com.hasanalic.ecommerce.MainCoroutineRule
+import com.hasanalic.ecommerce.core.data.FakeSharedPreferencesDataSourceImp
+import com.hasanalic.ecommerce.core.domain.repository.SharedPreferencesDataSource
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.GetUserIdUseCase
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.IsDatabaseInitializedUseCase
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.LogOutUserUseCase
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.SaveUserIdUseCase
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.SetDatabaseInitializedUseCase
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.SharedPreferencesUseCases
 import com.hasanalic.ecommerce.feature_home.data.repository.FakeFavoriteRepository
 import com.hasanalic.ecommerce.feature_home.data.repository.FakeShoppingCartRepository
 import com.hasanalic.ecommerce.feature_home.domain.repository.FavoriteRepository
@@ -40,16 +48,21 @@ class FavoriteViewModelTest {
     var mainCoroutineRule = MainCoroutineRule()
 
     private lateinit var favoriteRepository: FavoriteRepository
-    private lateinit var favoriteUseCases: FavoriteUseCases
-
     private lateinit var shoppingCartRepository: ShoppingCartRepository
+    private lateinit var sharedPreferencesDataSource: SharedPreferencesDataSource
+
+    private lateinit var favoriteUseCases: FavoriteUseCases
     private lateinit var shoppingCartUseCases: ShoppingCartUseCases
+    private lateinit var sharedPreferencesUseCases: SharedPreferencesUseCases
 
     private lateinit var favoriteViewModel: FavoriteViewModel
 
     @Before
     fun setup() {
         favoriteRepository = FakeFavoriteRepository()
+        shoppingCartRepository = FakeShoppingCartRepository()
+        sharedPreferencesDataSource = FakeSharedPreferencesDataSourceImp()
+
         favoriteUseCases = FavoriteUseCases(
             deleteFavoriteUseCase = DeleteFavoriteUseCase(favoriteRepository),
             getFavoriteIdByUserIdAndProductIdUseCase = GetFavoriteIdByUserIdAndProductIdUseCase(favoriteRepository),
@@ -58,8 +71,6 @@ class FavoriteViewModelTest {
             insertFavoriteAndGetIdUseCase = InsertFavoriteAndGetIdUseCase(favoriteRepository),
             checkFavoriteEntityByProductId = CheckFavoriteEntityByProductId(favoriteRepository)
         )
-
-        shoppingCartRepository = FakeShoppingCartRepository()
         shoppingCartUseCases = ShoppingCartUseCases(
             checkShoppingCartEntityByProductIdUseCase = CheckShoppingCartEntityByProductIdUseCase(shoppingCartRepository),
             deleteShoppingCartItemEntitiesByProductIdListUseCase = DeleteShoppingCartItemEntitiesByProductIdListUseCase(shoppingCartRepository),
@@ -70,16 +81,42 @@ class FavoriteViewModelTest {
             insertShoppingCartItemEntityUseCase = InsertShoppingCartItemEntityUseCase(shoppingCartRepository),
             updateShoppingCartItemEntityUseCase = UpdateShoppingCartItemEntityUseCase(shoppingCartRepository)
         )
+        sharedPreferencesUseCases = SharedPreferencesUseCases(
+            getUserIdUseCase = GetUserIdUseCase(sharedPreferencesDataSource),
+            isDatabaseInitializedUseCase = IsDatabaseInitializedUseCase(sharedPreferencesDataSource),
+            saveUserIdUseCase = SaveUserIdUseCase(sharedPreferencesDataSource),
+            setDatabaseInitializedUseCase = SetDatabaseInitializedUseCase(sharedPreferencesDataSource),
+            logOutUserUseCase = LogOutUserUseCase(sharedPreferencesDataSource)
+        )
 
-        favoriteViewModel = FavoriteViewModel(favoriteUseCases, shoppingCartUseCases)
+        sharedPreferencesUseCases.saveUserIdUseCase("1")
+        favoriteViewModel = FavoriteViewModel(favoriteUseCases, shoppingCartUseCases, sharedPreferencesUseCases)
     }
 
     @Test
-    fun `getUserFavoriteProducts successfuly returns favorite products`() = runBlocking {
-        favoriteViewModel.getUserFavoriteProducts("1")
+    fun `getUserFavoriteProducts successfuly returns favorite products when user logged in`() = runBlocking {
+        favoriteViewModel.getUserFavoriteProductsIfUserLoggedIn()
+
         val state = favoriteViewModel.favoriteState.getOrAwaitValue()
 
         assertThat(state.favoriteProductList).isNotEmpty()
+        assertThat(state.isUserLoggedIn).isTrue()
+        assertThat(state.userId).isNotEmpty()
+        assertThat(state.isLoading).isFalse()
+        assertThat(state.dataError).isNull()
+        assertThat(state.actionError).isNull()
+    }
+
+    @Test
+    fun `getUserFavoriteProducts successfuly returns favorite products when user logged out`() {
+        sharedPreferencesUseCases.logOutUserUseCase()
+        favoriteViewModel.getUserFavoriteProductsIfUserLoggedIn()
+
+        val state = favoriteViewModel.favoriteState.getOrAwaitValue()
+
+        assertThat(state.favoriteProductList).isEmpty()
+        assertThat(state.isUserLoggedIn).isFalse()
+        assertThat(state.userId).isNull()
         assertThat(state.isLoading).isFalse()
         assertThat(state.dataError).isNull()
         assertThat(state.actionError).isNull()
@@ -87,12 +124,15 @@ class FavoriteViewModelTest {
 
     @Test
     fun `removeProductFromFavorites successfuly removes item`() {
-        favoriteViewModel.getUserFavoriteProducts("1")
-        favoriteViewModel.removeProductFromFavorites("1","1",0)
+        favoriteViewModel.getUserFavoriteProductsIfUserLoggedIn()
+
+        favoriteViewModel.removeProductFromFavorites("1",0)
 
         val state = favoriteViewModel.favoriteState.getOrAwaitValue()
-        assertThat(state.favoriteProductList).isEmpty()
 
+        assertThat(state.favoriteProductList).isEmpty()
+        assertThat(state.isUserLoggedIn).isTrue()
+        assertThat(state.userId).isNotEmpty()
         assertThat(state.isLoading).isFalse()
         assertThat(state.dataError).isNull()
         assertThat(state.actionError).isNull()
@@ -100,26 +140,32 @@ class FavoriteViewModelTest {
 
     @Test
     fun `removeProductFromFavorites triggers action error when deletion fails`() {
-        favoriteViewModel.getUserFavoriteProducts("1")
-        favoriteViewModel.removeProductFromFavorites("1","2",0)
+        favoriteViewModel.getUserFavoriteProductsIfUserLoggedIn()
+
+        favoriteViewModel.removeProductFromFavorites("2",0)
 
         val state = favoriteViewModel.favoriteState.getOrAwaitValue()
+
         assertThat(state.favoriteProductList).isNotEmpty()
         assertThat(state.actionError).isNotEmpty()
-
+        assertThat(state.isUserLoggedIn).isTrue()
+        assertThat(state.userId).isNotEmpty()
         assertThat(state.isLoading).isFalse()
         assertThat(state.dataError).isNull()
     }
 
     @Test
     fun `addProductToCart successfuly adds item to cart`() {
-        favoriteViewModel.getUserFavoriteProducts("1")
-        favoriteViewModel.addProductToCart("1","1",0)
+        favoriteViewModel.getUserFavoriteProductsIfUserLoggedIn()
+
+        favoriteViewModel.addProductToCart("1",0)
 
         val state = favoriteViewModel.favoriteState.getOrAwaitValue()
         assertThat(state.favoriteProductList[0].addedToShoppingCart).isTrue()
 
         assertThat(state.favoriteProductList).isNotEmpty()
+        assertThat(state.isUserLoggedIn).isTrue()
+        assertThat(state.userId).isNotEmpty()
         assertThat(state.isLoading).isFalse()
         assertThat(state.dataError).isNull()
         assertThat(state.actionError).isNull()
@@ -127,13 +173,16 @@ class FavoriteViewModelTest {
 
     @Test
     fun `removeProductFromCart successfuly removes item from cart`() {
-        favoriteViewModel.getUserFavoriteProducts("1")
-        favoriteViewModel.addProductToCart("1","1", 0)
-        favoriteViewModel.removeProductFromCart("1","1",0)
+        favoriteViewModel.getUserFavoriteProductsIfUserLoggedIn()
+
+        favoriteViewModel.addProductToCart("1", 0)
+        favoriteViewModel.removeProductFromCart("1",0)
 
         val state = favoriteViewModel.favoriteState.getOrAwaitValue()
-        assertThat(state.favoriteProductList[0].addedToShoppingCart).isFalse()
 
+        assertThat(state.favoriteProductList[0].addedToShoppingCart).isFalse()
+        assertThat(state.isUserLoggedIn).isTrue()
+        assertThat(state.userId).isNotEmpty()
         assertThat(state.favoriteProductList).isNotEmpty()
         assertThat(state.isLoading).isFalse()
         assertThat(state.dataError).isNull()
@@ -142,14 +191,17 @@ class FavoriteViewModelTest {
 
     @Test
     fun `removeProductFromCart triggers action error when deletion fails`() {
-        favoriteViewModel.getUserFavoriteProducts("1")
-        favoriteViewModel.addProductToCart("1","1", 0)
-        favoriteViewModel.removeProductFromCart("1","2",0)
+        favoriteViewModel.getUserFavoriteProductsIfUserLoggedIn()
+
+        favoriteViewModel.addProductToCart("1", 0)
+        favoriteViewModel.removeProductFromCart("2",0)
 
         val state = favoriteViewModel.favoriteState.getOrAwaitValue()
+
         assertThat(state.favoriteProductList[0].addedToShoppingCart).isTrue()
         assertThat(state.actionError).isNotEmpty()
-
+        assertThat(state.isUserLoggedIn).isTrue()
+        assertThat(state.userId).isNotEmpty()
         assertThat(state.favoriteProductList).isNotEmpty()
         assertThat(state.isLoading).isFalse()
         assertThat(state.dataError).isNull()

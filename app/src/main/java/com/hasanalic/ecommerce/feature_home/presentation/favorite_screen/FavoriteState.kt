@@ -6,5 +6,7 @@ data class FavoriteState(
     val favoriteProductList: MutableList<FavoriteProduct> = mutableListOf(),
     val isLoading: Boolean = false,
     val dataError: String? = null,
-    val actionError: String? = null
+    val actionError: String? = null,
+    val isUserLoggedIn: Boolean = true,
+    val userId: String? = null
 )
