@@ -76,7 +76,8 @@ class AccountFragment: Fragment() {
         }
 
         state.user?.let {
-
+            binding.textViewUserName.text = it.userName
+            binding.textViewUserEmail.text = it.userEmail
         }
 
         if (state.isUserLoggedOut) {

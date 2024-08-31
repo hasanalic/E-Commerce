@@ -61,7 +61,10 @@ class AccountViewModel @Inject constructor(
             )
         } else {
             _accountState.value =
-                _accountState.value!!.copy(actionError = "Bilinmeyen bir hata meydana geldi!")
+                _accountState.value!!.copy(
+                    isLoading = false,
+                    actionError = "Bilinmeyen bir hata meydana geldi!"
+                )
         }
     }
 }
