@@ -14,7 +14,7 @@ import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.SharedPr
 import com.hasanalic.ecommerce.feature_auth.data.repository.FakeAuthenticationRepository
 import com.hasanalic.ecommerce.feature_auth.domain.repository.AuthenticationRepository
 import com.hasanalic.ecommerce.feature_auth.domain.use_cases.AuthUseCases
-import com.hasanalic.ecommerce.feature_auth.domain.use_cases.GetUserByEmailAndPassUseCase
+import com.hasanalic.ecommerce.feature_auth.domain.use_cases.LoginUserWithEmailAndPasswordUseCase
 import com.hasanalic.ecommerce.feature_auth.domain.use_cases.InsertUserUseCase
 import com.hasanalic.ecommerce.feature_auth.domain.use_cases.UserEmailValidatorUseCase
 import com.hasanalic.ecommerce.feature_auth.domain.use_cases.UserInputValidatorUseCase
@@ -57,7 +57,7 @@ class LoginViewModelTest {
 
         authUseCases = AuthUseCases(
             insertUserUseCase = InsertUserUseCase(authenticationRepository),
-            getUserByEmailAndPassUseCase = GetUserByEmailAndPassUseCase(authenticationRepository),
+            loginUserWithEmailAndPasswordUseCase = LoginUserWithEmailAndPasswordUseCase(authenticationRepository),
             userInputValidatorUseCase = UserInputValidatorUseCase(),
             userEmailValidatorUseCase = UserEmailValidatorUseCase(),
             userPasswordValidatorUseCase = UserPasswordValidatorUseCase()

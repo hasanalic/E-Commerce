@@ -33,7 +33,7 @@ import com.hasanalic.ecommerce.feature_auth.data.local.UserDao
 import com.hasanalic.ecommerce.feature_auth.data.repository.AuthenticationRepositoryImp
 import com.hasanalic.ecommerce.feature_auth.domain.repository.AuthenticationRepository
 import com.hasanalic.ecommerce.feature_auth.domain.use_cases.AuthUseCases
-import com.hasanalic.ecommerce.feature_auth.domain.use_cases.GetUserByEmailAndPassUseCase
+import com.hasanalic.ecommerce.feature_auth.domain.use_cases.LoginUserWithEmailAndPasswordUseCase
 import com.hasanalic.ecommerce.feature_auth.domain.use_cases.InsertUserUseCase
 import com.hasanalic.ecommerce.feature_auth.domain.use_cases.UserEmailValidatorUseCase
 import com.hasanalic.ecommerce.feature_auth.domain.use_cases.UserInputValidatorUseCase
@@ -64,6 +64,8 @@ import com.hasanalic.ecommerce.feature_home.domain.repository.ShoppingCartReposi
 import com.hasanalic.ecommerce.feature_filter.domain.use_cases.GetBrandsByCategoryUseCase
 import com.hasanalic.ecommerce.feature_filter.domain.use_cases.GetBrandsUseCase
 import com.hasanalic.ecommerce.feature_filter.domain.use_cases.GetCategoriesUseCase
+import com.hasanalic.ecommerce.feature_home.data.repository.UserRepositoryImp
+import com.hasanalic.ecommerce.feature_home.domain.repository.UserRepository
 import com.hasanalic.ecommerce.feature_home.domain.use_case.favorite_use_cases.CheckFavoriteEntityByProductId
 import com.hasanalic.ecommerce.feature_home.domain.use_case.home_use_cases.GetProductEntityIdByBarcodeUseCase
 import com.hasanalic.ecommerce.feature_home.domain.use_case.home_use_cases.GetProductsByUserIdUseCase
@@ -77,6 +79,8 @@ import com.hasanalic.ecommerce.feature_home.domain.use_case.shopping_cart_use_ca
 import com.hasanalic.ecommerce.feature_home.domain.use_case.shopping_cart_use_cases.InsertShoppingCartItemEntityUseCase
 import com.hasanalic.ecommerce.feature_home.domain.use_case.shopping_cart_use_cases.ShoppingCartUseCases
 import com.hasanalic.ecommerce.feature_home.domain.use_case.shopping_cart_use_cases.UpdateShoppingCartItemEntityUseCase
+import com.hasanalic.ecommerce.feature_home.domain.use_case.user_use_cases.GetUserUseCase
+import com.hasanalic.ecommerce.feature_home.domain.use_case.user_use_cases.UserUseCases
 import com.hasanalic.ecommerce.feature_location.data.repository.AddressRepositoryImp
 import com.hasanalic.ecommerce.feature_location.domain.repository.AddressRepository
 import com.hasanalic.ecommerce.feature_location.domain.use_cases.AddressUseCases
@@ -276,6 +280,20 @@ object AppModule {
 
     @Singleton
     @Provides
+    fun provideUserRepository(userDao: UserDao): UserRepository {
+        return UserRepositoryImp(userDao)
+    }
+
+    @Singleton
+    @Provides
+    fun provideUserUseCases(userRepository: UserRepository): UserUseCases {
+        return UserUseCases(
+            getUserUseCase = GetUserUseCase(userRepository)
+        )
+    }
+
+    @Singleton
+    @Provides
     fun provideDatabaseInitializerUseCases(databaseInitializer: DatabaseInitializer): DatabaseInitializerUseCases {
         return DatabaseInitializerUseCases(
             insertDefaultProductsUseCase = InsertDefaultProductsUseCase(databaseInitializer),
@@ -288,7 +306,7 @@ object AppModule {
     fun provideAuthUseCases(authRepository: AuthenticationRepository): AuthUseCases {
         return AuthUseCases(
             insertUserUseCase = InsertUserUseCase(authRepository),
-            getUserByEmailAndPassUseCase = GetUserByEmailAndPassUseCase(authRepository),
+            loginUserWithEmailAndPasswordUseCase = LoginUserWithEmailAndPasswordUseCase(authRepository),
             userEmailValidatorUseCase = UserEmailValidatorUseCase(),
             userInputValidatorUseCase = UserInputValidatorUseCase(),
             userPasswordValidatorUseCase = UserPasswordValidatorUseCase()

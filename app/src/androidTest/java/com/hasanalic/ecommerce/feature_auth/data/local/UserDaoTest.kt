@@ -51,52 +51,53 @@ class UserDaoTest {
     }
 
     @Test
-    fun getUserByEmailAndPassword_success() = runBlocking {
-        val expectedUserEntity = insertTestUserEntity()
+    fun getUserIdByEmailAndPassword_success() = runBlocking {
+        val userEntity = UserEntity("username", "username@example.com", "Password123")
+        val insertedUserId = userDao.insertUser(userEntity)
 
-        val fetchedUserEntity = userDao.getUserByEmailAndPassword(expectedUserEntity.userEmail, expectedUserEntity.userPassword)
+        val fetchedUserId = userDao.getUserIdByEmailAndPassword("username@example.com", "Password123")
 
-        assertThat(fetchedUserEntity).isEqualTo(expectedUserEntity)
+        assertThat(fetchedUserId).isEqualTo(insertedUserId.toInt())
     }
 
     @Test
-    fun getUserByEmailAndPassword_userNotFound() = runBlocking {
+    fun getUserIdByEmailAndPassword_userNotFound() = runBlocking {
         val email = "username@example.com"
         val password = "Password123"
 
-        val result = userDao.getUserByEmailAndPassword(email, password)
+        val result = userDao.getUserIdByEmailAndPassword(email, password)
 
         assertThat(result).isNull()
     }
 
     @Test
-    fun getUserByEmailAndPassword_wrongPassword() = runBlocking{
+    fun getUserIdByEmailAndPassword_wrongPassword() = runBlocking{
         val expectedUserEntity = insertTestUserEntity()
 
         val wrongPassword = "Password123123"
 
-        val result = userDao.getUserByEmailAndPassword(expectedUserEntity.userEmail, wrongPassword)
+        val result = userDao.getUserIdByEmailAndPassword(expectedUserEntity.userEmail, wrongPassword)
         assertThat(result).isNull()
     }
 
     @Test
-    fun getUserByEmailAndPassword_wrongEmail() = runBlocking {
+    fun getUserIdByEmailAndPassword_wrongEmail() = runBlocking {
         val expectedUserEntity = insertTestUserEntity()
 
         val wrongEmail = "wrong@example.com"
 
-        val result = userDao.getUserByEmailAndPassword(wrongEmail, expectedUserEntity.userPassword)
+        val result = userDao.getUserIdByEmailAndPassword(wrongEmail, expectedUserEntity.userPassword)
         assertThat(result).isNull()
     }
 
     @Test
-    fun getUserByEmailAndPassword_wrongEmailAndPassword() = runBlocking {
+    fun getUserIdByEmailAndPassword_wrongEmailAndPassword() = runBlocking {
         insertTestUserEntity()
 
         val wrongEmail = "wrong@example.com"
         val wrongPassword = "Password123123"
 
-        val result = userDao.getUserByEmailAndPassword(wrongEmail, wrongPassword)
+        val result = userDao.getUserIdByEmailAndPassword(wrongEmail, wrongPassword)
         assertThat(result).isNull()
     }
 

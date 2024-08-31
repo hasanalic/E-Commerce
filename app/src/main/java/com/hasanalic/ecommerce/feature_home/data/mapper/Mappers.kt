@@ -1,11 +1,13 @@
 package com.hasanalic.ecommerce.feature_home.data.mapper
 
+import com.hasanalic.ecommerce.feature_auth.data.local.entities.UserEntity
 import com.hasanalic.ecommerce.feature_home.domain.model.FavoriteProduct
 import com.hasanalic.ecommerce.feature_home.data.local.entity.FavoriteProductDto
 import com.hasanalic.ecommerce.feature_home.data.local.entity.ProductDto
 import com.hasanalic.ecommerce.feature_home.data.local.entity.ShoppingCartItemDto
 import com.hasanalic.ecommerce.feature_home.domain.model.Product
 import com.hasanalic.ecommerce.feature_home.domain.model.ShoppingCartItem
+import com.hasanalic.ecommerce.feature_home.domain.model.User
 
 fun ProductDto.toProduct() =
     Product(
@@ -48,3 +50,7 @@ fun ShoppingCartItemDto.toShoppingCartItem() =
         priceCent = this.productPriceCent,
         quantity = this.quantity
     )
+
+fun UserEntity.toUser(): User {
+    return User(userId = this.userId.toString(), userName = this.userName, userEmail = this.userEmail)
+}

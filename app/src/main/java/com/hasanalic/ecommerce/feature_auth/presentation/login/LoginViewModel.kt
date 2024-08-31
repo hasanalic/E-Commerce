@@ -81,10 +81,10 @@ class LoginViewModel @Inject constructor(
 
     private fun loginUser(email: String, password: String) {
         viewModelScope.launch {
-            when(val result = authUseCases.getUserByEmailAndPassUseCase(email, password)) {
+            when(val result = authUseCases.loginUserWithEmailAndPasswordUseCase(email, password)) {
                 is Result.Error -> handleLoginError(result.error)
                 is Result.Success -> {
-                    setIsLoginSuccessfulToTrueAndSaveUserId(result.data.userId.toString())
+                    setIsLoginSuccessfulToTrueAndSaveUserId(result.data.toString())
                 }
             }
         }

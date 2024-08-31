@@ -1,6 +1,6 @@
 package com.hasanalic.ecommerce.feature_home.presentation.account_screen
 
-import com.hasanalic.ecommerce.feature_auth.domain.model.User
+import com.hasanalic.ecommerce.feature_home.domain.model.User
 
 data class AccountState (
     val isLoading: Boolean = false,
