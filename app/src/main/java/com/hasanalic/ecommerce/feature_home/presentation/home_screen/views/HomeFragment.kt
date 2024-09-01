@@ -21,7 +21,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.hasanalic.ecommerce.R
-import com.hasanalic.ecommerce.core.presentation.utils.AlarmConstants.ANOMIM_USER_ID
 import com.hasanalic.ecommerce.databinding.FragmentHomeBinding
 import com.hasanalic.ecommerce.feature_auth.presentation.AuthActivity
 import com.hasanalic.ecommerce.feature_filter.presentation.FilterActivity
@@ -33,6 +32,7 @@ import com.hasanalic.ecommerce.feature_home.presentation.home_screen.HomeViewMod
 import com.hasanalic.ecommerce.feature_home.presentation.util.SearchQuery
 import com.hasanalic.ecommerce.feature_product_detail.presentation.ProductDetailActivity
 import com.hasanalic.ecommerce.core.presentation.utils.ItemDecoration
+import com.hasanalic.ecommerce.core.presentation.utils.UserConstants.ANOMIM_USER_ID
 import com.hasanalic.ecommerce.feature_location.presentation.LocationActivity
 import com.hasanalic.ecommerce.feature_notification.presentation.NotificationActivity
 import com.hasanalic.ecommerce.core.utils.hide

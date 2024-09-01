@@ -13,12 +13,12 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hasanalic.ecommerce.R
-import com.hasanalic.ecommerce.core.presentation.utils.AlarmConstants.ANOMIM_USER_ID
 import com.hasanalic.ecommerce.databinding.FragmentCompareBinding
 import com.hasanalic.ecommerce.feature_product_detail.presentation.ProductDetailActivity
 import com.hasanalic.ecommerce.feature_home.presentation.home_screen.HomeViewModel
 import com.hasanalic.ecommerce.feature_home.presentation.SharedViewModel
 import com.hasanalic.ecommerce.core.presentation.utils.ItemDecoration
+import com.hasanalic.ecommerce.core.presentation.utils.UserConstants.ANOMIM_USER_ID
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

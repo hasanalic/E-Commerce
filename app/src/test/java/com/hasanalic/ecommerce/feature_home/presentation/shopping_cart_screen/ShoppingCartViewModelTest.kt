@@ -3,6 +3,15 @@ package com.hasanalic.ecommerce.feature_home.presentation.shopping_cart_screen
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import com.hasanalic.ecommerce.MainCoroutineRule
+import com.hasanalic.ecommerce.core.data.FakeSharedPreferencesDataSourceImp
+import com.hasanalic.ecommerce.core.domain.repository.SharedPreferencesDataSource
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.GetUserIdUseCase
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.IsDatabaseInitializedUseCase
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.LogOutUserUseCase
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.SaveUserIdUseCase
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.SetDatabaseInitializedUseCase
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.SharedPreferencesUseCases
+import com.hasanalic.ecommerce.core.presentation.utils.UserConstants.ANOMIM_USER_ID
 import com.hasanalic.ecommerce.feature_home.data.repository.FakeShoppingCartRepository
 import com.hasanalic.ecommerce.feature_home.domain.repository.ShoppingCartRepository
 import com.hasanalic.ecommerce.feature_home.domain.use_case.shopping_cart_use_cases.CheckShoppingCartEntityByProductIdUseCase
@@ -31,12 +40,18 @@ class ShoppingCartViewModelTest {
     var mainCoroutineRule = MainCoroutineRule()
 
     private lateinit var shoppingCartRepository: ShoppingCartRepository
+    private lateinit var sharedPreferencesDataSource: SharedPreferencesDataSource
+
     private lateinit var shoppingCartUseCases: ShoppingCartUseCases
+    private lateinit var sharedPreferencesUseCases: SharedPreferencesUseCases
+
     private lateinit var shoppingCartViewModel: ShoppingCartViewModel
 
     @Before
     fun setup() {
         shoppingCartRepository = FakeShoppingCartRepository()
+        sharedPreferencesDataSource = FakeSharedPreferencesDataSourceImp()
+
         shoppingCartUseCases = ShoppingCartUseCases(
             checkShoppingCartEntityByProductIdUseCase = CheckShoppingCartEntityByProductIdUseCase(shoppingCartRepository),
             deleteShoppingCartItemEntitiesByProductIdListUseCase = DeleteShoppingCartItemEntitiesByProductIdListUseCase(shoppingCartRepository),
@@ -47,13 +62,27 @@ class ShoppingCartViewModelTest {
             insertShoppingCartItemEntityUseCase = InsertShoppingCartItemEntityUseCase(shoppingCartRepository),
             updateShoppingCartItemEntityUseCase = UpdateShoppingCartItemEntityUseCase(shoppingCartRepository)
         )
-        shoppingCartViewModel = ShoppingCartViewModel(shoppingCartUseCases)
+        sharedPreferencesUseCases = SharedPreferencesUseCases(
+            getUserIdUseCase = GetUserIdUseCase(sharedPreferencesDataSource),
+            isDatabaseInitializedUseCase = IsDatabaseInitializedUseCase(sharedPreferencesDataSource),
+            saveUserIdUseCase = SaveUserIdUseCase(sharedPreferencesDataSource),
+            setDatabaseInitializedUseCase = SetDatabaseInitializedUseCase(sharedPreferencesDataSource),
+            logOutUserUseCase = LogOutUserUseCase(sharedPreferencesDataSource)
+        )
+
+        sharedPreferencesUseCases.saveUserIdUseCase("1")
+        shoppingCartViewModel = ShoppingCartViewModel(shoppingCartUseCases, sharedPreferencesUseCases)
     }
 
     @Test
-    fun `getShoppingCartItemList successfully retrieves items`() = runBlocking {
-        shoppingCartViewModel.getShoppingCartItemList("1")
+    fun `checkUserAndGetShoppingCartItemList successfully retrieves items`() = runBlocking {
+        shoppingCartViewModel.checkUserAndGetShoppingCartItemList()
         val state = shoppingCartViewModel.shoppingCartState.getOrAwaitValue()
+
+        assertThat(state.isUserLoggedIn).isTrue()
+        assertThat(state.canUserMoveToCheckout).isFalse()
+        assertThat(state.shouldUserMoveToAuthActivity).isFalse()
+        assertThat(state.userId).isNotEqualTo(ANOMIM_USER_ID)
 
         assertThat(state.shoppingCartItemList).isNotEmpty()
         assertThat(state.totalPriceWhole).isNotNull()
@@ -65,8 +94,15 @@ class ShoppingCartViewModelTest {
 
     @Test
     fun `getShoppingCartItemList returns data error when user not found`() = runBlocking {
-        shoppingCartViewModel.getShoppingCartItemList("2")
+        sharedPreferencesUseCases.logOutUserUseCase()
+
+        shoppingCartViewModel.checkUserAndGetShoppingCartItemList()
         val state = shoppingCartViewModel.shoppingCartState.getOrAwaitValue()
+
+        assertThat(state.isUserLoggedIn).isFalse()
+        assertThat(state.canUserMoveToCheckout).isFalse()
+        assertThat(state.shouldUserMoveToAuthActivity).isFalse()
+        assertThat(state.userId).isEqualTo(ANOMIM_USER_ID)
 
         assertThat(state.shoppingCartItemList).isEmpty()
         assertThat(state.totalPriceWhole).isNull()
@@ -78,65 +114,176 @@ class ShoppingCartViewModelTest {
 
     @Test
     fun `removeItemFromShoppingCart successfuly removes item`() = runBlocking {
-        shoppingCartViewModel.getShoppingCartItemList("1")
-        shoppingCartViewModel.removeItemFromShoppingCart("1","1",0)
+        shoppingCartViewModel.checkUserAndGetShoppingCartItemList()
+        shoppingCartViewModel.removeItemFromShoppingCart("1",0)
 
         val state = shoppingCartViewModel.shoppingCartState.getOrAwaitValue()
 
+        assertThat(state.isUserLoggedIn).isTrue()
+        assertThat(state.canUserMoveToCheckout).isFalse()
+        assertThat(state.shouldUserMoveToAuthActivity).isFalse()
+        assertThat(state.userId).isNotEqualTo(ANOMIM_USER_ID)
+
         assertThat(state.shoppingCartItemList).isEmpty()
         assertThat(state.actionError).isNull()
+        assertThat(state.dataError).isNull()
+        assertThat(state.isLoading).isFalse()
+        assertThat(state.totalPriceWhole).isNotNull()
+        assertThat(state.totalPriceCent).isNotNull()
     }
 
     @Test
     fun `removeItemFromShoppingCart triggers action error when deletion fails`() = runBlocking {
-        shoppingCartViewModel.getShoppingCartItemList("1")
-        shoppingCartViewModel.removeItemFromShoppingCart("1","2",0)
+        shoppingCartViewModel.checkUserAndGetShoppingCartItemList()
+        shoppingCartViewModel.removeItemFromShoppingCart("2",0)
 
         val state = shoppingCartViewModel.shoppingCartState.getOrAwaitValue()
 
+        assertThat(state.isUserLoggedIn).isTrue()
+        assertThat(state.canUserMoveToCheckout).isFalse()
+        assertThat(state.shouldUserMoveToAuthActivity).isFalse()
+        assertThat(state.userId).isNotEqualTo(ANOMIM_USER_ID)
+
         assertThat(state.actionError).isNotEmpty()
+        assertThat(state.dataError).isNull()
+        assertThat(state.isLoading).isFalse()
+        assertThat(state.totalPriceWhole).isNotNull()
+        assertThat(state.totalPriceCent).isNotNull()
     }
 
     @Test
     fun `increaseItemQuantity successfuly increases quantity`() {
-        shoppingCartViewModel.getShoppingCartItemList("1")
-        shoppingCartViewModel.increaseItemQuantityInShoppingCart("1","1",2,0)
+        shoppingCartViewModel.checkUserAndGetShoppingCartItemList()
+        shoppingCartViewModel.increaseItemQuantityInShoppingCart("1",2,0)
 
         val state = shoppingCartViewModel.shoppingCartState.getOrAwaitValue()
 
+        assertThat(state.isUserLoggedIn).isTrue()
+        assertThat(state.canUserMoveToCheckout).isFalse()
+        assertThat(state.shouldUserMoveToAuthActivity).isFalse()
+        assertThat(state.userId).isNotEqualTo(ANOMIM_USER_ID)
+
         assertThat(state.shoppingCartItemList.first().quantity).isEqualTo(3)
         assertThat(state.actionError).isNull()
+        assertThat(state.dataError).isNull()
+        assertThat(state.isLoading).isFalse()
+        assertThat(state.totalPriceWhole).isNotNull()
+        assertThat(state.totalPriceCent).isNotNull()
     }
 
     @Test
     fun `decreaseItemQuantity successfuly decreases quantity`() {
-        shoppingCartViewModel.getShoppingCartItemList("1")
-        shoppingCartViewModel.decreaseItemQuantityInShoppingCart("1","1",2, 0)
+        shoppingCartViewModel.checkUserAndGetShoppingCartItemList()
+        shoppingCartViewModel.decreaseItemQuantityInShoppingCart("1",2, 0)
 
         val state = shoppingCartViewModel.shoppingCartState.getOrAwaitValue()
 
+        assertThat(state.isUserLoggedIn).isTrue()
+        assertThat(state.canUserMoveToCheckout).isFalse()
+        assertThat(state.shouldUserMoveToAuthActivity).isFalse()
+        assertThat(state.userId).isNotEqualTo(ANOMIM_USER_ID)
+
         assertThat(state.shoppingCartItemList.first().quantity).isEqualTo(1)
         assertThat(state.actionError).isNull()
+        assertThat(state.dataError).isNull()
+        assertThat(state.isLoading).isFalse()
+        assertThat(state.totalPriceWhole).isNotNull()
+        assertThat(state.totalPriceCent).isNotNull()
     }
 
     @Test
     fun `decreaseItemQuantityInShoppingCart removes item when quantity becomes zero`() {
-        shoppingCartViewModel.getShoppingCartItemList("1")
-        shoppingCartViewModel.decreaseItemQuantityInShoppingCart("1","1",2, 0)
-        shoppingCartViewModel.decreaseItemQuantityInShoppingCart("1","1",1, 0)
+        shoppingCartViewModel.checkUserAndGetShoppingCartItemList()
+        shoppingCartViewModel.decreaseItemQuantityInShoppingCart("1",2, 0)
+        shoppingCartViewModel.decreaseItemQuantityInShoppingCart("1",1, 0)
 
         val state = shoppingCartViewModel.shoppingCartState.getOrAwaitValue()
 
+        assertThat(state.isUserLoggedIn).isTrue()
+        assertThat(state.canUserMoveToCheckout).isFalse()
+        assertThat(state.shouldUserMoveToAuthActivity).isFalse()
+        assertThat(state.userId).isNotEqualTo(ANOMIM_USER_ID)
+
         assertThat(state.shoppingCartItemList).isEmpty()
         assertThat(state.actionError).isNull()
+        assertThat(state.dataError).isNull()
+        assertThat(state.isLoading).isFalse()
+        assertThat(state.totalPriceWhole).isNotNull()
+        assertThat(state.totalPriceCent).isNotNull()
     }
 
     @Test
     fun `calculateTotalPriceInShoppingCart calculates the correct total price`() {
-        shoppingCartViewModel.getShoppingCartItemList("1")
+        shoppingCartViewModel.checkUserAndGetShoppingCartItemList()
         val state = shoppingCartViewModel.shoppingCartState.getOrAwaitValue()
+
+        assertThat(state.isUserLoggedIn).isTrue()
+        assertThat(state.canUserMoveToCheckout).isFalse()
+        assertThat(state.shouldUserMoveToAuthActivity).isFalse()
+        assertThat(state.userId).isNotEqualTo(ANOMIM_USER_ID)
 
         assertThat(state.totalPriceWhole).isEqualTo(2)
         assertThat(state.totalPriceCent).isEqualTo(2)
+        assertThat(state.dataError).isNull()
+        assertThat(state.isLoading).isFalse()
+    }
+
+    @Test
+    fun `completeOrder sets shouldUserMoveToAuthActivity to true when user not logged in`() {
+        sharedPreferencesUseCases.logOutUserUseCase()
+        shoppingCartViewModel.completeOrder()
+
+        val state = shoppingCartViewModel.shoppingCartState.getOrAwaitValue()
+
+        assertThat(state.isUserLoggedIn).isFalse()
+        assertThat(state.canUserMoveToCheckout).isFalse()
+        assertThat(state.shouldUserMoveToAuthActivity).isTrue()
+        assertThat(state.userId).isEqualTo(ANOMIM_USER_ID)
+
+        assertThat(state.shoppingCartItemList).isEmpty()
+        assertThat(state.actionError).isNull()
+        assertThat(state.dataError).isNull()
+        assertThat(state.isLoading).isFalse()
+        assertThat(state.totalPriceWhole).isNull()
+        assertThat(state.totalPriceCent).isNull()
+    }
+
+    @Test
+    fun `completeOrder sets shouldUserMoveToAuthActivity to true when shoppingCartItemList empty`() {
+        shoppingCartViewModel.checkUserAndGetShoppingCartItemList()
+        shoppingCartViewModel.removeItemFromShoppingCart("1",0)
+        shoppingCartViewModel.completeOrder()
+
+        val state = shoppingCartViewModel.shoppingCartState.getOrAwaitValue()
+
+        assertThat(state.shoppingCartItemList).isEmpty()
+        assertThat(state.isLoading).isFalse()
+        assertThat(state.actionError).isNotEmpty()
+
+        assertThat(state.isUserLoggedIn).isTrue()
+        assertThat(state.canUserMoveToCheckout).isFalse()
+        assertThat(state.shouldUserMoveToAuthActivity).isFalse()
+        assertThat(state.userId).isNotEqualTo(ANOMIM_USER_ID)
+
+        assertThat(state.dataError).isNull()
+    }
+
+    @Test
+    fun `completeOrder sets canUserMoveToCheckout to true when user logged in and shoppingCartItemList is not empty`() {
+        shoppingCartViewModel.checkUserAndGetShoppingCartItemList()
+        shoppingCartViewModel.completeOrder()
+
+        val state = shoppingCartViewModel.shoppingCartState.getOrAwaitValue()
+
+        assertThat(state.canUserMoveToCheckout).isTrue()
+        assertThat(state.shoppingCartItemList).isNotEmpty()
+        assertThat(state.isLoading).isFalse()
+        assertThat(state.actionError).isNull()
+
+        assertThat(state.isUserLoggedIn).isTrue()
+        assertThat(state.shouldUserMoveToAuthActivity).isFalse()
+        assertThat(state.userId).isNotEqualTo(ANOMIM_USER_ID)
+
+        assertThat(state.dataError).isNull()
     }
 }

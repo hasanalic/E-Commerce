@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hasanalic.ecommerce.core.domain.model.DataError
 import com.hasanalic.ecommerce.core.domain.model.Result
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.SharedPreferencesUseCases
 import com.hasanalic.ecommerce.feature_home.domain.use_case.shopping_cart_use_cases.ShoppingCartUseCases
 import com.hasanalic.ecommerce.feature_home.presentation.util.TotalCost
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,19 +15,34 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ShoppingCartViewModel @Inject constructor(
-    private val shoppingCartUseCases: ShoppingCartUseCases
+    private val shoppingCartUseCases: ShoppingCartUseCases,
+    private val sharedPreferencesUseCases: SharedPreferencesUseCases
 ) : ViewModel() {
 
     private var _shoppingCartState = MutableLiveData(ShoppingCartState())
     val shoppingCartState: LiveData<ShoppingCartState> = _shoppingCartState
 
-    fun getShoppingCartItemList(userId: String) {
+    fun checkUserAndGetShoppingCartItemList() {
         _shoppingCartState.value = ShoppingCartState(isLoading = true)
+        val userId = sharedPreferencesUseCases.getUserIdUseCase()
+        userId?.let {
+            _shoppingCartState.value = _shoppingCartState.value!!.copy(
+                userId = it,
+                isUserLoggedIn = true
+            )
+        }
+
+        getShoppingCartItemList()
+    }
+
+    private fun getShoppingCartItemList() {
+        val userId = _shoppingCartState.value!!.userId
         viewModelScope.launch {
             when(val result = shoppingCartUseCases.getProductsInShoppingCartUseCase(userId)) {
                 is Result.Error -> handleGetShoppingCartItemsError(result.error)
                 is Result.Success -> {
-                    _shoppingCartState.value = ShoppingCartState(
+                    _shoppingCartState.value = _shoppingCartState.value!!.copy(
+                        isLoading = false,
                         shoppingCartItemList = result.data.toMutableList()
                     )
 
@@ -52,7 +68,8 @@ class ShoppingCartViewModel @Inject constructor(
         }
     }
 
-    fun removeItemFromShoppingCart(userId: String, productId: String, itemIndex: Int) {
+    fun removeItemFromShoppingCart(productId: String, itemIndex: Int) {
+        val userId = _shoppingCartState.value!!.userId
         viewModelScope.launch {
             when(val result = shoppingCartUseCases.deleteShoppingCartItemEntityUseCase(userId, productId)) {
                 is Result.Error -> handleRemoveItemFromShoppingCartError(result.error)
@@ -89,7 +106,8 @@ class ShoppingCartViewModel @Inject constructor(
         calculateTotalPriceInShoppingCart()
     }
 
-    fun increaseItemQuantityInShoppingCart(userId: String, productId: String, currentQuantity: Int, itemIndex: Int) {
+    fun increaseItemQuantityInShoppingCart(productId: String, currentQuantity: Int, itemIndex: Int) {
+        val userId = _shoppingCartState.value!!.userId
         viewModelScope.launch {
             val increasedItemQuantity = currentQuantity + 1
             val result = shoppingCartUseCases.updateShoppingCartItemEntityUseCase(userId, productId, increasedItemQuantity)
@@ -126,10 +144,11 @@ class ShoppingCartViewModel @Inject constructor(
         calculateTotalPriceInShoppingCart()
     }
 
-    fun decreaseItemQuantityInShoppingCart(userId: String, productId: String, currentQuantity: Int, itemIndex: Int) {
+    fun decreaseItemQuantityInShoppingCart(productId: String, currentQuantity: Int, itemIndex: Int) {
+        val userId = _shoppingCartState.value!!.userId
         val decreasedItemQuantity = currentQuantity - 1
         if (decreasedItemQuantity == 0) {
-            removeItemFromShoppingCart(userId, productId, itemIndex)
+            removeItemFromShoppingCart(productId, itemIndex)
         } else {
             viewModelScope.launch {
                 val result = shoppingCartUseCases.updateShoppingCartItemEntityUseCase(userId, productId, decreasedItemQuantity)
@@ -188,163 +207,42 @@ class ShoppingCartViewModel @Inject constructor(
         )
     }
 
+    fun completeOrder() {
+        _shoppingCartState.value = _shoppingCartState.value!!.copy(isLoading = true)
+        val isUserLoggedIn = _shoppingCartState.value!!.isUserLoggedIn
+
+        if (isUserLoggedIn) {
+            checkShoppingCartListSize()
+        } else {
+            _shoppingCartState.value = _shoppingCartState.value!!.copy(
+                isLoading = false,
+                shouldUserMoveToAuthActivity = true
+            )
+        }
+    }
+
+    private fun checkShoppingCartListSize() {
+        val shoppingCartListSize = _shoppingCartState.value!!.shoppingCartItemList.size
+
+        if (shoppingCartListSize != 0) {
+            // saveShoppinCartListToSingleton()
+            _shoppingCartState.value = _shoppingCartState.value!!.copy(
+                isLoading = false,
+                canUserMoveToCheckout = true
+            )
+        } else {
+            _shoppingCartState.value = _shoppingCartState.value!!.copy(
+                isLoading = false,
+                actionError = "Alışveriş sepeti boş."
+            )
+        }
+    }
+
 
     /*
     fun saveShoppinCartListToSingleton() {
         ShoppingCartList.shoppingCartList = _stateShoppingCartItems.value!!.data!!.toList()
         ShoppingCartList.totalPrice = _stateTotal.value!!
-    }
-     */
-
-
-
-
-
-    /*
-    private var _stateShoppingCartItems = MutableLiveData<Resource<MutableList<ShoppingCartItem>>>()
-    val stateShoppingCartItems: LiveData<Resource<MutableList<ShoppingCartItem>>>
-        get() = _stateShoppingCartItems
-
-    private var _stateTotal = MutableLiveData<String>()
-    val stateTotal: LiveData<String>
-        get() = _stateTotal
-
-    private var _stateShoppingCartItemSize = MutableLiveData<Int>()
-    val stateShoppingCartItemSize: LiveData<Int>
-        get() = _stateShoppingCartItemSize
-     */
-
-    /*
-    fun getShoppingCartList(userId: String) {
-        val tempShoppingCartList = mutableListOf<ShoppingCartItem>()
-        _stateShoppingCartItems.value = Resource.Loading(null)
-
-        viewModelScope.launch {
-            val responseFromShoppingCartItemsEntity = homeRepository.getShoppingCartItems(userId)
-            if (responseFromShoppingCartItemsEntity is Resource.Success) {
-                val shoppingCartItemsEntityList = responseFromShoppingCartItemsEntity.data
-
-                if (!(shoppingCartItemsEntityList.isNullOrEmpty())) {
-                    val responseFromProduct = homeRepository.getProducts()
-
-                    if (responseFromProduct is Resource.Success) {
-                        val productEntityList = responseFromProduct.data?: listOf()
-
-                        for (productEntity in productEntityList) {
-
-                            for (shoppingCartEntity in shoppingCartItemsEntityList) {
-                                if (productEntity.productId.toString() == shoppingCartEntity.productId) {
-                                    tempShoppingCartList.add(
-                                        ShoppingCartItem(
-                                        productId = productEntity.productId.toString(),
-                                        category = productEntity.productCategory!!,
-                                        photo = productEntity.productPhoto!!,
-                                        brand = productEntity.productBrand!!,
-                                        detail = productEntity.productDetail!!,
-                                        priceWhole = productEntity.productPriceWhole!!,
-                                        priceCent = productEntity.productPriceCent!!,
-                                        quantity = shoppingCartEntity.quantity!!.toInt()
-                                    )
-                                    )
-                                }
-                            }
-                        }
-
-                        _stateShoppingCartItems.value = Resource.Success(tempShoppingCartList)
-                        calculateTotalPriceAndShoppingCartQuantity()
-                    } else {
-                    }
-
-                } else {
-                    _stateShoppingCartItems.value = Resource.Success(mutableListOf())
-                    calculateTotalPriceAndShoppingCartQuantity()
-                }
-
-            } else {
-            }
-        }
-    }
- */
-
-    /*
-    fun increaseShoppingCartItem(userId: String, productId: String) {
-        val tempMutableList = _stateShoppingCartItems.value!!.data
-        viewModelScope.launch {
-            tempMutableList?.let {shoppingCartItems ->
-                for (item in shoppingCartItems) {
-                    if (item.productId == productId) {
-                        val increasedQuantity = item.quantity + 1
-
-                        val response = homeRepository.updateShoppingCartItem(
-                            userId = userId,
-                            productId = productId,
-                            quantity = increasedQuantity.toString()
-                        )
-
-                        if (response is Resource.Success) {
-                            item.quantity = increasedQuantity
-                            _stateShoppingCartItems.value = Resource.Success(tempMutableList)
-                            calculateTotalPriceAndShoppingCartQuantity()
-                        } else {
-                        }
-                    }
-                }
-            }
-        }
-    }
-     */
-
-    /*
-    fun decreaseShoppingCartItem(userId: String, productId: String) {
-        val tempMutableList = _stateShoppingCartItems.value!!.data
-        viewModelScope.launch {
-            tempMutableList?.let {shoppingCartItems ->
-                for (item in shoppingCartItems) {
-                    if (item.productId == productId) {
-                        val decreasedQuantity = item.quantity - 1
-
-                        if (decreasedQuantity == 0) {
-                            deleteShoppingCartItem(userId, productId)
-                        } else {
-                            val response = homeRepository.updateShoppingCartItem(
-                                userId = userId,
-                                productId = productId,
-                                quantity = decreasedQuantity.toString()
-                            )
-                            if (response is Resource.Success) {
-                                item.quantity = decreasedQuantity
-                                _stateShoppingCartItems.value = Resource.Success(tempMutableList)
-                                calculateTotalPriceAndShoppingCartQuantity()
-                            } else {
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-     */
-
-    /*
-    fun deleteShoppingCartItem(userId: String, productId: String) {
-        var tempMutableList = _stateShoppingCartItems.value!!.data
-        viewModelScope.launch {
-            tempMutableList?.let {shoppingCartItems ->
-                for (item in shoppingCartItems) {
-                    if (item.productId == productId) {
-                        val response = homeRepository.deleteShoppingCartItem(userId = userId, productId = productId)
-                        if (response is Resource.Success) {
-                            tempMutableList = tempMutableList?.filterIndexed { _, shoppingCartItem ->
-                                shoppingCartItem.productId != productId
-                            }?.toMutableList()
-                            _stateShoppingCartItems.value = Resource.Success(tempMutableList?: mutableListOf())
-                            calculateTotalPriceAndShoppingCartQuantity()
-                        } else {
-                        }
-                    }
-                }
-            }
-        }
     }
      */
 }

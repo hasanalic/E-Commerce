@@ -3,7 +3,6 @@ package com.hasanalic.ecommerce.core.presentation.utils
 object AlarmConstants {
     const val REQUEST_CODR = 100
     const val REQUEST_CHECK_SETTINGS = 1001
-    const val ANOMIM_USER_ID = "-100"
 
     // ALARMS
     const val ADDS_ALARM_REQUEST_CODE = 10006

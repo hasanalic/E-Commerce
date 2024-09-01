@@ -18,7 +18,6 @@ import androidx.navigation.Navigation
 import com.hasanalic.ecommerce.R
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
-import com.hasanalic.ecommerce.core.presentation.utils.AlarmConstants.ANOMIM_USER_ID
 import com.hasanalic.ecommerce.core.presentation.utils.DateFormatConstants.DATE_FORMAT
 import com.hasanalic.ecommerce.databinding.FragmentPaymentCardBinding
 import com.hasanalic.ecommerce.feature_checkout.presentation.CheckoutState
@@ -27,6 +26,7 @@ import com.hasanalic.ecommerce.feature_checkout.presentation.ShoppingCartList
 import com.hasanalic.ecommerce.feature_checkout.presentation.payment_card_screen.PaymentCardState
 import com.hasanalic.ecommerce.feature_checkout.presentation.payment_card_screen.PaymentCardViewModel
 import com.hasanalic.ecommerce.core.presentation.utils.TimeAndDate
+import com.hasanalic.ecommerce.core.presentation.utils.UserConstants.ANOMIM_USER_ID
 import com.hasanalic.ecommerce.feature_checkout.presentation.payment_card_screen.utils.PaymentNotificationConstants.CHANNEL_DESCRIPTION_TEXT
 import com.hasanalic.ecommerce.feature_checkout.presentation.payment_card_screen.utils.PaymentNotificationConstants.CHANNEL_ID
 import com.hasanalic.ecommerce.feature_checkout.presentation.payment_card_screen.utils.PaymentNotificationConstants.CHANNEL_NAME

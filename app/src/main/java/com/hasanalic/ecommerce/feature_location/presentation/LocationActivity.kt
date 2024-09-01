@@ -18,12 +18,12 @@ import com.google.android.gms.location.LocationSettingsRequest
 import com.google.android.gms.location.LocationSettingsResponse
 import com.google.android.gms.location.SettingsClient
 import com.google.android.gms.tasks.Task
-import com.hasanalic.ecommerce.core.presentation.utils.AlarmConstants.ANOMIM_USER_ID
 import com.hasanalic.ecommerce.core.presentation.utils.AlarmConstants.REQUEST_CHECK_SETTINGS
 import com.hasanalic.ecommerce.core.presentation.utils.AlarmConstants.REQUEST_CODR
 import com.hasanalic.ecommerce.databinding.ActivityLocationBinding
 import com.hasanalic.ecommerce.feature_location.presentation.views.LocationAdapter
 import com.hasanalic.ecommerce.core.presentation.utils.ItemDecoration
+import com.hasanalic.ecommerce.core.presentation.utils.UserConstants.ANOMIM_USER_ID
 import com.hasanalic.ecommerce.core.utils.hide
 import com.hasanalic.ecommerce.core.utils.show
 import dagger.hilt.android.AndroidEntryPoint

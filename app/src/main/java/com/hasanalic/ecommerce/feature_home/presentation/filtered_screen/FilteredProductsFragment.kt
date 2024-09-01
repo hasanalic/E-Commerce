@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.hasanalic.ecommerce.R
-import com.hasanalic.ecommerce.core.presentation.utils.AlarmConstants.ANOMIM_USER_ID
+import com.hasanalic.ecommerce.core.presentation.utils.UserConstants.ANOMIM_USER_ID
 import com.hasanalic.ecommerce.databinding.FragmentFilteredProductsBinding
 import com.hasanalic.ecommerce.feature_home.presentation.home_screen.HomeViewModel
 import com.hasanalic.ecommerce.feature_home.presentation.SharedViewModel

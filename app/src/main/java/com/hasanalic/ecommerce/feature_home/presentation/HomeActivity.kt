@@ -7,9 +7,9 @@ import androidx.navigation.findNavController
 import androidx.navigation.navOptions
 import androidx.navigation.ui.setupWithNavController
 import com.hasanalic.ecommerce.R
-import com.hasanalic.ecommerce.core.presentation.utils.AlarmConstants.ANOMIM_USER_ID
 import com.hasanalic.ecommerce.core.presentation.utils.AlarmConstants.CART_ALARM_INTERVAL_TEST
 import com.hasanalic.ecommerce.core.presentation.utils.AlarmConstants.CART_ALARM_REQUEST_CODE
+import com.hasanalic.ecommerce.core.presentation.utils.UserConstants.ANOMIM_USER_ID
 import com.hasanalic.ecommerce.databinding.ActivityHomeBinding
 import com.hasanalic.ecommerce.notification.ReminderItem
 import com.hasanalic.ecommerce.notification.cart.CartAlarmScheduler

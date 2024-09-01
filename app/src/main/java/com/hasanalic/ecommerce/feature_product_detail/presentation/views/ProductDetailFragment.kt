@@ -10,13 +10,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hasanalic.ecommerce.R
-import com.hasanalic.ecommerce.core.presentation.utils.AlarmConstants.ANOMIM_USER_ID
 import com.hasanalic.ecommerce.databinding.FragmentProductDetailBinding
 import com.hasanalic.ecommerce.feature_auth.presentation.AuthActivity
 import com.hasanalic.ecommerce.feature_product_detail.domain.model.ProductDetail
 import com.hasanalic.ecommerce.feature_product_detail.presentation.ProductDetailState
 import com.hasanalic.ecommerce.feature_product_detail.presentation.ProductDetailViewModel
 import com.hasanalic.ecommerce.core.presentation.utils.ItemDecoration
+import com.hasanalic.ecommerce.core.presentation.utils.UserConstants.ANOMIM_USER_ID
 import com.hasanalic.ecommerce.core.utils.glide
 import com.hasanalic.ecommerce.core.utils.hide
 import com.hasanalic.ecommerce.core.utils.placeHolderProgressBar

@@ -11,13 +11,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hasanalic.ecommerce.R
-import com.hasanalic.ecommerce.core.presentation.utils.AlarmConstants.ANOMIM_USER_ID
 import com.hasanalic.ecommerce.databinding.FragmentAddressBinding
 import com.hasanalic.ecommerce.feature_checkout.presentation.CheckoutViewModel
 import com.hasanalic.ecommerce.feature_location.presentation.LocationActivity
 import com.hasanalic.ecommerce.feature_checkout.presentation.address_screen.AddressState
 import com.hasanalic.ecommerce.feature_checkout.presentation.address_screen.AddressViewModel
 import com.hasanalic.ecommerce.core.presentation.utils.ItemDecoration
+import com.hasanalic.ecommerce.core.presentation.utils.UserConstants.ANOMIM_USER_ID
 import com.hasanalic.ecommerce.core.utils.hide
 import com.hasanalic.ecommerce.core.utils.show
 import com.hasanalic.ecommerce.core.utils.toast
