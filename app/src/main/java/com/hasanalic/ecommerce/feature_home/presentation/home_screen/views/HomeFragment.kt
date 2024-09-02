@@ -32,7 +32,6 @@ import com.hasanalic.ecommerce.feature_home.presentation.home_screen.HomeViewMod
 import com.hasanalic.ecommerce.feature_home.presentation.util.SearchQuery
 import com.hasanalic.ecommerce.feature_product_detail.presentation.ProductDetailActivity
 import com.hasanalic.ecommerce.core.presentation.utils.ItemDecoration
-import com.hasanalic.ecommerce.core.presentation.utils.UserConstants.ANOMIM_USER_ID
 import com.hasanalic.ecommerce.feature_location.presentation.LocationActivity
 import com.hasanalic.ecommerce.feature_notification.presentation.NotificationActivity
 import com.hasanalic.ecommerce.core.utils.hide
@@ -48,8 +47,6 @@ class HomeFragment: Fragment() {
     private val binding get() = _binding!!
 
     private var isFabMenuOpen: Boolean = false
-
-    private var userId: String = ANOMIM_USER_ID
 
     private val homeAdapter by lazy {
         HomeAdapter()
@@ -84,10 +81,10 @@ class HomeFragment: Fragment() {
 
         sharedViewModel = ViewModelProvider(requireActivity())[SharedViewModel::class.java]
         viewModel = ViewModelProvider(requireActivity())[HomeViewModel::class.java]
-        viewModel.getProducts(userId)
+        viewModel.getProducts()
+
         //viewModel.getShoppingCartCount(userId)
         //viewModel.resetProductIdStatus()
-
 
         setupFloatingActionButtons()
 
@@ -186,37 +183,21 @@ class HomeFragment: Fragment() {
         binding.recyclerViewHome.layoutManager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
 
         homeAdapter.setAddProductToCartButtonClickListener { productId, position ->
-            viewModel.addProductToCart(userId, productId, position)
+            viewModel.addProductToCart(productId, position)
             homeAdapter.notifyItemChangedInAdapter(position)
         }
 
         homeAdapter.setRemoveProductFromCartButtonClickListener { productId, position ->
-            viewModel.removeProductFromCart(userId, productId, position)
+            viewModel.removeProductFromCart(productId, position)
             homeAdapter.notifyItemChangedInAdapter(position)
         }
 
         homeAdapter.setAddProductToFavoritesClickListener { productId, position ->
-            if (userId != ANOMIM_USER_ID) {
-                viewModel.addProductToFavorites(userId, productId, position)
-                homeAdapter.notifyItemChangedInAdapter(position)
-            } else {
-                toast(requireContext(),"Favori işlemleri için giriş yapmalısınız.",false)
-                val intent = Intent(requireActivity(), AuthActivity::class.java)
-                startActivity(intent)
-                requireActivity().finish()
-            }
+            viewModel.addProductToFavoritesIfUserAuthenticated(productId, position)
         }
 
         homeAdapter.setRemoveProductFromFavoritesClickListener { productId, position ->
-            if (userId != ANOMIM_USER_ID) {
-                viewModel.removeProductFromFavorites(userId, productId, position)
-                homeAdapter.notifyItemChangedInAdapter(position)
-            } else {
-                toast(requireContext(),"Favori işlemleri için giriş yapmalısınız.",false)
-                val intent = Intent(requireActivity(), AuthActivity::class.java)
-                startActivity(intent)
-                requireActivity().finish()
-            }
+            viewModel.removeProductFromFavoritesIfUserAuthenticated(productId, position)
         }
 
         homeAdapter.setAddProductToCompareClickListener { productId, position ->
@@ -249,6 +230,13 @@ class HomeFragment: Fragment() {
             binding.progressBarHome.hide()
             binding.recyclerViewHome.show()
             binding.recyclerViewCategory.show()
+        }
+
+        if (state.shouldUserMoveToAuthActivity) {
+            toast(requireContext(),"Favori işlemleri için giriş yapmalısınız.",false)
+            val intent = Intent(requireActivity(), AuthActivity::class.java)
+            startActivity(intent)
+            requireActivity().finish()
         }
 
         state.scannedProductId?.let {
@@ -323,7 +311,7 @@ class HomeFragment: Fragment() {
     }
 
     private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-        viewModel.getProducts(userId)
+        //viewModel.getProducts(userId)
         //viewModel.getShoppingCartCount(userId)
     }
 

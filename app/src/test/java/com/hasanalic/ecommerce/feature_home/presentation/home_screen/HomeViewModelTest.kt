@@ -3,6 +3,15 @@ package com.hasanalic.ecommerce.feature_home.presentation.home_screen
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import com.hasanalic.ecommerce.MainCoroutineRule
+import com.hasanalic.ecommerce.core.data.FakeSharedPreferencesDataSourceImp
+import com.hasanalic.ecommerce.core.domain.repository.SharedPreferencesDataSource
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.GetUserIdUseCase
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.IsDatabaseInitializedUseCase
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.LogOutUserUseCase
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.SaveUserIdUseCase
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.SetDatabaseInitializedUseCase
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.SharedPreferencesUseCases
+import com.hasanalic.ecommerce.core.presentation.utils.UserConstants.ANOMIM_USER_ID
 import com.hasanalic.ecommerce.feature_filter.data.FakeFilterRepository
 import com.hasanalic.ecommerce.feature_filter.domain.repository.FilterRepository
 import com.hasanalic.ecommerce.feature_filter.domain.use_cases.FilterUseCases
@@ -53,11 +62,13 @@ class HomeViewModelTest {
     private lateinit var filterRepository: FilterRepository
     private lateinit var shoppingCartRepository: ShoppingCartRepository
     private lateinit var favoriteRepository: FavoriteRepository
+    private lateinit var sharedPreferencesDataSource: SharedPreferencesDataSource
 
     private lateinit var homeUseCases: HomeUseCases
     private lateinit var filterUseCases: FilterUseCases
     private lateinit var shoppingCartUseCases: ShoppingCartUseCases
     private lateinit var favoriteUseCases: FavoriteUseCases
+    private lateinit var sharedPreferencesUseCases: SharedPreferencesUseCases
 
     private lateinit var homeViewModel: HomeViewModel
 
@@ -67,6 +78,7 @@ class HomeViewModelTest {
         filterRepository = FakeFilterRepository()
         shoppingCartRepository = FakeShoppingCartRepository()
         favoriteRepository = FakeFavoriteRepository()
+        sharedPreferencesDataSource = FakeSharedPreferencesDataSourceImp()
 
         homeUseCases = HomeUseCases(
             getProductsByUserIdUseCase = GetProductsByUserIdUseCase(homeRepository),
@@ -99,16 +111,27 @@ class HomeViewModelTest {
             checkFavoriteEntityByProductId = CheckFavoriteEntityByProductId(favoriteRepository)
         )
 
-        homeViewModel = HomeViewModel(homeUseCases, filterUseCases, shoppingCartUseCases, favoriteUseCases)
+        sharedPreferencesUseCases = SharedPreferencesUseCases(
+            getUserIdUseCase = GetUserIdUseCase(sharedPreferencesDataSource),
+            isDatabaseInitializedUseCase = IsDatabaseInitializedUseCase(sharedPreferencesDataSource),
+            saveUserIdUseCase = SaveUserIdUseCase(sharedPreferencesDataSource),
+            setDatabaseInitializedUseCase = SetDatabaseInitializedUseCase(sharedPreferencesDataSource),
+            logOutUserUseCase = LogOutUserUseCase(sharedPreferencesDataSource)
+        )
+
+        sharedPreferencesUseCases.saveUserIdUseCase("1")
+
+        homeViewModel = HomeViewModel(homeUseCases, filterUseCases, shoppingCartUseCases, favoriteUseCases, sharedPreferencesUseCases)
     }
 
     @Test
     fun `getCategories successfuly returns category list`() {
-        homeViewModel.getCategories()
         val state = homeViewModel.homeState.getOrAwaitValue()
 
         assertThat(state.categoryList).isNotEmpty()
 
+        assertThat(state.userId).isNotEqualTo(ANOMIM_USER_ID)
+        assertThat(state.scannedProductId).isNull()
         assertThat(state.isLoading).isFalse()
         assertThat(state.productList).isEmpty()
         assertThat(state.dataError).isNull()
@@ -117,11 +140,13 @@ class HomeViewModelTest {
 
     @Test
     fun `getProducts successfuly returns product list`() {
-        homeViewModel.getProducts("1")
+        homeViewModel.getProducts()
         val state = homeViewModel.homeState.getOrAwaitValue()
 
         assertThat(state.productList).isNotEmpty()
 
+        assertThat(state.userId).isNotEqualTo(ANOMIM_USER_ID)
+        assertThat(state.scannedProductId).isNull()
         assertThat(state.isLoading).isFalse()
         assertThat(state.categoryList).isNotEmpty()
         assertThat(state.dataError).isNull()
@@ -130,15 +155,17 @@ class HomeViewModelTest {
 
     @Test
     fun `removeProductFromCart successfuly removes product from cart and update the product list`() {
-        homeViewModel.getProducts("1")
-        homeViewModel.addProductToCart("1","1",0)
-        homeViewModel.removeProductFromCart("1","1",0)
+        homeViewModel.getProducts()
+        homeViewModel.addProductToCart("1",0)
+        homeViewModel.removeProductFromCart("1",0)
 
         val state = homeViewModel.homeState.getOrAwaitValue()
 
         assertThat(state.productList).isNotEmpty()
         assertThat(state.productList[0].addedToShoppingCart).isFalse()
 
+        assertThat(state.userId).isNotEqualTo(ANOMIM_USER_ID)
+        assertThat(state.scannedProductId).isNull()
         assertThat(state.isLoading).isFalse()
         assertThat(state.categoryList).isNotEmpty()
         assertThat(state.dataError).isNull()
@@ -147,9 +174,9 @@ class HomeViewModelTest {
 
     @Test
     fun `removeProductFromCart triggers action error when deletion fails`() {
-        homeViewModel.getProducts("1")
-        homeViewModel.addProductToCart("1","1",0)
-        homeViewModel.removeProductFromCart("1","2",0)
+        homeViewModel.getProducts()
+        homeViewModel.addProductToCart("1",0)
+        homeViewModel.removeProductFromCart("2",0)
 
         val state = homeViewModel.homeState.getOrAwaitValue()
 
@@ -157,6 +184,8 @@ class HomeViewModelTest {
         assertThat(state.productList[0].addedToShoppingCart).isTrue()
         assertThat(state.actionError).isNotEmpty()
 
+        assertThat(state.userId).isNotEqualTo(ANOMIM_USER_ID)
+        assertThat(state.scannedProductId).isNull()
         assertThat(state.isLoading).isFalse()
         assertThat(state.categoryList).isNotEmpty()
         assertThat(state.dataError).isNull()
@@ -164,8 +193,8 @@ class HomeViewModelTest {
 
     @Test
     fun `addProductToCart successfuly adds product to cart and update the product list`() {
-        homeViewModel.getProducts("1")
-        homeViewModel.addProductToCart("1","1",0)
+        homeViewModel.getProducts()
+        homeViewModel.addProductToCart("1",0)
 
         val state = homeViewModel.homeState.getOrAwaitValue()
 
@@ -173,16 +202,18 @@ class HomeViewModelTest {
         assertThat(state.productList[0].addedToShoppingCart).isTrue()
         assertThat(state.actionError).isNull()
 
+        assertThat(state.userId).isNotEqualTo(ANOMIM_USER_ID)
+        assertThat(state.scannedProductId).isNull()
         assertThat(state.isLoading).isFalse()
         assertThat(state.categoryList).isNotEmpty()
         assertThat(state.dataError).isNull()
     }
 
     @Test
-    fun `removeProductFromFavorites successfuly removes product from favorites and update the product list`() {
-        homeViewModel.getProducts("1")
-        homeViewModel.addProductToFavorites("1","1",0)
-        homeViewModel.removeProductFromFavorites("1","1",0)
+    fun `removeProductFromFavoritesIfUserAuthenticated successfuly removes product from favorites and update the product list`() {
+        homeViewModel.getProducts()
+        homeViewModel.addProductToFavoritesIfUserAuthenticated("1",0)
+        homeViewModel.removeProductFromFavoritesIfUserAuthenticated("1",0)
 
         val state = homeViewModel.homeState.getOrAwaitValue()
 
@@ -190,16 +221,18 @@ class HomeViewModelTest {
         assertThat(state.productList[0].addedToFavorites).isFalse()
         assertThat(state.actionError).isNull()
 
+        assertThat(state.userId).isNotEqualTo(ANOMIM_USER_ID)
+        assertThat(state.scannedProductId).isNull()
         assertThat(state.isLoading).isFalse()
         assertThat(state.categoryList).isNotEmpty()
         assertThat(state.dataError).isNull()
     }
 
     @Test
-    fun `removeProductFromFavorites triggers action error when deletion fails`() {
-        homeViewModel.getProducts("1")
-        homeViewModel.addProductToFavorites("1","1",0)
-        homeViewModel.removeProductFromFavorites("1","2",0)
+    fun `removeProductFromFavoritesIfUserAuthenticated triggers action error when deletion fails`() {
+        homeViewModel.getProducts()
+        homeViewModel.addProductToFavoritesIfUserAuthenticated("1",0)
+        homeViewModel.removeProductFromFavoritesIfUserAuthenticated("2",0)
 
         val state = homeViewModel.homeState.getOrAwaitValue()
 
@@ -207,15 +240,17 @@ class HomeViewModelTest {
         assertThat(state.productList[0].addedToFavorites).isTrue()
         assertThat(state.actionError).isNotEmpty()
 
+        assertThat(state.userId).isNotEqualTo(ANOMIM_USER_ID)
+        assertThat(state.scannedProductId).isNull()
         assertThat(state.isLoading).isFalse()
         assertThat(state.categoryList).isNotEmpty()
         assertThat(state.dataError).isNull()
     }
 
     @Test
-    fun `addProductToFavorites successfuly adds product to favorites and update the product list`() {
-        homeViewModel.getProducts("1")
-        homeViewModel.addProductToFavorites("1","1",0)
+    fun `addProductToFavoritesIfUserAuthenticated successfuly adds product to favorites and update the product list`() {
+        homeViewModel.getProducts()
+        homeViewModel.addProductToFavoritesIfUserAuthenticated("1",0)
 
         val state = homeViewModel.homeState.getOrAwaitValue()
 
@@ -223,6 +258,8 @@ class HomeViewModelTest {
         assertThat(state.productList[0].addedToFavorites).isTrue()
         assertThat(state.actionError).isNull()
 
+        assertThat(state.userId).isNotEqualTo(ANOMIM_USER_ID)
+        assertThat(state.scannedProductId).isNull()
         assertThat(state.isLoading).isFalse()
         assertThat(state.categoryList).isNotEmpty()
         assertThat(state.dataError).isNull()
@@ -236,6 +273,7 @@ class HomeViewModelTest {
         assertThat(state.scannedProductId).isNotEmpty()
         assertThat(state.actionError).isNull()
 
+        assertThat(state.userId).isNotEqualTo(ANOMIM_USER_ID)
         assertThat(state.isLoading).isFalse()
         assertThat(state.dataError).isNull()
     }
@@ -249,6 +287,7 @@ class HomeViewModelTest {
         assertThat(state.scannedProductId).isNull()
         assertThat(state.actionError).isNull()
 
+        assertThat(state.userId).isNotEqualTo(ANOMIM_USER_ID)
         assertThat(state.isLoading).isFalse()
         assertThat(state.dataError).isNull()
     }

@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hasanalic.ecommerce.core.domain.model.DataError
 import com.hasanalic.ecommerce.core.domain.model.Result
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.SharedPreferencesUseCases
+import com.hasanalic.ecommerce.core.presentation.utils.UserConstants.ANOMIM_USER_ID
 import com.hasanalic.ecommerce.feature_filter.domain.use_cases.FilterUseCases
 import com.hasanalic.ecommerce.feature_home.data.local.entity.FavoritesEntity
 import com.hasanalic.ecommerce.feature_home.data.local.entity.ShoppingCartItemsEntity
@@ -21,14 +23,23 @@ class HomeViewModel @Inject constructor(
     private val homeUseCases: HomeUseCases,
     private val filterUseCases: FilterUseCases,
     private val shoppingCartUseCases: ShoppingCartUseCases,
-    private val favoriteUseCases: FavoriteUseCases
+    private val favoriteUseCases: FavoriteUseCases,
+    private val sharedPreferencesUseCases: SharedPreferencesUseCases
 ) : ViewModel() {
 
     private var _homeState = MutableLiveData(HomeState())
     val homeState: LiveData<HomeState> = _homeState
 
     init {
+        getUserId()
         getCategories()
+    }
+
+    private fun getUserId() {
+        val userId = sharedPreferencesUseCases.getUserIdUseCase()
+        userId?.let {
+            _homeState.value = _homeState.value!!.copy(userId = it)
+        }
     }
 
     fun getCategories() {
@@ -61,11 +72,11 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun getProducts(userId: String) {
-        _homeState.value = _homeState.value!!.copy(
-            isLoading = true
-        )
+    fun getProducts() {
+        _homeState.value = _homeState.value!!.copy(isLoading = true)
         viewModelScope.launch {
+            val userId = _homeState.value!!.userId
+
             when(val result = homeUseCases.getProductsByUserIdUseCase(userId)) {
                 is Result.Error -> handleGetProductsError(result.error)
                 is Result.Success -> {
@@ -94,8 +105,10 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun removeProductFromCart(userId: String, productId: String, itemIndex: Int) {
+    fun removeProductFromCart(productId: String, itemIndex: Int) {
         viewModelScope.launch {
+            val userId = _homeState.value!!.userId
+
             when(val result = shoppingCartUseCases.deleteShoppingCartItemEntityUseCase(userId, productId)) {
                 is Result.Error -> handleRemoveProductFromCartError(result.error)
                 is Result.Success -> { setAddedToCart(itemIndex, false) }
@@ -119,9 +132,11 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun addProductToCart(userId: String, productId: String, itemIndex: Int) {
+    fun addProductToCart(productId: String, itemIndex: Int) {
         viewModelScope.launch {
+            val userId = _homeState.value!!.userId
             val shoppingCartEntity = ShoppingCartItemsEntity(userId, productId, 1)
+
             when (val result = shoppingCartUseCases.insertShoppingCartItemEntityUseCase(shoppingCartEntity)) {
                 is Result.Error -> handleAddProductToCartError(result.error)
                 is Result.Success -> setAddedToCart(itemIndex, true)
@@ -153,7 +168,16 @@ class HomeViewModel @Inject constructor(
         )
     }
 
-    fun removeProductFromFavorites(userId: String, productId: String, itemIndex: Int) {
+    fun removeProductFromFavoritesIfUserAuthenticated(productId: String, itemIndex: Int) {
+        val userId = _homeState.value!!.userId
+
+        if (userId == ANOMIM_USER_ID) {
+            _homeState.value = _homeState.value!!.copy(
+                shouldUserMoveToAuthActivity = true
+            )
+            return
+        }
+
         viewModelScope.launch {
             when(val result = favoriteUseCases.deleteFavoriteUseCase(userId, productId)) {
                 is Result.Error -> handleRemoveProductFromFavoritesError(result.error)
@@ -178,7 +202,16 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun addProductToFavorites(userId: String, productId: String, itemIndex: Int) {
+    fun addProductToFavoritesIfUserAuthenticated(productId: String, itemIndex: Int) {
+        val userId = _homeState.value!!.userId
+
+        if (userId == ANOMIM_USER_ID) {
+            _homeState.value = _homeState.value!!.copy(
+                shouldUserMoveToAuthActivity = true
+            )
+            return
+        }
+
         viewModelScope.launch {
             val favoriteEntity = FavoritesEntity(userId, productId)
             when(val result = favoriteUseCases.insertFavoriteAndGetIdUseCase(favoriteEntity)) {
@@ -244,7 +277,6 @@ class HomeViewModel @Inject constructor(
             scannedProductId = null
         )
     }
-
 
     /*
     /// FILTERED PRODUCTS FRAGMENT ///
