@@ -40,7 +40,7 @@ class AuthViewModel @Inject constructor(
         viewModelScope.launch {
             val isDatabaseInitialized = sharedPreferencesUseCases.isDatabaseInitializedUseCase()
             if (isDatabaseInitialized) {
-                _authState.value = _authState.value!!.copy(isDatabaseInitialized = true)
+                _authState.value = _authState.value!!.copy(isDatabaseInitialized = true, isLoading = false)
             } else {
                 insertProductAndReviewEntities()
             }
@@ -59,13 +59,9 @@ class AuthViewModel @Inject constructor(
             is Result.Error -> handleInsertDatabaseError(result.error)
             is Result.Success -> {
                 setDatabaseInitializedAsTrue()
-                _authState.value = _authState.value!!.copy(isDatabaseInitialized = true)
+                _authState.value = _authState.value!!.copy(isDatabaseInitialized = true, isLoading = false)
             }
         }
-    }
-
-    private fun setDatabaseInitializedAsTrue() {
-        sharedPreferencesUseCases.setDatabaseInitializedUseCase(true)
     }
 
     private fun handleInsertDatabaseError(error: DataError.Local) {
@@ -78,5 +74,9 @@ class AuthViewModel @Inject constructor(
             isLoading = false,
             dataError = message
         )
+    }
+
+    private fun setDatabaseInitializedAsTrue() {
+        sharedPreferencesUseCases.setDatabaseInitializedUseCase(true)
     }
 }

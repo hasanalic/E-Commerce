@@ -60,10 +60,13 @@ class AuthViewModelTest {
 
     @Test
     fun `checkIfUserAlreadyLoggedIn should sets isUserAlreadyLoggedIn to true when userId found`() {
-        (sharedPreferencesDataSource as FakeSharedPreferencesDataSourceImp).fakeUserId = "1"
+        sharedPreferencesUseCases.saveUserIdUseCase("1")
         authViewModel = AuthViewModel(sharedPreferencesUseCases, databaseInitializerUseCases)
 
         val state = authViewModel.authState.getOrAwaitValue()
+
+        assertThat(state.isLoading).isFalse()
+        assertThat(state.isDatabaseInitialized).isTrue()
         assertThat(state.isUserAlreadyLoggedIn).isTrue()
         assertThat(state.dataError).isNull()
     }
@@ -73,6 +76,9 @@ class AuthViewModelTest {
         authViewModel = AuthViewModel(sharedPreferencesUseCases, databaseInitializerUseCases)
 
         val state = authViewModel.authState.getOrAwaitValue()
+
+        assertThat(state.isLoading).isFalse()
+        assertThat(state.isDatabaseInitialized).isTrue()
         assertThat(state.isUserAlreadyLoggedIn).isFalse()
         assertThat(state.dataError).isNull()
     }
@@ -82,6 +88,8 @@ class AuthViewModelTest {
         authViewModel = AuthViewModel(sharedPreferencesUseCases, databaseInitializerUseCases)
 
         val state = authViewModel.authState.getOrAwaitValue()
+
+        assertThat(state.isLoading).isFalse()
         assertThat(state.isDatabaseInitialized).isTrue()
         assertThat(state.dataError).isNull()
     }
@@ -92,6 +100,8 @@ class AuthViewModelTest {
         authViewModel = AuthViewModel(sharedPreferencesUseCases, databaseInitializerUseCases)
 
         val state = authViewModel.authState.getOrAwaitValue()
+
+        assertThat(state.isLoading).isFalse()
         assertThat(state.isDatabaseInitialized).isTrue()
         assertThat(state.dataError).isNull()
     }
