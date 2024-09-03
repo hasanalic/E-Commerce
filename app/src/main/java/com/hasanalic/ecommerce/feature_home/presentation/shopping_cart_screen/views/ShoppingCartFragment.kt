@@ -73,13 +73,13 @@ class ShoppingCartFragment: Fragment() {
         }
 
         shoppingCartAdapter.setOnIncreaseButtonClickListener { productId, quantity, position ->
-            viewModel.increaseItemQuantityInShoppingCart(productId, quantity, position)
-            shoppingCartAdapter.notifyItemChangedInAdapter(position)
+            viewModel.increaseItemQuantityInShoppingCart(productId, quantity)
+            //shoppingCartAdapter.notifyItemChangedInAdapter(position)
         }
 
         shoppingCartAdapter.setOnDecreaseButtonClickListener { productId, quantity, position ->
-            viewModel.decreaseItemQuantityInShoppingCart(productId, quantity, position)
-            shoppingCartAdapter.notifyItemChangedInAdapter(position)
+            viewModel.decreaseItemQuantityInShoppingCart(productId, quantity)
+            //shoppingCartAdapter.notifyItemChangedInAdapter(position)
         }
 
         shoppingCartAdapter.setOnDeleteButtonClickListener { productId, position ->
@@ -91,8 +91,8 @@ class ShoppingCartFragment: Fragment() {
         val alertDialogBuilder = AlertDialog.Builder(requireContext())
         alertDialogBuilder.setMessage("Ürünü sepetten silmek istediğine emin misin?")
         alertDialogBuilder.setPositiveButton("Sil") { _, _ ->
-            viewModel.removeItemFromShoppingCart(productId, position)
-            shoppingCartAdapter.notifyItemRemovedInAdapter(position)
+            viewModel.removeItemFromShoppingCart(productId)
+            //shoppingCartAdapter.notifyItemRemovedInAdapter(position)
         }
         alertDialogBuilder.setNegativeButton("Vazgeç") { _, _ -> }
 
@@ -131,6 +131,7 @@ class ShoppingCartFragment: Fragment() {
         state.shoppingCartItemList.let {
             val shoppingCartItemList = it.toList()
             shoppingCartAdapter.shoppingCartItems = shoppingCartItemList
+            shoppingCartAdapter.notifyDataSetChangedInAdapter()
 
             if (shoppingCartItemList.isEmpty()) {
                 binding.emptyShoppingCart.show()
@@ -146,7 +147,6 @@ class ShoppingCartFragment: Fragment() {
                 binding.textViewTotal.show()
                 binding.buttonCompleteOrder.show()
             }
-            shoppingCartAdapter.notifyDataSetChangedInAdapter()
         }
 
         if (state.totalPriceWhole != null && state.totalPriceCent != null) {

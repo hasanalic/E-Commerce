@@ -68,12 +68,12 @@ class ShoppingCartViewModel @Inject constructor(
         }
     }
 
-    fun removeItemFromShoppingCart(productId: String, itemIndex: Int) {
+    fun removeItemFromShoppingCart(productId: String) {
         val userId = _shoppingCartState.value!!.userId
         viewModelScope.launch {
             when(val result = shoppingCartUseCases.deleteShoppingCartItemEntityUseCase(userId, productId)) {
                 is Result.Error -> handleRemoveItemFromShoppingCartError(result.error)
-                is Result.Success -> removeItemFromShoppingCartItemList(itemIndex)
+                is Result.Success -> removeItemFromShoppingCartItemList(productId)
             }
         }
     }
@@ -94,11 +94,11 @@ class ShoppingCartViewModel @Inject constructor(
         }
     }
 
-    private fun removeItemFromShoppingCartItemList(itemIndex: Int) {
+    private fun removeItemFromShoppingCartItemList(productId: String) {
         val currentShoppingCartItems = _shoppingCartState.value!!.shoppingCartItemList
-        if (itemIndex >= 0 && itemIndex < currentShoppingCartItems.size) {
-            currentShoppingCartItems.removeAt(itemIndex)
-        }
+
+        currentShoppingCartItems.removeAll { it.productId == productId }
+
         _shoppingCartState.value = shoppingCartState.value!!.copy(
             shoppingCartItemList = currentShoppingCartItems
         )
@@ -106,14 +106,14 @@ class ShoppingCartViewModel @Inject constructor(
         calculateTotalPriceInShoppingCart()
     }
 
-    fun increaseItemQuantityInShoppingCart(productId: String, currentQuantity: Int, itemIndex: Int) {
+    fun increaseItemQuantityInShoppingCart(productId: String, currentQuantity: Int) {
         val userId = _shoppingCartState.value!!.userId
         viewModelScope.launch {
             val increasedItemQuantity = currentQuantity + 1
             val result = shoppingCartUseCases.updateShoppingCartItemEntityUseCase(userId, productId, increasedItemQuantity)
             when(result) {
                 is Result.Error -> handleIncreaseItemQuantityError(result.error)
-                is Result.Success -> increaseItemQuantityInShoppingCartItemList(increasedItemQuantity, itemIndex)
+                is Result.Success -> increaseItemQuantityInShoppingCartItemList(increasedItemQuantity, productId)
             }
         }
     }
@@ -134,27 +134,36 @@ class ShoppingCartViewModel @Inject constructor(
         }
     }
 
-    private fun increaseItemQuantityInShoppingCartItemList(increasedItemQuantity: Int, itemIndex: Int) {
+    private fun increaseItemQuantityInShoppingCartItemList(increasedItemQuantity: Int, productId: String) {
         val currentShoppingCartItemList = _shoppingCartState.value!!.shoppingCartItemList
-        currentShoppingCartItemList[itemIndex].quantity = increasedItemQuantity
+
+        val updatedShoppingCartItemList = currentShoppingCartItemList.map { product ->
+            if (product.productId == productId) {
+                product.copy(quantity = increasedItemQuantity)
+            } else {
+                product
+            }
+        }
+
         _shoppingCartState.value = _shoppingCartState.value!!.copy(
-            shoppingCartItemList = currentShoppingCartItemList
+            shoppingCartItemList = updatedShoppingCartItemList.toMutableList()
         )
 
         calculateTotalPriceInShoppingCart()
     }
 
-    fun decreaseItemQuantityInShoppingCart(productId: String, currentQuantity: Int, itemIndex: Int) {
+    fun decreaseItemQuantityInShoppingCart(productId: String, currentQuantity: Int) {
         val userId = _shoppingCartState.value!!.userId
         val decreasedItemQuantity = currentQuantity - 1
+
         if (decreasedItemQuantity == 0) {
-            removeItemFromShoppingCart(productId, itemIndex)
+            removeItemFromShoppingCart(productId)
         } else {
             viewModelScope.launch {
                 val result = shoppingCartUseCases.updateShoppingCartItemEntityUseCase(userId, productId, decreasedItemQuantity)
                 when(result) {
                     is Result.Error -> handleDecreaseItemQuantityError(result.error)
-                    is Result.Success -> decreaseItemQuantityInShoppingCartList(decreasedItemQuantity, itemIndex)
+                    is Result.Success -> decreaseItemQuantityInShoppingCartList(decreasedItemQuantity, productId)
                 }
             }
         }
@@ -176,11 +185,19 @@ class ShoppingCartViewModel @Inject constructor(
         }
     }
 
-    private fun decreaseItemQuantityInShoppingCartList(decreasedItemQuantity: Int, itemIndex: Int) {
+    private fun decreaseItemQuantityInShoppingCartList(decreasedItemQuantity: Int, productId: String) {
         val currentShoppingCartItemList = _shoppingCartState.value!!.shoppingCartItemList
-        currentShoppingCartItemList[itemIndex].quantity = decreasedItemQuantity
+
+        val updatedShoppingCartItemList = currentShoppingCartItemList.map { product ->
+            if (product.productId == productId) {
+                product.copy(quantity = decreasedItemQuantity)
+            } else {
+                product
+            }
+        }
+
         _shoppingCartState.value = _shoppingCartState.value!!.copy(
-            shoppingCartItemList = currentShoppingCartItemList
+            shoppingCartItemList = updatedShoppingCartItemList.toMutableList()
         )
 
         calculateTotalPriceInShoppingCart()

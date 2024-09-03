@@ -115,7 +115,7 @@ class ShoppingCartViewModelTest {
     @Test
     fun `removeItemFromShoppingCart successfuly removes item`() = runBlocking {
         shoppingCartViewModel.checkUserAndGetShoppingCartItemList()
-        shoppingCartViewModel.removeItemFromShoppingCart("1",0)
+        shoppingCartViewModel.removeItemFromShoppingCart("1")
 
         val state = shoppingCartViewModel.shoppingCartState.getOrAwaitValue()
 
@@ -135,7 +135,7 @@ class ShoppingCartViewModelTest {
     @Test
     fun `removeItemFromShoppingCart triggers action error when deletion fails`() = runBlocking {
         shoppingCartViewModel.checkUserAndGetShoppingCartItemList()
-        shoppingCartViewModel.removeItemFromShoppingCart("2",0)
+        shoppingCartViewModel.removeItemFromShoppingCart("2")
 
         val state = shoppingCartViewModel.shoppingCartState.getOrAwaitValue()
 
@@ -154,7 +154,7 @@ class ShoppingCartViewModelTest {
     @Test
     fun `increaseItemQuantity successfuly increases quantity`() {
         shoppingCartViewModel.checkUserAndGetShoppingCartItemList()
-        shoppingCartViewModel.increaseItemQuantityInShoppingCart("1",2,0)
+        shoppingCartViewModel.increaseItemQuantityInShoppingCart("1",2)
 
         val state = shoppingCartViewModel.shoppingCartState.getOrAwaitValue()
 
@@ -174,7 +174,7 @@ class ShoppingCartViewModelTest {
     @Test
     fun `decreaseItemQuantity successfuly decreases quantity`() {
         shoppingCartViewModel.checkUserAndGetShoppingCartItemList()
-        shoppingCartViewModel.decreaseItemQuantityInShoppingCart("1",2, 0)
+        shoppingCartViewModel.decreaseItemQuantityInShoppingCart("1",2)
 
         val state = shoppingCartViewModel.shoppingCartState.getOrAwaitValue()
 
@@ -194,8 +194,8 @@ class ShoppingCartViewModelTest {
     @Test
     fun `decreaseItemQuantityInShoppingCart removes item when quantity becomes zero`() {
         shoppingCartViewModel.checkUserAndGetShoppingCartItemList()
-        shoppingCartViewModel.decreaseItemQuantityInShoppingCart("1",2, 0)
-        shoppingCartViewModel.decreaseItemQuantityInShoppingCart("1",1, 0)
+        shoppingCartViewModel.decreaseItemQuantityInShoppingCart("1",2)
+        shoppingCartViewModel.decreaseItemQuantityInShoppingCart("1",1)
 
         val state = shoppingCartViewModel.shoppingCartState.getOrAwaitValue()
 
@@ -251,7 +251,7 @@ class ShoppingCartViewModelTest {
     @Test
     fun `completeOrder sets shouldUserMoveToAuthActivity to true when shoppingCartItemList empty`() {
         shoppingCartViewModel.checkUserAndGetShoppingCartItemList()
-        shoppingCartViewModel.removeItemFromShoppingCart("1",0)
+        shoppingCartViewModel.removeItemFromShoppingCart("1")
         shoppingCartViewModel.completeOrder()
 
         val state = shoppingCartViewModel.shoppingCartState.getOrAwaitValue()
