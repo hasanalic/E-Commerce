@@ -17,7 +17,6 @@ import com.hasanalic.ecommerce.feature_location.presentation.LocationActivity
 import com.hasanalic.ecommerce.feature_checkout.presentation.address_screen.AddressState
 import com.hasanalic.ecommerce.feature_checkout.presentation.address_screen.AddressViewModel
 import com.hasanalic.ecommerce.core.presentation.utils.ItemDecoration
-import com.hasanalic.ecommerce.core.presentation.utils.UserConstants.ANOMIM_USER_ID
 import com.hasanalic.ecommerce.core.utils.hide
 import com.hasanalic.ecommerce.core.utils.show
 import com.hasanalic.ecommerce.core.utils.toast
@@ -31,8 +30,6 @@ class AddressFragment: Fragment() {
 
     private lateinit var viewModel: AddressViewModel
     private lateinit var checkoutViewModel: CheckoutViewModel
-
-    private var userId: String = ANOMIM_USER_ID
 
     private var addressId: String? = null
 
@@ -50,7 +47,7 @@ class AddressFragment: Fragment() {
 
         viewModel = ViewModelProvider(requireActivity())[AddressViewModel::class.java]
         checkoutViewModel = ViewModelProvider(requireActivity())[CheckoutViewModel::class.java]
-        viewModel.getAddressList(userId)
+        viewModel.getAddressList()
 
         setupListeners()
 
@@ -66,7 +63,7 @@ class AddressFragment: Fragment() {
 
         binding.buttonContinue.setOnClickListener {view->
             addressId?.let {
-                checkoutViewModel.setOrderUserIdAndAddressId(userId, it)
+                checkoutViewModel.getUserIdAndSetOrderAddressId(it)
                 Navigation.findNavController(view).navigate(R.id.action_addressFragment_to_shippingFragment)
             }?: toast(requireContext(),"Adres seçiniz",false)
         }
@@ -78,7 +75,7 @@ class AddressFragment: Fragment() {
     }
 
     private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-        viewModel.getAddressList(userId)
+        viewModel.getAddressList()
     }
 
     private fun setupRecyclerView() {

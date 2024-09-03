@@ -3,6 +3,14 @@ package com.hasanalic.ecommerce.feature_checkout.presentation
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import com.hasanalic.ecommerce.MainCoroutineRule
+import com.hasanalic.ecommerce.core.data.FakeSharedPreferencesDataSourceImp
+import com.hasanalic.ecommerce.core.domain.repository.SharedPreferencesDataSource
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.GetUserIdUseCase
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.IsDatabaseInitializedUseCase
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.LogOutUserUseCase
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.SaveUserIdUseCase
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.SetDatabaseInitializedUseCase
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.SharedPreferencesUseCases
 import com.hasanalic.ecommerce.feature_checkout.data.repository.FakeOrderProductsRepository
 import com.hasanalic.ecommerce.feature_checkout.domain.repository.OrderProductsRepository
 import com.hasanalic.ecommerce.feature_checkout.domain.use_cases.InsertAllOrderProductsUseCase
@@ -27,7 +35,6 @@ import com.hasanalic.ecommerce.feature_orders.domain.use_cases.OrderUseCases
 import com.hasanalic.ecommerce.feature_orders.domain.use_cases.UpdateOrderStatusUseCase
 import com.hasanalic.ecommerce.getOrAwaitValue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -47,10 +54,12 @@ class CheckoutViewModelTest {
     private lateinit var orderRepository: OrderRepository
     private lateinit var orderProductsRepository: OrderProductsRepository
     private lateinit var shoppingCartRepository: ShoppingCartRepository
+    private lateinit var sharedPreferencesDataSource: SharedPreferencesDataSource
 
     private lateinit var orderUseCases: OrderUseCases
     private lateinit var insertAllOrderProductsUseCase: InsertAllOrderProductsUseCase
     private lateinit var shoppingCartUseCases: ShoppingCartUseCases
+    private lateinit var sharedPreferencesUseCases: SharedPreferencesUseCases
 
     private lateinit var checkoutViewModel: CheckoutViewModel
 
@@ -59,6 +68,7 @@ class CheckoutViewModelTest {
         orderRepository = FakeOrderRepository()
         orderProductsRepository = FakeOrderProductsRepository()
         shoppingCartRepository = FakeShoppingCartRepository()
+        sharedPreferencesDataSource = FakeSharedPreferencesDataSourceImp()
 
         orderUseCases = OrderUseCases(
             getOrderDetailUseCase = GetOrderDetailUseCase(orderRepository),
@@ -80,21 +90,29 @@ class CheckoutViewModelTest {
             updateShoppingCartItemEntityUseCase = UpdateShoppingCartItemEntityUseCase(shoppingCartRepository)
         )
 
+        sharedPreferencesUseCases = SharedPreferencesUseCases(
+            getUserIdUseCase = GetUserIdUseCase(sharedPreferencesDataSource),
+            isDatabaseInitializedUseCase = IsDatabaseInitializedUseCase(sharedPreferencesDataSource),
+            saveUserIdUseCase = SaveUserIdUseCase(sharedPreferencesDataSource),
+            setDatabaseInitializedUseCase = SetDatabaseInitializedUseCase(sharedPreferencesDataSource),
+            logOutUserUseCase = LogOutUserUseCase(sharedPreferencesDataSource)
+        )
+
         ShoppingCartList.shoppingCartList = shoppingCartItemList
         ShoppingCartList.totalPrice = totalPrice
 
-        checkoutViewModel = CheckoutViewModel(orderUseCases, insertAllOrderProductsUseCase, shoppingCartUseCases)
+        sharedPreferencesUseCases.saveUserIdUseCase("1")
+        checkoutViewModel = CheckoutViewModel(orderUseCases, insertAllOrderProductsUseCase, shoppingCartUseCases, sharedPreferencesUseCases)
     }
 
     @Test
     fun `setOrderUserIdAndAddressId should set user id and address id successfuly`() {
-        val userId = "1"
         val addressId = "1"
 
-        checkoutViewModel.setOrderUserIdAndAddressId(userId, addressId)
+        checkoutViewModel.getUserIdAndSetOrderAddressId(addressId)
         val state = checkoutViewModel.checkoutState.getOrAwaitValue()
 
-        assertThat(state.userId).isEqualTo(userId)
+        assertThat(state.userId).isEqualTo("1")
         assertThat(state.addressId).isEqualTo(addressId)
         assertThat(state.cargo).isNull()
 
@@ -107,15 +125,14 @@ class CheckoutViewModelTest {
 
     @Test
     fun `setOrderCargo should set user id and address id successfuly`() {
-        val userId = "1"
         val addressId = "1"
         val cargo = "cargo"
 
-        checkoutViewModel.setOrderUserIdAndAddressId(userId, addressId)
+        checkoutViewModel.getUserIdAndSetOrderAddressId(addressId)
         checkoutViewModel.setOrderCargo(cargo)
         val state = checkoutViewModel.checkoutState.getOrAwaitValue()
 
-        assertThat(state.userId).isEqualTo(userId)
+        assertThat(state.userId).isEqualTo("1")
         assertThat(state.addressId).isEqualTo(addressId)
         assertThat(state.cargo).isEqualTo(cargo)
 
@@ -128,18 +145,17 @@ class CheckoutViewModelTest {
 
     @Test
     fun `buyOrderWithCard should successfuly complete payment process`() {
-        val userId = "1"
         val addressId = "1"
         val cargo = "cargo"
 
-        checkoutViewModel.setOrderUserIdAndAddressId(userId, addressId)
+        checkoutViewModel.getUserIdAndSetOrderAddressId(addressId)
         checkoutViewModel.setOrderCargo(cargo)
 
         checkoutViewModel.buyOrderWithCard()
 
         val state = checkoutViewModel.checkoutState.getOrAwaitValue()
 
-        assertThat(state.userId).isEqualTo(userId)
+        assertThat(state.userId).isEqualTo("1")
         assertThat(state.addressId).isEqualTo(addressId)
         assertThat(state.cargo).isEqualTo(cargo)
 
@@ -152,19 +168,18 @@ class CheckoutViewModelTest {
 
     @Test
     fun `buyOrderWithSavedCard should successfuly complete payment process`() {
-        val userId = "1"
         val addressId = "1"
         val cargo = "cargo"
         val cardId = "1"
 
-        checkoutViewModel.setOrderUserIdAndAddressId(userId, addressId)
+        checkoutViewModel.getUserIdAndSetOrderAddressId(addressId)
         checkoutViewModel.setOrderCargo(cargo)
 
         checkoutViewModel.buyOrderWithSavedCard(cardId)
 
         val state = checkoutViewModel.checkoutState.getOrAwaitValue()
 
-        assertThat(state.userId).isEqualTo(userId)
+        assertThat(state.userId).isEqualTo("1")
         assertThat(state.addressId).isEqualTo(addressId)
         assertThat(state.cargo).isEqualTo(cargo)
 
@@ -177,18 +192,17 @@ class CheckoutViewModelTest {
 
     @Test
     fun `buyOrderAtDoor should successfuly complete payment process`() {
-        val userId = "1"
         val addressId = "1"
         val cargo = "cargo"
 
-        checkoutViewModel.setOrderUserIdAndAddressId(userId, addressId)
+        checkoutViewModel.getUserIdAndSetOrderAddressId(addressId)
         checkoutViewModel.setOrderCargo(cargo)
 
         checkoutViewModel.buyOrderAtDoor()
 
         val state = checkoutViewModel.checkoutState.getOrAwaitValue()
 
-        assertThat(state.userId).isEqualTo(userId)
+        assertThat(state.userId).isEqualTo("1")
         assertThat(state.addressId).isEqualTo(addressId)
         assertThat(state.cargo).isEqualTo(cargo)
 

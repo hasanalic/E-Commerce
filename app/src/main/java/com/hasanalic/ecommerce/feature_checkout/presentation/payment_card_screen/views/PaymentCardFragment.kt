@@ -26,7 +26,6 @@ import com.hasanalic.ecommerce.feature_checkout.presentation.ShoppingCartList
 import com.hasanalic.ecommerce.feature_checkout.presentation.payment_card_screen.PaymentCardState
 import com.hasanalic.ecommerce.feature_checkout.presentation.payment_card_screen.PaymentCardViewModel
 import com.hasanalic.ecommerce.core.presentation.utils.TimeAndDate
-import com.hasanalic.ecommerce.core.presentation.utils.UserConstants.ANOMIM_USER_ID
 import com.hasanalic.ecommerce.feature_checkout.presentation.payment_card_screen.utils.PaymentNotificationConstants.CHANNEL_DESCRIPTION_TEXT
 import com.hasanalic.ecommerce.feature_checkout.presentation.payment_card_screen.utils.PaymentNotificationConstants.CHANNEL_ID
 import com.hasanalic.ecommerce.feature_checkout.presentation.payment_card_screen.utils.PaymentNotificationConstants.CHANNEL_NAME
@@ -47,8 +46,6 @@ class PaymentCardFragment: Fragment() {
     private lateinit var viewModel: PaymentCardViewModel
     private lateinit var checkoutViewModel: CheckoutViewModel
 
-    private var userId: String = ANOMIM_USER_ID
-
     private lateinit var randomNumber: String
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -60,7 +57,7 @@ class PaymentCardFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = ViewModelProvider(requireActivity())[PaymentCardViewModel::class.java]
-        viewModel.checkIfUserHaveAnyCard(userId)
+        viewModel.checkIfUserHaveAnyCard()
 
         createNotificationChannel()
 
@@ -93,7 +90,7 @@ class PaymentCardFragment: Fragment() {
         val cvv = binding.textInputEditTextCardCvv.text.toString()
 
         if (binding.checkBoxSave.isChecked) {
-            viewModel.onClickConfirmWithSaveCard(cardName, cardNumber, month, year, cvv, userId)
+            viewModel.onClickConfirmWithSaveCard(cardName, cardNumber, month, year, cvv)
         } else {
             viewModel.onClickConfirm(cardName, cardNumber, month, year, cvv)
         }

@@ -3,6 +3,14 @@ package com.hasanalic.ecommerce.feature_checkout.presentation.address_screen
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import com.hasanalic.ecommerce.MainCoroutineRule
+import com.hasanalic.ecommerce.core.data.FakeSharedPreferencesDataSourceImp
+import com.hasanalic.ecommerce.core.domain.repository.SharedPreferencesDataSource
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.GetUserIdUseCase
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.IsDatabaseInitializedUseCase
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.LogOutUserUseCase
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.SaveUserIdUseCase
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.SetDatabaseInitializedUseCase
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.SharedPreferencesUseCases
 import com.hasanalic.ecommerce.feature_checkout.domain.model.Address
 import com.hasanalic.ecommerce.feature_location.data.repository.FakeAddressRepository
 import com.hasanalic.ecommerce.feature_location.domain.repository.AddressRepository
@@ -29,12 +37,18 @@ class AddressViewModelTest {
     var mainCoroutineRule = MainCoroutineRule()
 
     private lateinit var addressRepository: AddressRepository
+    private lateinit var sharedPreferencesDataSource: SharedPreferencesDataSource
+
     private lateinit var addressUseCases: AddressUseCases
+    private lateinit var sharedPreferencesUseCases: SharedPreferencesUseCases
+
     private lateinit var addressViewModel: AddressViewModel
 
     @Before
     fun setup() {
         addressRepository = FakeAddressRepository()
+        sharedPreferencesDataSource = FakeSharedPreferencesDataSourceImp()
+
         addressUseCases = AddressUseCases(
             deleteUserAddressUseCase = DeleteUserAddressUseCase(addressRepository),
             getAddressEntityByUserIdAndAddressIdUseCase = GetAddressEntityByUserIdAndAddressIdUseCase(addressRepository),
@@ -43,12 +57,22 @@ class AddressViewModelTest {
             insertAddressEntityUseCase = InsertAddressEntityUseCase(addressRepository),
             addressValidatorUseCase = AddressValidatorUseCase()
         )
-        addressViewModel = AddressViewModel(addressUseCases)
+
+        sharedPreferencesUseCases = SharedPreferencesUseCases(
+            getUserIdUseCase = GetUserIdUseCase(sharedPreferencesDataSource),
+            isDatabaseInitializedUseCase = IsDatabaseInitializedUseCase(sharedPreferencesDataSource),
+            saveUserIdUseCase = SaveUserIdUseCase(sharedPreferencesDataSource),
+            setDatabaseInitializedUseCase = SetDatabaseInitializedUseCase(sharedPreferencesDataSource),
+            logOutUserUseCase = LogOutUserUseCase(sharedPreferencesDataSource)
+        )
+
+        sharedPreferencesUseCases.saveUserIdUseCase("1")
+        addressViewModel = AddressViewModel(addressUseCases, sharedPreferencesUseCases)
     }
 
     @Test
     fun `getAddressList should returns address list successfuly`() {
-        addressViewModel.getAddressList("1")
+        addressViewModel.getAddressList()
         val state = addressViewModel.addressState.getOrAwaitValue()
 
         assertThat(state.isLoading).isFalse()
@@ -59,7 +83,7 @@ class AddressViewModelTest {
 
     @Test
     fun `selectAddress should set isSelected value of the clicked address to true`() {
-        addressViewModel.getAddressList("1")
+        addressViewModel.getAddressList()
         addressViewModel.selectAddress(0)
         val state = addressViewModel.addressState.getOrAwaitValue()
 

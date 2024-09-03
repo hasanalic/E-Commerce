@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hasanalic.ecommerce.core.domain.model.DataError
 import com.hasanalic.ecommerce.core.domain.model.Result
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.SharedPreferencesUseCases
+import com.hasanalic.ecommerce.core.presentation.utils.UserConstants.ANOMIM_USER_ID
 import com.hasanalic.ecommerce.feature_checkout.data.local.entity.CardEntity
 import com.hasanalic.ecommerce.feature_checkout.domain.model.CardValidationError
 import com.hasanalic.ecommerce.feature_checkout.domain.use_cases.CardUseCases
@@ -15,21 +17,27 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PaymentCardViewModel @Inject constructor(
-    private val cardUseCases: CardUseCases
+    private val cardUseCases: CardUseCases,
+    private val sharedPreferencesUseCases: SharedPreferencesUseCases
 ) : ViewModel() {
 
     private var _paymentCardState = MutableLiveData(PaymentCardState())
     val paymentCardState: LiveData<PaymentCardState> = _paymentCardState
 
-    fun checkIfUserHaveAnyCard(userId: String) {
+    fun checkIfUserHaveAnyCard() {
         _paymentCardState.value = PaymentCardState(isLoading = true)
         viewModelScope.launch {
+            val userId = sharedPreferencesUseCases.getUserIdUseCase() ?: ANOMIM_USER_ID
+
             when(val result = cardUseCases.getCardsByUserIdUseCase(userId)) {
                 is Result.Error -> handleCheckIfUserHaveAnyCard(result.error)
                 is Result.Success -> {
                     val cardList = result.data
                     if (cardList.isNotEmpty()) {
-                        _paymentCardState.value = PaymentCardState(doesUserHaveCards = true)
+                        _paymentCardState.value = PaymentCardState(
+                            doesUserHaveCards = true,
+                            userId = userId
+                        )
                     }
                 }
             }
@@ -57,18 +65,19 @@ class PaymentCardViewModel @Inject constructor(
         }
     }
 
-    fun onClickConfirmWithSaveCard(cardName: String, cardNumber: String, month: String, year: String, cvv: String, userId: String) {
+    fun onClickConfirmWithSaveCard(cardName: String, cardNumber: String, month: String, year: String, cvv: String) {
         _paymentCardState.value = _paymentCardState.value!!.copy(isLoading = true)
         viewModelScope.launch {
             val result = cardUseCases.cardValidatorUseCase(cardName, cardNumber, month, year, cvv)
             when(result) {
                 is Result.Error -> handleCardCalidationError(result.error)
-                is Result.Success -> saveCard(cardName, cardNumber, userId)
+                is Result.Success -> saveCard(cardName, cardNumber)
             }
         }
     }
 
-    private suspend fun saveCard(cardName: String, cardNumber: String, userId: String) {
+    private suspend fun saveCard(cardName: String, cardNumber: String) {
+        val userId = _paymentCardState.value!!.userId
         val cardEntity = CardEntity(cardName, cardNumber, userId)
         when(val result = cardUseCases.insertCardEntityUseCase(cardEntity)) {
             is Result.Error -> handleSaveCardError(result.error)

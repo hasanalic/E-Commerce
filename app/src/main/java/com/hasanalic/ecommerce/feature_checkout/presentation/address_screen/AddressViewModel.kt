@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hasanalic.ecommerce.core.domain.model.DataError
 import com.hasanalic.ecommerce.core.domain.model.Result
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.SharedPreferencesUseCases
 import com.hasanalic.ecommerce.feature_location.domain.use_cases.AddressUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -13,15 +14,18 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddressViewModel @Inject constructor(
-    private val addressUseCases: AddressUseCases
+    private val addressUseCases: AddressUseCases,
+    private val sharedPreferencesUseCases: SharedPreferencesUseCases
 ): ViewModel() {
 
     private var _addressState = MutableLiveData(AddressState())
     val addressState: LiveData<AddressState> = _addressState
 
-    fun getAddressList(userId: String) {
+    fun getAddressList() {
         _addressState.value = AddressState(isLoading = true)
+
         viewModelScope.launch {
+            val userId = sharedPreferencesUseCases.getUserIdUseCase()!!
             when(val result = addressUseCases.getAddressListByUserIdUseCase(userId)) {
                 is Result.Error -> handleGetAddressListError(result.error)
                 is Result.Success -> _addressState.value = AddressState(addressList = result.data)

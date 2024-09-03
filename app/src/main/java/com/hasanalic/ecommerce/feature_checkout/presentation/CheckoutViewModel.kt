@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hasanalic.ecommerce.core.domain.model.DataError
 import com.hasanalic.ecommerce.core.domain.model.Result
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.SharedPreferencesUseCases
 import com.hasanalic.ecommerce.core.presentation.utils.DateFormatConstants.DATE_FORMAT
 import com.hasanalic.ecommerce.core.presentation.utils.OrderConstants.ORDER_RECEIVED
 import com.hasanalic.ecommerce.core.presentation.utils.PaymentConstants.AT_DOOR
@@ -26,13 +27,15 @@ import javax.inject.Inject
 class CheckoutViewModel @Inject constructor(
     private val orderUseCases: OrderUseCases,
     private val insertAllOrderProductsUseCase: InsertAllOrderProductsUseCase,
-    private val shoppingCartUseCases: ShoppingCartUseCases
+    private val shoppingCartUseCases: ShoppingCartUseCases,
+    private val sharedPreferencesUseCases: SharedPreferencesUseCases
 ) : ViewModel() {
 
     private var _checkoutState = MutableLiveData(CheckoutState())
     val checkoutState: LiveData<CheckoutState> = _checkoutState
 
-    fun setOrderUserIdAndAddressId(userId: String, addressId: String) {
+    fun getUserIdAndSetOrderAddressId(addressId: String) {
+        val userId = sharedPreferencesUseCases.getUserIdUseCase()
         _checkoutState.value = _checkoutState.value!!.copy(
             userId = userId,
             addressId = addressId
