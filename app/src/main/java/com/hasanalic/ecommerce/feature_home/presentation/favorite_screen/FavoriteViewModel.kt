@@ -66,12 +66,12 @@ class FavoriteViewModel @Inject constructor(
         }
     }
 
-    fun removeProductFromFavorites(productId: String, itemIndex: Int) {
+    fun removeProductFromFavorites(productId: String) {
         viewModelScope.launch {
             val userId = _favoriteState.value!!.userId!!
             when (val result = favoriteUseCases.deleteFavoriteUseCase(userId, productId)) {
                 is Result.Error -> handleDeleteFavoriteError(result.error)
-                is Result.Success -> removeProductFromMutableFavoriteProductList(itemIndex)
+                is Result.Success -> removeProductFromMutableFavoriteProductList(productId)
             }
         }
     }
@@ -92,24 +92,23 @@ class FavoriteViewModel @Inject constructor(
         }
     }
 
-    private fun removeProductFromMutableFavoriteProductList(itemIndex: Int) {
+    private fun removeProductFromMutableFavoriteProductList(productId: String) {
         val currentFavorites = _favoriteState.value!!.favoriteProductList
 
-        if (itemIndex >= 0 && itemIndex < currentFavorites.size) {
-            currentFavorites.removeAt(itemIndex)
-        }
+        currentFavorites.removeAll { it.productId == productId }
+
         _favoriteState.value = _favoriteState.value!!.copy(
             favoriteProductList = currentFavorites
         )
     }
 
-    fun addProductToCart(productId: String, itemIndex: Int) {
+    fun addProductToCart(productId: String) {
         viewModelScope.launch {
             val userId = _favoriteState.value!!.userId!!
             val shoppingCartEntity = ShoppingCartItemsEntity(userId, productId, 1)
             when (val result = shoppingCartUseCases.insertShoppingCartItemEntityUseCase(shoppingCartEntity)) {
                 is Result.Error -> handleAddProductToCartError(result.error)
-                is Result.Success -> setAddedToCart(itemIndex, true)
+                is Result.Success -> setAddedToCart(productId, true)
             }
         }
     }
@@ -132,12 +131,12 @@ class FavoriteViewModel @Inject constructor(
         }
     }
 
-    fun removeProductFromCart(productId: String, itemIndex: Int) {
+    fun removeProductFromCart(productId: String) {
         viewModelScope.launch {
             val userId = _favoriteState.value!!.userId!!
             when (val result = shoppingCartUseCases.deleteShoppingCartItemEntityUseCase(userId, productId)) {
                 is Result.Error -> handleRemoveProductFromCartError(result.error)
-                is Result.Success -> setAddedToCart(itemIndex, false)
+                is Result.Success -> setAddedToCart(productId, false)
             }
         }
     }
@@ -160,11 +159,19 @@ class FavoriteViewModel @Inject constructor(
         }
     }
 
-    private fun setAddedToCart(itemIndex: Int, isAddedToCart: Boolean) {
+    private fun setAddedToCart(productId: String, isAddedToCart: Boolean) {
         val currentFavoriteProductList = _favoriteState.value!!.favoriteProductList
-        currentFavoriteProductList[itemIndex].addedToShoppingCart = isAddedToCart
+
+        val updatedFavoriteProductList = currentFavoriteProductList.map { product ->
+            if (product.productId == productId) {
+                product.copy(addedToShoppingCart = isAddedToCart)
+            } else {
+                product
+            }
+        }
+
         _favoriteState.value = _favoriteState.value!!.copy(
-            favoriteProductList = currentFavoriteProductList
+            favoriteProductList = updatedFavoriteProductList.toMutableList()
         )
     }
 }

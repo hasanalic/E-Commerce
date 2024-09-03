@@ -31,8 +31,6 @@ class FavoriteFragment: Fragment() {
     private lateinit var viewModel: FavoriteViewModel
     private lateinit var sharedViewModel: SharedViewModel
 
-    private lateinit var userId: String
-
     private val favoriteAdapter by lazy {
         FavoriteAdapter()
     }
@@ -59,18 +57,17 @@ class FavoriteFragment: Fragment() {
         binding.recyclerViewFavorite.adapter = favoriteAdapter
         binding.recyclerViewFavorite.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
-        favoriteAdapter.setOnRemoveFromFavoriteClickListener { productId, position ->
-            showRemoveFromFavoriteWarningDialog(userId, productId, position)
-            favoriteAdapter.notifyItemRemovedInAdapter(position)
+        favoriteAdapter.setOnRemoveFromFavoriteClickListener { productId ->
+            showRemoveFromFavoriteWarningDialog(productId)
         }
 
-        favoriteAdapter.setOnAddCartButtonClickListener { productId, position ->
-            viewModel.addProductToCart(productId, position)
-            favoriteAdapter.notifyItemChangedInAdapter(position)
+        favoriteAdapter.setOnAddCartButtonClickListener { productId ->
+            viewModel.addProductToCart(productId)
+            //favoriteAdapter.notifyItemChangedInAdapter(position)
         }
 
-        favoriteAdapter.setOnRemoveFromCartButtonClickListener { productId, position ->
-            viewModel.removeProductFromCart(productId, position)
+        favoriteAdapter.setOnRemoveFromCartButtonClickListener { productId ->
+            viewModel.removeProductFromCart(productId)
         }
 
         favoriteAdapter.setOnCardClickListener { productId ->
@@ -80,12 +77,11 @@ class FavoriteFragment: Fragment() {
         }
     }
 
-    private fun showRemoveFromFavoriteWarningDialog(userId: String, productId: String, itemIndex: Int) {
+    private fun showRemoveFromFavoriteWarningDialog(productId: String) {
         val alertDialogBuilder = AlertDialog.Builder(requireContext())
         alertDialogBuilder.setMessage("Ürünü favorilerden kaldırmak istediğine emin misin?")
         alertDialogBuilder.setPositiveButton("Kaldır") { _, _ ->
-            viewModel.removeProductFromFavorites(productId, itemIndex)
-            favoriteAdapter.notifyItemRemovedInAdapter(itemIndex)
+            viewModel.removeProductFromFavorites(productId)
         }
         alertDialogBuilder.setNegativeButton("Vazgeç") { _, _ -> }
 
@@ -118,14 +114,15 @@ class FavoriteFragment: Fragment() {
 
         state.favoriteProductList.let {
             val favoriteProductList = it.toList()
+            favoriteAdapter.favoriteProducts = favoriteProductList
+            favoriteAdapter.notifyDataSetChangedInAdapter()
 
             if (favoriteProductList.isEmpty()) {
                 binding.emptyFavorite.show()
             } else {
                 binding.emptyFavorite.hide()
-                favoriteAdapter.favoriteProducts = it.toList()
+
             }
-            favoriteAdapter.notifyDataSetChangedInAdapter()
         }
 
         state.dataError?.let {

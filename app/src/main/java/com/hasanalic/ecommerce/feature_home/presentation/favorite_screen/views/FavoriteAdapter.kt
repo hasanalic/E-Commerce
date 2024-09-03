@@ -30,7 +30,7 @@ class FavoriteAdapter: RecyclerView.Adapter<FavoriteAdapter.MyViewHolder>() {
         set(value) = recyclerListDiffer.submitList(value)
 
     inner class MyViewHolder(private val binding: RecyclerItemFavoriteBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(favoriteProduct: FavoriteProduct, position: Int) {
+        fun bind(favoriteProduct: FavoriteProduct) {
             binding.imageViewProduct.glide(favoriteProduct.photo, placeHolderProgressBar(binding.root.context))
             binding.textViewProductBrand.text = favoriteProduct.brand
             binding.textViewProductDetail.text = favoriteProduct.detail
@@ -48,7 +48,7 @@ class FavoriteAdapter: RecyclerView.Adapter<FavoriteAdapter.MyViewHolder>() {
                 binding.buttonCart.setBackgroundColor(binding.root.resources.getColor(R.color.color_primary))
             }
 
-            setClickListeners(favoriteProduct, position)
+            setClickListeners(favoriteProduct)
         }
 
         private fun setStarsByProductRate(productRate: String) {
@@ -74,22 +74,22 @@ class FavoriteAdapter: RecyclerView.Adapter<FavoriteAdapter.MyViewHolder>() {
             }
         }
 
-        private fun setClickListeners(favoriteProduct: FavoriteProduct, position: Int) {
+        private fun setClickListeners(favoriteProduct: FavoriteProduct) {
             binding.buttonCart.setOnClickListener {
                 if (favoriteProduct.addedToShoppingCart) {
                     onRemoveFromCartButtonClickListener?.let {
-                        it(favoriteProduct.productId, position)
+                        it(favoriteProduct.productId)
                     }
                 } else {
                     onAddCartButtonClickListener?.let {
-                        it(favoriteProduct.productId, position)
+                        it(favoriteProduct.productId)
                     }
                 }
             }
 
             binding.imageViewFavorite.setOnClickListener {
                 onRemoveFromFavoriteClickListener?.let {
-                    it(favoriteProduct.productId, position)
+                    it(favoriteProduct.productId)
                 }
             }
             binding.materialCardProductItem.setOnClickListener {
@@ -101,20 +101,20 @@ class FavoriteAdapter: RecyclerView.Adapter<FavoriteAdapter.MyViewHolder>() {
     }
 
     private var onCardClickListener: ((String) -> Unit)? = null
-    private var onRemoveFromCartButtonClickListener: ((String, Int) -> Unit)? = null
-    private var onAddCartButtonClickListener: ((String, Int) -> Unit)? = null
-    private var onRemoveFromFavoriteClickListener: ((String, Int) -> Unit)? = null
+    private var onRemoveFromCartButtonClickListener: ((String) -> Unit)? = null
+    private var onAddCartButtonClickListener: ((String) -> Unit)? = null
+    private var onRemoveFromFavoriteClickListener: ((String) -> Unit)? = null
 
     fun setOnCardClickListener(listener: (String) -> Unit) {
         onCardClickListener = listener
     }
-    fun setOnAddCartButtonClickListener(listener: (String, Int) -> Unit) {
+    fun setOnAddCartButtonClickListener(listener: (String) -> Unit) {
         onAddCartButtonClickListener = listener
     }
-    fun setOnRemoveFromCartButtonClickListener(listener: (String, Int) -> Unit) {
+    fun setOnRemoveFromCartButtonClickListener(listener: (String) -> Unit) {
         onRemoveFromCartButtonClickListener = listener
     }
-    fun setOnRemoveFromFavoriteClickListener(listener: (String, Int) -> Unit) {
+    fun setOnRemoveFromFavoriteClickListener(listener: (String) -> Unit) {
         onRemoveFromFavoriteClickListener = listener
     }
 
@@ -139,6 +139,6 @@ class FavoriteAdapter: RecyclerView.Adapter<FavoriteAdapter.MyViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.bind(favoriteProducts[position], position)
+        holder.bind(favoriteProducts[position])
     }
 }

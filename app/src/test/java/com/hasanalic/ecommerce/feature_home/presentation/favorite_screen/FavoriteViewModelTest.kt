@@ -126,7 +126,7 @@ class FavoriteViewModelTest {
     fun `removeProductFromFavorites successfuly removes item`() {
         favoriteViewModel.getUserFavoriteProductsIfUserLoggedIn()
 
-        favoriteViewModel.removeProductFromFavorites("1",0)
+        favoriteViewModel.removeProductFromFavorites("1")
 
         val state = favoriteViewModel.favoriteState.getOrAwaitValue()
 
@@ -142,7 +142,7 @@ class FavoriteViewModelTest {
     fun `removeProductFromFavorites triggers action error when deletion fails`() {
         favoriteViewModel.getUserFavoriteProductsIfUserLoggedIn()
 
-        favoriteViewModel.removeProductFromFavorites("2",0)
+        favoriteViewModel.removeProductFromFavorites("2")
 
         val state = favoriteViewModel.favoriteState.getOrAwaitValue()
 
@@ -158,7 +158,7 @@ class FavoriteViewModelTest {
     fun `addProductToCart successfuly adds item to cart`() {
         favoriteViewModel.getUserFavoriteProductsIfUserLoggedIn()
 
-        favoriteViewModel.addProductToCart("1",0)
+        favoriteViewModel.addProductToCart("1")
 
         val state = favoriteViewModel.favoriteState.getOrAwaitValue()
         assertThat(state.favoriteProductList[0].addedToShoppingCart).isTrue()
@@ -175,8 +175,8 @@ class FavoriteViewModelTest {
     fun `removeProductFromCart successfuly removes item from cart`() {
         favoriteViewModel.getUserFavoriteProductsIfUserLoggedIn()
 
-        favoriteViewModel.addProductToCart("1", 0)
-        favoriteViewModel.removeProductFromCart("1",0)
+        favoriteViewModel.addProductToCart("1")
+        favoriteViewModel.removeProductFromCart("1")
 
         val state = favoriteViewModel.favoriteState.getOrAwaitValue()
 
@@ -193,8 +193,8 @@ class FavoriteViewModelTest {
     fun `removeProductFromCart triggers action error when deletion fails`() {
         favoriteViewModel.getUserFavoriteProductsIfUserLoggedIn()
 
-        favoriteViewModel.addProductToCart("1", 0)
-        favoriteViewModel.removeProductFromCart("2",0)
+        favoriteViewModel.addProductToCart("1")
+        favoriteViewModel.removeProductFromCart("2")
 
         val state = favoriteViewModel.favoriteState.getOrAwaitValue()
 
