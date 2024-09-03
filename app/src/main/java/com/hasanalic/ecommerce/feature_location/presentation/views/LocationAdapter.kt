@@ -32,15 +32,15 @@ class LocationAdapter: RecyclerView.Adapter<LocationAdapter.MyViewHolder>() {
 
             binding.materialCardDelete.setOnClickListener {
                 onDeleteClickListener?.let {
-                    it(address.addressId.toString(), position)
+                    it(address.addressId, position)
                 }
             }
         }
     }
 
-    private var onDeleteClickListener: ((String, Int) -> Unit)? = null
+    private var onDeleteClickListener: ((Int, Int) -> Unit)? = null
 
-    fun setOnDeleteClickListener(listener: (String, Int) -> Unit) {
+    fun setOnDeleteClickListener(listener: (Int, Int) -> Unit) {
         onDeleteClickListener = listener
     }
 

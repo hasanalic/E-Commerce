@@ -1,5 +1,6 @@
 package com.hasanalic.ecommerce.feature_location.presentation
 
+import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.location.Address
@@ -23,9 +24,10 @@ import com.hasanalic.ecommerce.core.presentation.utils.AlarmConstants.REQUEST_CO
 import com.hasanalic.ecommerce.databinding.ActivityLocationBinding
 import com.hasanalic.ecommerce.feature_location.presentation.views.LocationAdapter
 import com.hasanalic.ecommerce.core.presentation.utils.ItemDecoration
-import com.hasanalic.ecommerce.core.presentation.utils.UserConstants.ANOMIM_USER_ID
 import com.hasanalic.ecommerce.core.utils.hide
 import com.hasanalic.ecommerce.core.utils.show
+import com.hasanalic.ecommerce.core.utils.toast
+import com.hasanalic.ecommerce.feature_auth.presentation.AuthActivity
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
 
@@ -37,8 +39,6 @@ class LocationActivity : AppCompatActivity() {
 
     private lateinit var viewModel: LocationViewModel
 
-    private var userId: String = ANOMIM_USER_ID
-
     private val locationAdapter by lazy {
         LocationAdapter()
     }
@@ -49,7 +49,7 @@ class LocationActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         viewModel = ViewModelProvider(this)[LocationViewModel::class.java]
-        viewModel.getAddressEntityList(userId)
+        viewModel.getUserAddressEntityListIfUserLoggedIn()
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
 
@@ -76,7 +76,7 @@ class LocationActivity : AppCompatActivity() {
             if (address.isEmpty() || addressTitle.isEmpty()) {
                 Toast.makeText(this,"Lütfen alanları doldurun",Toast.LENGTH_SHORT).show()
             } else {
-                viewModel.insertAddressEntity(userId, address, addressTitle)
+                viewModel.insertAddressEntity(address, addressTitle)
             }
         }
     }
@@ -88,8 +88,7 @@ class LocationActivity : AppCompatActivity() {
         binding.recyclerViewAddress.addItemDecoration(ItemDecoration(40,40,40))
 
         locationAdapter.setOnDeleteClickListener { addressId, position ->
-            viewModel.deleteAddressEntity(userId, addressId, position)
-            locationAdapter.notifyChanges()
+            viewModel.deleteAddressEntity(addressId)
         }
     }
 
@@ -108,6 +107,10 @@ class LocationActivity : AppCompatActivity() {
             binding.progressBarLocation.hide()
             binding.buttonSave.isEnabled = true
             binding.buttonFindLocation.isEnabled = true
+        }
+
+        if (!state.isUserLoggedIn) {
+            navigateToAuthActivityAndFinish()
         }
 
         state.addressEntityList.let {
@@ -196,5 +199,12 @@ class LocationActivity : AppCompatActivity() {
             }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
+    private fun navigateToAuthActivityAndFinish() {
+        val intent = Intent(this, AuthActivity::class.java)
+        startActivity(intent)
+        Toast.makeText(this@LocationActivity,"Adres organizasyonu için hesabınıza giriş yapınız.", Toast.LENGTH_SHORT).show()
+        finish()
     }
 }

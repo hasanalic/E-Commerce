@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hasanalic.ecommerce.core.domain.model.DataError
 import com.hasanalic.ecommerce.core.domain.model.Result
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.SharedPreferencesUseCases
 import com.hasanalic.ecommerce.feature_location.data.local.entity.AddressEntity
 import com.hasanalic.ecommerce.feature_location.domain.model.AddressValidationError
 import com.hasanalic.ecommerce.feature_location.domain.use_cases.AddressUseCases
@@ -15,19 +16,35 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LocationViewModel @Inject constructor(
-    private val addressUseCases: AddressUseCases
+    private val addressUseCases: AddressUseCases,
+    private val sharedPreferencesUseCases: SharedPreferencesUseCases
 ): ViewModel() {
 
     private var _locationState = MutableLiveData(LocationState())
     val locationState: LiveData<LocationState> = _locationState
 
-    fun getAddressEntityList(userId: String) {
-        _locationState.value = LocationState(isLoading = true)
+    fun getUserAddressEntityListIfUserLoggedIn() {
+        val userId = sharedPreferencesUseCases.getUserIdUseCase()
+        if (userId == null) {
+            _locationState.value = _locationState.value!!.copy(
+                isLoading = false,
+                isUserLoggedIn = false
+            )
+            return
+        }
+
+        getAddressEntityList(userId)
+    }
+
+    private fun getAddressEntityList(userId: String) {
+        _locationState.value = _locationState.value!!.copy(isLoading = true)
         viewModelScope.launch {
             when(val result = addressUseCases.getAddressEntityListByUserIdUseCase(userId)) {
                 is Result.Error -> handleGetAddressEntityListError(result.error)
                 is Result.Success -> {
-                    _locationState.value = LocationState(
+                    _locationState.value = _locationState.value!!.copy(
+                        isLoading = false,
+                        userId = userId,
                         addressEntityList = result.data.toMutableList()
                     )
                 }
@@ -51,11 +68,15 @@ class LocationViewModel @Inject constructor(
         }
     }
 
-    fun deleteAddressEntity(userId: String, addressId: String, itemIndex: Int) {
+    fun deleteAddressEntity(addressId: Int) {
+        _locationState.value = _locationState.value!!.copy(
+            isLoading = true
+        )
         viewModelScope.launch {
-            when(val result = addressUseCases.deleteUserAddressUseCase(userId, addressId)) {
+            val userId = _locationState.value!!.userId
+            when(val result = addressUseCases.deleteUserAddressUseCase(userId, addressId.toString())) {
                 is Result.Error -> handleDeleteAddressEntityError(result.error)
-                is Result.Success -> removeAddressFromList(itemIndex)
+                is Result.Success -> removeAddressFromList(addressId)
             }
         }
     }
@@ -64,11 +85,13 @@ class LocationViewModel @Inject constructor(
         when(error) {
             DataError.Local.DELETION_FAILED -> {
                 _locationState.value = _locationState.value!!.copy(
+                    isLoading = false,
                     actionError = "Adres silinemedi."
                 )
             }
             DataError.Local.UNKNOWN -> {
                 _locationState.value = _locationState.value!!.copy(
+                    isLoading = false,
                     actionError = "Bilinmeyen bir hata meydana geldi."
                 )
             }
@@ -76,18 +99,19 @@ class LocationViewModel @Inject constructor(
         }
     }
 
-    private fun removeAddressFromList(itemIndex: Int) {
+    private fun removeAddressFromList(addressId: Int) {
         val currentAddressList = _locationState.value!!.addressEntityList
 
-        currentAddressList.removeAt(itemIndex)
+        currentAddressList.removeAll { it.addressId == addressId }
 
         _locationState.value = _locationState.value!!.copy(
+            isLoading = false,
             addressEntityList = currentAddressList,
             isAddressDeletionSuccessful = true
         )
     }
 
-    fun insertAddressEntity(userId: String, title: String, detail: String) {
+    fun insertAddressEntity(title: String, detail: String) {
         val addressValidationResult = addressUseCases.addressValidatorUseCase(title, detail)
         if (addressValidationResult is Result.Error) {
             handleAddressValidationError(addressValidationResult.error)
@@ -95,6 +119,7 @@ class LocationViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
+            val userId = _locationState.value!!.userId
             val addressEntity = AddressEntity(userId, title, detail)
             when(val result = addressUseCases.insertAddressEntityUseCase(addressEntity)) {
                 is Result.Error -> handleInsertAddressEntityError(result.error)

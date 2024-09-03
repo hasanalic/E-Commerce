@@ -32,7 +32,7 @@ class DeleteUserAddressUseCaseTest {
 
     @Test
     fun `Delete User Address should return success when deletion is successful`() = runBlocking {
-        val result = deleteUserAddressUseCase("1","1")
+        val result = deleteUserAddressUseCase("1","0")
         assertThat(result).isInstanceOf(Result.Success::class.java)
         assertThat((result as Result.Success).data).isEqualTo(Unit)
     }

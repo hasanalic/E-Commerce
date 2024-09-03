@@ -27,7 +27,7 @@ class FakeAddressRepository : AddressRepository {
         userId: String,
         addressId: String
     ): Result<Unit, DataError.Local> {
-        return if (userId == addressEntityList[0].addressUserId) Result.Success(Unit) else Result.Error(DataError.Local.DELETION_FAILED)
+        return if (addressId == addressEntityList[0].addressId.toString()) Result.Success(Unit) else Result.Error(DataError.Local.DELETION_FAILED)
     }
 
     override suspend fun getAddressEntityByUserIdAndAddressId(

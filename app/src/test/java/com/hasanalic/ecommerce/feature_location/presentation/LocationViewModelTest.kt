@@ -3,6 +3,15 @@ package com.hasanalic.ecommerce.feature_location.presentation
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import com.hasanalic.ecommerce.MainCoroutineRule
+import com.hasanalic.ecommerce.core.data.FakeSharedPreferencesDataSourceImp
+import com.hasanalic.ecommerce.core.domain.repository.SharedPreferencesDataSource
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.GetUserIdUseCase
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.IsDatabaseInitializedUseCase
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.LogOutUserUseCase
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.SaveUserIdUseCase
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.SetDatabaseInitializedUseCase
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.SharedPreferencesUseCases
+import com.hasanalic.ecommerce.core.presentation.utils.UserConstants.ANOMIM_USER_ID
 import com.hasanalic.ecommerce.feature_location.data.repository.FakeAddressRepository
 import com.hasanalic.ecommerce.feature_location.domain.repository.AddressRepository
 import com.hasanalic.ecommerce.feature_location.domain.use_cases.AddressUseCases
@@ -28,12 +37,18 @@ class LocationViewModelTest {
     var mainCoroutineRule = MainCoroutineRule()
 
     private lateinit var addressRepository: AddressRepository
+    private lateinit var sharedPreferencesDataSource: SharedPreferencesDataSource
+
     private lateinit var addressUseCases: AddressUseCases
+    private lateinit var sharedPreferencesUseCases: SharedPreferencesUseCases
+
     private lateinit var locationViewModel: LocationViewModel
 
     @Before
     fun setup() {
         addressRepository = FakeAddressRepository()
+        sharedPreferencesDataSource = FakeSharedPreferencesDataSourceImp()
+
         addressUseCases = AddressUseCases(
             deleteUserAddressUseCase = DeleteUserAddressUseCase(addressRepository),
             getAddressEntityByUserIdAndAddressIdUseCase = GetAddressEntityByUserIdAndAddressIdUseCase(addressRepository),
@@ -42,15 +57,26 @@ class LocationViewModelTest {
             insertAddressEntityUseCase = InsertAddressEntityUseCase(addressRepository),
             addressValidatorUseCase = AddressValidatorUseCase()
         )
-        locationViewModel = LocationViewModel(addressUseCases)
+        sharedPreferencesUseCases = SharedPreferencesUseCases(
+            getUserIdUseCase = GetUserIdUseCase(sharedPreferencesDataSource),
+            isDatabaseInitializedUseCase = IsDatabaseInitializedUseCase(sharedPreferencesDataSource),
+            saveUserIdUseCase = SaveUserIdUseCase(sharedPreferencesDataSource),
+            setDatabaseInitializedUseCase = SetDatabaseInitializedUseCase(sharedPreferencesDataSource),
+            logOutUserUseCase = LogOutUserUseCase(sharedPreferencesDataSource)
+        )
+
+        sharedPreferencesDataSource.saveUserId("1")
+        locationViewModel = LocationViewModel(addressUseCases, sharedPreferencesUseCases)
     }
 
     @Test
     fun `getAddressEntityList successfuly returns address entity list`() {
-        locationViewModel.getAddressEntityList("1")
+        locationViewModel.getUserAddressEntityListIfUserLoggedIn()
         val state = locationViewModel.locationState.getOrAwaitValue()
 
         assertThat(state.addressEntityList).isNotEmpty()
+        assertThat(state.isUserLoggedIn).isTrue()
+        assertThat(state.userId).isNotEqualTo(ANOMIM_USER_ID)
         assertThat(state.isLoading).isFalse()
         assertThat(state.dataError).isNull()
         assertThat(state.actionError).isNull()
@@ -61,12 +87,14 @@ class LocationViewModelTest {
 
     @Test
     fun `deleteAddressEntity successfuly deletes address entity and update the address list`() {
-        locationViewModel.getAddressEntityList("1")
-        locationViewModel.deleteAddressEntity("1","1",0)
+        locationViewModel.getUserAddressEntityListIfUserLoggedIn()
+        locationViewModel.deleteAddressEntity(0)
 
         val state = locationViewModel.locationState.getOrAwaitValue()
 
         assertThat(state.addressEntityList).isEmpty()
+        assertThat(state.isUserLoggedIn).isTrue()
+        assertThat(state.userId).isNotEqualTo(ANOMIM_USER_ID)
         assertThat(state.isLoading).isFalse()
         assertThat(state.dataError).isNull()
         assertThat(state.actionError).isNull()
@@ -77,12 +105,14 @@ class LocationViewModelTest {
 
     @Test
     fun `deleteAddressEntity triggers action error when deletion fails`() {
-        locationViewModel.getAddressEntityList("1")
-        locationViewModel.deleteAddressEntity("2","2",0)
+        locationViewModel.getUserAddressEntityListIfUserLoggedIn()
+        locationViewModel.deleteAddressEntity(10)
 
         val state = locationViewModel.locationState.getOrAwaitValue()
 
         assertThat(state.addressEntityList).isNotEmpty()
+        assertThat(state.isUserLoggedIn).isTrue()
+        assertThat(state.userId).isNotEqualTo(ANOMIM_USER_ID)
         assertThat(state.isLoading).isFalse()
         assertThat(state.dataError).isNull()
         assertThat(state.actionError).isNotEmpty()
@@ -93,11 +123,13 @@ class LocationViewModelTest {
 
     @Test
     fun `insertAddressEntity triggers validation error when title is empty`() {
-        locationViewModel.insertAddressEntity("1","","detail")
+        locationViewModel.getUserAddressEntityListIfUserLoggedIn()
+        locationViewModel.insertAddressEntity("","detail")
 
         val state = locationViewModel.locationState.getOrAwaitValue()
 
-        assertThat(state.addressEntityList).isEmpty()
+        assertThat(state.isUserLoggedIn).isTrue()
+        assertThat(state.userId).isNotEqualTo(ANOMIM_USER_ID)
         assertThat(state.isLoading).isFalse()
         assertThat(state.dataError).isNull()
         assertThat(state.actionError).isNull()
@@ -108,11 +140,13 @@ class LocationViewModelTest {
 
     @Test
     fun `insertAddressEntity triggers validation error when detail is empty`() {
-        locationViewModel.insertAddressEntity("1","title","")
+        locationViewModel.getUserAddressEntityListIfUserLoggedIn()
+        locationViewModel.insertAddressEntity("title","")
 
         val state = locationViewModel.locationState.getOrAwaitValue()
 
-        assertThat(state.addressEntityList).isEmpty()
+        assertThat(state.isUserLoggedIn).isTrue()
+        assertThat(state.userId).isNotEqualTo(ANOMIM_USER_ID)
         assertThat(state.isLoading).isFalse()
         assertThat(state.dataError).isNull()
         assertThat(state.actionError).isNull()
@@ -123,16 +157,19 @@ class LocationViewModelTest {
 
     @Test
     fun `insertAddressEntity successfuly when credentials are valid`() {
-        locationViewModel.insertAddressEntity("1","title","detail")
+        locationViewModel.getUserAddressEntityListIfUserLoggedIn()
+        locationViewModel.insertAddressEntity("title","detail")
 
         val state = locationViewModel.locationState.getOrAwaitValue()
 
         assertThat(state.addressEntityList).isNotEmpty()
+        assertThat(state.isUserLoggedIn).isTrue()
+        assertThat(state.userId).isNotEqualTo(ANOMIM_USER_ID)
         assertThat(state.isLoading).isFalse()
         assertThat(state.dataError).isNull()
         assertThat(state.actionError).isNull()
         assertThat(state.isAddressDeletionSuccessful).isFalse()
-        assertThat(state.isAddressInsertionSuccessful).isFalse()
+        assertThat(state.isAddressInsertionSuccessful).isTrue()
         assertThat(state.validationError).isNull()
     }
 
