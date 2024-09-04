@@ -5,5 +5,6 @@ import com.hasanalic.ecommerce.feature_notification.data.local.entity.Notificati
 data class NotificationState(
     val isLoading: Boolean = false,
     val notificationList: List<NotificationEntity> = emptyList(),
+    val isUserLoggedIn: Boolean = true,
     val dataError: String? = null
 )

@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hasanalic.ecommerce.core.domain.model.DataError
 import com.hasanalic.ecommerce.core.domain.model.Result
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.SharedPreferencesUseCases
 import com.hasanalic.ecommerce.feature_notification.domain.use_cases.NotificationUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -13,13 +14,25 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NotificationViewModel @Inject constructor (
-    private val notificationUseCases: NotificationUseCases
+    private val notificationUseCases: NotificationUseCases,
+    private val sharedPreferencesUseCases: SharedPreferencesUseCases
 ): ViewModel() {
 
     private var _notificationState = MutableLiveData(NotificationState())
     val notificationState: LiveData<NotificationState> = _notificationState
 
-    fun getUserNotifications(userId: String) {
+    fun getNotificationsIfUserLoggedIn() {
+        val userId = sharedPreferencesUseCases.getUserIdUseCase()
+        if (userId == null) {
+            _notificationState.value = NotificationState(
+                isUserLoggedIn = false
+            )
+            return
+        }
+        getUserNotifications(userId)
+    }
+
+    private fun getUserNotifications(userId: String) {
         _notificationState.value = NotificationState(isLoading = true)
 
         viewModelScope.launch {

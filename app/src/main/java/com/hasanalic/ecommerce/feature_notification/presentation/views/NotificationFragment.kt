@@ -1,5 +1,6 @@
 package com.hasanalic.ecommerce.feature_notification.presentation.views
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,8 @@ import com.hasanalic.ecommerce.feature_notification.presentation.NotificationVie
 import com.hasanalic.ecommerce.core.presentation.utils.ItemDecoration
 import com.hasanalic.ecommerce.core.utils.hide
 import com.hasanalic.ecommerce.core.utils.show
+import com.hasanalic.ecommerce.core.utils.toast
+import com.hasanalic.ecommerce.feature_auth.presentation.AuthActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -36,7 +39,7 @@ class NotificationFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = ViewModelProvider(requireActivity())[NotificationViewModel::class.java]
-        viewModel.getUserNotifications("1")
+        viewModel.getNotificationsIfUserLoggedIn()
 
         setupListeners()
 
@@ -70,6 +73,10 @@ class NotificationFragment : Fragment() {
             binding.progressBarNotifications.hide()
         }
 
+        if (!state.isUserLoggedIn) {
+            navigateToAuthActivityAndFinish()
+        }
+
         state.notificationList.let {
             notificationAdapter.notificationList = it
             notificationAdapter.notifyChanges()
@@ -78,6 +85,13 @@ class NotificationFragment : Fragment() {
         state.dataError?.let {
             TODO()
         }
+    }
+
+    private fun navigateToAuthActivityAndFinish() {
+        val intent = Intent(requireActivity(), AuthActivity::class.java)
+        startActivity(intent)
+        toast(requireContext(),"Bildirimleri görüntülemek için hesabınıza giriş yapınız.",false)
+        requireActivity().finish()
     }
 
     override fun onDestroyView() {
