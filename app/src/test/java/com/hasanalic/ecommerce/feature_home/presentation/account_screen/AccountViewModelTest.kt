@@ -58,7 +58,7 @@ class AccountViewModelTest {
     @Test
     fun `getUser should fetches user and update the account state when user found at shared preferences`() {
         sharedPreferencesUseCases.saveUserIdUseCase("1")
-        accountViewModel.getUser()
+        accountViewModel.getUserIfLoggedIn()
         val state = accountViewModel.accountState.getOrAwaitValue()
 
         assertThat(state.user).isNotNull()
@@ -84,14 +84,15 @@ class AccountViewModelTest {
     }
 
     @Test
-    fun `logOutUser triggers action error when user id not found`() {
-        accountViewModel.logOutUser()
-
+    fun `getUserIfLoggedIn sets shouldUserMoveToAuthActivity to true when user id not found`() {
+        accountViewModel.getUserIfLoggedIn()
         val state = accountViewModel.accountState.getOrAwaitValue()
 
-        assertThat(state.isUserLoggedOut).isFalse()
+        assertThat(state.shouldUserMoveToAuthActivity).isTrue()
+        assertThat(state.user).isNull()
         assertThat(state.isLoading).isFalse()
-        assertThat(state.actionError).isNotEmpty()
+        assertThat(state.actionError).isNull()
         assertThat(state.dataError).isNull()
+        assertThat(state.isUserLoggedOut).isFalse()
     }
 }

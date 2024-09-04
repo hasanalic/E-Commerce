@@ -18,7 +18,6 @@ import com.hasanalic.ecommerce.feature_home.presentation.account_screen.AccountS
 import com.hasanalic.ecommerce.feature_home.presentation.account_screen.AccountViewModel
 import com.hasanalic.ecommerce.feature_orders.presentation.OrderActivity
 import com.hasanalic.ecommerce.notification.ReminderItem
-import com.hasanalic.ecommerce.notification.cart.CartAlarmScheduler
 
 class AccountFragment: Fragment() {
 
@@ -27,7 +26,7 @@ class AccountFragment: Fragment() {
 
     private lateinit var viewModel: AccountViewModel
 
-    private lateinit var cartAlarmScheduler: CartAlarmScheduler
+    //private lateinit var cartAlarmScheduler: CartAlarmScheduler
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentAccountBinding.inflate(inflater)
@@ -38,7 +37,7 @@ class AccountFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = ViewModelProvider(requireActivity())[AccountViewModel::class.java]
-        viewModel.getUser()
+        viewModel.getUserIfLoggedIn()
 
         setupListeners()
 
@@ -53,13 +52,13 @@ class AccountFragment: Fragment() {
 
         binding.textViewLogout.setOnClickListener {
             viewModel.logOutUser()
-            cancelCartAlarm()
+            //cancelCartAlarm()
         }
     }
 
     private fun cancelCartAlarm() {
         val reminderItemCart = ReminderItem(CART_ALARM_INTERVAL_TEST.toLong(),CART_ALARM_REQUEST_CODE)
-        cartAlarmScheduler.cancel(reminderItemCart)
+        //cartAlarmScheduler.cancel(reminderItemCart)
     }
 
     private fun setupObserver() {
@@ -82,6 +81,12 @@ class AccountFragment: Fragment() {
 
         if (state.isUserLoggedOut) {
             navigateToAuthActivity()
+            toast(requireContext(), "Çıkış yapıldı.", false)
+        }
+
+        if (state.shouldUserMoveToAuthActivity) {
+            navigateToAuthActivity()
+            toast(requireContext(), "Hesabınıza giriş yapmalısınız.", false)
         }
 
         state.actionError?.let {

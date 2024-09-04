@@ -21,10 +21,21 @@ class AccountViewModel @Inject constructor(
     private var _accountState = MutableLiveData(AccountState())
     val accountState: LiveData<AccountState> = _accountState
 
-    fun getUser() {
+    fun getUserIfLoggedIn() {
+        val userId = sharedPreferencesUseCases.getUserIdUseCase()
+        if (userId == null) {
+            _accountState.value = AccountState(
+                shouldUserMoveToAuthActivity = true
+            )
+            return
+        }
+
+        getUser(userId)
+    }
+
+    private fun getUser(userId: String) {
         _accountState.value = AccountState(isLoading = true)
         viewModelScope.launch {
-            val userId = sharedPreferencesUseCases.getUserIdUseCase()
             userId?.let {
                 when (val result = userUseCases.getUserUseCase(it)) {
                     is Result.Error -> handleGetUserError(result.error)
@@ -51,20 +62,11 @@ class AccountViewModel @Inject constructor(
 
     fun logOutUser() {
         _accountState.value = _accountState.value!!.copy(isLoading = true)
-        val userId = sharedPreferencesUseCases.getUserIdUseCase()
 
-        if (userId != null) {
-            sharedPreferencesUseCases.logOutUserUseCase()
-            _accountState.value = _accountState.value!!.copy(
-                isLoading = false,
-                isUserLoggedOut = true
-            )
-        } else {
-            _accountState.value =
-                _accountState.value!!.copy(
-                    isLoading = false,
-                    actionError = "Bilinmeyen bir hata meydana geldi!"
-                )
-        }
+        sharedPreferencesUseCases.logOutUserUseCase()
+        _accountState.value = _accountState.value!!.copy(
+            isLoading = false,
+            isUserLoggedOut = true
+        )
     }
 }
