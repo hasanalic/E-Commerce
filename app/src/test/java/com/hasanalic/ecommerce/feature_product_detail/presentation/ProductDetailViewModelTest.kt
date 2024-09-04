@@ -3,6 +3,14 @@ package com.hasanalic.ecommerce.feature_product_detail.presentation
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import com.hasanalic.ecommerce.MainCoroutineRule
+import com.hasanalic.ecommerce.core.data.FakeSharedPreferencesDataSourceImp
+import com.hasanalic.ecommerce.core.domain.repository.SharedPreferencesDataSource
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.GetUserIdUseCase
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.IsDatabaseInitializedUseCase
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.LogOutUserUseCase
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.SaveUserIdUseCase
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.SetDatabaseInitializedUseCase
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.SharedPreferencesUseCases
 import com.hasanalic.ecommerce.feature_home.data.repository.FakeFavoriteRepository
 import com.hasanalic.ecommerce.feature_home.data.repository.FakeShoppingCartRepository
 import com.hasanalic.ecommerce.feature_home.domain.repository.FavoriteRepository
@@ -46,10 +54,12 @@ class ProductDetailViewModelTest {
     private lateinit var productDetailRepository: ProductDetailRepository
     private lateinit var shoppingCartRepository: ShoppingCartRepository
     private lateinit var favoriteRepository: FavoriteRepository
+    private lateinit var sharedPreferencesDataSource: SharedPreferencesDataSource
 
     private lateinit var productDetailUseCases: ProductDetailUseCases
     private lateinit var shoppingCartUseCases: ShoppingCartUseCases
     private lateinit var favoriteUseCases: FavoriteUseCases
+    private lateinit var sharedPreferencesUseCases: SharedPreferencesUseCases
 
     private lateinit var productDetailViewModel: ProductDetailViewModel
 
@@ -58,6 +68,7 @@ class ProductDetailViewModelTest {
         productDetailRepository = FakeProductDetailRepository()
         shoppingCartRepository = FakeShoppingCartRepository()
         favoriteRepository = FakeFavoriteRepository()
+        sharedPreferencesDataSource = FakeSharedPreferencesDataSourceImp()
 
         productDetailUseCases = ProductDetailUseCases(
             getProductDetailByUserIdAndProductIdUseCase = GetProductDetailByUserIdAndProductIdUseCase(productDetailRepository),
@@ -84,12 +95,21 @@ class ProductDetailViewModelTest {
             checkFavoriteEntityByProductId = CheckFavoriteEntityByProductId(favoriteRepository)
         )
 
-        productDetailViewModel = ProductDetailViewModel(productDetailUseCases, shoppingCartUseCases, favoriteUseCases)
+        sharedPreferencesUseCases = SharedPreferencesUseCases(
+            getUserIdUseCase = GetUserIdUseCase(sharedPreferencesDataSource),
+            isDatabaseInitializedUseCase = IsDatabaseInitializedUseCase(sharedPreferencesDataSource),
+            saveUserIdUseCase = SaveUserIdUseCase(sharedPreferencesDataSource),
+            setDatabaseInitializedUseCase = SetDatabaseInitializedUseCase(sharedPreferencesDataSource),
+            logOutUserUseCase = LogOutUserUseCase(sharedPreferencesDataSource)
+        )
+
+        sharedPreferencesUseCases.saveUserIdUseCase("1")
+        productDetailViewModel = ProductDetailViewModel(productDetailUseCases, shoppingCartUseCases, favoriteUseCases, sharedPreferencesUseCases)
     }
 
     @Test
     fun `getProductDetail successfuly returns product detail`() {
-        productDetailViewModel.getProductDetailAndReviews("1","1")
+        productDetailViewModel.getProductDetailAndReviews("1")
         val state = productDetailViewModel.productDetailState.getOrAwaitValue()
 
         assertThat(state.productDetail).isNotNull()
@@ -100,7 +120,7 @@ class ProductDetailViewModelTest {
 
     @Test
     fun `getProductDetail triggers data error when product id not found`() {
-        productDetailViewModel.getProductDetailAndReviews("1","invalid")
+        productDetailViewModel.getProductDetailAndReviews("invalid")
         val state = productDetailViewModel.productDetailState.getOrAwaitValue()
 
         assertThat(state.productDetail).isNull()
@@ -122,8 +142,8 @@ class ProductDetailViewModelTest {
 
     @Test
     fun `addProductToCart successfuly adds product to cart and update the product detail`() {
-        productDetailViewModel.getProductDetailAndReviews("1","1")
-        productDetailViewModel.addProductToCart("1","1")
+        productDetailViewModel.getProductDetailAndReviews("1")
+        productDetailViewModel.addProductToCart("1")
 
         val state = productDetailViewModel.productDetailState.getOrAwaitValue()
 
@@ -137,9 +157,9 @@ class ProductDetailViewModelTest {
 
     @Test
     fun `removeProductFromCart successfuly removes product from cart and update the product detail`() {
-        productDetailViewModel.getProductDetailAndReviews("1","1")
-        productDetailViewModel.addProductToCart("1","1")
-        productDetailViewModel.removeProductFromCart("1","1")
+        productDetailViewModel.getProductDetailAndReviews("1")
+        productDetailViewModel.addProductToCart("1")
+        productDetailViewModel.removeProductFromCart("1")
 
         val state = productDetailViewModel.productDetailState.getOrAwaitValue()
 
@@ -153,9 +173,9 @@ class ProductDetailViewModelTest {
 
     @Test
     fun `removeProductFromCart triggers action error when deletion fails`() {
-        productDetailViewModel.getProductDetailAndReviews("1","1")
-        productDetailViewModel.addProductToCart("1","1")
-        productDetailViewModel.removeProductFromCart("1","invalid")
+        productDetailViewModel.getProductDetailAndReviews("1")
+        productDetailViewModel.addProductToCart("1")
+        productDetailViewModel.removeProductFromCart("invalid")
 
         val state = productDetailViewModel.productDetailState.getOrAwaitValue()
 
@@ -168,9 +188,9 @@ class ProductDetailViewModelTest {
     }
 
     @Test
-    fun `addProductToFavorites successfuly adds product to favorites and update the product detail`() {
-        productDetailViewModel.getProductDetailAndReviews("1","1")
-        productDetailViewModel.addProductToFavorites("1","1")
+    fun `addProductToFavoritesIfUserLoggedIn successfuly adds product to favorites and update the product detail`() {
+        productDetailViewModel.getProductDetailAndReviews("1")
+        productDetailViewModel.addProductToFavoritesIfUserLoggedIn("1")
 
         val state = productDetailViewModel.productDetailState.getOrAwaitValue()
 
@@ -184,10 +204,10 @@ class ProductDetailViewModelTest {
     }
 
     @Test
-    fun `removeProductFromFavorites successfuly removes product from favorites and update the product detail`() {
-        productDetailViewModel.getProductDetailAndReviews("1","1")
-        productDetailViewModel.addProductToFavorites("1","1")
-        productDetailViewModel.removeProductFromFavorites("1","1")
+    fun `removeProductFromFavoritesIfUserLoggedIn successfuly removes product from favorites and update the product detail`() {
+        productDetailViewModel.getProductDetailAndReviews("1")
+        productDetailViewModel.addProductToFavoritesIfUserLoggedIn("1")
+        productDetailViewModel.removeProductFromFavoritesIfUserLoggedIn("1")
 
         val state = productDetailViewModel.productDetailState.getOrAwaitValue()
 
@@ -201,10 +221,10 @@ class ProductDetailViewModelTest {
     }
 
     @Test
-    fun `removeProductFromFavorites triggers action error when deletion fails`() {
-        productDetailViewModel.getProductDetailAndReviews("1","1")
-        productDetailViewModel.addProductToFavorites("1","1")
-        productDetailViewModel.removeProductFromFavorites("1","invalid")
+    fun `removeProductFromFavoritesIfUserLoggedIn triggers action error when deletion fails`() {
+        productDetailViewModel.getProductDetailAndReviews("1")
+        productDetailViewModel.addProductToFavoritesIfUserLoggedIn("1")
+        productDetailViewModel.removeProductFromFavoritesIfUserLoggedIn("invalid")
 
         val state = productDetailViewModel.productDetailState.getOrAwaitValue()
 

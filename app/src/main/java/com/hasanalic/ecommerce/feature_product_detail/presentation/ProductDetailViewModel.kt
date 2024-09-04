@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hasanalic.ecommerce.core.domain.model.DataError
 import com.hasanalic.ecommerce.core.domain.model.Result
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.SharedPreferencesUseCases
+import com.hasanalic.ecommerce.core.presentation.utils.UserConstants.ANOMIM_USER_ID
 import com.hasanalic.ecommerce.feature_home.data.local.entity.FavoritesEntity
 import com.hasanalic.ecommerce.feature_home.data.local.entity.ShoppingCartItemsEntity
 import com.hasanalic.ecommerce.feature_home.domain.use_case.favorite_use_cases.FavoriteUseCases
@@ -19,15 +21,28 @@ import javax.inject.Inject
 class ProductDetailViewModel @Inject constructor (
     private val productDetailUseCases: ProductDetailUseCases,
     private val shoppingCartUseCases: ShoppingCartUseCases,
-    private val favoriteUseCases: FavoriteUseCases
+    private val favoriteUseCases: FavoriteUseCases,
+    private val sharedPreferencesUseCases: SharedPreferencesUseCases
 ) : ViewModel() {
 
     private var _productDetailState = MutableLiveData(ProductDetailState())
     val productDetailState: LiveData<ProductDetailState> = _productDetailState
 
-    fun getProductDetailAndReviews(userId: String, productId: String) {
-        _productDetailState.value = ProductDetailState(isLoading = true)
+    init {
+        getUserIdIfExists()
+    }
+
+    private fun getUserIdIfExists() {
+        val userId = sharedPreferencesUseCases.getUserIdUseCase()
+        userId?.let {
+            _productDetailState.value = ProductDetailState(userId = it)
+        }
+    }
+
+    fun getProductDetailAndReviews(productId: String) {
+        _productDetailState.value = _productDetailState.value!!.copy(isLoading = true)
         viewModelScope.launch {
+            val userId = _productDetailState.value!!.userId
             val result = productDetailUseCases.getProductDetailByUserIdAndProductIdUseCase(userId, productId)
             when(result) {
                 is Result.Error -> handleGetProductDetailError(result.error)
@@ -93,8 +108,9 @@ class ProductDetailViewModel @Inject constructor (
         }
     }
 
-    fun addProductToCart(userId: String, productId: String) {
+    fun addProductToCart(productId: String) {
         viewModelScope.launch {
+            val userId = _productDetailState.value!!.userId
             val shoppingCartItemsEntity = ShoppingCartItemsEntity(userId, productId, 1)
             val result = shoppingCartUseCases.insertShoppingCartItemEntityUseCase(shoppingCartItemsEntity)
             when(result) {
@@ -129,8 +145,9 @@ class ProductDetailViewModel @Inject constructor (
         }
     }
 
-    fun removeProductFromCart(userId: String, productId: String) {
+    fun removeProductFromCart(productId: String) {
         viewModelScope.launch {
+            val userId = _productDetailState.value!!.userId
             val result = shoppingCartUseCases.deleteShoppingCartItemEntityUseCase(userId, productId)
             when(result) {
                 is Result.Error -> handleRemoveProductFromCart(result.error)
@@ -164,7 +181,16 @@ class ProductDetailViewModel @Inject constructor (
         }
     }
 
-    fun addProductToFavorites(userId: String, productId: String) {
+    fun addProductToFavoritesIfUserLoggedIn(productId: String) {
+        val userId = _productDetailState.value!!.userId
+
+        if (userId == ANOMIM_USER_ID) {
+            _productDetailState.value = _productDetailState.value!!.copy(
+                shouldUserMoveToAuthActivity = true
+            )
+            return
+        }
+
         viewModelScope.launch {
             val favoritesEntity = FavoritesEntity(userId, productId)
             when(val result = favoriteUseCases.insertFavoriteAndGetIdUseCase(favoritesEntity)) {
@@ -199,7 +225,16 @@ class ProductDetailViewModel @Inject constructor (
         }
     }
 
-    fun removeProductFromFavorites(userId: String, productId: String) {
+    fun removeProductFromFavoritesIfUserLoggedIn(productId: String) {
+        val userId = _productDetailState.value!!.userId
+
+        if (userId == ANOMIM_USER_ID) {
+            _productDetailState.value = _productDetailState.value!!.copy(
+                shouldUserMoveToAuthActivity = true
+            )
+            return
+        }
+
         viewModelScope.launch {
             when(val result = favoriteUseCases.deleteFavoriteUseCase(userId, productId)) {
                 is Result.Error -> handleRemoveProductFromFavorites(result.error)

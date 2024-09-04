@@ -35,8 +35,6 @@ class ProductDetailFragment: Fragment() {
 
     private var productId: String? = null
 
-    private var userId: String = ANOMIM_USER_ID
-
     private val reviewAdapter by lazy {
         ReviewAdapter()
     }
@@ -57,7 +55,7 @@ class ProductDetailFragment: Fragment() {
 
         arguments?.let {
             productId = it.getString(requireActivity().getString(R.string.product_id))
-           viewModel.getProductDetailAndReviews(userId,productId ?: "")
+            viewModel.getProductDetailAndReviews(productId ?: "")
         }
 
         setupListeners(view)
@@ -98,6 +96,10 @@ class ProductDetailFragment: Fragment() {
             binding.progressBarProductDetail.show()
         } else {
             binding.progressBarProductDetail.hide()
+        }
+
+        if (state.shouldUserMoveToAuthActivity) {
+            navigateToAuthActivity()
         }
 
         state.productDetail?.let {
@@ -162,25 +164,18 @@ class ProductDetailFragment: Fragment() {
         }
 
         binding.imageViewFavorite.setOnClickListener {
-            if (userId != ANOMIM_USER_ID) {
-                if (productDetail.addedToFavorites) {
-                    viewModel.removeProductFromFavorites(userId, productDetail.productId)
-                } else {
-                    viewModel.addProductToFavorites(userId, productDetail.productId)
-                }
+            if (productDetail.addedToFavorites) {
+                viewModel.removeProductFromFavoritesIfUserLoggedIn(productDetail.productId)
             } else {
-                toast(requireContext(),"Favori işlemleri için giriş yapmalısınız.",false)
-                val intent = Intent(requireActivity(), AuthActivity::class.java)
-                startActivity(intent)
-                requireActivity().finish()
+                viewModel.addProductToFavoritesIfUserLoggedIn(productDetail.productId)
             }
         }
 
         binding.buttonAddCart.setOnClickListener {
             if (productDetail.addedToShoppingCart) {
-                viewModel.removeProductFromCart(userId, productDetail.productId)
+                viewModel.removeProductFromCart(productDetail.productId)
             } else {
-                viewModel.addProductToCart(userId, productDetail.productId)
+                viewModel.addProductToCart(productDetail.productId)
             }
         }
     }
@@ -191,6 +186,13 @@ class ProductDetailFragment: Fragment() {
         intent.putExtra(Intent.EXTRA_SUBJECT, title)
         intent.putExtra(Intent.EXTRA_TEXT, url)
         startActivity(Intent.createChooser(intent, "Paylaş"))
+    }
+
+    private fun navigateToAuthActivity() {
+        toast(requireContext(),"Favori işlemleri için giriş yapmalısınız.",false)
+        val intent = Intent(requireActivity(), AuthActivity::class.java)
+        startActivity(intent)
+        requireActivity().finish()
     }
 
     override fun onDestroyView() {
