@@ -79,6 +79,7 @@ import com.hasanalic.ecommerce.feature_home.domain.use_case.shopping_cart_use_ca
 import com.hasanalic.ecommerce.feature_home.domain.use_case.shopping_cart_use_cases.InsertShoppingCartItemEntityUseCase
 import com.hasanalic.ecommerce.feature_home.domain.use_case.shopping_cart_use_cases.ShoppingCartUseCases
 import com.hasanalic.ecommerce.feature_home.domain.use_case.shopping_cart_use_cases.UpdateShoppingCartItemEntityUseCase
+import com.hasanalic.ecommerce.feature_home.domain.use_case.user_use_cases.DeleteUserUseCase
 import com.hasanalic.ecommerce.feature_home.domain.use_case.user_use_cases.GetUserUseCase
 import com.hasanalic.ecommerce.feature_home.domain.use_case.user_use_cases.UserUseCases
 import com.hasanalic.ecommerce.feature_location.data.repository.AddressRepositoryImp
@@ -288,7 +289,8 @@ object AppModule {
     @Provides
     fun provideUserUseCases(userRepository: UserRepository): UserUseCases {
         return UserUseCases(
-            getUserUseCase = GetUserUseCase(userRepository)
+            getUserUseCase = GetUserUseCase(userRepository),
+            deleteUserUseCase = DeleteUserUseCase(userRepository)
         )
     }
 

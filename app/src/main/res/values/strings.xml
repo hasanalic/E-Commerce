@@ -121,6 +121,7 @@
     <string name="point">Puan</string>
     <string name="store">Mağaza</string>
     <string name="logout">Çıkış Yap</string>
+    <string name="delete_account">Hesabı Sil</string>
     <string name="user_id">userId</string>
     <string name="notification_from">NotificationFrom</string>
     <string name="notif_shopping_cart">NotificationFromShoppingCart</string>

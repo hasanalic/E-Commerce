@@ -7,6 +7,7 @@ data class AccountState (
     val user: User? = null,
     val isUserLoggedOut: Boolean = false,
     val shouldUserMoveToAuthActivity: Boolean = false,
+    val isDeletionCompleted: Boolean = false,
     val dataError: String? = null,
     val actionError: String? = null
 )

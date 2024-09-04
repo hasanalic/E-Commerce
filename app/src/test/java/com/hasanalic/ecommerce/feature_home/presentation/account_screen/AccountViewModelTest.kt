@@ -13,6 +13,7 @@ import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.SetDatab
 import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.SharedPreferencesUseCases
 import com.hasanalic.ecommerce.feature_home.data.repository.FakeUserRepository
 import com.hasanalic.ecommerce.feature_home.domain.repository.UserRepository
+import com.hasanalic.ecommerce.feature_home.domain.use_case.user_use_cases.DeleteUserUseCase
 import com.hasanalic.ecommerce.feature_home.domain.use_case.user_use_cases.GetUserUseCase
 import com.hasanalic.ecommerce.feature_home.domain.use_case.user_use_cases.UserUseCases
 import com.hasanalic.ecommerce.getOrAwaitValue
@@ -43,7 +44,10 @@ class AccountViewModelTest {
         userRepository = FakeUserRepository()
         sharedPreferencesDataSource = FakeSharedPreferencesDataSourceImp()
 
-        userUseCases = UserUseCases(getUserUseCase = GetUserUseCase(userRepository))
+        userUseCases = UserUseCases(
+            getUserUseCase = GetUserUseCase(userRepository),
+            deleteUserUseCase = DeleteUserUseCase(userRepository)
+        )
         sharedPreferencesUseCases = SharedPreferencesUseCases(
             getUserIdUseCase = GetUserIdUseCase(sharedPreferencesDataSource),
             isDatabaseInitializedUseCase = IsDatabaseInitializedUseCase(sharedPreferencesDataSource),
@@ -90,6 +94,24 @@ class AccountViewModelTest {
 
         assertThat(state.shouldUserMoveToAuthActivity).isTrue()
         assertThat(state.user).isNull()
+        assertThat(state.isLoading).isFalse()
+        assertThat(state.actionError).isNull()
+        assertThat(state.dataError).isNull()
+        assertThat(state.isUserLoggedOut).isFalse()
+    }
+
+    @Test
+    fun `deleteUser deletes user and update state when deletion success`() {
+        sharedPreferencesUseCases.saveUserIdUseCase("1")
+        accountViewModel.getUserIfLoggedIn()
+        accountViewModel.deleteUser()
+
+        val state = accountViewModel.accountState.getOrAwaitValue()
+        val userId = sharedPreferencesUseCases.getUserIdUseCase()
+
+        assertThat(userId).isNull()
+        assertThat(state.isDeletionCompleted).isTrue()
+        assertThat(state.shouldUserMoveToAuthActivity).isFalse()
         assertThat(state.isLoading).isFalse()
         assertThat(state.actionError).isNull()
         assertThat(state.dataError).isNull()

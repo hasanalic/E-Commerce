@@ -69,4 +69,33 @@ class AccountViewModel @Inject constructor(
             isUserLoggedOut = true
         )
     }
+
+    fun deleteUser() {
+        _accountState.value = _accountState.value!!.copy(isLoading = true)
+        val userId = _accountState.value!!.user!!.userId
+
+        viewModelScope.launch {
+            when(val result = userUseCases.deleteUserUseCase(userId)) {
+                is Result.Error -> handleDeleteUserError(result.error)
+                is Result.Success -> {
+                    sharedPreferencesUseCases.logOutUserUseCase()
+                    _accountState.value = _accountState.value!!.copy(
+                        isLoading = false,
+                        isDeletionCompleted = true
+                    )
+                }
+            }
+        }
+    }
+
+    private fun handleDeleteUserError(error: DataError.Local) {
+        val message = when(error) {
+            DataError.Local.DELETION_FAILED -> TODO()
+            DataError.Local.UNKNOWN -> TODO()
+            else -> null
+        }
+        _accountState.value = _accountState.value!!.copy(
+            actionError = message
+        )
+    }
 }

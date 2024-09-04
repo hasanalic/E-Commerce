@@ -1,5 +1,6 @@
 package com.hasanalic.ecommerce.feature_home.presentation.account_screen.views
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -54,6 +55,21 @@ class AccountFragment: Fragment() {
             viewModel.logOutUser()
             //cancelCartAlarm()
         }
+
+        binding.textViewDelete.setOnClickListener {
+            showDeleteAccountDialog()
+        }
+    }
+
+    private fun showDeleteAccountDialog() {
+        val alertDialogBuilder = AlertDialog.Builder(requireContext())
+        alertDialogBuilder.setMessage("Hesabı silmek istediğinizden emin misin?")
+        alertDialogBuilder.setPositiveButton("Sil") { _, _ ->
+            viewModel.deleteUser()
+        }
+        alertDialogBuilder.setNegativeButton("Vazgeç") { _, _ -> }
+
+        alertDialogBuilder.create().show()
     }
 
     private fun cancelCartAlarm() {
@@ -77,6 +93,11 @@ class AccountFragment: Fragment() {
         state.user?.let {
             binding.textViewUserName.text = it.userName
             binding.textViewUserEmail.text = it.userEmail
+        }
+
+        if (state.isDeletionCompleted) {
+            navigateToAuthActivity()
+            toast(requireContext(), "Hesabınız silindi.", false)
         }
 
         if (state.isUserLoggedOut) {

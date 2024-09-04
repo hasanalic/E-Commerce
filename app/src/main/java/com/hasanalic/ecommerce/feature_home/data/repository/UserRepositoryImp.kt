@@ -21,4 +21,17 @@ class UserRepositoryImp @Inject constructor(
             Result.Error(DataError.Local.UNKNOWN)
         }
     }
+
+    override suspend fun deleteUser(userId: String): Result<Unit, DataError.Local> {
+        return try {
+            val result = userDao.deleteUser(userId)
+            if (result > 0) {
+                Result.Success(Unit)
+            } else {
+                Result.Error(DataError.Local.DELETION_FAILED)
+            }
+        } catch (e: Exception) {
+            Result.Error(DataError.Local.UNKNOWN)
+        }
+    }
 }

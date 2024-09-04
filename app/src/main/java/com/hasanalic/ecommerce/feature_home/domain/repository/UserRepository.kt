@@ -7,4 +7,6 @@ import com.hasanalic.ecommerce.feature_home.domain.model.User
 interface UserRepository {
 
     suspend fun getUser(userId: String): Result<User, DataError.Local>
+
+    suspend fun deleteUser(userId: String): Result<Unit, DataError.Local>
 }

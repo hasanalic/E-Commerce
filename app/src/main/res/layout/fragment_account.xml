@@ -73,9 +73,20 @@
         android:layout_marginTop="20dp"
         android:text="@string/logout"
         android:textColor="@color/font_secondary"
-        android:textSize="19sp"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/textViewOrders"
         app:layout_constraintTop_toBottomOf="@+id/textViewOrders" />
+
+    <TextView
+        android:id="@+id/textViewDelete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/delete_account"
+        android:textColor="@color/font_secondary"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/textViewLogout"
+        app:layout_constraintTop_toBottomOf="@+id/textViewLogout" />
 
     <ProgressBar
         android:id="@+id/progressBarAccount"
