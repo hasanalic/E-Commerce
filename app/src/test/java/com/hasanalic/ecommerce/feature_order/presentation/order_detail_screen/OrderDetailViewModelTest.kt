@@ -3,6 +3,14 @@ package com.hasanalic.ecommerce.feature_order.presentation.order_detail_screen
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import com.hasanalic.ecommerce.MainCoroutineRule
+import com.hasanalic.ecommerce.core.data.FakeSharedPreferencesDataSourceImp
+import com.hasanalic.ecommerce.core.domain.repository.SharedPreferencesDataSource
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.GetUserIdUseCase
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.IsDatabaseInitializedUseCase
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.LogOutUserUseCase
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.SaveUserIdUseCase
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.SetDatabaseInitializedUseCase
+import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.SharedPreferencesUseCases
 import com.hasanalic.ecommerce.feature_order.data.repository.FakeOrderRepository
 import com.hasanalic.ecommerce.feature_orders.domain.model.OrderDetail
 import com.hasanalic.ecommerce.feature_orders.domain.repository.OrderRepository
@@ -28,19 +36,34 @@ class OrderDetailViewModelTest {
     var mainCoroutineRule = MainCoroutineRule()
 
     private lateinit var orderRepository: OrderRepository
+    private lateinit var sharedPreferencesDataSource: SharedPreferencesDataSource
+
     private lateinit var orderUseCases: OrderUseCases
+    private lateinit var sharedPreferencesUseCases: SharedPreferencesUseCases
+
     private lateinit var orderDetailViewModel: OrderDetailViewModel
 
     @Before
     fun setup() {
         orderRepository = FakeOrderRepository()
+        sharedPreferencesDataSource = FakeSharedPreferencesDataSourceImp()
+
         orderUseCases = OrderUseCases(
             getOrderDetailUseCase = GetOrderDetailUseCase(orderRepository),
             getOrdersByUserUseCase = GetOrdersByUserUseCase(orderRepository),
             insertOrderUseCase = InsertOrderUseCase(orderRepository),
             updateOrderStatusUseCase = UpdateOrderStatusUseCase(orderRepository)
         )
-        orderDetailViewModel = OrderDetailViewModel(orderUseCases)
+        sharedPreferencesUseCases = SharedPreferencesUseCases(
+            getUserIdUseCase = GetUserIdUseCase(sharedPreferencesDataSource),
+            isDatabaseInitializedUseCase = IsDatabaseInitializedUseCase(sharedPreferencesDataSource),
+            saveUserIdUseCase = SaveUserIdUseCase(sharedPreferencesDataSource),
+            setDatabaseInitializedUseCase = SetDatabaseInitializedUseCase(sharedPreferencesDataSource),
+            logOutUserUseCase = LogOutUserUseCase(sharedPreferencesDataSource)
+        )
+
+        sharedPreferencesUseCases.saveUserIdUseCase("1")
+        orderDetailViewModel = OrderDetailViewModel(orderUseCases, sharedPreferencesUseCases)
     }
 
     @Test
@@ -60,7 +83,7 @@ class OrderDetailViewModelTest {
     @Test
     fun `updateOrderStatusToCanceled should updates order status successfuly`() {
         orderDetailViewModel.getOrderDetail("1")
-        orderDetailViewModel.updateOrderStatusToCanceled("1","1")
+        orderDetailViewModel.updateOrderStatusToCanceled("1")
         val state = orderDetailViewModel.orderDetailState.getOrAwaitValue()
 
         assertThat(state.orderDetail).isNotNull()
@@ -75,7 +98,7 @@ class OrderDetailViewModelTest {
     @Test
     fun `updateOrderStatusToReturned should updates order status successfuly`() {
         orderDetailViewModel.getOrderDetail("1")
-        orderDetailViewModel.updateOrderStatusToReturned("1","1")
+        orderDetailViewModel.updateOrderStatusToReturned("1")
         val state = orderDetailViewModel.orderDetailState.getOrAwaitValue()
 
         assertThat(state.orderDetail).isNotNull()

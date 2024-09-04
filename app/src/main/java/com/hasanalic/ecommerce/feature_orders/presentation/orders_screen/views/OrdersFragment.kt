@@ -39,7 +39,7 @@ class OrdersFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(requireActivity())[OrdersViewModel::class.java]
-        viewModel.getOrders(userId)
+        viewModel.getOrders()
 
         binding.toolBarOrders.setNavigationOnClickListener {
             requireActivity().finish()

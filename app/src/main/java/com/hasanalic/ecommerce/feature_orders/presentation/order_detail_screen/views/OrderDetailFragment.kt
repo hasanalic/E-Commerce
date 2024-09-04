@@ -36,7 +36,6 @@ class OrderDetailFragment: Fragment() {
 
     private lateinit var viewModel: OrderDetailViewModel
 
-    private lateinit var userId: String
     private lateinit var orderId: String
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -49,7 +48,6 @@ class OrderDetailFragment: Fragment() {
 
         viewModel = ViewModelProvider(requireActivity())[OrderDetailViewModel::class.java]
 
-        userId = "1"
         orderId = "1"
         viewModel.getOrderDetail(orderId)
 
@@ -65,28 +63,28 @@ class OrderDetailFragment: Fragment() {
 
         binding.textViewCancelOrReturn.setOnClickListener {
             if (binding.textViewCancelOrReturn.text == requireActivity().getString(R.string.cancel_order)) {
-                showCancelOrderWarning(userId, orderId)
+                showCancelOrderWarning(orderId)
             } else {
-                showReturnOrderWarning(userId, orderId)
+                showReturnOrderWarning(orderId)
             }
         }
     }
 
-    private fun showCancelOrderWarning(userId: String, orderId: String) {
+    private fun showCancelOrderWarning(orderId: String) {
         val alertDialogBuilder = AlertDialog.Builder(requireContext())
         alertDialogBuilder.setMessage("Siparişi iptal etmek istediğinizden emin misiniz?")
         alertDialogBuilder.setPositiveButton("İptal et") { _, _ ->
-            viewModel.updateOrderStatusToCanceled(userId, orderId)
+            viewModel.updateOrderStatusToCanceled(orderId)
         }
         alertDialogBuilder.setNegativeButton("Vazgeç") { _, _ -> }
         alertDialogBuilder.create().show()
     }
 
-    private fun showReturnOrderWarning(userId: String, orderId: String) {
+    private fun showReturnOrderWarning(orderId: String) {
         val alertDialogBuilder = AlertDialog.Builder(requireContext())
         alertDialogBuilder.setMessage("Siparişi iade etmek istediğinizden emin misiniz?")
         alertDialogBuilder.setPositiveButton("İade et") { _, _ ->
-            viewModel.updateOrderStatusToReturned(userId, orderId)
+            viewModel.updateOrderStatusToReturned(orderId)
         }
         alertDialogBuilder.setNegativeButton("Vazgeç") { _, _ -> }
         alertDialogBuilder.create().show()
