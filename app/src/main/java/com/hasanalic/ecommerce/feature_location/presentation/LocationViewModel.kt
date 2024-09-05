@@ -107,11 +107,19 @@ class LocationViewModel @Inject constructor(
         _locationState.value = _locationState.value!!.copy(
             isLoading = false,
             addressEntityList = currentAddressList,
-            isAddressDeletionSuccessful = true
+            isAddressDeletionSuccessful = true,
+
         )
     }
 
     fun insertAddressEntity(title: String, detail: String) {
+        _locationState.value = _locationState.value!!.copy(
+            isLoading = true,
+            validationError = null,
+            dataError = null,
+            actionError = null
+        )
+
         val addressValidationResult = addressUseCases.addressValidatorUseCase(title, detail)
         if (addressValidationResult is Result.Error) {
             handleAddressValidationError(addressValidationResult.error)
@@ -125,9 +133,9 @@ class LocationViewModel @Inject constructor(
                 is Result.Error -> handleInsertAddressEntityError(result.error)
                 is Result.Success -> {
                     _locationState.value = _locationState.value!!.copy(
-                        isAddressInsertionSuccessful = true
+                        isAddressInsertionSuccessful = true,
+                        isLoading = false
                     )
-                    getAddressEntityList(userId)
                 }
             }
         }
@@ -140,23 +148,20 @@ class LocationViewModel @Inject constructor(
         }
 
         _locationState.value = _locationState.value!!.copy(
-            validationError = errorMessage
+            validationError = errorMessage,
+            isLoading = false
         )
     }
 
     private fun handleInsertAddressEntityError(error: DataError.Local) {
-        when(error) {
-            DataError.Local.INSERTION_FAILED -> {
-                _locationState.value = LocationState(
-                    dataError = "Adres kaydedilemedi."
-                )
-            }
-            DataError.Local.UNKNOWN -> {
-                _locationState.value = LocationState(
-                    dataError = "Bilinmeyen bir hata meydana geldi."
-                )
-            }
-            else -> {}
+        val errorMessage = when(error) {
+            DataError.Local.INSERTION_FAILED -> "Adres kaydedilemedi."
+            DataError.Local.UNKNOWN -> "Bilinmeyen bir hata meydana geldi."
+            else -> null
         }
+
+        _locationState.value = LocationState(
+            dataError = errorMessage
+        )
     }
 }

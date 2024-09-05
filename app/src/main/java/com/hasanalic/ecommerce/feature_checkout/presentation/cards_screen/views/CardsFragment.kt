@@ -44,6 +44,8 @@ class CardsFragment: Fragment() {
         viewModel = ViewModelProvider(requireActivity())[CardsViewModel::class.java]
         checkoutViewModel = ViewModelProvider(requireActivity())[CheckoutViewModel::class.java]
 
+        viewModel.getUserCards()
+
         setupListeners()
 
         setupRecyclerView()
@@ -102,7 +104,7 @@ class CardsFragment: Fragment() {
         }
 
         if (state.isPaymentSuccessful) {
-            Navigation.findNavController(binding.root).navigate(R.id.action_paymentMethodsFragment_to_successFragment)
+            Navigation.findNavController(binding.root).navigate(R.id.action_cardsFragment_to_successFragment)
         }
 
         state.dataError?.let {

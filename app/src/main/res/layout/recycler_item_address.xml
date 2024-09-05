@@ -19,7 +19,8 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="36dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="36dp"
             android:layout_marginEnd="10dp"
             android:src="@drawable/location" />
@@ -27,7 +28,7 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="7"
             android:orientation="vertical">
 
             <TextView
@@ -42,7 +43,7 @@
                 android:id="@+id/textViewAddressDetail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="Çırpıcı Mah. Rüstem Balkan Sok. No:12 Daire: 6"
+                tools:text="Çırpıcı Mah."
                 android:textSize="15sp"
                 android:textColor="@color/font_secondary" />
 
@@ -50,8 +51,9 @@
 
         <RadioButton
             android:id="@+id/radioButton"
-            android:layout_width="50dp"
-            android:layout_height="50dp" />
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"/>
 
     </LinearLayout>
 

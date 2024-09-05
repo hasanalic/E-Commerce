@@ -66,7 +66,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:maxLines="1"
-                    android:maxLength="12"
+                    android:maxLength="15"
                     android:textColor="@color/font_secondary"
                     tools:text="Ev"
                     android:textSize="16sp" />

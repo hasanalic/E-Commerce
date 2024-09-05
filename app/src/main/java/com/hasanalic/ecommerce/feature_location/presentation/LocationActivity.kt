@@ -26,7 +26,6 @@ import com.hasanalic.ecommerce.feature_location.presentation.views.LocationAdapt
 import com.hasanalic.ecommerce.core.presentation.utils.ItemDecoration
 import com.hasanalic.ecommerce.core.utils.hide
 import com.hasanalic.ecommerce.core.utils.show
-import com.hasanalic.ecommerce.core.utils.toast
 import com.hasanalic.ecommerce.feature_auth.presentation.AuthActivity
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
@@ -70,14 +69,10 @@ class LocationActivity : AppCompatActivity() {
         }
 
         binding.buttonSave.setOnClickListener {
-            val address = binding.textInputEditTextAddress.text.toString()
             val addressTitle = binding.textInputEditTextAddressTitle.text.toString()
+            val addressDetail = binding.textInputEditTextAddress.text.toString()
 
-            if (address.isEmpty() || addressTitle.isEmpty()) {
-                Toast.makeText(this,"Lütfen alanları doldurun",Toast.LENGTH_SHORT).show()
-            } else {
-                viewModel.insertAddressEntity(address, addressTitle)
-            }
+            viewModel.insertAddressEntity(addressTitle, addressDetail)
         }
     }
 
