@@ -9,7 +9,7 @@ data class OrderWithProductsDto(
     @Embedded val order: OrderEntity,
     @Relation(
         parentColumn = "orderId",
-        entityColumn = "orderProductsId"
+        entityColumn = "order_products_order_id"
     )
     val products: List<OrderProductsEntity>
 )
