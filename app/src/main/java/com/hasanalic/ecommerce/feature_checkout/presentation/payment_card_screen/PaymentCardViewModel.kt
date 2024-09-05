@@ -33,12 +33,15 @@ class PaymentCardViewModel @Inject constructor(
                 is Result.Error -> handleCheckIfUserHaveAnyCard(result.error)
                 is Result.Success -> {
                     val cardList = result.data
+                    var doesUserHaveCards = false
                     if (cardList.isNotEmpty()) {
-                        _paymentCardState.value = PaymentCardState(
-                            doesUserHaveCards = true,
-                            userId = userId
-                        )
+                        doesUserHaveCards = true
                     }
+
+                    _paymentCardState.value = PaymentCardState(
+                        doesUserHaveCards = doesUserHaveCards,
+                        userId = userId
+                    )
                 }
             }
         }
@@ -54,19 +57,20 @@ class PaymentCardViewModel @Inject constructor(
     }
 
     fun onClickConfirm(cardName: String, cardNumber: String, month: String, year: String, cvv: String) {
-        _paymentCardState.value = _paymentCardState.value!!.copy(isLoading = true)
+        _paymentCardState.value = _paymentCardState.value!!.copy(isLoading = true, validationError = null)
         val result = cardUseCases.cardValidatorUseCase(cardName, cardNumber, month, year, cvv)
         when(result) {
             is Result.Error -> handleCardCalidationError(result.error)
             is Result.Success -> _paymentCardState.value = _paymentCardState.value!!.copy(
                 isLoading = false,
-                canUserContinueToNextStep = true
+                canUserContinueToNextStep = true,
+                validationError = null
             )
         }
     }
 
     fun onClickConfirmWithSaveCard(cardName: String, cardNumber: String, month: String, year: String, cvv: String) {
-        _paymentCardState.value = _paymentCardState.value!!.copy(isLoading = true)
+        _paymentCardState.value = _paymentCardState.value!!.copy(isLoading = true, validationError = null)
         viewModelScope.launch {
             val result = cardUseCases.cardValidatorUseCase(cardName, cardNumber, month, year, cvv)
             when(result) {
@@ -85,7 +89,8 @@ class PaymentCardViewModel @Inject constructor(
                 _paymentCardState.value = _paymentCardState.value!!.copy(
                     isLoading = false,
                     canUserContinueToNextStep = true,
-                    cardId = result.data
+                    cardId = result.data,
+                    validationError = null
                 )
             }
         }
