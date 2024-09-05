@@ -149,23 +149,6 @@
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="327dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:orientation="horizontal">
-
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/accept_terms_and_cond" />
-
-                </LinearLayout>
-
                 <Button
                     android:id="@+id/buttonRegister"
                     android:layout_width="327dp"
@@ -187,23 +170,23 @@
                     style="?attr/materialButtonOutlinedStyle"
                     app:shapeAppearance="?attr/shapeAppearanceSmallComponent" />
 
-                <TextView
-                    android:id="@+id/textViewLogin"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/hesabin_var_mi"
-                    android:textColor="@color/font_secondary"
-                    android:layout_marginTop="20dp"
-                    android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
-
             </LinearLayout>
 
         </LinearLayout>
 
     </ScrollView>
+
+    <TextView
+        android:id="@+id/textViewLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/hesabin_var_mi"
+        android:textColor="@color/font_secondary"
+        android:layout_marginBottom="16dp"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ProgressBar
         android:id="@+id/progressBarRegister"
