@@ -7,6 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.hasanalic.ecommerce.core.domain.model.DataError
 import com.hasanalic.ecommerce.core.domain.model.Result
 import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.SharedPreferencesUseCases
+import com.hasanalic.ecommerce.core.utils.toCent
+import com.hasanalic.ecommerce.feature_checkout.presentation.ShoppingCartList
 import com.hasanalic.ecommerce.feature_home.domain.use_case.shopping_cart_use_cases.ShoppingCartUseCases
 import com.hasanalic.ecommerce.feature_home.presentation.util.TotalCost
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -242,7 +244,7 @@ class ShoppingCartViewModel @Inject constructor(
         val shoppingCartListSize = _shoppingCartState.value!!.shoppingCartItemList.size
 
         if (shoppingCartListSize != 0) {
-            // saveShoppinCartListToSingleton()
+            saveShoppinCartListToSingleton()
             _shoppingCartState.value = _shoppingCartState.value!!.copy(
                 isLoading = false,
                 canUserMoveToCheckout = true
@@ -255,11 +257,8 @@ class ShoppingCartViewModel @Inject constructor(
         }
     }
 
-
-    /*
-    fun saveShoppinCartListToSingleton() {
-        ShoppingCartList.shoppingCartList = _stateShoppingCartItems.value!!.data!!.toList()
-        ShoppingCartList.totalPrice = _stateTotal.value!!
+    private fun saveShoppinCartListToSingleton() {
+        ShoppingCartList.shoppingCartList = _shoppingCartState.value!!.shoppingCartItemList
+        ShoppingCartList.totalPrice = "${_shoppingCartState.value!!.totalPriceWhole}.${_shoppingCartState.value!!.totalPriceCent!!.toCent()}"
     }
-     */
 }

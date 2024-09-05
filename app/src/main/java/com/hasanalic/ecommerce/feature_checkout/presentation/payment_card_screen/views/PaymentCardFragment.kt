@@ -57,6 +57,7 @@ class PaymentCardFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = ViewModelProvider(requireActivity())[PaymentCardViewModel::class.java]
+        checkoutViewModel = ViewModelProvider(requireActivity())[CheckoutViewModel::class.java]
         viewModel.checkIfUserHaveAnyCard()
 
         createNotificationChannel()
@@ -146,7 +147,7 @@ class PaymentCardFragment: Fragment() {
         }
 
         if (state.isPaymentSuccessful) {
-            Navigation.findNavController(binding.root).navigate(R.id.action_paymentMethodsFragment_to_successFragment)
+            Navigation.findNavController(binding.root).navigate(R.id.action_paymentCardFragment_to_successFragment)
         }
 
         state.dataError?.let {

@@ -41,7 +41,7 @@
         android:label="CardFragment"
         tools:layout="@layout/fragment_payment_card">
         <action
-            android:id="@+id/action_cardFragment_to_successFragment"
+            android:id="@+id/action_paymentCardFragment_to_successFragment"
             app:destination="@id/successFragment" />
         <action
             android:id="@+id/action_paymentCardFragment_to_cardsFragment"

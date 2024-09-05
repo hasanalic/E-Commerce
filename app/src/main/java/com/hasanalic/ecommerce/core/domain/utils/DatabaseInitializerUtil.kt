@@ -16,7 +16,7 @@ object DatabaseInitializerUtil {
                 4.5,
                 "144",
                 "369875214520",
-                "Aras Kargo",
+                "B Kargo",
                 "Kazanç Shop",
                 "8.7"
             ),
@@ -30,7 +30,7 @@ object DatabaseInitializerUtil {
                 4.8,
                 "1852",
                 "128555662211",
-                "Aras Kargo",
+                "B Kargo",
                 "Kazanç Shop",
                 "8.7"
             ),
@@ -44,7 +44,7 @@ object DatabaseInitializerUtil {
                 4.7,
                 "597",
                 "548702369851",
-                "MNG Kargo",
+                "A Kargo",
                 "Pandora Ticaret",
                 "9.1"
             ),
@@ -58,7 +58,7 @@ object DatabaseInitializerUtil {
                 4.6,
                 "1288",
                 "010101010101",
-                "MNG Kargo",
+                "A Kargo",
                 "Pandora Ticaret",
                 "9.1"
             ),
@@ -72,7 +72,7 @@ object DatabaseInitializerUtil {
                 4.1,
                 "112",
                 "845555955551",
-                "Aras Kargo",
+                "B Kargo",
                 "Bizim Bahçe",
                 "7.9"
             ),
@@ -86,7 +86,7 @@ object DatabaseInitializerUtil {
                 4.7,
                 "37",
                 "214785369102",
-                "MNG Kargo",
+                "A Kargo",
                 "Bebelac Store",
                 "8.9"
             ),
@@ -100,7 +100,7 @@ object DatabaseInitializerUtil {
                 4.6,
                 "676",
                 "777777777711",
-                "Yurtiçi Kargo",
+                "D Kargo",
                 "Prima Store",
                 "9.1"
             ),
@@ -114,7 +114,7 @@ object DatabaseInitializerUtil {
                 4.5,
                 "1841",
                 "785632014589",
-                "Yurtiçi Kargo",
+                "D Kargo",
                 "Philips Store",
                 "9.2"
             ),
@@ -128,7 +128,7 @@ object DatabaseInitializerUtil {
                 3.6,
                 "1444",
                 "120365874951",
-                "Aras Kargo",
+                "B Kargo",
                 "Paxel",
                 "8.1"
             ),
@@ -142,7 +142,7 @@ object DatabaseInitializerUtil {
                 4.7,
                 "25",
                 "785632014589",
-                "Aras Kargo",
+                "B Kargo",
                 "Sevimli Shop",
                 "9.7"
             ),
@@ -156,7 +156,7 @@ object DatabaseInitializerUtil {
                 4.5,
                 "30",
                 "444455558888",
-                "Aras Kargo",
+                "B Kargo",
                 "Eti",
                 "9.6"
             ),
@@ -170,7 +170,7 @@ object DatabaseInitializerUtil {
                 4.5,
                 "37",
                 "715586363980",
-                "PTT Kargo",
+                "C Kargo",
                 "Erikli",
                 "8.9"
             ),
@@ -184,7 +184,7 @@ object DatabaseInitializerUtil {
                 4.8,
                 "566",
                 "787870087878",
-                "MNG Kargo",
+                "A Kargo",
                 "Esnaf Kitapçılık",
                 "9.5"
             ),
@@ -198,7 +198,7 @@ object DatabaseInitializerUtil {
                 4.5,
                 "14",
                 "787878787878",
-                "MNG Kargo",
+                "A Kargo",
                 "Esnaf Kitapçılık",
                 "9.5"
             ),
@@ -212,7 +212,7 @@ object DatabaseInitializerUtil {
                 4.5,
                 "60",
                 "102365874951",
-                "MNG Kargo",
+                "A Kargo",
                 "Esnaf Kitapçılık",
                 "9.5"
             ),
@@ -226,7 +226,7 @@ object DatabaseInitializerUtil {
                 4.8,
                 "150",
                 "951463870215",
-                "MNG Kargo",
+                "A Kargo",
                 "Gizmo",
                 "7.8"
             ),
@@ -240,7 +240,7 @@ object DatabaseInitializerUtil {
                 3.6,
                 "22",
                 "555555555555",
-                "PTT Kargo",
+                "C Kargo",
                 "Zara",
                 "9.6"
             ),
@@ -254,7 +254,7 @@ object DatabaseInitializerUtil {
                 4.5,
                 "8",
                 "444444444444",
-                "Aras Kargo",
+                "B Kargo",
                 "R&Red",
                 "9.4"
             ),
@@ -268,7 +268,7 @@ object DatabaseInitializerUtil {
                 4.7,
                 "92",
                 "548702369851",
-                "MNG Kargo",
+                "A Kargo",
                 "Railroad",
                 "9.2"
             ),
@@ -282,7 +282,7 @@ object DatabaseInitializerUtil {
                 4.4,
                 "2348",
                 "333333333333",
-                "Aras Kargo",
+                "B Kargo",
                 "Synergy",
                 "8.9"
             ),
@@ -296,7 +296,7 @@ object DatabaseInitializerUtil {
                 4.2,
                 "51",
                 "111122211119",
-                "Aras Kargo",
+                "B Kargo",
                 "Kazanç Shop",
                 "8.7"
             ),
@@ -310,7 +310,7 @@ object DatabaseInitializerUtil {
                 4.5,
                 "141",
                 "888888888888",
-                "MNG Kargo",
+                "A Kargo",
                 "Pandora Ticaret",
                 "9.1"
             ),
