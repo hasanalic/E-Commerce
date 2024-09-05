@@ -49,11 +49,11 @@ class ShippingFragment: Fragment() {
         binding.bKargoRadioButton.setOnClickListener {
             cargoName = "Cargo B"
         }
-        binding.dKargoRadioButton.setOnClickListener {
-            cargoName = "Cargo D"
-        }
         binding.cKargoRadioButton.setOnClickListener {
             cargoName = "Cargo C"
+        }
+        binding.dKargoRadioButton.setOnClickListener {
+            cargoName = "Cargo D"
         }
     }
 

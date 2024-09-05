@@ -91,7 +91,7 @@
         android:id="@+id/imageViewDelivery"
         android:layout_width="match_parent"
         android:layout_height="110dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="40dp"
         android:src="@drawable/delivery"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout"/>
 
@@ -99,7 +99,7 @@
         android:id="@+id/kargoRadioGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="48dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -112,41 +112,41 @@
             android:checked="true"
             android:layout_marginBottom="15dp"
             android:textSize="16sp"
-            android:text="@string/cargo_name_one"
+            android:text="@string/cargo_a"
             android:paddingHorizontal="6dp"
-            android:drawableStart="@drawable/delivery"
+            android:drawableStart="@drawable/shipping"
             android:drawablePadding="10dp"/>
 
         <RadioButton
             android:id="@+id/bKargoRadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/cargo_name_two"
+            android:text="@string/cargo_b"
             android:layout_marginBottom="15dp"
             android:textSize="16sp"
             android:paddingHorizontal="6dp"
-            android:drawableStart="@drawable/delivery"
+            android:drawableStart="@drawable/shipping"
             android:drawablePadding="10dp"/>
-
-        <RadioButton
-            android:id="@+id/dKargoRadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:text="@string/cargo_name_three"
-            android:layout_marginBottom="15dp"
-            android:drawableStart="@drawable/delivery"
-            android:drawablePadding="10dp"
-            android:paddingHorizontal="6dp"/>
 
         <RadioButton
             android:id="@+id/cKargoRadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
-            android:text="@string/cargo_name_four"
+            android:text="@string/cargo_c"
+            android:layout_marginBottom="15dp"
+            android:drawableStart="@drawable/shipping"
+            android:drawablePadding="10dp"
+            android:paddingHorizontal="6dp"/>
+
+        <RadioButton
+            android:id="@+id/dKargoRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="@string/cargo_d"
             android:paddingHorizontal="6dp"
-            android:drawableStart="@drawable/delivery"
+            android:drawableStart="@drawable/shipping"
             android:drawablePadding="10dp"/>
 
     </RadioGroup>

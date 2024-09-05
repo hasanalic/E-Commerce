@@ -181,6 +181,7 @@ class HomeFragment: Fragment() {
     private fun setupRecyclerViewHome() {
         binding.recyclerViewHome.adapter = homeAdapter
         binding.recyclerViewHome.layoutManager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
+        binding.recyclerViewHome.addItemDecoration(ItemDecoration(40,40,30))
 
         homeAdapter.setAddProductToCartButtonClickListener { productId, position ->
             viewModel.addProductToCart(productId, position)

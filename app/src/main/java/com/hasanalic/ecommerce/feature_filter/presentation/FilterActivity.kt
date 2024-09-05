@@ -94,7 +94,7 @@ class FilterActivity : AppCompatActivity() {
 
     private fun setupRecyclerViewCategory() {
         binding.recyclerViewCategory.adapter = categoryAdapter
-        binding.recyclerViewCategory.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        binding.recyclerViewCategory.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         binding.recyclerViewCategory.addItemDecoration(ItemDecoration(0,16,0))
 
         categoryAdapter.setOnCategoryClickListener { category, position ->
