@@ -18,5 +18,10 @@
         android:id="@+id/orderDetailFragment"
         android:name="com.hasanalic.ecommerce.feature_orders.presentation.order_detail_screen.views.OrderDetailFragment"
         android:label="OrderDetailFragment"
-        tools:layout="@layout/fragment_order_detail"/>
+        tools:layout="@layout/fragment_order_detail">
+        <argument
+            android:name="orderId"
+            app:argType="string"
+            android:defaultValue="0" />
+    </fragment>
 </navigation>

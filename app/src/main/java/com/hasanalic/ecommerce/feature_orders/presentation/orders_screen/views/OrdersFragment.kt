@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.hasanalic.ecommerce.R
 import com.hasanalic.ecommerce.databinding.FragmentOrdersBinding
 import com.hasanalic.ecommerce.feature_orders.presentation.orders_screen.OrdersState
 import com.hasanalic.ecommerce.feature_orders.presentation.orders_screen.OrdersViewModel
@@ -24,8 +23,6 @@ class OrdersFragment: Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var viewModel: OrdersViewModel
-
-    private lateinit var userId: String
 
     private val orderAdapter by lazy {
         OrderAdapter()
@@ -56,8 +53,8 @@ class OrdersFragment: Fragment() {
         binding.recyclerViewOrders.addItemDecoration(ItemDecoration(30,30,40))
 
         orderAdapter.setOnOrderClickListener { orderId ->
-            TODO("order id nav argument")
-            Navigation.findNavController(binding.root).navigate(R.id.action_ordersFragment_to_orderDetailFragment)
+            val action = OrdersFragmentDirections.actionOrdersFragmentToOrderDetailFragment(orderId)
+            Navigation.findNavController(binding.root).navigate(action)
         }
     }
 

@@ -36,8 +36,6 @@ class OrderDetailFragment: Fragment() {
 
     private lateinit var viewModel: OrderDetailViewModel
 
-    private lateinit var orderId: String
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentOrderDetailBinding.inflate(inflater)
         return binding.root
@@ -48,8 +46,10 @@ class OrderDetailFragment: Fragment() {
 
         viewModel = ViewModelProvider(requireActivity())[OrderDetailViewModel::class.java]
 
-        orderId = "1"
-        viewModel.getOrderDetail(orderId)
+        arguments?.let {
+            val orderId = it.getString("orderId") ?: "0"
+            viewModel.getOrderDetail(orderId)
+        }
 
         setupListeners()
 
@@ -63,28 +63,28 @@ class OrderDetailFragment: Fragment() {
 
         binding.textViewCancelOrReturn.setOnClickListener {
             if (binding.textViewCancelOrReturn.text == requireActivity().getString(R.string.cancel_order)) {
-                showCancelOrderWarning(orderId)
+                showCancelOrderWarning()
             } else {
-                showReturnOrderWarning(orderId)
+                showReturnOrderWarning()
             }
         }
     }
 
-    private fun showCancelOrderWarning(orderId: String) {
+    private fun showCancelOrderWarning() {
         val alertDialogBuilder = AlertDialog.Builder(requireContext())
         alertDialogBuilder.setMessage("Siparişi iptal etmek istediğinizden emin misiniz?")
         alertDialogBuilder.setPositiveButton("İptal et") { _, _ ->
-            viewModel.updateOrderStatusToCanceled(orderId)
+            viewModel.updateOrderStatusToCanceled()
         }
         alertDialogBuilder.setNegativeButton("Vazgeç") { _, _ -> }
         alertDialogBuilder.create().show()
     }
 
-    private fun showReturnOrderWarning(orderId: String) {
+    private fun showReturnOrderWarning() {
         val alertDialogBuilder = AlertDialog.Builder(requireContext())
         alertDialogBuilder.setMessage("Siparişi iade etmek istediğinizden emin misiniz?")
         alertDialogBuilder.setPositiveButton("İade et") { _, _ ->
-            viewModel.updateOrderStatusToReturned(orderId)
+            viewModel.updateOrderStatusToReturned()
         }
         alertDialogBuilder.setNegativeButton("Vazgeç") { _, _ -> }
         alertDialogBuilder.create().show()
@@ -125,6 +125,8 @@ class OrderDetailFragment: Fragment() {
         binding.textViewOrderDate.text = order.date
         binding.textViewOrderTotal.text = order.total
         binding.textViewCargo.text = order.cargo
+        binding.textViewAddressDetail.text = order.addressDetail
+        binding.textViewPayment.text = order.paymentType
 
         val orderStatus = order.status
 
@@ -132,7 +134,6 @@ class OrderDetailFragment: Fragment() {
             binding.imageViewPayment.setImageResource(R.drawable.bank_card)
         } else {
             binding.imageViewPayment.hide()
-            binding.textViewPayment.text = order.paymentType
         }
 
         if (orderStatus == ORDER_CANCELLED || orderStatus == ORDER_RETURNED) {

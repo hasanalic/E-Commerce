@@ -43,9 +43,10 @@ class OrderDetailViewModel @Inject constructor(
         _orderDetailState.value = OrderDetailState(dataError = message)
     }
 
-    fun updateOrderStatusToCanceled(orderId: String) {
+    fun updateOrderStatusToCanceled() {
         _orderDetailState.value = _orderDetailState.value!!.copy(isLoading = true)
         viewModelScope.launch {
+            val orderId = _orderDetailState.value!!.orderDetail!!.orderId
             val userId = sharedPreferencesUseCases.getUserIdUseCase() ?: ANOMIM_USER_ID
             val result = orderUseCases.updateOrderStatusUseCase(ORDER_CANCELLED, userId, orderId)
             when(result) {
@@ -58,9 +59,10 @@ class OrderDetailViewModel @Inject constructor(
         }
     }
 
-    fun updateOrderStatusToReturned(orderId: String) {
+    fun updateOrderStatusToReturned() {
         _orderDetailState.value = _orderDetailState.value!!.copy(isLoading = true)
         viewModelScope.launch {
+            val orderId = _orderDetailState.value!!.orderDetail!!.orderId
             val userId = sharedPreferencesUseCases.getUserIdUseCase() ?: ANOMIM_USER_ID
             val result = orderUseCases.updateOrderStatusUseCase(ORDER_RETURNED, userId, orderId)
             when(result) {
