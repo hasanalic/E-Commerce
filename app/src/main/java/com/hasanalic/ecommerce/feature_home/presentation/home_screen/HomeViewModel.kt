@@ -277,12 +277,4 @@ class HomeViewModel @Inject constructor(
             scannedProductId = null
         )
     }
-
-    /*
-    /// FILTERED PRODUCTS FRAGMENT ///
-
-    fun resetFilteredProductsStatus() {
-        _stateFilteredProducts = MutableLiveData<Resource<MutableList<Product>>>()
-    }
-     */
 }

@@ -12,6 +12,5 @@ data class Product(
     val productReviewCount: String,
     var productBarcode: String,
     var addedToShoppingCart: Boolean,
-    var addedToFavorites: Boolean,
-    var addedToCompare: Boolean = false
+    var addedToFavorites: Boolean
 )

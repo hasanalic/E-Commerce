@@ -158,15 +158,6 @@
 
         </LinearLayout>
 
-        <CheckBox
-            android:id="@+id/checkboxCompare"
-            android:layout_width="match_parent"
-            android:layout_height="32dp"
-            android:gravity="start|center_vertical"
-            android:text="@string/add_compare"
-            android:textSize="10sp"
-            android:textColor="@color/font_secondary" />
-
     </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>

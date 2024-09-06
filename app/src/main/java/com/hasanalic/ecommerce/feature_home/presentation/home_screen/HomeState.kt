@@ -10,7 +10,6 @@ data class HomeState(
     val userId: String = ANOMIM_USER_ID,
     val productList: MutableList<Product> = mutableListOf(),
     val categoryList: MutableList<Category> = mutableListOf(),
-    val isCompareButtonVisible: Boolean = false,
     val shouldUserMoveToAuthActivity: Boolean = false,
     val dataError: String? = null,
     val actionError: String? = null

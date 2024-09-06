@@ -83,7 +83,7 @@ class OrderDetailViewModelTest {
     @Test
     fun `updateOrderStatusToCanceled should updates order status successfuly`() {
         orderDetailViewModel.getOrderDetail("1")
-        orderDetailViewModel.updateOrderStatusToCanceled("1")
+        orderDetailViewModel.updateOrderStatusToCanceled()
         val state = orderDetailViewModel.orderDetailState.getOrAwaitValue()
 
         assertThat(state.orderDetail).isNotNull()
@@ -98,7 +98,7 @@ class OrderDetailViewModelTest {
     @Test
     fun `updateOrderStatusToReturned should updates order status successfuly`() {
         orderDetailViewModel.getOrderDetail("1")
-        orderDetailViewModel.updateOrderStatusToReturned("1")
+        orderDetailViewModel.updateOrderStatusToReturned()
         val state = orderDetailViewModel.orderDetailState.getOrAwaitValue()
 
         assertThat(state.orderDetail).isNotNull()

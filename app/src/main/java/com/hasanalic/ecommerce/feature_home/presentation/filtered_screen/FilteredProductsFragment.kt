@@ -12,7 +12,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
-import com.hasanalic.ecommerce.R
 import com.hasanalic.ecommerce.core.presentation.utils.UserConstants.ANOMIM_USER_ID
 import com.hasanalic.ecommerce.databinding.FragmentFilteredProductsBinding
 import com.hasanalic.ecommerce.feature_home.presentation.home_screen.HomeViewModel
@@ -100,10 +99,6 @@ class FilteredProductsFragment: Fragment() {
         binding.textInputLayoutSearch.setStartIconOnClickListener {
             Navigation.findNavController(it).popBackStack()
             //viewModel.resetFilteredProductsStatus()
-        }
-
-        binding.materialCardCompare.setOnClickListener {
-            Navigation.findNavController(it).navigate(R.id.action_filteredProductsFragment_to_compareFragment)
         }
 
         setRecyclerView()

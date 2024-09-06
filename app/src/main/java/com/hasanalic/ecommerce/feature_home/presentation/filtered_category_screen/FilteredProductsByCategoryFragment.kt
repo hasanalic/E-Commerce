@@ -75,10 +75,6 @@ class FilteredProductsByCategoryFragment: Fragment() {
             //viewModel.resetFilteredProductsStatus()
         }
 
-        binding.materialCardCompare.setOnClickListener {
-            Navigation.findNavController(it).navigate(R.id.action_filteredProductsByCategoryFragment_to_compareFragment)
-        }
-
         setRecyclerView()
 
         observe()

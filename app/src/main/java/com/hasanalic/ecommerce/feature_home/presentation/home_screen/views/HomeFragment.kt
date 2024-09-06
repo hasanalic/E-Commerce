@@ -161,10 +161,6 @@ class HomeFragment: Fragment() {
         binding.editTextSearch.setOnClickListener {
             Navigation.findNavController(it).navigate(R.id.action_homeFragment_to_filteredProductsFragment)
         }
-
-        binding.materialCardCompare.setOnClickListener {
-            Navigation.findNavController(it).navigate(R.id.action_homeFragment_to_compareFragment)
-        }
     }
 
     private fun setupRecyclerViewCategory() {
@@ -199,14 +195,6 @@ class HomeFragment: Fragment() {
 
         homeAdapter.setRemoveProductFromFavoritesClickListener { productId, position ->
             viewModel.removeProductFromFavoritesIfUserAuthenticated(productId, position)
-        }
-
-        homeAdapter.setAddProductToCompareClickListener { productId, position ->
-            TODO()
-        }
-
-        homeAdapter.setRemoveProductFromCompareClickListener { productId, position ->
-            TODO()
         }
 
         homeAdapter.setOnProductClickListener { productId ->

@@ -11,7 +11,7 @@ class FakeHomeRepository : HomeRepository {
         Product("1","category","photo",
             "brand","detail", 1,
             1,1.0, "1",
-            "123456789",false,false,false)
+            "123456789",false,false)
     )
 
     override suspend fun getProductsByUserId(userId: String): Result<List<Product>, DataError.Local> {

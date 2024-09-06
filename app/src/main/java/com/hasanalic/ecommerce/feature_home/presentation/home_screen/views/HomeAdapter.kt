@@ -39,13 +39,6 @@ class HomeAdapter: RecyclerView.Adapter<HomeAdapter.MyViewHolder>() {
             binding.textViewRate.text = product.productRate.toString()
             setStarsByProductRate(product.productRate.toString())
 
-            if (product.addedToCompare) {
-                binding.checkboxCompare.isChecked = true
-                binding.checkboxCompare.text = "Karşılaştırmadan çıkar"
-            } else {
-                binding.checkboxCompare.isChecked = false
-                binding.checkboxCompare.text = "Karşılaştırmaya ekle"
-            }
             if (product.addedToFavorites) {
                 binding.imageViewFavorite.setImageResource(R.drawable.favorite_orange)
             } else {
@@ -111,17 +104,6 @@ class HomeAdapter: RecyclerView.Adapter<HomeAdapter.MyViewHolder>() {
                     }
                 }
             }
-            binding.checkboxCompare.setOnClickListener {
-                if (product.addedToCompare) {
-                    removeProductFromCompareClickListener?.let {
-                        it(product.productId, position)
-                    }
-                } else {
-                    addProductToCompareClickListener?.let {
-                        it(product.productId, position)
-                    }
-                }
-            }
             binding.materialCardProductItem.setOnClickListener {
                 onProductClickListener?.let {
                     it(product.productId)
@@ -135,8 +117,6 @@ class HomeAdapter: RecyclerView.Adapter<HomeAdapter.MyViewHolder>() {
     private var onProductClickListener: ((String) -> Unit)? = null
     private var addProductToFavoritesClickListener: ((String, Int) -> Unit)? = null
     private var removeProductFromFavoritesClickListener: ((String, Int) -> Unit)? = null
-    private var removeProductFromCompareClickListener: ((String, Int) -> Unit)? = null
-    private var addProductToCompareClickListener: ((String, Int) -> Unit)? = null
 
     fun setAddProductToCartButtonClickListener(listener: (String, Int) -> Unit) {
         addProductToCartButtonClickListener = listener
@@ -152,14 +132,6 @@ class HomeAdapter: RecyclerView.Adapter<HomeAdapter.MyViewHolder>() {
 
     fun setRemoveProductFromFavoritesClickListener(listener: (String, Int) -> Unit) {
         removeProductFromFavoritesClickListener = listener
-    }
-
-    fun setAddProductToCompareClickListener(listener: (String, Int) -> Unit) {
-        addProductToCompareClickListener = listener
-    }
-
-    fun setRemoveProductFromCompareClickListener(listener: (String, Int) -> Unit) {
-        removeProductFromCompareClickListener = listener
     }
 
     fun setOnProductClickListener(listener: (String) -> Unit) {
