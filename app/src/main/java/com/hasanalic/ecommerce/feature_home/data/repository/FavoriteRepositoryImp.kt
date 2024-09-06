@@ -34,20 +34,6 @@ class FavoriteRepositoryImp @Inject constructor(
         }
     }
 
-    override suspend fun getFavoriteIdByUserIdAndProductId(
-        userId: String,
-        productId: String
-    ): Result<Int, DataError.Local> {
-        return try {
-            val favoriteId = favoritesDao.getFavoriteByProductId(userId, productId)
-            favoriteId?.let {
-                Result.Success(favoriteId)
-            }?: Result.Error(DataError.Local.NOT_FOUND)
-        } catch (e: Exception) {
-            Result.Error(DataError.Local.UNKNOWN)
-        }
-    }
-
     override suspend fun insertFavoriteAndGetId(favoritesEntity: FavoritesEntity): Result<Long, DataError.Local> {
         return try {
             val favoriteId = favoritesDao.insertFavorite(favoritesEntity)
@@ -77,7 +63,7 @@ class FavoriteRepositoryImp @Inject constructor(
         }
     }
 
-    override suspend fun checkFavoriteEntityByProductId(
+    override suspend fun checkIfProductInFavorites(
         userId: String,
         productId: String
     ): Result<Boolean, DataError.Local> {

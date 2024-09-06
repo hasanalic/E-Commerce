@@ -11,8 +11,6 @@ interface ShoppingCartRepository {
 
     suspend fun getShoppingCartItemCount(userId: String): Result<Int, DataError.Local>
 
-    suspend fun checkShoppingCartEntityByProductId(userId: String, productId: String): Result<Boolean, DataError.Local>
-
     suspend fun insertShoppingCartItemEntity(shoppingCartItemsEntity: ShoppingCartItemsEntity): Result<Unit, DataError.Local>
 
     suspend fun insertAllShoppingCartItemEntities(vararg shoppingCartItemEntities: ShoppingCartItemsEntity): Result<Unit, DataError.Local>
@@ -22,4 +20,6 @@ interface ShoppingCartRepository {
     suspend fun deleteShoppingCartItemEntity(userId: String, productId: String): Result<Unit, DataError.Local>
 
     suspend fun deleteShoppingCartItemEntitiesByProductIdList(userId: String, productIds: List<String>): Result<Unit, DataError.Local>
+
+    suspend fun checkIfProductInCart(userId: String, productId: String): Result<Boolean, DataError.Local>
 }

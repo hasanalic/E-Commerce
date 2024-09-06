@@ -34,20 +34,6 @@ class ShoppingCartRepositoryImp @Inject constructor(
         }
     }
 
-    override suspend fun checkShoppingCartEntityByProductId(
-        userId: String,
-        productId: String
-    ): Result<Boolean, DataError.Local> {
-        return try {
-            val response = shoppingCartItemsDao.getShoppingCartEntityByProductId(userId, productId)
-            response?.let {
-                Result.Success(true)
-            }?: Result.Success(false)
-        } catch (e: Exception) {
-            Result.Error(DataError.Local.UNKNOWN)
-        }
-    }
-
     override suspend fun insertShoppingCartItemEntity(shoppingCartItemsEntity: ShoppingCartItemsEntity): Result<Unit, DataError.Local> {
         return try {
             val result = shoppingCartItemsDao.insertShoppingCartItemEntity(shoppingCartItemsEntity)
@@ -118,6 +104,20 @@ class ShoppingCartRepositoryImp @Inject constructor(
             } else {
                 Result.Error(DataError.Local.DELETION_FAILED)
             }
+        } catch (e: Exception) {
+            Result.Error(DataError.Local.UNKNOWN)
+        }
+    }
+
+    override suspend fun checkIfProductInCart(
+        userId: String,
+        productId: String
+    ): Result<Boolean, DataError.Local> {
+        return try {
+            val response = shoppingCartItemsDao.getShoppingCartEntityByProductId(userId, productId)
+            response?.let {
+                Result.Success(true)
+            }?: Result.Success(false)
         } catch (e: Exception) {
             Result.Error(DataError.Local.UNKNOWN)
         }

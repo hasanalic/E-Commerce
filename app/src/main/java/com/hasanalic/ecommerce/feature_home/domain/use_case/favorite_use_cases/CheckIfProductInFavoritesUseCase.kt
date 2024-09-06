@@ -5,10 +5,10 @@ import com.hasanalic.ecommerce.core.domain.model.Result
 import com.hasanalic.ecommerce.feature_home.domain.repository.FavoriteRepository
 import javax.inject.Inject
 
-class GetFavoriteIdByUserIdAndProductIdUseCase @Inject constructor(
+class CheckIfProductInFavoritesUseCase @Inject constructor(
     private val favoriteRepository: FavoriteRepository
 ) {
-    suspend operator fun invoke(userId: String, productId: String): Result<Int, DataError.Local> {
-        return favoriteRepository.getFavoriteIdByUserIdAndProductId(userId, productId)
+    suspend operator fun invoke(userId: String, productId: String): Result<Boolean, DataError.Local> {
+        return favoriteRepository.checkIfProductInFavorites(userId, productId)
     }
 }

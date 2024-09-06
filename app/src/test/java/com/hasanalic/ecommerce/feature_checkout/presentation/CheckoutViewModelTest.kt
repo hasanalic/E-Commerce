@@ -17,7 +17,7 @@ import com.hasanalic.ecommerce.feature_checkout.domain.use_cases.InsertAllOrderP
 import com.hasanalic.ecommerce.feature_home.data.repository.FakeShoppingCartRepository
 import com.hasanalic.ecommerce.feature_home.domain.model.ShoppingCartItem
 import com.hasanalic.ecommerce.feature_home.domain.repository.ShoppingCartRepository
-import com.hasanalic.ecommerce.feature_home.domain.use_case.shopping_cart_use_cases.CheckShoppingCartEntityByProductIdUseCase
+import com.hasanalic.ecommerce.feature_home.domain.use_case.shopping_cart_use_cases.CheckIfProductInCartUseCase
 import com.hasanalic.ecommerce.feature_home.domain.use_case.shopping_cart_use_cases.DeleteShoppingCartItemEntitiesByProductIdListUseCase
 import com.hasanalic.ecommerce.feature_home.domain.use_case.shopping_cart_use_cases.DeleteShoppingCartItemEntityUseCase
 import com.hasanalic.ecommerce.feature_home.domain.use_case.shopping_cart_use_cases.GetProductsInShoppingCartUseCase
@@ -80,7 +80,7 @@ class CheckoutViewModelTest {
         insertAllOrderProductsUseCase = InsertAllOrderProductsUseCase(orderProductsRepository)
 
         shoppingCartUseCases = ShoppingCartUseCases(
-            checkShoppingCartEntityByProductIdUseCase = CheckShoppingCartEntityByProductIdUseCase(shoppingCartRepository),
+            checkIfProductInCartUseCase = CheckIfProductInCartUseCase(shoppingCartRepository),
             deleteShoppingCartItemEntitiesByProductIdListUseCase = DeleteShoppingCartItemEntitiesByProductIdListUseCase(shoppingCartRepository),
             deleteShoppingCartItemEntityUseCase = DeleteShoppingCartItemEntityUseCase(shoppingCartRepository),
             getProductsInShoppingCartUseCase = GetProductsInShoppingCartUseCase(shoppingCartRepository),

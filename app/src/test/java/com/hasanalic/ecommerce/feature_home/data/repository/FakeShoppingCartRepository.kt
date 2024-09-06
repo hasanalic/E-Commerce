@@ -20,16 +20,6 @@ class FakeShoppingCartRepository : ShoppingCartRepository {
         return Result.Success(shoppingCartItemList.size)
     }
 
-    override suspend fun checkShoppingCartEntityByProductId(
-        userId: String,
-        productId: String
-    ): Result<Boolean, DataError.Local> {
-        val shoppingCartItem = shoppingCartItemList.find { shoppingCartItem -> shoppingCartItem.productId == productId }
-        shoppingCartItem?.let {
-            return Result.Success(true)
-        }?: return Result.Success(false)
-    }
-
     override suspend fun insertShoppingCartItemEntity(shoppingCartItemsEntity: ShoppingCartItemsEntity): Result<Unit, DataError.Local> {
         return Result.Success(Unit)
     }
@@ -58,5 +48,15 @@ class FakeShoppingCartRepository : ShoppingCartRepository {
         productIds: List<String>
     ): Result<Unit, DataError.Local> {
         return Result.Success(Unit)
+    }
+
+    override suspend fun checkIfProductInCart(
+        userId: String,
+        productId: String
+    ): Result<Boolean, DataError.Local> {
+        val shoppingCartItem = shoppingCartItemList.find { shoppingCartItem -> shoppingCartItem.productId == productId }
+        shoppingCartItem?.let {
+            return Result.Success(true)
+        }?: return Result.Success(false)
     }
 }

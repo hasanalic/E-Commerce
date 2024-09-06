@@ -1,7 +1,7 @@
 package com.hasanalic.ecommerce.feature_home.domain.use_case.shopping_cart_use_cases
 
 data class ShoppingCartUseCases(
-    val checkShoppingCartEntityByProductIdUseCase: CheckShoppingCartEntityByProductIdUseCase,
+    val checkIfProductInCartUseCase: CheckIfProductInCartUseCase,
     val deleteShoppingCartItemEntitiesByProductIdListUseCase: DeleteShoppingCartItemEntitiesByProductIdListUseCase,
     val deleteShoppingCartItemEntityUseCase: DeleteShoppingCartItemEntityUseCase,
     val getProductsInShoppingCartUseCase: GetProductsInShoppingCartUseCase,

@@ -1,4 +1,4 @@
-package com.hasanalic.ecommerce.feature_home.presentation.filtered_screen
+package com.hasanalic.ecommerce.feature_home.presentation.filtered_screen.views
 
 import android.content.Context
 import android.os.Bundle
@@ -12,10 +12,11 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
-import com.hasanalic.ecommerce.core.presentation.utils.UserConstants.ANOMIM_USER_ID
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.hasanalic.ecommerce.core.presentation.utils.ItemDecoration
 import com.hasanalic.ecommerce.databinding.FragmentFilteredProductsBinding
-import com.hasanalic.ecommerce.feature_home.presentation.home_screen.HomeViewModel
-import com.hasanalic.ecommerce.feature_home.presentation.SharedViewModel
+import com.hasanalic.ecommerce.feature_home.presentation.filtered_screen.FilteredProductsViewModel
 import com.hasanalic.ecommerce.feature_home.presentation.home_screen.views.HomeAdapter
 import com.hasanalic.ecommerce.feature_home.presentation.util.SearchQuery
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,13 +27,9 @@ class FilteredProductsFragment: Fragment() {
     private var _binding: FragmentFilteredProductsBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var viewModel: HomeViewModel
-
-    private lateinit var sharedViewModel: SharedViewModel
+    private lateinit var viewModel: FilteredProductsViewModel
 
     private var searchQuery: String? = null
-
-    private var userId: String = ANOMIM_USER_ID
 
     private val adapter by lazy {
         HomeAdapter()
@@ -40,7 +37,6 @@ class FilteredProductsFragment: Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         activity?.onBackPressedDispatcher?.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 Navigation.findNavController(binding.root).popBackStack()
@@ -57,29 +53,30 @@ class FilteredProductsFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.editTextSearch.requestFocus()
-        binding.editTextSearch.postDelayed({
-            val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.showSoftInput(binding.editTextSearch, InputMethodManager.SHOW_IMPLICIT)
-        }, 200)
-
-        /*
-        auth = FirebaseAuth.getInstance()
-        val currentUser = auth.currentUser
-        currentUser?.let {
-            userId = it.uid
-        }
-
-         */
-
-        viewModel = ViewModelProvider(requireActivity())[HomeViewModel::class.java]
-        sharedViewModel = ViewModelProvider(requireActivity())[SharedViewModel::class.java]
-        //viewModel.getShoppingCartCount(userId)
+        viewModel = ViewModelProvider(requireActivity())[FilteredProductsViewModel::class.java]
 
         SearchQuery.searchQuery?.let {
             binding.editTextSearch.setText(it)
             SearchQuery.searchQuery = null
         }
+
+        /*
+        gelen bir veri varsa (sesli aramanın texti vs) direkt arguments'den çekilir ve ilgili metod çağırılır.
+         */
+
+        setupListeners()
+
+        setupRecyclerView()
+
+        setupObservers()
+    }
+
+    private fun setupListeners() {
+        binding.editTextSearch.requestFocus()
+        binding.editTextSearch.postDelayed({
+            val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.showSoftInput(binding.editTextSearch, InputMethodManager.SHOW_IMPLICIT)
+        }, 200)
 
         binding.editTextSearch.setOnKeyListener { v, keyCode, event ->
             if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
@@ -87,7 +84,6 @@ class FilteredProductsFragment: Fragment() {
                 binding.result.text = "\"$searchQuery\" için sonuçlar"
                 //viewModel.getFilteredProductsBySearchQuery(userId,searchQuery!!)
 
-                // Klavyeyi kapatmak için InputMethodManager kullanın
                 val imm = v.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(v.windowToken, 0)
 
@@ -100,10 +96,46 @@ class FilteredProductsFragment: Fragment() {
             Navigation.findNavController(it).popBackStack()
             //viewModel.resetFilteredProductsStatus()
         }
+    }
 
-        setRecyclerView()
+    private fun setupRecyclerView() {
+        binding.recyclerViewFiltered.adapter = adapter
+        binding.recyclerViewFiltered.layoutManager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
+        binding.recyclerViewFiltered.addItemDecoration(ItemDecoration(40,40,30))
 
-        observe()
+        adapter.setAddProductToCartButtonClickListener { productId, position ->
+            /*
+            viewModel.addProductToCart(productId, position)
+            homeAdapter.notifyItemChangedInAdapter(position)
+             */
+        }
+
+        adapter.setRemoveProductFromCartButtonClickListener { productId, position ->
+            /*
+            viewModel.removeProductFromCart(productId, position)
+            homeAdapter.notifyItemChangedInAdapter(position)
+             */
+        }
+
+        adapter.setAddProductToFavoritesClickListener { productId, position ->
+            //viewModel.addProductToFavoritesIfUserAuthenticated(productId, position)
+        }
+
+        adapter.setRemoveProductFromFavoritesClickListener { productId, position ->
+            //viewModel.removeProductFromFavoritesIfUserAuthenticated(productId, position)
+        }
+
+        adapter.setOnProductClickListener { productId ->
+            /*
+            val intent = Intent(requireActivity(), ProductDetailActivity::class.java)
+            intent.putExtra(getString(R.string.product_id),productId)
+            launcher.launch(intent)
+             */
+        }
+    }
+
+    private fun setupObservers() {
+
     }
 
     private fun observe() {

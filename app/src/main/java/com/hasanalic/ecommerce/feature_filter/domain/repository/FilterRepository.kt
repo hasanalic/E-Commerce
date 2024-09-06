@@ -13,10 +13,4 @@ interface FilterRepository {
     suspend fun getBrands(): Result<List<Brand>, DataError.Local>
 
     suspend fun getBrandsByCategory(category: String): Result<List<Brand>, DataError.Local>
-
-    suspend fun getProductEntitiesBySearchQuery(searchQuery: String): Result<List<ProductEntity>, DataError.Local>
-
-    suspend fun getProductEntitiesByCategory(productCategory: String): Result<List<ProductEntity>, DataError.Local>
-
-    suspend fun getProductsByFilter(filter: Filter): Result<List<ProductEntity>, DataError.Local>
 }

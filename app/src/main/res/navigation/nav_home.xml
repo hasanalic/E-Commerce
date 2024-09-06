@@ -20,7 +20,7 @@
 
     <fragment
         android:id="@+id/filteredProductsFragment"
-        android:name="com.hasanalic.ecommerce.feature_home.presentation.filtered_screen.FilteredProductsFragment"
+        android:name="com.hasanalic.ecommerce.feature_home.presentation.filtered_screen.views.FilteredProductsFragment"
         android:label="FilteredProductsFragment"
         tools:layout="@layout/fragment_filtered_products">
         <argument

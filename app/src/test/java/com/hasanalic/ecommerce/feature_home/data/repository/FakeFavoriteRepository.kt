@@ -11,7 +11,7 @@ import com.hasanalic.ecommerce.feature_home.domain.repository.FavoriteRepository
 class FakeFavoriteRepository : FavoriteRepository {
 
     private val mutableFavoriteEntityList = mutableListOf(
-        FavoritesEntity("1", "2")
+        FavoritesEntity("1", "1")
     )
 
     private val mutableFavoriteProductDtoList = mutableListOf(
@@ -31,14 +31,6 @@ class FakeFavoriteRepository : FavoriteRepository {
         return if (favoriteList.isNotEmpty()) Result.Success(favoriteList) else Result.Error(DataError.Local.NOT_FOUND)
     }
 
-    override suspend fun getFavoriteIdByUserIdAndProductId(
-        userId: String,
-        productId: String
-    ): Result<Int, DataError.Local> {
-        val favorite = mutableFavoriteEntityList.find{ it.userId == userId && it.productId == productId }
-        return favorite?.let { Result.Success(1) }?: Result.Error(DataError.Local.NOT_FOUND)
-    }
-
     override suspend fun insertFavoriteAndGetId(favoritesEntity: FavoritesEntity): Result<Long, DataError.Local> {
         return Result.Success(1L)
     }
@@ -50,7 +42,7 @@ class FakeFavoriteRepository : FavoriteRepository {
         return if (productId == mutableFavoriteProductDtoList[0].productId.toString()) Result.Success(Unit) else Result.Error(DataError.Local.DELETION_FAILED)
     }
 
-    override suspend fun checkFavoriteEntityByProductId(
+    override suspend fun checkIfProductInFavorites(
         userId: String,
         productId: String
     ): Result<Boolean, DataError.Local> {

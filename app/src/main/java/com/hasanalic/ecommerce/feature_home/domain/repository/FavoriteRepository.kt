@@ -11,11 +11,9 @@ interface FavoriteRepository {
 
     suspend fun getFavoriteListByUserId(userId: String): Result<List<FavoritesEntity>, DataError.Local>
 
-    suspend fun getFavoriteIdByUserIdAndProductId(userId: String, productId: String): Result<Int, DataError.Local>
-
     suspend fun insertFavoriteAndGetId(favoritesEntity: FavoritesEntity): Result<Long, DataError.Local>
 
     suspend fun deleteFavorite(userId: String, productId: String): Result<Unit, DataError.Local>
 
-    suspend fun checkFavoriteEntityByProductId(userId: String, productId: String): Result<Boolean, DataError.Local>
+    suspend fun checkIfProductInFavorites(userId: String, productId: String): Result<Boolean, DataError.Local>
 }

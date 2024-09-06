@@ -13,7 +13,7 @@ import org.junit.Rule
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
-class CheckShoppingCartEntityByProductIdUseCaseTest {
+class CheckIfProductInCartUseCaseTest {
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -22,24 +22,24 @@ class CheckShoppingCartEntityByProductIdUseCaseTest {
     val mainCoroutineRule = MainCoroutineRule()
 
     private lateinit var shoppingCartRepository: ShoppingCartRepository
-    private lateinit var checkShoppingCartEntityByProductIdUseCase: CheckShoppingCartEntityByProductIdUseCase
+    private lateinit var checkIfProductInCartUseCase: CheckIfProductInCartUseCase
 
     @Before
     fun setup() {
         shoppingCartRepository = FakeShoppingCartRepository()
-        checkShoppingCartEntityByProductIdUseCase = CheckShoppingCartEntityByProductIdUseCase(shoppingCartRepository)
+        checkIfProductInCartUseCase = CheckIfProductInCartUseCase(shoppingCartRepository)
     }
 
     @Test
-    fun `Check Shopping Cart Entity should return success with true when shopping cart entity exists in db`() = runBlocking {
-        val result = checkShoppingCartEntityByProductIdUseCase("1","1")
+    fun `Check If Product In Cart should return success with true when shopping cart entity exists in db`() = runBlocking {
+        val result = checkIfProductInCartUseCase("1","1")
         assertThat(result).isInstanceOf(Result.Success::class.java)
         assertThat((result as Result.Success).data).isEqualTo(true)
     }
 
     @Test
-    fun `Check Shopping Cart Entity should return success with false when there is no shopping cart entity in db`() = runBlocking {
-        val result = checkShoppingCartEntityByProductIdUseCase("1","2")
+    fun `Check If Product In Cart should return success with false when there is no shopping cart entity in db`() = runBlocking {
+        val result = checkIfProductInCartUseCase("1","2")
         assertThat(result).isInstanceOf(Result.Success::class.java)
         assertThat((result as Result.Success).data).isEqualTo(false)
     }

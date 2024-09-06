@@ -5,10 +5,10 @@ import com.hasanalic.ecommerce.core.domain.model.Result
 import com.hasanalic.ecommerce.feature_home.domain.repository.ShoppingCartRepository
 import javax.inject.Inject
 
-class CheckShoppingCartEntityByProductIdUseCase @Inject constructor(
+class CheckIfProductInCartUseCase @Inject constructor(
     private val shoppingCartRepository: ShoppingCartRepository
 ) {
     suspend operator fun invoke(userId: String, productId: String): Result<Boolean, DataError.Local> {
-        return shoppingCartRepository.checkShoppingCartEntityByProductId(userId, productId)
+        return shoppingCartRepository.checkIfProductInCart(userId, productId)
     }
 }

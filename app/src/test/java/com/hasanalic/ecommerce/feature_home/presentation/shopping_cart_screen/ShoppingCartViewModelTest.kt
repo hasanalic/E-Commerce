@@ -14,7 +14,7 @@ import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.SharedPr
 import com.hasanalic.ecommerce.core.presentation.utils.UserConstants.ANOMIM_USER_ID
 import com.hasanalic.ecommerce.feature_home.data.repository.FakeShoppingCartRepository
 import com.hasanalic.ecommerce.feature_home.domain.repository.ShoppingCartRepository
-import com.hasanalic.ecommerce.feature_home.domain.use_case.shopping_cart_use_cases.CheckShoppingCartEntityByProductIdUseCase
+import com.hasanalic.ecommerce.feature_home.domain.use_case.shopping_cart_use_cases.CheckIfProductInCartUseCase
 import com.hasanalic.ecommerce.feature_home.domain.use_case.shopping_cart_use_cases.DeleteShoppingCartItemEntitiesByProductIdListUseCase
 import com.hasanalic.ecommerce.feature_home.domain.use_case.shopping_cart_use_cases.DeleteShoppingCartItemEntityUseCase
 import com.hasanalic.ecommerce.feature_home.domain.use_case.shopping_cart_use_cases.GetProductsInShoppingCartUseCase
@@ -53,7 +53,7 @@ class ShoppingCartViewModelTest {
         sharedPreferencesDataSource = FakeSharedPreferencesDataSourceImp()
 
         shoppingCartUseCases = ShoppingCartUseCases(
-            checkShoppingCartEntityByProductIdUseCase = CheckShoppingCartEntityByProductIdUseCase(shoppingCartRepository),
+            checkIfProductInCartUseCase = CheckIfProductInCartUseCase(shoppingCartRepository),
             deleteShoppingCartItemEntitiesByProductIdListUseCase = DeleteShoppingCartItemEntitiesByProductIdListUseCase(shoppingCartRepository),
             deleteShoppingCartItemEntityUseCase = DeleteShoppingCartItemEntityUseCase(shoppingCartRepository),
             getProductsInShoppingCartUseCase = GetProductsInShoppingCartUseCase(shoppingCartRepository),

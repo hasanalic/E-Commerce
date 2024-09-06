@@ -300,7 +300,7 @@ class HomeFragment: Fragment() {
     }
 
     private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-        //viewModel.getProducts(userId)
+        viewModel.getProducts()
         //viewModel.getShoppingCartCount(userId)
     }
 
