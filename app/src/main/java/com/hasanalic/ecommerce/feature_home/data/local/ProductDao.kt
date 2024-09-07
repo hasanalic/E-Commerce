@@ -40,11 +40,57 @@ interface ProductDao {
     """)
     suspend fun getProductByUserIdAndProductId(userId: String, productId: String): ProductDto?
 
-    @Query("SELECT * FROM Product WHERE productId = :productId")
-    suspend fun getProductEntityById(productId: String): ProductEntity?
+    @Transaction
+    @Query("""
+        SELECT 
+            p.*,
+            CASE 
+                WHEN c.product_id IS NOT NULL THEN 1 
+                ELSE 0 
+            END AS inCart,
+            CASE 
+                WHEN f.product_id IS NOT NULL THEN 1 
+                ELSE 0 
+            END AS inFavorite
+        FROM Product p
+        LEFT JOIN ShoppingCartItems c ON p.productId = c.product_id AND c.user_id = :userId
+        LEFT JOIN Favorites f ON p.productId = f.product_id AND f.user_id = :userId
+        WHERE p.product_brand LIKE '%' || :keyword || '%'
+        OR p.product_detail LIKE '%' || :keyword || '%'
+    """)
+    suspend fun getProductsByKeyword(userId: String, keyword: String): List<ProductDto>?
 
-    @Query("SELECT * FROM Product WHERE product_brand LIKE '%' || :searchQuery || '%' OR product_detail LIKE '%' || :searchQuery || '%'")
-    suspend fun getProductEntitiesBySearchQuery(searchQuery: String): List<ProductEntity>?
+    @Transaction
+    @Query("""
+        SELECT 
+            p.*,
+            CASE 
+                WHEN c.product_id IS NOT NULL THEN 1 
+                ELSE 0 
+            END AS inCart,
+            CASE 
+                WHEN f.product_id IS NOT NULL THEN 1 
+                ELSE 0 
+            END AS inFavorite
+        FROM Product p
+        LEFT JOIN ShoppingCartItems c ON p.productId = c.product_id AND c.user_id = :userId
+        LEFT JOIN Favorites f ON p.productId = f.product_id AND f.user_id = :userId
+        WHERE (:category IS NULL OR p.product_category = :category)
+        AND (:brand IS NULL OR p.product_brand = :brand)
+        AND (:minPrice IS NULL OR product_price_whole >= :minPrice)
+        AND (:maxPrice IS NULL OR product_price_whole <= :maxPrice)
+        AND (:minStar IS NULL OR p.product_rate >= :minStar)
+        AND (:maxStar IS NULL OR p.product_rate <= :maxStar)
+    """)
+    suspend fun filterProductsByCriteria(
+        userId: String,
+        category: String?,
+        brand: String?,
+        minPrice: Int?,
+        maxPrice: Int?,
+        minStar: Double?,
+        maxStar: Double?
+    ): List<ProductDto>?
 
     @Query("SELECT * FROM Product WHERE product_category = :productCategory")
     suspend fun getProductEntitiesByCategory(productCategory: String): List<ProductEntity>?
@@ -63,13 +109,4 @@ interface ProductDao {
 
     @Insert
     suspend fun insertAllProductEntities(vararg products: ProductEntity): List<Long>
-
-    @Query("SELECT * FROM Product WHERE " +
-            "(:category IS NULL OR product_category = :category) " +
-            "AND (:brand IS NULL OR product_brand = :brand) " +
-            "AND (:minPrice IS NULL OR product_price_whole >= :minPrice) " +
-            "AND (:maxPrice IS NULL OR product_price_whole <= :maxPrice) " +
-            "AND (:minStar IS NULL OR product_rate >= :minStar) " +
-            "AND (:maxStar IS NULL OR product_rate <= :maxStar)")
-    suspend fun filterProductEntities(category: String?, brand: String?, minPrice: Int?, maxPrice: Int?, minStar: Double?, maxStar: Double?): List<ProductEntity>?
 }
