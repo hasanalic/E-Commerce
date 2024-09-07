@@ -250,7 +250,8 @@ class FilteredProductsViewModel @Inject constructor(
         currentProductList[itemIndex].addedToFavorites = isAddedToFavorites
 
         _filteredProductsState.value = _filteredProductsState.value!!.copy(
-            productList = currentProductList
+            productList = currentProductList,
+            isLoading = false
         )
     }
 
@@ -265,5 +266,9 @@ class FilteredProductsViewModel @Inject constructor(
         _filteredProductsState.value = _filteredProductsState.value!!.copy(
             actionError = errorMessage
         )
+    }
+
+    fun resetFilteredProductState() {
+        _filteredProductsState.value = FilteredProductsState()
     }
 }

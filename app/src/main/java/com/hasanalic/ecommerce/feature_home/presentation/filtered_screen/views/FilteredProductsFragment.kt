@@ -1,6 +1,7 @@
 package com.hasanalic.ecommerce.feature_home.presentation.filtered_screen.views
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -14,11 +15,18 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.hasanalic.ecommerce.R
 import com.hasanalic.ecommerce.core.presentation.utils.ItemDecoration
+import com.hasanalic.ecommerce.core.utils.hide
+import com.hasanalic.ecommerce.core.utils.show
+import com.hasanalic.ecommerce.core.utils.toast
 import com.hasanalic.ecommerce.databinding.FragmentFilteredProductsBinding
+import com.hasanalic.ecommerce.feature_auth.presentation.AuthActivity
+import com.hasanalic.ecommerce.feature_home.presentation.filtered_screen.FilteredProductsState
 import com.hasanalic.ecommerce.feature_home.presentation.filtered_screen.FilteredProductsViewModel
 import com.hasanalic.ecommerce.feature_home.presentation.home_screen.views.HomeAdapter
 import com.hasanalic.ecommerce.feature_home.presentation.util.SearchQuery
+import com.hasanalic.ecommerce.feature_product_detail.presentation.ProductDetailActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -29,7 +37,7 @@ class FilteredProductsFragment: Fragment() {
 
     private lateinit var viewModel: FilteredProductsViewModel
 
-    private var searchQuery: String? = null
+    private var keyword: String? = null
 
     private val adapter by lazy {
         HomeAdapter()
@@ -40,7 +48,7 @@ class FilteredProductsFragment: Fragment() {
         activity?.onBackPressedDispatcher?.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 Navigation.findNavController(binding.root).popBackStack()
-                //viewModel.resetFilteredProductsStatus()
+                viewModel.resetFilteredProductState()
             }
         })
     }
@@ -54,15 +62,14 @@ class FilteredProductsFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = ViewModelProvider(requireActivity())[FilteredProductsViewModel::class.java]
+        viewModel.checkUserId()
 
         SearchQuery.searchQuery?.let {
             binding.editTextSearch.setText(it)
+            viewModel.getProductsByKeyword(it)
+
             SearchQuery.searchQuery = null
         }
-
-        /*
-        gelen bir veri varsa (sesli aramanın texti vs) direkt arguments'den çekilir ve ilgili metod çağırılır.
-         */
 
         setupListeners()
 
@@ -80,9 +87,12 @@ class FilteredProductsFragment: Fragment() {
 
         binding.editTextSearch.setOnKeyListener { v, keyCode, event ->
             if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-                searchQuery = binding.editTextSearch.text.toString()
-                binding.result.text = "\"$searchQuery\" için sonuçlar"
-                //viewModel.getFilteredProductsBySearchQuery(userId,searchQuery!!)
+                keyword = binding.editTextSearch.text.toString()
+                binding.result.text = "\"$keyword\" için sonuçlar"
+
+                if (!keyword.isNullOrEmpty()) {
+                    viewModel.getProductsByKeyword(keyword!!)
+                }
 
                 val imm = v.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(v.windowToken, 0)
@@ -94,7 +104,7 @@ class FilteredProductsFragment: Fragment() {
 
         binding.textInputLayoutSearch.setStartIconOnClickListener {
             Navigation.findNavController(it).popBackStack()
-            //viewModel.resetFilteredProductsStatus()
+            viewModel.resetFilteredProductState()
         }
     }
 
@@ -104,129 +114,73 @@ class FilteredProductsFragment: Fragment() {
         binding.recyclerViewFiltered.addItemDecoration(ItemDecoration(40,40,30))
 
         adapter.setAddProductToCartButtonClickListener { productId, position ->
-            /*
-            viewModel.addProductToCart(productId, position)
-            homeAdapter.notifyItemChangedInAdapter(position)
-             */
+            viewModel.checkIfProductAlreadyInCart(productId, position)
         }
 
         adapter.setRemoveProductFromCartButtonClickListener { productId, position ->
-            /*
-            viewModel.removeProductFromCart(productId, position)
-            homeAdapter.notifyItemChangedInAdapter(position)
-             */
+            viewModel.checkIfProductNotInCart(productId, position)
         }
 
         adapter.setAddProductToFavoritesClickListener { productId, position ->
-            //viewModel.addProductToFavoritesIfUserAuthenticated(productId, position)
+            viewModel.addProductToFavoritesIfUserAuthenticated(productId, position)
         }
 
         adapter.setRemoveProductFromFavoritesClickListener { productId, position ->
-            //viewModel.removeProductFromFavoritesIfUserAuthenticated(productId, position)
+            viewModel.removeProductFromFavoritesIfUserAuthenticated(productId, position)
         }
 
         adapter.setOnProductClickListener { productId ->
-            /*
             val intent = Intent(requireActivity(), ProductDetailActivity::class.java)
             intent.putExtra(getString(R.string.product_id),productId)
-            launcher.launch(intent)
-             */
+            launcherToProductDetail.launch(intent)
         }
     }
 
     private fun setupObservers() {
-
+        viewModel.filteredProducsState.observe(viewLifecycleOwner) {
+            handleFilteredProductsState(it)
+        }
     }
 
-    private fun observe() {
-        /*
-        viewModel.stateFilteredProducts.observe(viewLifecycleOwner) {
-            when(it) {
-                is Resource.Success -> {
-                    binding.progressBarFiltered.hide()
-                    val productList = it.data
-
-                    if (productList.isNullOrEmpty()) {
-                        adapter.products = listOf()
-                        binding.founded.text = "0 tane bulundu"
-                    } else {
-                        adapter.products = productList.toList()
-                        binding.founded.text = "${productList.size} tane bulundu"
-                    }
-
-                    adapter.notifyChanges()
-                }
-                is Resource.Error -> {
-                    binding.progressBarFiltered.hide()
-                    toast(requireContext(),it.message!!,false)
-                }
-                is Resource.Loading -> {
-                    binding.progressBarFiltered.show()
-                }
-            }
+    private fun handleFilteredProductsState(state: FilteredProductsState) {
+        if (state.isLoading) {
+            binding.progressBarFiltered.show()
+            binding.editTextSearch.isEnabled = false
+        } else {
+            binding.progressBarFiltered.hide()
+            binding.editTextSearch.isEnabled = true
         }
 
-        viewModel.stateShoppingCartItemSize.observe(viewLifecycleOwner) {
-            sharedViewModel.updateCartItemCount(it)
-        }
+        state.productList.let {
+            adapter.products = it
+            adapter.notifyDataSetChangedInAdapter()
 
-        viewModel.stateCompareCounter.observe(viewLifecycleOwner) {
-            if (it != 0) {
-                binding.materialCardCompare.show()
+            if (it.isEmpty()) {
+                binding.founded.text = "0 tane bulundu"
+                //TODO()
             } else {
-                binding.materialCardCompare.hide()
+                binding.founded.text = "${it.size} tane bulundu"
             }
         }
 
-         */
+        if (state.shouldUserMoveToAuthActivity) {
+            navigateToAuthActivity()
+        }
+
+        state.actionError?.let {
+            toast(requireContext(), it, false)
+        }
+
+        state.dataError?.let {
+            TODO()
+        }
     }
 
-    private fun setRecyclerView() {
-        /*
-        binding.recyclerViewFiltered.adapter = adapter
-        binding.recyclerViewFiltered.layoutManager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
-
-        adapter.setAddCartButtonClickListener {
-            viewModel.addShoppingCartFilteredProducts(userId,it)
-            adapter.notifyChanges()
-        }
-        adapter.setRemoveCartButtonClickListener {
-            viewModel.removeFromShoppingCartFilteredProducts(userId,it)
-            adapter.notifyChanges()
-        }
-        adapter.setOnCompareClickListener {
-            viewModel.clickOnCompareFilteredList(it)
-            adapter.notifyChanges()
-        }
-        adapter.setAddFavoriteClickListener {
-            if (userId != Constants.ANOMIM_USER_ID) {
-                viewModel.addFavoriteFilteredProducts(userId,it)
-                adapter.notifyChanges()
-            } else {
-                toast(requireContext(),"Favori işlemleri için giriş yapmalısınız.",false)
-                val intent = Intent(requireActivity(), AuthActivity::class.java)
-                startActivity(intent)
-                requireActivity().finish()
-            }
-        }
-        adapter.removeFavoriteClickListener {
-            if (userId != Constants.ANOMIM_USER_ID) {
-                viewModel.removeFromFavoriteFilteredProducts(userId,it)
-                adapter.notifyChanges()
-            } else {
-                toast(requireContext(),"Favori işlemleri için giriş yapmalısınız.",false)
-                val intent = Intent(requireActivity(), AuthActivity::class.java)
-                startActivity(intent)
-                requireActivity().finish()
-            }
-        }
-        adapter.setOnProductClickListener {
-            val intent = Intent(requireActivity(), ProductDetailActivity::class.java)
-            intent.putExtra(getString(R.string.product_id),it)
-            launcherToProductDetail.launch(intent)
-        }
-
-         */
+    private fun navigateToAuthActivity() {
+        toast(requireContext(),"Favori işlemleri için giriş yapmalısınız.",false)
+        val intent = Intent(requireActivity(), AuthActivity::class.java)
+        startActivity(intent)
+        requireActivity().finish()
     }
 
     private val launcherToProductDetail = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
