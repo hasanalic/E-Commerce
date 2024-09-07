@@ -92,8 +92,25 @@ interface ProductDao {
         maxStar: Double?
     ): List<ProductDto>?
 
-    @Query("SELECT * FROM Product WHERE product_category = :productCategory")
-    suspend fun getProductEntitiesByCategory(productCategory: String): List<ProductEntity>?
+
+    @Transaction
+    @Query("""
+        SELECT 
+            p.*,
+            CASE 
+                WHEN c.product_id IS NOT NULL THEN 1 
+                ELSE 0 
+            END AS inCart,
+            CASE 
+                WHEN f.product_id IS NOT NULL THEN 1 
+                ELSE 0 
+            END AS inFavorite
+        FROM Product p
+        LEFT JOIN ShoppingCartItems c ON p.productId = c.product_id AND c.user_id = :userId
+        LEFT JOIN Favorites f ON p.productId = f.product_id AND f.user_id = :userId
+        WHERE p.product_category = :category 
+    """)
+    suspend fun getProductsByCategory(userId: String, category: String): List<ProductDto>?
 
     @Query("SELECT productId FROM Product WHERE product_barcode = :productBarcode")
     suspend fun getProductEntityIdByBarcode(productBarcode: String): Int?

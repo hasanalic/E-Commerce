@@ -63,9 +63,15 @@ import com.hasanalic.ecommerce.feature_home.domain.repository.ShoppingCartReposi
 import com.hasanalic.ecommerce.feature_filter.domain.use_cases.GetBrandsByCategoryUseCase
 import com.hasanalic.ecommerce.feature_filter.domain.use_cases.GetBrandsUseCase
 import com.hasanalic.ecommerce.feature_filter.domain.use_cases.GetCategoriesUseCase
+import com.hasanalic.ecommerce.feature_home.data.repository.FilteredProductsRepositoryImp
 import com.hasanalic.ecommerce.feature_home.data.repository.UserRepositoryImp
+import com.hasanalic.ecommerce.feature_home.domain.repository.FilteredProductsRepository
 import com.hasanalic.ecommerce.feature_home.domain.repository.UserRepository
 import com.hasanalic.ecommerce.feature_home.domain.use_case.favorite_use_cases.CheckIfProductInFavoritesUseCase
+import com.hasanalic.ecommerce.feature_home.domain.use_case.filtered_products_use_cases.FilteredProductsUseCases
+import com.hasanalic.ecommerce.feature_home.domain.use_case.filtered_products_use_cases.GetProductsByCategoryUseCase
+import com.hasanalic.ecommerce.feature_home.domain.use_case.filtered_products_use_cases.GetProductsByFilterUseCase
+import com.hasanalic.ecommerce.feature_home.domain.use_case.filtered_products_use_cases.GetProductsByKeywordUseCase
 import com.hasanalic.ecommerce.feature_home.domain.use_case.home_use_cases.GetProductEntityIdByBarcodeUseCase
 import com.hasanalic.ecommerce.feature_home.domain.use_case.home_use_cases.GetProductsByUserIdUseCase
 import com.hasanalic.ecommerce.feature_home.domain.use_case.home_use_cases.HomeUseCases
@@ -286,6 +292,12 @@ object AppModule {
 
     @Singleton
     @Provides
+    fun provideFilteredProductsRepository(productDao: ProductDao): FilteredProductsRepository {
+        return FilteredProductsRepositoryImp(productDao)
+    }
+
+    @Singleton
+    @Provides
     fun provideUserUseCases(userRepository: UserRepository): UserUseCases {
         return UserUseCases(
             getUserUseCase = GetUserUseCase(userRepository),
@@ -410,6 +422,16 @@ object AppModule {
             getCardsByUserIdUseCase = GetCardsByUserIdUseCase(cardRepository),
             insertCardEntityUseCase = InsertCardEntityUseCase(cardRepository),
             cardValidatorUseCase = CardValidatorUseCase()
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideFilteredProductsUseCases(filteredProductsRepository: FilteredProductsRepository): FilteredProductsUseCases {
+        return FilteredProductsUseCases(
+            getProductsByCategoryUseCase = GetProductsByCategoryUseCase(filteredProductsRepository),
+            getProductsByFilterUseCase = GetProductsByFilterUseCase(filteredProductsRepository),
+            getProductsByKeywordUseCase = GetProductsByKeywordUseCase(filteredProductsRepository)
         )
     }
 }
