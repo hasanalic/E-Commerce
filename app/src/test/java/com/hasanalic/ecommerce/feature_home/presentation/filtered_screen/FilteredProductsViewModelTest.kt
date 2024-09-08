@@ -18,6 +18,7 @@ import com.hasanalic.ecommerce.feature_filter.domain.use_cases.FilterUseCases
 import com.hasanalic.ecommerce.feature_filter.domain.use_cases.GetBrandsByCategoryUseCase
 import com.hasanalic.ecommerce.feature_filter.domain.use_cases.GetBrandsUseCase
 import com.hasanalic.ecommerce.feature_filter.domain.use_cases.GetCategoriesUseCase
+import com.hasanalic.ecommerce.feature_filter.presentation.util.Filter
 import com.hasanalic.ecommerce.feature_home.data.repository.FakeFavoriteRepository
 import com.hasanalic.ecommerce.feature_home.data.repository.FakeFilteredProductsRepository
 import com.hasanalic.ecommerce.feature_home.data.repository.FakeShoppingCartRepository
@@ -144,6 +145,23 @@ class FilteredProductsViewModelTest {
         filteredProductsViewModel.checkUserId()
 
         filteredProductsViewModel.getProductsByKeyword("keyword")
+
+        val state = filteredProductsViewModel.filteredProducsState.getOrAwaitValue()
+
+        assertThat(state.userId).isNotEqualTo(ANOMIM_USER_ID)
+        assertThat(state.isLoading).isFalse()
+        assertThat(state.productList).isNotEmpty()
+        assertThat(state.dataError).isNull()
+        assertThat(state.actionError).isNull()
+        assertThat(state.shouldUserMoveToAuthActivity).isFalse()
+    }
+
+    @Test
+    fun `getProductsByFilter gets product list that matched with filter`() {
+        filteredProductsViewModel.checkUserId()
+
+        val filter = Filter(null, null, null, null, null, null)
+        filteredProductsViewModel.getProductsByFilter(filter)
 
         val state = filteredProductsViewModel.filteredProducsState.getOrAwaitValue()
 

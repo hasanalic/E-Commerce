@@ -8,6 +8,7 @@ import com.hasanalic.ecommerce.core.domain.model.DataError
 import com.hasanalic.ecommerce.core.domain.model.Result
 import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.SharedPreferencesUseCases
 import com.hasanalic.ecommerce.core.presentation.utils.UserConstants.ANOMIM_USER_ID
+import com.hasanalic.ecommerce.feature_filter.presentation.util.Filter
 import com.hasanalic.ecommerce.feature_home.data.local.entity.FavoritesEntity
 import com.hasanalic.ecommerce.feature_home.data.local.entity.ShoppingCartItemsEntity
 import com.hasanalic.ecommerce.feature_home.domain.use_case.favorite_use_cases.FavoriteUseCases
@@ -40,7 +41,7 @@ class FilteredProductsViewModel @Inject constructor(
         viewModelScope.launch {
             val userId = _filteredProductsState.value!!.userId
             when(val result = filteredProductsUseCases.getProductsByKeywordUseCase(userId, keyword)) {
-                is Result.Error -> handleGetProductsByKeywordError(result.error)
+                is Result.Error -> handleGetProductsError(result.error)
                 is Result.Success -> {
                     _filteredProductsState.value = _filteredProductsState.value!!.copy(
                         isLoading = false,
@@ -51,7 +52,23 @@ class FilteredProductsViewModel @Inject constructor(
         }
     }
 
-    private fun handleGetProductsByKeywordError(error: DataError.Local) {
+    fun getProductsByFilter(filter: Filter) {
+        _filteredProductsState.value = _filteredProductsState.value!!.copy(isLoading = true)
+        viewModelScope.launch {
+            val userId = _filteredProductsState.value!!.userId
+            when(val result = filteredProductsUseCases.getProductsByFilterUseCase(userId, filter)) {
+                is Result.Error -> handleGetProductsError(result.error)
+                is Result.Success -> {
+                    _filteredProductsState.value = _filteredProductsState.value!!.copy(
+                        isLoading = false,
+                        productList = result.data
+                    )
+                }
+            }
+        }
+    }
+
+    private fun handleGetProductsError(error: DataError.Local) {
         val errorMessage = when(error) {
             DataError.Local.NOT_FOUND -> "Ürünler getirilemedi."
             DataError.Local.UNKNOWN -> "Bilinmeyen bir hata nedeniyle ürünler getirilemedi."

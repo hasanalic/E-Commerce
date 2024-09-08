@@ -113,7 +113,7 @@ object DatabaseInitializerUtil {
                 0,
                 4.5,
                 "1841",
-                "785632014589",
+                "785632014580",
                 "D Kargo",
                 "Philips Store",
                 "9.2"

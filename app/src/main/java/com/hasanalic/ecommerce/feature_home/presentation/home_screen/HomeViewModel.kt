@@ -73,7 +73,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun getProducts() {
-        _homeState.value = _homeState.value!!.copy(isLoading = true)
+        _homeState.value = _homeState.value!!.copy(isLoading = true, actionError = null, dataError = null)
         viewModelScope.launch {
             val userId = _homeState.value!!.userId
 
@@ -164,7 +164,7 @@ class HomeViewModel @Inject constructor(
         val currentProductList = _homeState.value!!.productList
         currentProductList[itemIndex].addedToShoppingCart = isAddedToCart
         _homeState.value = _homeState.value!!.copy(
-            productList = currentProductList
+            productList = currentProductList, actionError = null, dataError = null
         )
     }
 
@@ -173,7 +173,7 @@ class HomeViewModel @Inject constructor(
 
         if (userId == ANOMIM_USER_ID) {
             _homeState.value = _homeState.value!!.copy(
-                shouldUserMoveToAuthActivity = true
+                shouldUserMoveToAuthActivity = true, actionError = null, dataError = null
             )
             return
         }
@@ -207,7 +207,7 @@ class HomeViewModel @Inject constructor(
 
         if (userId == ANOMIM_USER_ID) {
             _homeState.value = _homeState.value!!.copy(
-                shouldUserMoveToAuthActivity = true
+                shouldUserMoveToAuthActivity = true, actionError = null, dataError = null
             )
             return
         }
@@ -241,12 +241,12 @@ class HomeViewModel @Inject constructor(
         val currentProductList = _homeState.value!!.productList
         currentProductList[itemIndex].addedToFavorites = isAddedToFavorites
         _homeState.value = _homeState.value!!.copy(
-            productList = currentProductList
+            productList = currentProductList, actionError = null, dataError = null
         )
     }
 
     fun getProductIdByBarcode(barcode: String) {
-        _homeState.value = _homeState.value!!.copy(isLoading = true)
+        _homeState.value = _homeState.value!!.copy(isLoading = true, actionError = null, dataError = null)
         viewModelScope.launch {
             when(val result = homeUseCases.getProductEntityIdByBarcodeUseCase(barcode)) {
                 is Result.Error -> handleGetProductIdByBarcodeError(result.error)

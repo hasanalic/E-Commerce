@@ -29,7 +29,6 @@ import com.hasanalic.ecommerce.feature_home.presentation.SharedViewModel
 import com.hasanalic.ecommerce.feature_home.presentation.barcode_screen.BarcodeScannerActivity
 import com.hasanalic.ecommerce.feature_home.presentation.home_screen.HomeState
 import com.hasanalic.ecommerce.feature_home.presentation.home_screen.HomeViewModel
-import com.hasanalic.ecommerce.feature_home.presentation.util.SearchQuery
 import com.hasanalic.ecommerce.feature_product_detail.presentation.ProductDetailActivity
 import com.hasanalic.ecommerce.core.presentation.utils.ItemDecoration
 import com.hasanalic.ecommerce.feature_location.presentation.LocationActivity
@@ -292,9 +291,8 @@ class HomeFragment: Fragment() {
             val data: Intent? = result.data
             data?.let {
                 val res: ArrayList<String> = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS) as ArrayList<String>
-                SearchQuery.searchQuery = res.toList().joinToString()
-                //viewModel.getFilteredProductsBySearchQuery(userId,res.toList().joinToString())
-                Navigation.findNavController(binding.root).navigate(R.id.action_homeFragment_to_filteredProductsFragment)
+                val action = HomeFragmentDirections.actionHomeFragmentToFilteredProductsFragment(res.toList().joinToString())
+                Navigation.findNavController(binding.root).navigate(action)
             }
         }
     }
@@ -310,7 +308,6 @@ class HomeFragment: Fragment() {
             data?.let {
                 val receivedData = data.getBooleanExtra(requireActivity().getString(R.string.should_move_to_filtered_fragment), false)
                 if (receivedData) {
-                    //viewModel.getFilteredProductsByFilter(userId, FilterSingleton.filter!!)
                     Navigation.findNavController(binding.root).navigate(R.id.action_homeFragment_to_filteredProductsFragment)
                 }
             }

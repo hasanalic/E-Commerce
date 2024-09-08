@@ -24,10 +24,8 @@
         android:label="FilteredProductsFragment"
         tools:layout="@layout/fragment_filtered_products">
         <argument
-            android:name="searchQuery"
-            app:argType="string"
-            app:nullable="true"
-            android:defaultValue="null" />
+            android:name="keyword"
+            app:argType="string" />
     </fragment>
 
     <fragment

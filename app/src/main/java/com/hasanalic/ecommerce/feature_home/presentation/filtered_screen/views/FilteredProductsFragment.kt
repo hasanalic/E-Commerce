@@ -22,10 +22,10 @@ import com.hasanalic.ecommerce.core.utils.show
 import com.hasanalic.ecommerce.core.utils.toast
 import com.hasanalic.ecommerce.databinding.FragmentFilteredProductsBinding
 import com.hasanalic.ecommerce.feature_auth.presentation.AuthActivity
+import com.hasanalic.ecommerce.feature_filter.presentation.util.FilterSingleton
 import com.hasanalic.ecommerce.feature_home.presentation.filtered_screen.FilteredProductsState
 import com.hasanalic.ecommerce.feature_home.presentation.filtered_screen.FilteredProductsViewModel
 import com.hasanalic.ecommerce.feature_home.presentation.home_screen.views.HomeAdapter
-import com.hasanalic.ecommerce.feature_home.presentation.util.SearchQuery
 import com.hasanalic.ecommerce.feature_product_detail.presentation.ProductDetailActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -64,11 +64,18 @@ class FilteredProductsFragment: Fragment() {
         viewModel = ViewModelProvider(requireActivity())[FilteredProductsViewModel::class.java]
         viewModel.checkUserId()
 
-        SearchQuery.searchQuery?.let {
-            binding.editTextSearch.setText(it)
-            viewModel.getProductsByKeyword(it)
+        arguments?.let {
+            val keyword = it.getString("keyword")
+            keyword?.let {
+                viewModel.getProductsByKeyword(keyword)
+                binding.editTextSearch.setText(keyword)
+                binding.result.text = "\"$keyword\" için sonuçlar"
+            }
+        }
 
-            SearchQuery.searchQuery = null
+        FilterSingleton.filter?.let {
+            viewModel.getProductsByFilter(it)
+            FilterSingleton.filter = null
         }
 
         setupListeners()

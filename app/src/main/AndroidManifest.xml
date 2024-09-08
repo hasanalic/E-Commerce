@@ -54,6 +54,7 @@
         <activity android:name=".feature_notification.presentation.NotificationActivity" />
         <activity android:name=".feature_orders.presentation.OrderActivity" />
         <activity android:name=".feature_product_detail.presentation.ProductDetailActivity" />
+        <activity android:name=".feature_home.presentation.barcode_screen.BarcodeScannerActivity" />
 
     </application>
 
