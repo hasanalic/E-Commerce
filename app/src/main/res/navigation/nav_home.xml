@@ -13,9 +13,6 @@
         <action
             android:id="@+id/action_homeFragment_to_filteredProductsFragment"
             app:destination="@id/filteredProductsFragment" />
-        <action
-            android:id="@+id/action_homeFragment_to_filteredProductsByCategoryFragment"
-            app:destination="@id/filteredProductsByCategoryFragment" />
     </fragment>
 
     <fragment
@@ -25,19 +22,12 @@
         tools:layout="@layout/fragment_filtered_products">
         <argument
             android:name="keyword"
-            app:argType="string" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/filteredProductsByCategoryFragment"
-        android:name="com.hasanalic.ecommerce.feature_home.presentation.filtered_category_screen.FilteredProductsByCategoryFragment"
-        android:label="FilteredProductsByCategoryFragment"
-        tools:layout="@layout/fragment_filtered_products_by_category">
-
+            app:argType="string"
+            app:nullable="true" />
         <argument
             android:name="category"
-            app:argType="string" />
-
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
 
 </navigation>

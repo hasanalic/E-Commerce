@@ -68,6 +68,22 @@ class FilteredProductsViewModel @Inject constructor(
         }
     }
 
+    fun getProductsByCategory(category: String) {
+        _filteredProductsState.value = _filteredProductsState.value!!.copy(isLoading = true)
+        viewModelScope.launch {
+            val userId = _filteredProductsState.value!!.userId
+            when(val result = filteredProductsUseCases.getProductsByCategoryUseCase(userId, category)) {
+                is Result.Error -> handleGetProductsError(result.error)
+                is Result.Success -> {
+                    _filteredProductsState.value = _filteredProductsState.value!!.copy(
+                        isLoading = false,
+                        productList = result.data
+                    )
+                }
+            }
+        }
+    }
+
     private fun handleGetProductsError(error: DataError.Local) {
         val errorMessage = when(error) {
             DataError.Local.NOT_FOUND -> "Ürünler getirilemedi."

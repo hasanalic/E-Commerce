@@ -168,7 +168,7 @@ class HomeFragment: Fragment() {
         binding.recyclerViewCategory.addItemDecoration(ItemDecoration(0,16,0))
 
         categoryAdapter.setOnCategoryClickListener { category, position ->
-            val action = HomeFragmentDirections.actionHomeFragmentToFilteredProductsByCategoryFragment(category)
+            val action = HomeFragmentDirections.actionHomeFragmentToFilteredProductsFragment(category = category, keyword = null)
             findNavController().navigate(action)
         }
     }
@@ -291,7 +291,7 @@ class HomeFragment: Fragment() {
             val data: Intent? = result.data
             data?.let {
                 val res: ArrayList<String> = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS) as ArrayList<String>
-                val action = HomeFragmentDirections.actionHomeFragmentToFilteredProductsFragment(res.toList().joinToString())
+                val action = HomeFragmentDirections.actionHomeFragmentToFilteredProductsFragment(keyword = res.toList().joinToString(), category = null)
                 Navigation.findNavController(binding.root).navigate(action)
             }
         }

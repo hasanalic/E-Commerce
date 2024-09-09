@@ -37,8 +37,6 @@ class FilteredProductsFragment: Fragment() {
 
     private lateinit var viewModel: FilteredProductsViewModel
 
-    private var keyword: String? = null
-
     private val adapter by lazy {
         HomeAdapter()
     }
@@ -64,12 +62,38 @@ class FilteredProductsFragment: Fragment() {
         viewModel = ViewModelProvider(requireActivity())[FilteredProductsViewModel::class.java]
         viewModel.checkUserId()
 
+        showKeyword()
+
+        setupListeners()
+
+        handleProductFiltering(view)
+
+        setupRecyclerView()
+
+        setupObservers()
+    }
+
+    private fun handleProductFiltering(v: View) {
         arguments?.let {
             val keyword = it.getString("keyword")
             keyword?.let {
+                binding.textInputLayoutSearch.visibility = View.VISIBLE
+                binding.toolBarCategory.hide()
+                showKeyword()
+
                 viewModel.getProductsByKeyword(keyword)
                 binding.editTextSearch.setText(keyword)
                 binding.result.text = "\"$keyword\" için sonuçlar"
+            }
+
+            val category = it.getString("category")
+            category?.let {
+                binding.textInputLayoutSearch.visibility = View.INVISIBLE
+                binding.toolBarCategory.show()
+                binding.toolBarCategory.title = "Kategoriler/$category"
+                hideKeyboard(v)
+
+                viewModel.getProductsByCategory(category)
             }
         }
 
@@ -77,32 +101,19 @@ class FilteredProductsFragment: Fragment() {
             viewModel.getProductsByFilter(it)
             FilterSingleton.filter = null
         }
-
-        setupListeners()
-
-        setupRecyclerView()
-
-        setupObservers()
     }
 
     private fun setupListeners() {
-        binding.editTextSearch.requestFocus()
-        binding.editTextSearch.postDelayed({
-            val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.showSoftInput(binding.editTextSearch, InputMethodManager.SHOW_IMPLICIT)
-        }, 200)
-
         binding.editTextSearch.setOnKeyListener { v, keyCode, event ->
             if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-                keyword = binding.editTextSearch.text.toString()
+                val keyword = binding.editTextSearch.text.toString()
                 binding.result.text = "\"$keyword\" için sonuçlar"
 
                 if (!keyword.isNullOrEmpty()) {
                     viewModel.getProductsByKeyword(keyword!!)
                 }
 
-                val imm = v.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.hideSoftInputFromWindow(v.windowToken, 0)
+                hideKeyboard(v)
 
                 return@setOnKeyListener true
             }
@@ -113,6 +124,24 @@ class FilteredProductsFragment: Fragment() {
             Navigation.findNavController(it).popBackStack()
             viewModel.resetFilteredProductState()
         }
+
+        binding.toolBarCategory.setNavigationOnClickListener {
+            Navigation.findNavController(it).popBackStack()
+            viewModel.resetFilteredProductState()
+        }
+    }
+
+    private fun hideKeyboard(v: View) {
+        val imm = v.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(v.windowToken, 0)
+    }
+
+    private fun showKeyword() {
+        binding.editTextSearch.requestFocus()
+        binding.editTextSearch.postDelayed({
+            val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.showSoftInput(binding.editTextSearch, InputMethodManager.SHOW_IMPLICIT)
+        }, 200)
     }
 
     private fun setupRecyclerView() {
@@ -168,6 +197,8 @@ class FilteredProductsFragment: Fragment() {
             } else {
                 binding.founded.text = "${it.size} tane bulundu"
             }
+
+            hideKeyboard(binding.root)
         }
 
         if (state.shouldUserMoveToAuthActivity) {

@@ -174,6 +174,23 @@ class FilteredProductsViewModelTest {
     }
 
     @Test
+    fun `getProductsByCategory gets product list that matched with filter`() {
+        filteredProductsViewModel.checkUserId()
+
+
+        filteredProductsViewModel.getProductsByCategory("category")
+
+        val state = filteredProductsViewModel.filteredProducsState.getOrAwaitValue()
+
+        assertThat(state.userId).isNotEqualTo(ANOMIM_USER_ID)
+        assertThat(state.isLoading).isFalse()
+        assertThat(state.productList).isNotEmpty()
+        assertThat(state.dataError).isNull()
+        assertThat(state.actionError).isNull()
+        assertThat(state.shouldUserMoveToAuthActivity).isFalse()
+    }
+
+    @Test
     fun `checkIfProductAlreadyInCart sets addedToShoppingCart to true when product already in cart`() {
         filteredProductsViewModel.checkUserId()
         filteredProductsViewModel.getProductsByKeyword("keyword")

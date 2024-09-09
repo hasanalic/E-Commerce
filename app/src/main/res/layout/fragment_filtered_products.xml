@@ -6,6 +6,20 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolBarCategory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="Kategoriler/Elektronik"
+        app:navigationIcon="@drawable/back_arrow_smallest"
+        app:titleTextAppearance="@style/TextAppearance.MaterialComponents.Body1">
+
+    </com.google.android.material.appbar.MaterialToolbar>
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayoutSearch"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
