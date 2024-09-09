@@ -83,14 +83,14 @@ class FilteredProductsFragment: Fragment() {
 
                 viewModel.getProductsByKeyword(keyword)
                 binding.editTextSearch.setText(keyword)
-                binding.result.text = "\"$keyword\" için sonuçlar"
+                binding.result.text = "Results for \"$keyword\""
             }
 
             val category = it.getString("category")
             category?.let {
                 binding.textInputLayoutSearch.visibility = View.INVISIBLE
                 binding.toolBarCategory.show()
-                binding.toolBarCategory.title = "Kategoriler/$category"
+                binding.toolBarCategory.title = "Categories/$category"
                 hideKeyboard(v)
 
                 viewModel.getProductsByCategory(category)
@@ -107,7 +107,7 @@ class FilteredProductsFragment: Fragment() {
         binding.editTextSearch.setOnKeyListener { v, keyCode, event ->
             if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
                 val keyword = binding.editTextSearch.text.toString()
-                binding.result.text = "\"$keyword\" için sonuçlar"
+                binding.result.text = "Results for \"$keyword\""
 
                 if (!keyword.isNullOrEmpty()) {
                     viewModel.getProductsByKeyword(keyword!!)
@@ -192,10 +192,10 @@ class FilteredProductsFragment: Fragment() {
             adapter.notifyDataSetChangedInAdapter()
 
             if (it.isEmpty()) {
-                binding.founded.text = "0 tane bulundu"
+                binding.founded.text = "0 items found"
                 //TODO()
             } else {
-                binding.founded.text = "${it.size} tane bulundu"
+                binding.founded.text = "${it.size} items found"
             }
 
             hideKeyboard(binding.root)
@@ -215,7 +215,7 @@ class FilteredProductsFragment: Fragment() {
     }
 
     private fun navigateToAuthActivity() {
-        toast(requireContext(),"Favori işlemleri için giriş yapmalısınız.",false)
+        toast(requireContext(),"You must log in to use your favorite operations.",false)
         val intent = Intent(requireActivity(), AuthActivity::class.java)
         startActivity(intent)
         requireActivity().finish()

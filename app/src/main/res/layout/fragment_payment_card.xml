@@ -278,7 +278,7 @@
                         android:id="@+id/checkBoxSave"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/save_mastercard"
+                        android:text="@string/confirming_save_card"
                         android:textColor="@color/font_secondary" />
 
                     <ImageView

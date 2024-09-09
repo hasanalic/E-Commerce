@@ -201,7 +201,7 @@ class PaymentCardFragment: Fragment() {
             if (randomNumber == inputSecureCode) {
                 onClickButtonConfirmByCheckBoxSave()
             } else {
-                toast(requireContext(),"Güvenlik kodu yanlış, tekrar deneyiniz.",false)
+                toast(requireContext(),"The security code is incorrect, try again.",false)
             }
             dialog.dismiss()
         }
@@ -214,8 +214,8 @@ class PaymentCardFragment: Fragment() {
 
         val notificationBuilder = NotificationCompat.Builder(requireContext(), CHANNEL_ID)
             .setSmallIcon(android.R.drawable.ic_dialog_info)
-            .setContentTitle("Sayın ${binding.textInputEditTextCardName.text}")
-            .setContentText("$number doğrulama kodu ile alışverişinizi tamamlayabilirsiniz.")
+            .setContentTitle("Dear ${binding.textInputEditTextCardName.text}")
+            .setContentText("You can complete your shopping with the verification code $number.")
             .setAutoCancel(true)
 
         notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build())

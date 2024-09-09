@@ -60,12 +60,12 @@ class HomeViewModel @Inject constructor(
         when(error) {
             DataError.Local.NOT_FOUND -> {
                 _homeState.value = HomeState(
-                    dataError = "Kategoriler getirilemedi."
+                    dataError = "Could not fetch categories."
                 )
             }
             DataError.Local.UNKNOWN -> {
                 _homeState.value = HomeState(
-                    dataError = "Bilinmeyen bir hata nedeniyle kategoriler getirilemedi."
+                    dataError = "Unable to fetch categories due to an unknown error."
                 )
             }
             else -> {}
@@ -93,12 +93,12 @@ class HomeViewModel @Inject constructor(
         when(error) {
             DataError.Local.NOT_FOUND -> {
                 _homeState.value = HomeState(
-                    dataError = "Ürünler getirilemedi."
+                    dataError = "The products could not be brought."
                 )
             }
             DataError.Local.UNKNOWN -> {
                 _homeState.value = HomeState(
-                    dataError = "Bilinmeyen bir hata nedeniyle ürünler getirilemedi."
+                    dataError = "Due to an unknown error, the products could not be delivered."
                 )
             }
             else -> {}
@@ -120,12 +120,12 @@ class HomeViewModel @Inject constructor(
         when(error) {
             DataError.Local.DELETION_FAILED -> {
                 _homeState.value = _homeState.value!!.copy(
-                    actionError = "Ürün, alışveriş sepetinden silinemedi."
+                    actionError = "The item could not be deleted from the shopping cart."
                 )
             }
             DataError.Local.UNKNOWN -> {
                 _homeState.value = _homeState.value!!.copy(
-                    actionError = "Bilinmeyen bir hata meydana geldi."
+                    actionError = "An unknown error occurred."
                 )
             }
             else -> {}
@@ -148,12 +148,12 @@ class HomeViewModel @Inject constructor(
         when(error) {
             DataError.Local.INSERTION_FAILED -> {
                 _homeState.value = _homeState.value!!.copy(
-                    actionError = "Ürün, alışveriş sepetine eklenemedi."
+                    actionError = "The product could not be added to the shopping cart.\n"
                 )
             }
             DataError.Local.UNKNOWN -> {
                 _homeState.value = _homeState.value!!.copy(
-                    actionError = "Bilinmeyen bir hata meydana geldi."
+                    actionError = "An unknown error occurred."
                 )
             }
             else -> {}
@@ -190,12 +190,12 @@ class HomeViewModel @Inject constructor(
         when(error) {
             DataError.Local.DELETION_FAILED -> {
                 _homeState.value = _homeState.value!!.copy(
-                    actionError = "Ürün, favorilerden kaldırılamadı."
+                    actionError = "The product could not be removed from favorites."
                 )
             }
             DataError.Local.UNKNOWN -> {
                 _homeState.value = _homeState.value!!.copy(
-                    actionError = "Bilinmeyen bir hata meydana geldi."
+                    actionError = "An unknown error occurred."
                 )
             }
             else -> {}
@@ -225,12 +225,12 @@ class HomeViewModel @Inject constructor(
         when(error) {
             DataError.Local.INSERTION_FAILED -> {
                 _homeState.value = _homeState.value!!.copy(
-                    actionError = "Ürün, favorilere eklenemedi."
+                    actionError = "The product could not be added to favorites."
                 )
             }
             DataError.Local.UNKNOWN -> {
                 _homeState.value = _homeState.value!!.copy(
-                    actionError = "Bilinmeyen bir hata meydana geldi."
+                    actionError = "An unknown error occurred."
                 )
             }
             else -> {}
@@ -262,8 +262,8 @@ class HomeViewModel @Inject constructor(
 
     private fun handleGetProductIdByBarcodeError(error: DataError.Local) {
         val message = when(error) {
-            DataError.Local.NOT_FOUND -> "Bu barkoda sahip bir ürün bulunamadı."
-            DataError.Local.UNKNOWN -> "Bilinmeyen bir hata meydana geldi."
+            DataError.Local.NOT_FOUND -> "No product found with this barcode."
+            DataError.Local.UNKNOWN -> "An unknown error occurred."
             else -> null
         }
         _homeState.value = _homeState.value!!.copy(

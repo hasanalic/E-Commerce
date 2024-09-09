@@ -48,10 +48,10 @@ class HomeAdapter: RecyclerView.Adapter<HomeAdapter.MyViewHolder>() {
             binding.materialCardProductItem.strokeWidth = 1
 
             if (product.addedToShoppingCart) {
-                binding.buttonAddCart.text = "Kaldır"
+                binding.buttonAddCart.text = "Remove"
                 binding.buttonAddCart.setBackgroundColor(binding.root.resources.getColor(R.color.font_third))
             } else {
-                binding.buttonAddCart.text = "Sepete Ekle"
+                binding.buttonAddCart.text = "Add to Cart"
                 binding.buttonAddCart.setBackgroundColor(binding.root.resources.getColor(R.color.color_primary))
             }
 

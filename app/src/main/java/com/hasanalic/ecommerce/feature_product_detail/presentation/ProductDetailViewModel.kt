@@ -63,13 +63,13 @@ class ProductDetailViewModel @Inject constructor (
             DataError.Local.NOT_FOUND -> {
                 _productDetailState.value = ProductDetailState(
                     isLoading = false,
-                    dataError = "Ürün bilgisi alınamadı."
+                    dataError = "Product information could not be retrieved."
                 )
             }
             DataError.Local.UNKNOWN -> {
                 _productDetailState.value = ProductDetailState(
                     isLoading = false,
-                    dataError = "Bilinmeyen bir hata meydana geldi."
+                    dataError = "An unknown error occurred."
                 )
             }
             else -> {}
@@ -95,13 +95,13 @@ class ProductDetailViewModel @Inject constructor (
             DataError.Local.NOT_FOUND -> {
                 _productDetailState.value = _productDetailState.value!!.copy(
                     isLoading = false,
-                    dataError = "Ürüne ait yorumlar alınımadı."
+                    dataError = "No comments were received regarding the product."
                 )
             }
             DataError.Local.UNKNOWN -> {
                 _productDetailState.value = _productDetailState.value!!.copy(
                     isLoading = false,
-                    dataError = "Bilinmeyen bir hata meydana geldi."
+                    dataError = "An unknown error occurred."
                 )
             }
             else -> {}
@@ -132,13 +132,13 @@ class ProductDetailViewModel @Inject constructor (
             DataError.Local.INSERTION_FAILED -> {
                 _productDetailState.value = _productDetailState.value!!.copy(
                     isLoading = false,
-                    actionError = "Ürün, alışveriş sepetine eklenemedi."
+                    actionError = "The product could not be added to the shopping cart."
                 )
             }
             DataError.Local.UNKNOWN -> {
                 _productDetailState.value = _productDetailState.value!!.copy(
                     isLoading = false,
-                    actionError = "Bilinmeyen bir hata meydana geldi."
+                    actionError = "An unknown error occurred."
                 )
             }
             else -> {}
@@ -168,13 +168,13 @@ class ProductDetailViewModel @Inject constructor (
             DataError.Local.DELETION_FAILED -> {
                 _productDetailState.value = _productDetailState.value!!.copy(
                     isLoading = false,
-                    actionError = "Ürün, alışveriş sepetinden kaldırılamadı."
+                    actionError = "The item could not be removed from the shopping cart."
                 )
             }
             DataError.Local.UNKNOWN -> {
                 _productDetailState.value = _productDetailState.value!!.copy(
                     isLoading = false,
-                    actionError = "Bilinmeyen bir hata meydana geldi."
+                    actionError = "An unknown error occurred."
                 )
             }
             else -> {}
@@ -212,13 +212,13 @@ class ProductDetailViewModel @Inject constructor (
             DataError.Local.INSERTION_FAILED -> {
                 _productDetailState.value = _productDetailState.value!!.copy(
                     isLoading = false,
-                    actionError = "Ürün, favorilere eklenemedi."
+                    actionError = "The product could not be added to favorites."
                 )
             }
             DataError.Local.UNKNOWN -> {
                 _productDetailState.value = _productDetailState.value!!.copy(
                     isLoading = false,
-                    actionError = "Bilinmeyen bir hata meydana geldi."
+                    actionError = "An unknown error occurred."
                 )
             }
             else -> {}
@@ -255,13 +255,13 @@ class ProductDetailViewModel @Inject constructor (
             DataError.Local.DELETION_FAILED -> {
                 _productDetailState.value = _productDetailState.value!!.copy(
                     isLoading = false,
-                    actionError = "Ürün, favorilerden kaldırılamadı."
+                    actionError = "The product could not be removed from favorites."
                 )
             }
             DataError.Local.UNKNOWN -> {
                 _productDetailState.value = _productDetailState.value!!.copy(
                     isLoading = false,
-                    actionError = "Bilinmeyen bir hata meydana geldi."
+                    actionError = "An unknown error occurred."
                 )
             }
             else -> {}

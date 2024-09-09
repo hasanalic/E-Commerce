@@ -35,8 +35,8 @@ class CardsViewModel @Inject constructor(
 
     private fun handleGetUserCardsError(error: DataError.Local) {
         val message = when(error) {
-            DataError.Local.NOT_FOUND -> "Kullanıcı kartları bulunamadı."
-            DataError.Local.UNKNOWN -> "Bilinmeyen bir hata meydana geldi."
+            DataError.Local.NOT_FOUND -> "User cards not found."
+            DataError.Local.UNKNOWN -> "An unknown error occurred."
             else -> null
         }
         _cardsState.value = CardsState(dataError = message)

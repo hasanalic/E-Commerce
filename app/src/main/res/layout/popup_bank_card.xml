@@ -22,7 +22,7 @@
         android:gravity="center"
         android:layout_marginBottom="10dp"
         android:textColor="@color/font_secondary"
-        android:text="@string/massterpass_saved" />
+        android:text="@string/having_saved_card" />
 
     <TextView
         android:layout_width="match_parent"

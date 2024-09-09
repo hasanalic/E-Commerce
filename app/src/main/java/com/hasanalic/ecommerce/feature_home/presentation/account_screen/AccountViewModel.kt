@@ -50,8 +50,8 @@ class AccountViewModel @Inject constructor(
 
     private fun handleGetUserError(error: DataError.Local) {
         val message = when (error) {
-            DataError.Local.NOT_FOUND -> "Kullanıcı bulunamadı."
-            DataError.Local.UNKNOWN -> "Bilinmeyen bir hata meydana geldi."
+            DataError.Local.NOT_FOUND -> "User not found."
+            DataError.Local.UNKNOWN -> "An unknown error occurred."
             else -> null
         }
         _accountState.value = _accountState.value!!.copy(

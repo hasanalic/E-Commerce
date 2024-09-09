@@ -18,7 +18,7 @@ class ShippingFragment: Fragment() {
 
     private lateinit var viewModel: CheckoutViewModel
 
-    private var cargoName = "Cargo A"
+    private var shipping = "Shipping A"
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentShippingBinding.inflate(inflater)
@@ -39,21 +39,21 @@ class ShippingFragment: Fragment() {
         }
 
         binding.buttonContinue.setOnClickListener {
-            viewModel.setOrderCargo(cargoName)
+            viewModel.setOrderCargo(shipping)
             Navigation.findNavController(it).navigate(R.id.action_shippingFragment_to_paymentMethodsFragment)
         }
 
         binding.aKargoRadioButton.setOnClickListener {
-            cargoName = "Cargo A"
+            shipping = "Shipping A"
         }
         binding.bKargoRadioButton.setOnClickListener {
-            cargoName = "Cargo B"
+            shipping = "Shipping B"
         }
         binding.cKargoRadioButton.setOnClickListener {
-            cargoName = "Cargo C"
+            shipping = "Shipping C"
         }
         binding.dKargoRadioButton.setOnClickListener {
-            cargoName = "Cargo D"
+            shipping = "Shipping D"
         }
     }
 

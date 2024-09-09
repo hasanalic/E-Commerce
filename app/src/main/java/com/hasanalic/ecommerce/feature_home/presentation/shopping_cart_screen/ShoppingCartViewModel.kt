@@ -58,12 +58,12 @@ class ShoppingCartViewModel @Inject constructor(
         when(error) {
             DataError.Local.NOT_FOUND -> {
                 _shoppingCartState.value = ShoppingCartState(
-                    dataError = "Alışveriş sepetindeki ürünlerin bilgisi alınamadı."
+                    dataError = "Information about the products in the shopping cart could not be retrieved."
                 )
             }
             DataError.Local.UNKNOWN -> {
                 _shoppingCartState.value = ShoppingCartState(
-                    dataError = "Bilinmeyen bir hata meydana geldi."
+                    dataError = "An unknown error occurred."
                 )
             }
             else -> {}
@@ -84,12 +84,12 @@ class ShoppingCartViewModel @Inject constructor(
         when(error) {
             DataError.Local.DELETION_FAILED -> {
                 _shoppingCartState.value = _shoppingCartState.value!!.copy(
-                    actionError = "Ürün, alışveriş sepetinden silinemedi."
+                    actionError = "The item could not be deleted from the shopping cart."
                 )
             }
             DataError.Local.UNKNOWN -> {
                 _shoppingCartState.value = _shoppingCartState.value!!.copy(
-                    actionError = "Bilinmeyen bir hata meydana geldi."
+                    actionError = "An unknown error occurred."
                 )
             }
             else -> {}
@@ -124,12 +124,12 @@ class ShoppingCartViewModel @Inject constructor(
         when(error) {
             DataError.Local.UPDATE_FAILED -> {
                 _shoppingCartState.value = shoppingCartState.value!!.copy(
-                    actionError = "Ürün adedi arttırılamadı."
+                    actionError = "The product quantity could not be increased."
                 )
             }
             DataError.Local.UNKNOWN -> {
                 _shoppingCartState.value = shoppingCartState.value!!.copy(
-                    actionError = "Bilinmeyen bir hata meydana geldi."
+                    actionError = "An unknown error occurred."
                 )
             }
             else -> {}
@@ -175,12 +175,12 @@ class ShoppingCartViewModel @Inject constructor(
         when(error) {
             DataError.Local.UPDATE_FAILED -> {
                 _shoppingCartState.value = shoppingCartState.value!!.copy(
-                    actionError = "Ürün adedi azaltılamadı."
+                    actionError = "The number of products could not be reduced."
                 )
             }
             DataError.Local.UNKNOWN -> {
                 _shoppingCartState.value = shoppingCartState.value!!.copy(
-                    actionError = "Bilinmeyen bir hata meydana geldi."
+                    actionError = "An unknown error occurred."
                 )
             }
             else -> {}
@@ -252,7 +252,7 @@ class ShoppingCartViewModel @Inject constructor(
         } else {
             _shoppingCartState.value = _shoppingCartState.value!!.copy(
                 isLoading = false,
-                actionError = "Alışveriş sepeti boş."
+                actionError = "The shopping cart is empty."
             )
         }
     }

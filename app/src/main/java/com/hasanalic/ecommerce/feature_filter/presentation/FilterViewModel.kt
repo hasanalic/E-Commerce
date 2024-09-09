@@ -38,8 +38,8 @@ class FilterViewModel @Inject constructor(
 
     private fun handleGetCategoryListError(error: DataError.Local) {
         val message = when(error) {
-            DataError.Local.NOT_FOUND -> "Kategori listesi alınamadı."
-            DataError.Local.UNKNOWN -> "Bilinmeyen bir hata meydana geldi."
+            DataError.Local.NOT_FOUND -> "Could not get category list."
+            DataError.Local.UNKNOWN -> "An unknown error occurred."
             else -> null
         }
         _filterState.value = FilterState(dataError = message)
@@ -58,8 +58,8 @@ class FilterViewModel @Inject constructor(
 
     private fun handleGetBrandListError(error: DataError.Local) {
         val message = when(error) {
-            DataError.Local.NOT_FOUND -> "Marka listesi alınamadı."
-            DataError.Local.UNKNOWN -> "Bilinmeyen bir hata meydana geldi."
+            DataError.Local.NOT_FOUND -> "Could not get brand list."
+            DataError.Local.UNKNOWN -> "An unknown error occurred."
             else -> null
         }
         _filterState.value = FilterState(dataError = message)

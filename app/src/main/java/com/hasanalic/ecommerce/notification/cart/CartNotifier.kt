@@ -20,7 +20,7 @@ class CartNotifier(
 ) : Notifier(notificationManager) {
 
     override val notificationChannelId: String = "cart_channel_id"
-    override val notificationChannelName: String = "Sepet Bildirimleri"
+    override val notificationChannelName: String = "Cart Notifications"
     override val notificationId: Int = 300
 
     override fun buildNotification(): Notification? {
@@ -67,7 +67,7 @@ class CartNotifier(
     }
 
     override fun getNotificationTitle(random: Int): String {
-        return "Merhaba!"
+        return "Hello!"
     }
 
     override fun getNotificationMessage(random: Int): String {

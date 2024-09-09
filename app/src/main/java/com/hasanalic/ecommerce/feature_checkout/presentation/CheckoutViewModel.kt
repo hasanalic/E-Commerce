@@ -128,9 +128,9 @@ class CheckoutViewModel @Inject constructor(
 
     private fun handleError(error: DataError.Local) {
         val message = when (error) {
-            DataError.Local.DELETION_FAILED -> "Ödeme işlemi yapılamadı."
-            DataError.Local.INSERTION_FAILED -> "Ödeme işlemi yapılamadı."
-            DataError.Local.UNKNOWN -> "Bilinmeyen bir hata meydana geldi."
+            DataError.Local.DELETION_FAILED -> "Payment transaction could not be completed."
+            DataError.Local.INSERTION_FAILED -> "Payment transaction could not be completed."
+            DataError.Local.UNKNOWN -> "An unknown error occurred."
             else -> null
         }
         _checkoutState.value = _checkoutState.value!!.copy(

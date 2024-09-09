@@ -41,10 +41,10 @@ class NotificationAdapter: RecyclerView.Adapter<NotificationAdapter.MyViewHolder
             val day = passedTime / (24 * 60 * 60 * 1000)
 
             return when {
-                day > 0 -> "$day gün önce"
-                hour > 0 -> "$hour saat önce"
-                minute > 0 -> "$minute dakika önce"
-                else -> "Şimdi"
+                day > 0 -> "$day days ago"
+                hour > 0 -> "$hour hour ago"
+                minute > 0 -> "$minute minute ago"
+                else -> "Now"
             }
         }
     }

@@ -41,10 +41,10 @@ class FavoriteAdapter: RecyclerView.Adapter<FavoriteAdapter.MyViewHolder>() {
             binding.imageViewFavorite.setImageResource(R.drawable.favorite_orange)
 
             if (favoriteProduct.addedToShoppingCart) {
-                binding.buttonCart.text = "Kaldır"
+                binding.buttonCart.text = "Remove"
                 binding.buttonCart.setBackgroundColor(binding.root.resources.getColor(R.color.font_third))
             } else {
-                binding.buttonCart.text = "Sepete Ekle"
+                binding.buttonCart.text = "Add to Cart"
                 binding.buttonCart.setBackgroundColor(binding.root.resources.getColor(R.color.color_primary))
             }
 

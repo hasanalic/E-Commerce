@@ -111,7 +111,7 @@ class FilterActivity : AppCompatActivity() {
         binding.recyclerViewBrand.addItemDecoration(ItemDecoration(0,16,0))
 
         brandAdapter.setOnBrandClickListener { brand, position ->
-            if (brand == "Hepsi") {
+            if (brand == "All") {
                 filter.brand = null
             } else {
                 filter.brand = brand

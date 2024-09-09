@@ -221,7 +221,7 @@ class HomeFragment: Fragment() {
         }
 
         if (state.shouldUserMoveToAuthActivity) {
-            toast(requireContext(),"Favori işlemleri için giriş yapmalısınız.",false)
+            toast(requireContext(),"You must log in to use your favorite operations.",false)
             val intent = Intent(requireActivity(), AuthActivity::class.java)
             startActivity(intent)
             requireActivity().finish()

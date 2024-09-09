@@ -35,8 +35,8 @@ class AddressViewModel @Inject constructor(
 
     private fun handleGetAddressListError(error: DataError.Local) {
         val message = when(error) {
-            DataError.Local.NOT_FOUND -> "Adres listesi alınmadı."
-            DataError.Local.UNKNOWN -> "Bilinmeyen bir hata meydana geldi."
+            DataError.Local.NOT_FOUND -> "Could not get address list."
+            DataError.Local.UNKNOWN -> "An unknown error occurred."
             else -> null
         }
         _addressState.value = AddressState(dataError = message)

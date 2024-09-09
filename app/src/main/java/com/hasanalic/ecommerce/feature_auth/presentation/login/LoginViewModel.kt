@@ -47,7 +47,7 @@ class LoginViewModel @Inject constructor(
 
     private fun handleEmailValidationError(error: EmailValidationError) {
         val errorMessage = when(error) {
-            EmailValidationError.INVALID_FORMAT -> "Geçersiz email formatı."
+            EmailValidationError.INVALID_FORMAT -> "Invalid email format."
         }
         _loginState.value = _loginState.value!!.copy(
             validationError = errorMessage,
@@ -58,8 +58,8 @@ class LoginViewModel @Inject constructor(
     private fun handleInputValidationError(error: InputValidationError) {
         val errorMessage = when(error) {
             InputValidationError.EMPTY_NAME -> ""
-            InputValidationError.EMPTY_EMAIL -> "Email boş olamaz."
-            InputValidationError.EMPTY_PASSWORD -> "Şifre boş olamaz."
+            InputValidationError.EMPTY_EMAIL -> "Email cannot be empty."
+            InputValidationError.EMPTY_PASSWORD -> "Password cannot be empty."
         }
         _loginState.value = _loginState.value!!.copy(
             validationError = errorMessage,
@@ -69,9 +69,9 @@ class LoginViewModel @Inject constructor(
 
     private fun handlePasswordValidationError(error: PasswordValidationError) {
         val errorMessage = when(error) {
-            PasswordValidationError.TOO_SHORT -> "Şifre çok kısa"
-            PasswordValidationError.NO_UPPERCASE -> "Şifrede en az bir tane büyük harf karakter olmalı."
-            PasswordValidationError.NO_DIGIT -> "Şifrede en az bir rakam olmalı."
+            PasswordValidationError.TOO_SHORT -> "Password is too short."
+            PasswordValidationError.NO_UPPERCASE -> "Password must contain at least one uppercase letter."
+            PasswordValidationError.NO_DIGIT -> "Password must contain at least one digit."
         }
         _loginState.value = _loginState.value!!.copy(
             validationError = errorMessage,
@@ -105,7 +105,7 @@ class LoginViewModel @Inject constructor(
             DataError.Local.DELETION_FAILED -> TODO()
             DataError.Local.NOT_FOUND -> {
                 _loginState.value = LoginState(
-                    dataError = "Email veya şifre hatalı."
+                    dataError = "Email or password is incorrect."
                 )
             }
             DataError.Local.UNKNOWN -> TODO()

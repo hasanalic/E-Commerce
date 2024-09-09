@@ -90,7 +90,7 @@ class NotificationFragment : Fragment() {
     private fun navigateToAuthActivityAndFinish() {
         val intent = Intent(requireActivity(), AuthActivity::class.java)
         startActivity(intent)
-        toast(requireContext(),"Bildirimleri görüntülemek için hesabınıza giriş yapınız.",false)
+        toast(requireContext(),"Log in to your account to view notifications.",false)
         requireActivity().finish()
     }
 

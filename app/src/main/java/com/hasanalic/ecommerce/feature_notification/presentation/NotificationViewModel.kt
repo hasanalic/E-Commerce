@@ -45,8 +45,8 @@ class NotificationViewModel @Inject constructor (
 
     private fun handleGetUserNotificationError(error: DataError.Local) {
         val message = when(error) {
-            DataError.Local.NOT_FOUND -> "Bildirimler alınamadı."
-            DataError.Local.UNKNOWN -> "Bilinmeyen bir hata meydana geldi."
+            DataError.Local.NOT_FOUND -> "Notifications could not be received."
+            DataError.Local.UNKNOWN -> "An unknown error occurred."
             else -> null
         }
         _notificationState.value = NotificationState(dataError = message)

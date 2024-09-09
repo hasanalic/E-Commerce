@@ -39,8 +39,8 @@ class OrdersViewModel @Inject constructor(
 
     private fun handleGetOrdersError(error: DataError.Local) {
         val message = when(error) {
-            DataError.Local.NOT_FOUND -> "Sipariş bilgileri alınamadı."
-            DataError.Local.UNKNOWN -> "Bilinmeyen bir hata meydana geldi."
+            DataError.Local.NOT_FOUND -> "Order information could not be retrieved."
+            DataError.Local.UNKNOWN -> "An unknown error occurred."
             else -> null
         }
         _ordersState.value = OrdersState(dataError = message)

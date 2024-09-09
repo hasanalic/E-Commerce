@@ -65,7 +65,7 @@ class AddressFragment: Fragment() {
             addressId?.let {
                 checkoutViewModel.getUserIdAndSetOrderAddressId(it)
                 Navigation.findNavController(view).navigate(R.id.action_addressFragment_to_shippingFragment)
-            }?: toast(requireContext(),"Adres seçiniz",false)
+            }?: toast(requireContext(),"Select an address",false)
         }
 
         binding.buttonAddNewAddress.setOnClickListener {

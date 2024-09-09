@@ -72,21 +72,21 @@ class OrderDetailFragment: Fragment() {
 
     private fun showCancelOrderWarning() {
         val alertDialogBuilder = AlertDialog.Builder(requireContext())
-        alertDialogBuilder.setMessage("Siparişi iptal etmek istediğinizden emin misiniz?")
-        alertDialogBuilder.setPositiveButton("İptal et") { _, _ ->
+        alertDialogBuilder.setMessage("Are you sure you want to cancel the order?")
+        alertDialogBuilder.setPositiveButton("Yes") { _, _ ->
             viewModel.updateOrderStatusToCanceled()
         }
-        alertDialogBuilder.setNegativeButton("Vazgeç") { _, _ -> }
+        alertDialogBuilder.setNegativeButton("No") { _, _ -> }
         alertDialogBuilder.create().show()
     }
 
     private fun showReturnOrderWarning() {
         val alertDialogBuilder = AlertDialog.Builder(requireContext())
-        alertDialogBuilder.setMessage("Siparişi iade etmek istediğinizden emin misiniz?")
-        alertDialogBuilder.setPositiveButton("İade et") { _, _ ->
+        alertDialogBuilder.setMessage("Are you sure you want to return the order?")
+        alertDialogBuilder.setPositiveButton("Yes") { _, _ ->
             viewModel.updateOrderStatusToReturned()
         }
-        alertDialogBuilder.setNegativeButton("Vazgeç") { _, _ -> }
+        alertDialogBuilder.setNegativeButton("No") { _, _ -> }
         alertDialogBuilder.create().show()
     }
 

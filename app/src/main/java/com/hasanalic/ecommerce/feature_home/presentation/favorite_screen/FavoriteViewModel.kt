@@ -54,12 +54,12 @@ class FavoriteViewModel @Inject constructor(
         when (error) {
             DataError.Local.NOT_FOUND -> {
                 _favoriteState.value = FavoriteState(
-                    dataError = "Favori ürün yok."
+                    dataError = "You don't have a favorite product."
                 )
             }
             DataError.Local.UNKNOWN -> {
                 _favoriteState.value = FavoriteState(
-                    dataError = "Bilinmeyen bir hata meydana geldi."
+                    dataError = "An unknown error occurred."
                 )
             }
             else -> {}
@@ -80,12 +80,12 @@ class FavoriteViewModel @Inject constructor(
         when (error) {
             DataError.Local.DELETION_FAILED -> {
                 _favoriteState.value = _favoriteState.value!!.copy(
-                    actionError = "ürün favorilerden kaldırılamadı."
+                    actionError = "The product could not be removed from favorites."
                 )
             }
             DataError.Local.UNKNOWN -> {
                 _favoriteState.value = _favoriteState.value!!.copy(
-                    actionError = "Bilinmeyen bir nedenden dolayı, ürün favorilerden kaldırılamadı."
+                    actionError = "For an unknown reason, the product could not be removed from favorites."
                 )
             }
             else -> {}
@@ -117,13 +117,13 @@ class FavoriteViewModel @Inject constructor(
         when (error) {
             DataError.Local.INSERTION_FAILED -> {
                 _favoriteState.value = _favoriteState.value!!.copy(
-                    actionError = "Ürün, alışveriş sepetine eklenemedi."
+                    actionError = "The product could not be added to the shopping cart."
                 )
             }
 
             DataError.Local.UNKNOWN -> {
                 _favoriteState.value = _favoriteState.value!!.copy(
-                    actionError = "Ürün, alışveriş sepetine eklenemedi."
+                    actionError = "The product could not be added to the shopping cart."
                 )
             }
 
@@ -145,13 +145,13 @@ class FavoriteViewModel @Inject constructor(
         when (error) {
             DataError.Local.DELETION_FAILED -> {
                 _favoriteState.value = _favoriteState.value!!.copy(
-                    actionError = "Ürün sepetten kaldırılamadı.."
+                    actionError = "The product could not be removed from the cart."
                 )
             }
 
             DataError.Local.UNKNOWN -> {
                 _favoriteState.value = _favoriteState.value!!.copy(
-                    actionError = "Bilinmeyen bir hata meydana geldi."
+                    actionError = "An unknown error occurred."
                 )
             }
 

@@ -16,7 +16,6 @@ import com.hasanalic.ecommerce.feature_product_detail.domain.model.ProductDetail
 import com.hasanalic.ecommerce.feature_product_detail.presentation.ProductDetailState
 import com.hasanalic.ecommerce.feature_product_detail.presentation.ProductDetailViewModel
 import com.hasanalic.ecommerce.core.presentation.utils.ItemDecoration
-import com.hasanalic.ecommerce.core.presentation.utils.UserConstants.ANOMIM_USER_ID
 import com.hasanalic.ecommerce.core.utils.glide
 import com.hasanalic.ecommerce.core.utils.hide
 import com.hasanalic.ecommerce.core.utils.placeHolderProgressBar
@@ -108,11 +107,11 @@ class ProductDetailFragment: Fragment() {
 
         state.reviewList.let {
             if (it.isEmpty()) {
-                binding.textViewReviewContentCount.text = "Değerlendirme (0)"
+                binding.textViewReviewContentCount.text = "Comments (0)"
                 binding.emptyReview.show()
             } else {
                 reviewAdapter.reviewList = it
-                binding.textViewReviewContentCount.text = "Değerlendirme (${it.size})"
+                binding.textViewReviewContentCount.text = "Comments (${it.size})"
                 binding.emptyReview.hide()
             }
         }
@@ -127,7 +126,7 @@ class ProductDetailFragment: Fragment() {
     }
 
     private fun setupProductDetail(productDetail: ProductDetail) {
-        binding.toolBarProductDetail.title = "Kategoriler/ ${productDetail.productCategory}"
+        binding.toolBarProductDetail.title = "Categories/ ${productDetail.productCategory}"
         binding.imageViewProductPhoto.glide(productDetail.productPhoto, placeHolderProgressBar(binding.root.context))
         binding.textViewProductBrand.text = productDetail.productBrand
         binding.textViewProductDetail.text = productDetail.productDetail
@@ -151,10 +150,10 @@ class ProductDetailFragment: Fragment() {
         }
 
         if (productDetail.addedToShoppingCart) {
-            binding.buttonAddCart.text = "Kaldır"
+            binding.buttonAddCart.text = "Remove"
             binding.buttonAddCart.setBackgroundColor(binding.root.resources.getColor(R.color.font_third))
         } else {
-            binding.buttonAddCart.text = "Sepete Ekle"
+            binding.buttonAddCart.text = "Add to Cart"
             binding.buttonAddCart.setBackgroundColor(binding.root.resources.getColor(R.color.color_primary))
         }
 
@@ -185,11 +184,11 @@ class ProductDetailFragment: Fragment() {
         intent.type = "text/plain"
         intent.putExtra(Intent.EXTRA_SUBJECT, title)
         intent.putExtra(Intent.EXTRA_TEXT, url)
-        startActivity(Intent.createChooser(intent, "Paylaş"))
+        startActivity(Intent.createChooser(intent, "Share"))
     }
 
     private fun navigateToAuthActivity() {
-        toast(requireContext(),"Favori işlemleri için giriş yapmalısınız.",false)
+        toast(requireContext(),"You must log in to use your favorite operations.",false)
         val intent = Intent(requireActivity(), AuthActivity::class.java)
         startActivity(intent)
         requireActivity().finish()

@@ -56,12 +56,12 @@ class LocationViewModel @Inject constructor(
         when(error) {
             DataError.Local.NOT_FOUND -> {
                 _locationState.value = LocationState(
-                    dataError = "Adresler getirilemedi."
+                    dataError = "Addresses could not be retrieved."
                 )
             }
             DataError.Local.UNKNOWN -> {
                 _locationState.value = LocationState(
-                    dataError = "Bilinmeyen bir hata meydana geldi."
+                    dataError = "An unknown error occurred."
                 )
             }
             else -> {}
@@ -86,13 +86,13 @@ class LocationViewModel @Inject constructor(
             DataError.Local.DELETION_FAILED -> {
                 _locationState.value = _locationState.value!!.copy(
                     isLoading = false,
-                    actionError = "Adres silinemedi."
+                    actionError = "The address could not be deleted."
                 )
             }
             DataError.Local.UNKNOWN -> {
                 _locationState.value = _locationState.value!!.copy(
                     isLoading = false,
-                    actionError = "Bilinmeyen bir hata meydana geldi."
+                    actionError = "An unknown error occurred."
                 )
             }
             else -> {}
@@ -143,8 +143,8 @@ class LocationViewModel @Inject constructor(
 
     private fun handleAddressValidationError(error: AddressValidationError) {
         val errorMessage = when(error) {
-            AddressValidationError.EMPTY_ADDRESS_TITLE -> { "Addres başlığı boş olamaz." }
-            AddressValidationError.EMPTY_ADDRESS_DETAIL -> { "Addres detayı boş olamaz." }
+            AddressValidationError.EMPTY_ADDRESS_TITLE -> { "The address title cannot be empty." }
+            AddressValidationError.EMPTY_ADDRESS_DETAIL -> { "The address detail cannot be empty." }
         }
 
         _locationState.value = _locationState.value!!.copy(
@@ -155,8 +155,8 @@ class LocationViewModel @Inject constructor(
 
     private fun handleInsertAddressEntityError(error: DataError.Local) {
         val errorMessage = when(error) {
-            DataError.Local.INSERTION_FAILED -> "Adres kaydedilemedi."
-            DataError.Local.UNKNOWN -> "Bilinmeyen bir hata meydana geldi."
+            DataError.Local.INSERTION_FAILED -> "Address could not be saved."
+            DataError.Local.UNKNOWN -> "An unknown error occurred."
             else -> null
         }
 

@@ -114,11 +114,11 @@ class LocationActivity : AppCompatActivity() {
         }
 
         if (state.isAddressDeletionSuccessful) {
-            Toast.makeText(this, "Adres silindi.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "The address has been deleted.", Toast.LENGTH_SHORT).show()
         }
 
         if (state.isAddressInsertionSuccessful) {
-            Toast.makeText(this, "Yeni adres eklendi.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "New address added.", Toast.LENGTH_SHORT).show()
             finish()
         }
 
@@ -165,11 +165,9 @@ class LocationActivity : AppCompatActivity() {
 
             task.addOnFailureListener { exception ->
                 if (exception is ResolvableApiException) {
-                    // Konum ayarları uygun değil, kullanıcıyı düzeltme isteği gönder
                     try {
                         exception.startResolutionForResult(this, REQUEST_CHECK_SETTINGS)
                     } catch (sendEx: IntentSender.SendIntentException) {
-                        // Hata durumunda işleme geç
                         sendEx.printStackTrace()
                     }
                 }
@@ -190,7 +188,7 @@ class LocationActivity : AppCompatActivity() {
             if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 findLocation()
             } else {
-                Toast.makeText(this,"İzin Gerekli", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this,"Permission needed", Toast.LENGTH_SHORT).show()
             }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
@@ -199,7 +197,7 @@ class LocationActivity : AppCompatActivity() {
     private fun navigateToAuthActivityAndFinish() {
         val intent = Intent(this, AuthActivity::class.java)
         startActivity(intent)
-        Toast.makeText(this@LocationActivity,"Adres organizasyonu için hesabınıza giriş yapınız.", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this@LocationActivity,"Log in to your account to view addresses.", Toast.LENGTH_SHORT).show()
         finish()
     }
 }

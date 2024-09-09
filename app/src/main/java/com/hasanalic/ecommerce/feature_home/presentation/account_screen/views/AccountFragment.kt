@@ -63,11 +63,11 @@ class AccountFragment: Fragment() {
 
     private fun showDeleteAccountDialog() {
         val alertDialogBuilder = AlertDialog.Builder(requireContext())
-        alertDialogBuilder.setMessage("Hesabı silmek istediğinizden emin misin?")
-        alertDialogBuilder.setPositiveButton("Sil") { _, _ ->
+        alertDialogBuilder.setMessage("Are you sure you want to delete the account?")
+        alertDialogBuilder.setPositiveButton("Delete") { _, _ ->
             viewModel.deleteUser()
         }
-        alertDialogBuilder.setNegativeButton("Vazgeç") { _, _ -> }
+        alertDialogBuilder.setNegativeButton("Cancel") { _, _ -> }
 
         alertDialogBuilder.create().show()
     }
@@ -97,17 +97,17 @@ class AccountFragment: Fragment() {
 
         if (state.isDeletionCompleted) {
             navigateToAuthActivity()
-            toast(requireContext(), "Hesabınız silindi.", false)
+            toast(requireContext(), "Your account has been deleted.", false)
         }
 
         if (state.isUserLoggedOut) {
             navigateToAuthActivity()
-            toast(requireContext(), "Çıkış yapıldı.", false)
+            toast(requireContext(), "You have been logged out.", false)
         }
 
         if (state.shouldUserMoveToAuthActivity) {
             navigateToAuthActivity()
-            toast(requireContext(), "Hesabınıza giriş yapmalısınız.", false)
+            toast(requireContext(), "You must log in to your account.", false)
         }
 
         state.actionError?.let {

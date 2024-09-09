@@ -49,8 +49,8 @@ class PaymentCardViewModel @Inject constructor(
 
     private fun handleCheckIfUserHaveAnyCard(error: DataError.Local) {
         val message = when(error) {
-            DataError.Local.NOT_FOUND -> "Kullanıcı kart bilgilerine erişilemedi."
-            DataError.Local.UNKNOWN -> "Bilinmeyen bir hata meydana geldi."
+            DataError.Local.NOT_FOUND -> "User card information could not be accessed."
+            DataError.Local.UNKNOWN -> "An unknown error occurred."
             else -> null
         }
         _paymentCardState.value = PaymentCardState(actionError = message)
@@ -98,8 +98,8 @@ class PaymentCardViewModel @Inject constructor(
 
     private fun handleSaveCardError(error: DataError.Local) {
         val message = when(error) {
-            DataError.Local.INSERTION_FAILED -> "Kart kaydedilemedi."
-            DataError.Local.UNKNOWN -> "Bilinmeyen bir hata meydana geldi."
+            DataError.Local.INSERTION_FAILED -> "Card could not be saved."
+            DataError.Local.UNKNOWN -> "An unknown error occurred."
             else -> null
         }
         _paymentCardState.value = _paymentCardState.value!!.copy(
@@ -110,16 +110,16 @@ class PaymentCardViewModel @Inject constructor(
 
     private fun handleCardCalidationError(error: CardValidationError) {
         val message = when(error) {
-            CardValidationError.EMPTY_CARD_NAME -> "Kart ismi boş olamaz."
-            CardValidationError.SHORT_CARD_NAME -> "Kart ismi çok kısa."
-            CardValidationError.EMPTY_CARD_NUMBER -> "Kart numarası boş olmaz."
-            CardValidationError.INVALID_CARD_NUMBER -> "Kart numarası geçersiz."
-            CardValidationError.EMPTY_MONTH -> "Ay değeri boş olamaz."
-            CardValidationError.INVALID_MONTH -> "Geçersiz ay değeri."
-            CardValidationError.EMPTY_YEAR -> "Yıl değeri boş olamaz."
-            CardValidationError.INVALID_YEAR -> "Geçersiz yıl değeri."
-            CardValidationError.EMPTY_CVV -> "CVV değeri boş olamaz."
-            CardValidationError.INVALID_CVV -> "Geçersiz CVV değeri."
+            CardValidationError.EMPTY_CARD_NAME -> "Card name cannot be blank."
+            CardValidationError.SHORT_CARD_NAME -> "The card name is too short."
+            CardValidationError.EMPTY_CARD_NUMBER -> "Card number cannot be blank."
+            CardValidationError.INVALID_CARD_NUMBER -> "The card number is invalid."
+            CardValidationError.EMPTY_MONTH -> "Month value cannot be empty."
+            CardValidationError.INVALID_MONTH -> "Invalid month value."
+            CardValidationError.EMPTY_YEAR -> "The year value cannot be blank."
+            CardValidationError.INVALID_YEAR -> "Invalid year value."
+            CardValidationError.EMPTY_CVV -> "The CVV value cannot be empty."
+            CardValidationError.INVALID_CVV -> "Invalid CVV value."
         }
         _paymentCardState.value = _paymentCardState.value!!.copy(
             isLoading = false,

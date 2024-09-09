@@ -41,7 +41,7 @@ class OrderAdapter: RecyclerView.Adapter<OrderAdapter.MyViewHolder>() {
         fun bind(order: Order) {
             binding.textViewDate.text = order.orderDate
             binding.textViewCost.text = order.orderTotal
-            binding.textViewCount.text = "${order.orderProductCount} ürün"
+            binding.textViewCount.text = "${order.orderProductCount} product"
 
             if (order.orderStatus == ORDER_CANCELLED) {
                 binding.textViewOrderStatus.text = order.orderStatus

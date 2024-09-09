@@ -40,7 +40,7 @@ class SuccessFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.buttonPreviewOrder.text = "Siparişleri Görüntüle"
+        binding.buttonPreviewOrder.text = "View Orders"
         binding.buttonPreviewOrder.setOnClickListener {
             val intent = Intent(requireActivity(), OrderActivity::class.java)
             startActivity(intent)

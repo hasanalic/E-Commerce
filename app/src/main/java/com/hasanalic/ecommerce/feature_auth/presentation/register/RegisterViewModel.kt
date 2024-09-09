@@ -53,9 +53,9 @@ class RegisterViewModel @Inject constructor(
 
     private fun handleInputValidationError(error: InputValidationError) {
         val message = when(error) {
-            InputValidationError.EMPTY_NAME -> "İsim boş olamaz."
-            InputValidationError.EMPTY_EMAIL -> "Email boş olamaz."
-            InputValidationError.EMPTY_PASSWORD -> "Şifre boş olamaz."
+            InputValidationError.EMPTY_NAME -> "Name cannot be empty."
+            InputValidationError.EMPTY_EMAIL -> "Email cannot be empty."
+            InputValidationError.EMPTY_PASSWORD -> "Password cannot be empty."
         }
         _registerState.value = _registerState.value!!.copy(
             validationError = message,
@@ -65,7 +65,7 @@ class RegisterViewModel @Inject constructor(
 
     private fun handleEmailValidationError(error: EmailValidationError) {
         val message = when(error) {
-            EmailValidationError.INVALID_FORMAT -> "Geçersiz email formatı."
+            EmailValidationError.INVALID_FORMAT -> "Invalid email format."
         }
         _registerState.value = _registerState.value!!.copy(
             validationError = message,
@@ -75,9 +75,9 @@ class RegisterViewModel @Inject constructor(
 
     private fun handlePasswordValidationError(error: PasswordValidationError) {
         val message = when(error) {
-            PasswordValidationError.TOO_SHORT -> "Şifre çok kısa"
-            PasswordValidationError.NO_UPPERCASE -> "Şifrede en az bir tane büyük harf karakter olmalı."
-            PasswordValidationError.NO_DIGIT -> "Şifrede en az bir rakam olmalı."
+            PasswordValidationError.TOO_SHORT -> "Password is too short."
+            PasswordValidationError.NO_UPPERCASE -> "Password must contain at least one uppercase letter."
+            PasswordValidationError.NO_DIGIT -> "Password must contain at least one digit."
         }
 
         _registerState.value = _registerState.value!!.copy(
@@ -109,7 +109,7 @@ class RegisterViewModel @Inject constructor(
             DataError.Local.QUERY_FAILED -> {}
             DataError.Local.INSERTION_FAILED -> {
                 _registerState.value = RegisterState(
-                    dataError = "Kullanıcı kaydedilemedi."
+                    dataError = "User registration failed."
                 )
             }
             DataError.Local.UPDATE_FAILED -> {}

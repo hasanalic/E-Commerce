@@ -89,12 +89,12 @@ class ShoppingCartFragment: Fragment() {
 
     private fun showDeleteItemWarnAlertDialog(productId: String, position: Int) {
         val alertDialogBuilder = AlertDialog.Builder(requireContext())
-        alertDialogBuilder.setMessage("Ürünü sepetten silmek istediğine emin misin?")
-        alertDialogBuilder.setPositiveButton("Sil") { _, _ ->
+        alertDialogBuilder.setMessage("Are you sure you want to remove the item from your cart?")
+        alertDialogBuilder.setPositiveButton("Remove") { _, _ ->
             viewModel.removeItemFromShoppingCart(productId)
             //shoppingCartAdapter.notifyItemRemovedInAdapter(position)
         }
-        alertDialogBuilder.setNegativeButton("Vazgeç") { _, _ -> }
+        alertDialogBuilder.setNegativeButton("Cancel") { _, _ -> }
 
         alertDialogBuilder.create().show()
     }
@@ -117,7 +117,7 @@ class ShoppingCartFragment: Fragment() {
         }
 
         if (state.shouldUserMoveToAuthActivity) {
-            toast(requireContext(), "Satın alma işlemine geçmek için giriş yapmalısınız.", true)
+            toast(requireContext(), "You must log in to proceed with the purchase.", true)
             val intent = Intent(requireActivity(), AuthActivity::class.java)
             startActivity(intent)
             requireActivity().finish()

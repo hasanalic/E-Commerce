@@ -66,8 +66,8 @@ class AuthViewModel @Inject constructor(
 
     private fun handleInsertDatabaseError(error: DataError.Local) {
         val message = when(error) {
-            DataError.Local.INSERTION_FAILED -> "Veri tabanına kaydetme işlemi başarısız."
-            DataError.Local.UNKNOWN -> "Bilinmeyen bir hata meydana geldi."
+            DataError.Local.INSERTION_FAILED -> "Saving to database failed."
+            DataError.Local.UNKNOWN -> "An unknown error occurred."
             else -> null
         }
         _authState.value = _authState.value!!.copy(

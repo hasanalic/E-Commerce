@@ -86,8 +86,8 @@ class FilteredProductsViewModel @Inject constructor(
 
     private fun handleGetProductsError(error: DataError.Local) {
         val errorMessage = when(error) {
-            DataError.Local.NOT_FOUND -> "Ürünler getirilemedi."
-            DataError.Local.UNKNOWN -> "Bilinmeyen bir hata nedeniyle ürünler getirilemedi."
+            DataError.Local.NOT_FOUND -> "The products could not be brought."
+            DataError.Local.UNKNOWN -> "Due to an unknown error, the products could not be delivered."
             else -> null
         }
 
@@ -125,8 +125,8 @@ class FilteredProductsViewModel @Inject constructor(
 
     private fun handleAddProductToCartError(error: DataError.Local) {
         val message = when(error) {
-            DataError.Local.INSERTION_FAILED -> "Ürün, alışveriş sepetine eklenemedi."
-            DataError.Local.UNKNOWN -> "Bilinmeyen bir hata meydana geldi."
+            DataError.Local.INSERTION_FAILED -> "The product could not be added to the shopping cart."
+            DataError.Local.UNKNOWN -> "An unknown error occurred."
             else -> null
         }
         _filteredProductsState.value = _filteredProductsState.value!!.copy(
@@ -161,8 +161,8 @@ class FilteredProductsViewModel @Inject constructor(
 
     private fun handleRemoveProductFromCartError(error: DataError.Local) {
         val message = when(error) {
-            DataError.Local.DELETION_FAILED -> "Ürün, alışveriş sepetinden silinemedi."
-            DataError.Local.UNKNOWN -> "Bilinmeyen bir hata meydana geldi."
+            DataError.Local.DELETION_FAILED -> "The item could not be deleted from the shopping cart."
+            DataError.Local.UNKNOWN -> "An unknown error occurred."
             else -> null
         }
 
@@ -222,8 +222,8 @@ class FilteredProductsViewModel @Inject constructor(
 
     private fun handleAddProductToFavoritesError(error: DataError.Local) {
         val message = when(error) {
-            DataError.Local.INSERTION_FAILED -> "Ürün, favorilere eklenemedi."
-            DataError.Local.UNKNOWN -> "Bilinmeyen bir hata meydana geldi."
+            DataError.Local.INSERTION_FAILED -> "The product could not be added to favorites."
+            DataError.Local.UNKNOWN -> "An unknown error occurred."
             else -> null
         }
         _filteredProductsState.value = _filteredProductsState.value!!.copy(
@@ -268,8 +268,8 @@ class FilteredProductsViewModel @Inject constructor(
 
     private fun handleRemoveProductFromFavoritesError(error: DataError.Local) {
         val message = when(error) {
-            DataError.Local.DELETION_FAILED -> "Ürün, favorilerden kaldırılamadı."
-            DataError.Local.UNKNOWN -> "Bilinmeyen bir hata meydana geldi."
+            DataError.Local.DELETION_FAILED -> "The product could not be removed from favorites."
+            DataError.Local.UNKNOWN -> "An unknown error occurred."
             else -> null
         }
         _filteredProductsState.value = _filteredProductsState.value!!.copy(
@@ -288,11 +288,10 @@ class FilteredProductsViewModel @Inject constructor(
         )
     }
 
-
     private fun handleCheckProductError(error: DataError.Local) {
         val errorMessage = when(error) {
-            DataError.Local.NOT_FOUND -> { "İşleminiz gerçekleştirilemedi." }
-            DataError.Local.UNKNOWN -> { "Bilinmeyen bir hata nedeniyle ürünler getirilemedi." }
+            DataError.Local.NOT_FOUND -> { "Your transaction could not be completed." }
+            DataError.Local.UNKNOWN -> { "Due to an unknown error, the products could not be delivered." }
             else -> null
         }
 

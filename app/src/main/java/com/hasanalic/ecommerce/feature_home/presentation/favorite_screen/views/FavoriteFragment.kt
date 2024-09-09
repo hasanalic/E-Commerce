@@ -79,17 +79,17 @@ class FavoriteFragment: Fragment() {
 
     private fun showRemoveFromFavoriteWarningDialog(productId: String) {
         val alertDialogBuilder = AlertDialog.Builder(requireContext())
-        alertDialogBuilder.setMessage("Ürünü favorilerden kaldırmak istediğine emin misin?")
-        alertDialogBuilder.setPositiveButton("Kaldır") { _, _ ->
+        alertDialogBuilder.setMessage("Are you sure you want to remove this item from your favorites?")
+        alertDialogBuilder.setPositiveButton("Remove") { _, _ ->
             viewModel.removeProductFromFavorites(productId)
         }
-        alertDialogBuilder.setNegativeButton("Vazgeç") { _, _ -> }
+        alertDialogBuilder.setNegativeButton("Cancel") { _, _ -> }
 
         alertDialogBuilder.create().show()
     }
 
     private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-        //viewModel.getUserFavoriteProducts(userId)
+        viewModel.getUserFavoriteProductsIfUserLoggedIn()
         //viewModel.getShoppingCartCount(userId)
     }
 
@@ -138,7 +138,7 @@ class FavoriteFragment: Fragment() {
     private fun navigateToAuthActivityAndFinish() {
         val intent = Intent(requireActivity(), AuthActivity::class.java)
         startActivity(intent)
-        toast(requireContext(),"Favorileri görüntülemek için hesabınıza giriş yapınız.",false)
+        toast(requireContext(),"Log in to your account to view your favorites.",false)
         requireActivity().finish()
     }
 
