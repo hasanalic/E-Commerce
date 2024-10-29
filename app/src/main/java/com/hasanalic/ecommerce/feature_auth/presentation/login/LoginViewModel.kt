@@ -21,27 +21,33 @@ class LoginViewModel @Inject constructor(
     private val authUseCases: AuthUseCases
 ): ViewModel() {
 
+    var email = MutableLiveData("")
+    var password = MutableLiveData("")
+
     private var _loginState = MutableLiveData(LoginState())
     val loginState: LiveData<LoginState> = _loginState
 
-    fun onLoginClick(email: String, password: String) {
-        _loginState.value = LoginState(isLoading = true)
+    fun onLoginClick() {
+        val emailValue = email.value ?: ""
+        val passwordValue = password.value ?: ""
 
-        val inputValidationResult = authUseCases.userInputValidatorUseCase(email = email, password = password)
+        _loginState.value = _loginState.value?.copy(isLoading = true)
+
+        val inputValidationResult = authUseCases.userInputValidatorUseCase(email = emailValue, password = passwordValue)
         if (inputValidationResult is Result.Error) {
             handleInputValidationError(inputValidationResult.error)
             return
         }
 
-        val emailValidationResult = authUseCases.userEmailValidatorUseCase(email)
+        val emailValidationResult = authUseCases.userEmailValidatorUseCase(emailValue)
         if (emailValidationResult is Result.Error) {
             handleEmailValidationError(emailValidationResult.error)
             return
         }
 
-        when(val passwordValidationResult = authUseCases.userPasswordValidatorUseCase(password)) {
+        when(val passwordValidationResult = authUseCases.userPasswordValidatorUseCase(passwordValue)) {
             is Result.Error -> handlePasswordValidationError(passwordValidationResult.error)
-            is Result.Success -> loginUser(email, password)
+            is Result.Success -> loginUser(emailValue, passwordValue)
         }
     }
 
@@ -110,5 +116,13 @@ class LoginViewModel @Inject constructor(
             }
             DataError.Local.UNKNOWN -> TODO()
         }
+    }
+
+    fun clearValidationError() {
+        _loginState.value = _loginState.value?.copy(validationError = null)
+    }
+
+    fun clearDataError() {
+        _loginState.value = _loginState.value?.copy(dataError = null)
     }
 }

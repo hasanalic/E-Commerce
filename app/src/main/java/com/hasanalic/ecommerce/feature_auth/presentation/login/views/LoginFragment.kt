@@ -5,27 +5,24 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.hasanalic.ecommerce.R
-import com.hasanalic.ecommerce.databinding.FragmentLoginBinding
 import com.hasanalic.ecommerce.feature_auth.presentation.login.LoginState
 import com.hasanalic.ecommerce.feature_auth.presentation.login.LoginViewModel
 import com.hasanalic.ecommerce.feature_auth.presentation.register.views.RegisterFragment
 import com.hasanalic.ecommerce.feature_home.presentation.HomeActivity
-import com.hasanalic.ecommerce.core.utils.hide
-import com.hasanalic.ecommerce.core.utils.show
 import com.hasanalic.ecommerce.core.utils.toast
+import com.hasanalic.ecommerce.databinding.FragmentLoginBinding
 
 class LoginFragment: Fragment() {
 
-    private var _binding: FragmentLoginBinding? = null
-    private val binding get() = _binding!!
-
+    private lateinit var binding: FragmentLoginBinding
     lateinit var viewModel: LoginViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        _binding = FragmentLoginBinding.inflate(inflater, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false)
         return binding.root
     }
 
@@ -33,6 +30,9 @@ class LoginFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = ViewModelProvider(requireActivity())[LoginViewModel::class.java]
+
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewModel = viewModel
 
         setupListeners()
         setupObservers()
@@ -43,13 +43,6 @@ class LoginFragment: Fragment() {
             val intent = Intent(requireActivity(), HomeActivity::class.java)
             startActivity(intent)
             requireActivity().finish()
-        }
-
-        binding.buttonLogin.setOnClickListener {
-            val email = binding.textInputEditTextEmail.text.toString()
-            val password = binding.textInputEditTextPassword.text.toString()
-
-            viewModel.onLoginClick(email, password)
         }
 
         binding.textViewRegister.setOnClickListener {
@@ -68,20 +61,14 @@ class LoginFragment: Fragment() {
             navigateToHomeActivity()
         }
 
-        if (state.isLoading) {
-            binding.progressBarLogin.show()
-            binding.buttonLogin.isEnabled = false
-        } else {
-            binding.progressBarLogin.hide()
-            binding.buttonLogin.isEnabled = true
-        }
-
         state.validationError?.let {
             toast(requireContext(), it, false)
+            viewModel.clearValidationError()
         }
 
         state.dataError?.let {
             toast(requireContext(), it, false)
+            viewModel.clearDataError()
         }
     }
 
@@ -97,10 +84,5 @@ class LoginFragment: Fragment() {
             replace(R.id.fragmentContainerViewMainActivity, RegisterFragment())
             commit()
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

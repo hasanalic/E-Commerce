@@ -12,7 +12,7 @@
     <string name="hesabin_var_mi">Already have an account? <b>Log In</b></string>
     <string name="hesabin_yok_mu">Don’t have an account?<b>Sign Up</b></string>
     <string name="sign_in">Sign In</string>
-    <string name="sign_in_detail">Hello! Welcome back!</string>
+    <string name="sign_in_detail">Hello! Welcome back.</string>
     <string name="log_in">Log In</string>
     <string name="sign_in_from">signInFrom</string>
     <string name="classic">classic</string>
