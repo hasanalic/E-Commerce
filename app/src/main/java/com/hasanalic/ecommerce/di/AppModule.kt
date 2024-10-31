@@ -93,7 +93,7 @@ import com.hasanalic.ecommerce.feature_location.domain.use_cases.AddressUseCases
 import com.hasanalic.ecommerce.feature_location.domain.use_cases.AddressValidatorUseCase
 import com.hasanalic.ecommerce.feature_location.domain.use_cases.DeleteUserAddressUseCase
 import com.hasanalic.ecommerce.feature_location.domain.use_cases.GetAddressEntityByUserIdAndAddressIdUseCase
-import com.hasanalic.ecommerce.feature_location.domain.use_cases.GetAddressEntityListByUserIdUseCase
+import com.hasanalic.ecommerce.feature_location.domain.use_cases.GetLocationListByUserIdUseCase
 import com.hasanalic.ecommerce.feature_location.domain.use_cases.GetAddressListByUserIdUseCase
 import com.hasanalic.ecommerce.feature_location.domain.use_cases.InsertAddressEntityUseCase
 import com.hasanalic.ecommerce.feature_notification.data.repository.NotificationRepositoryImp
@@ -368,7 +368,7 @@ object AppModule {
         return AddressUseCases(
             deleteUserAddressUseCase = DeleteUserAddressUseCase(addressRepository),
             getAddressEntityByUserIdAndAddressIdUseCase = GetAddressEntityByUserIdAndAddressIdUseCase(addressRepository),
-            getAddressEntityListByUserIdUseCase = GetAddressEntityListByUserIdUseCase(addressRepository),
+            getLocationListByUserIdUseCase = GetLocationListByUserIdUseCase(addressRepository),
             getAddressListByUserIdUseCase = GetAddressListByUserIdUseCase(addressRepository),
             insertAddressEntityUseCase = InsertAddressEntityUseCase(addressRepository),
             addressValidatorUseCase = AddressValidatorUseCase()

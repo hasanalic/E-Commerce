@@ -9,7 +9,9 @@ import com.hasanalic.ecommerce.core.domain.model.Result
 import com.hasanalic.ecommerce.core.domain.use_cases.shared_preferences.SharedPreferencesUseCases
 import com.hasanalic.ecommerce.feature_location.data.local.entity.AddressEntity
 import com.hasanalic.ecommerce.feature_location.domain.model.AddressValidationError
+import com.hasanalic.ecommerce.feature_location.domain.model.Location
 import com.hasanalic.ecommerce.feature_location.domain.use_cases.AddressUseCases
+import com.hasanalic.ecommerce.feature_location.presentation.views.LocationListener
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,7 +20,10 @@ import javax.inject.Inject
 class LocationViewModel @Inject constructor(
     private val addressUseCases: AddressUseCases,
     private val sharedPreferencesUseCases: SharedPreferencesUseCases
-): ViewModel() {
+): ViewModel(), LocationListener {
+
+    var title = MutableLiveData("")
+    var detail = MutableLiveData("")
 
     private var _locationState = MutableLiveData(LocationState())
     val locationState: LiveData<LocationState> = _locationState
@@ -39,13 +44,13 @@ class LocationViewModel @Inject constructor(
     private fun getAddressEntityList(userId: String) {
         _locationState.value = _locationState.value!!.copy(isLoading = true)
         viewModelScope.launch {
-            when(val result = addressUseCases.getAddressEntityListByUserIdUseCase(userId)) {
+            when(val result = addressUseCases.getLocationListByUserIdUseCase(userId)) {
                 is Result.Error -> handleGetAddressEntityListError(result.error)
                 is Result.Success -> {
                     _locationState.value = _locationState.value!!.copy(
                         isLoading = false,
                         userId = userId,
-                        addressEntityList = result.data.toMutableList()
+                        locationList = result.data.toMutableList()
                     )
                 }
             }
@@ -68,7 +73,7 @@ class LocationViewModel @Inject constructor(
         }
     }
 
-    fun deleteAddressEntity(addressId: Int) {
+    fun deleteLocation(addressId: Int) {
         _locationState.value = _locationState.value!!.copy(
             isLoading = true
         )
@@ -76,7 +81,7 @@ class LocationViewModel @Inject constructor(
             val userId = _locationState.value!!.userId
             when(val result = addressUseCases.deleteUserAddressUseCase(userId, addressId.toString())) {
                 is Result.Error -> handleDeleteAddressEntityError(result.error)
-                is Result.Success -> removeAddressFromList(addressId)
+                is Result.Success -> removeLocationFromList(addressId)
             }
         }
     }
@@ -99,20 +104,23 @@ class LocationViewModel @Inject constructor(
         }
     }
 
-    private fun removeAddressFromList(addressId: Int) {
-        val currentAddressList = _locationState.value!!.addressEntityList
+    private fun removeLocationFromList(addressId: Int) {
+        val currentAddressList = _locationState.value!!.locationList
 
         currentAddressList.removeAll { it.addressId == addressId }
 
         _locationState.value = _locationState.value!!.copy(
             isLoading = false,
-            addressEntityList = currentAddressList,
+            locationList = currentAddressList,
             isAddressDeletionSuccessful = true,
 
         )
     }
 
-    fun insertAddressEntity(title: String, detail: String) {
+    fun insertAddressEntity() {
+        val titleValue = title.value ?: ""
+        val detailValue = detail.value ?: ""
+
         _locationState.value = _locationState.value!!.copy(
             isLoading = true,
             validationError = null,
@@ -120,7 +128,7 @@ class LocationViewModel @Inject constructor(
             actionError = null
         )
 
-        val addressValidationResult = addressUseCases.addressValidatorUseCase(title, detail)
+        val addressValidationResult = addressUseCases.addressValidatorUseCase(titleValue, detailValue)
         if (addressValidationResult is Result.Error) {
             handleAddressValidationError(addressValidationResult.error)
             return
@@ -128,7 +136,7 @@ class LocationViewModel @Inject constructor(
 
         viewModelScope.launch {
             val userId = _locationState.value!!.userId
-            val addressEntity = AddressEntity(userId, title, detail)
+            val addressEntity = AddressEntity(userId, titleValue, detailValue)
             when(val result = addressUseCases.insertAddressEntityUseCase(addressEntity)) {
                 is Result.Error -> handleInsertAddressEntityError(result.error)
                 is Result.Success -> {
@@ -163,5 +171,9 @@ class LocationViewModel @Inject constructor(
         _locationState.value = LocationState(
             dataError = errorMessage
         )
+    }
+
+    override fun onDeleteClicked(location: Location) {
+        deleteLocation(location.addressId)
     }
 }

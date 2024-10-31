@@ -1,129 +1,154 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".feature_location.presentation.LocationActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/topAppBarHome"
+    <data>
+        <variable
+            name="viewModel"
+            type="com.hasanalic.ecommerce.feature_location.presentation.LocationViewModel" />
+
+        <variable
+            name="adapter"
+            type="com.hasanalic.ecommerce.feature_location.presentation.views.LocationAdapter" />
+
+        <import type="android.view.View" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        app:navigationIcon="@drawable/exit_icon"
-        app:title="Adres ekle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:titleTextAppearance="@style/TextAppearance.MaterialComponents.Body1">
+        android:layout_height="match_parent"
+        tools:context=".feature_location.presentation.LocationActivity">
 
-    </com.google.android.material.appbar.MaterialToolbar>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewAddress"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/bottom"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/topAppBarHome" />
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/bottom"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:strokeWidth="0dp"
-        app:cardElevation="40dp"
-        app:cardBackgroundColor="@color/white"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
-
-        <LinearLayout
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBarHome"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/white"
+            app:navigationIcon="@drawable/exit_icon"
+            app:title="Add Address"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:titleTextAppearance="@style/TextAppearance.MaterialComponents.Body1">
+
+        </com.google.android.material.appbar.MaterialToolbar>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewAddress"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:orientation="vertical"
-            android:background="@drawable/bottom_bar"
-            android:paddingVertical="12dp"
-            android:paddingHorizontal="36dp">
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:setAdapter="@{adapter}"
+            app:submitList="@{viewModel.locationState.locationList}"
+            app:layout_constraintBottom_toTopOf="@+id/bottom"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/topAppBarHome" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayoutAddressTitle"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:strokeWidth="0dp"
+            app:cardElevation="40dp"
+            app:cardBackgroundColor="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="30dp"
-                android:layout_marginTop="10dp"
-                android:hint="@string/address_title"
-                app:layout_constraintTop_toBottomOf="@+id/imageViewMap"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
+                android:orientation="vertical"
+                android:background="@drawable/bottom_bar"
+                android:paddingVertical="12dp"
+                android:paddingHorizontal="36dp">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/textInputEditTextAddressTitle"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textInputLayoutAddressTitle"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:maxLines="1"
-                    android:maxLength="15"
-                    android:textColor="@color/font_secondary"
-                    tools:text="Ev"
-                    android:textSize="16sp" />
+                    android:layout_marginHorizontal="30dp"
+                    android:layout_marginTop="10dp"
+                    android:hint="@string/address_title"
+                    app:layout_constraintTop_toBottomOf="@+id/imageViewMap"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/textInputEditTextAddressTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:maxLength="15"
+                        android:textColor="@color/font_secondary"
+                        android:text="@={viewModel.title}"
+                        tools:text="Ev"
+                        android:textSize="16sp" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayoutAddress"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="30dp"
-                android:layout_marginTop="10dp"
-                android:hint="@string/address">
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/textInputEditTextAddress"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textInputLayoutAddress"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/font_secondary"
-                    tools:text="Çırpıcı Mahallesi Rüstem Balkan Sokak No: 12 Daire: 6"
-                    android:textSize="16sp" />
+                    android:layout_marginHorizontal="30dp"
+                    android:layout_marginTop="10dp"
+                    android:hint="@string/address">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/textInputEditTextAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/font_secondary"
+                        android:text="@={viewModel.detail}"
+                        tools:text="Çırpıcı Mahallesi Rüstem Balkan Sokak No: 12 Daire: 6"
+                        android:textSize="16sp" />
 
-            <Button
-                android:id="@+id/buttonFindLocation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="30dp"
-                android:layout_marginTop="12dp"
-                android:paddingVertical="12dp"
-                android:text="@string/oto_location"
-                android:textSize="15sp" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-            <Button
-                android:id="@+id/buttonSave"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="30dp"
-                android:paddingVertical="12dp"
-                android:text="@string/save"
-                android:textSize="15sp" />
+                <Button
+                    android:id="@+id/buttonFindLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="30dp"
+                    android:layout_marginTop="12dp"
+                    android:paddingVertical="12dp"
+                    android:enabled="@{!viewModel.locationState.isLoading}"
+                    android:text="@string/oto_location"
+                    android:textSize="15sp" />
 
-        </LinearLayout>
+                <Button
+                    android:id="@+id/buttonSave"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="30dp"
+                    android:paddingVertical="12dp"
+                    android:enabled="@{!viewModel.locationState.isLoading}"
+                    android:onClick="@{() -> viewModel.insertAddressEntity()}"
+                    android:text="@string/save"
+                    android:textSize="15sp" />
 
-    </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
 
-    <ProgressBar
-        android:id="@+id/progressBarLocation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:indeterminateTint="@color/color_primary"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        </com.google.android.material.card.MaterialCardView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ProgressBar
+            android:id="@+id/progressBarLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:manageState="@{viewModel.locationState.isLoading}"
+            android:indeterminateTint="@color/color_primary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

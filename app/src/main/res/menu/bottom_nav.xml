@@ -2,18 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/nav_home"
-        android:title="Anasayfa"
+        android:title="Home"
         android:icon="@drawable/home"></item>
     <item
         android:id="@+id/favoriteFragment"
-        android:title="Favorilerim"
+        android:title="Favorites"
         android:icon="@drawable/favorite_white"></item>
     <item
         android:id="@+id/shoppingCartFragment"
-        android:title="Sepetim"
+        android:title="My Cart"
         android:icon="@drawable/cart"></item>
     <item
         android:id="@+id/accountFragment"
-        android:title="Hesabım"
+        android:title="Account"
         android:icon="@drawable/user"></item>
 </menu>

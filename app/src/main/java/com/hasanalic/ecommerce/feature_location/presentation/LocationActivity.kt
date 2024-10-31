@@ -9,8 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationRequest
@@ -19,14 +19,12 @@ import com.google.android.gms.location.LocationSettingsRequest
 import com.google.android.gms.location.LocationSettingsResponse
 import com.google.android.gms.location.SettingsClient
 import com.google.android.gms.tasks.Task
+import com.hasanalic.ecommerce.R
 import com.hasanalic.ecommerce.core.presentation.utils.AlarmConstants.REQUEST_CHECK_SETTINGS
 import com.hasanalic.ecommerce.core.presentation.utils.AlarmConstants.REQUEST_CODR
 import com.hasanalic.ecommerce.databinding.ActivityLocationBinding
-import com.hasanalic.ecommerce.feature_location.presentation.views.LocationAdapter
-import com.hasanalic.ecommerce.core.presentation.utils.ItemDecoration
-import com.hasanalic.ecommerce.core.utils.hide
-import com.hasanalic.ecommerce.core.utils.show
 import com.hasanalic.ecommerce.feature_auth.presentation.AuthActivity
+import com.hasanalic.ecommerce.feature_location.presentation.views.LocationAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
 
@@ -39,22 +37,29 @@ class LocationActivity : AppCompatActivity() {
     private lateinit var viewModel: LocationViewModel
 
     private val locationAdapter by lazy {
-        LocationAdapter()
+        LocationAdapter(listOf(), viewModel)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityLocationBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_location)
 
         viewModel = ViewModelProvider(this)[LocationViewModel::class.java]
+
+        binding.apply {
+            viewModel = this@LocationActivity.viewModel
+            lifecycleOwner = this@LocationActivity
+        }
+
+        setContentView(binding.root)
+
+        binding.adapter = locationAdapter
+
         viewModel.getUserAddressEntityListIfUserLoggedIn()
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
 
         setupListeners()
-
-        setupRecyclerView()
 
         setupObservers()
     }
@@ -67,24 +72,6 @@ class LocationActivity : AppCompatActivity() {
         binding.buttonFindLocation.setOnClickListener {
             findLocation()
         }
-
-        binding.buttonSave.setOnClickListener {
-            val addressTitle = binding.textInputEditTextAddressTitle.text.toString()
-            val addressDetail = binding.textInputEditTextAddress.text.toString()
-
-            viewModel.insertAddressEntity(addressTitle, addressDetail)
-        }
-    }
-
-    private fun setupRecyclerView() {
-        binding.recyclerViewAddress.adapter = locationAdapter
-        binding.recyclerViewAddress.layoutManager = LinearLayoutManager(this,
-            LinearLayoutManager.VERTICAL,false)
-        binding.recyclerViewAddress.addItemDecoration(ItemDecoration(40,40,40))
-
-        locationAdapter.setOnDeleteClickListener { addressId, position ->
-            viewModel.deleteAddressEntity(addressId)
-        }
     }
 
     private fun setupObservers() {
@@ -94,23 +81,8 @@ class LocationActivity : AppCompatActivity() {
     }
 
     private fun handleLocationState(state: LocationState) {
-        if (state.isLoading) {
-            binding.progressBarLocation.show()
-            binding.buttonSave.isEnabled = false
-            binding.buttonFindLocation.isEnabled = false
-        } else {
-            binding.progressBarLocation.hide()
-            binding.buttonSave.isEnabled = true
-            binding.buttonFindLocation.isEnabled = true
-        }
-
         if (!state.isUserLoggedIn) {
             navigateToAuthActivityAndFinish()
-        }
-
-        state.addressEntityList.let {
-            locationAdapter.addressList = it
-            locationAdapter.notifyChanges()
         }
 
         if (state.isAddressDeletionSuccessful) {

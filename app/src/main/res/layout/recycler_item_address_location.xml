@@ -1,88 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/materialCardAddress"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    app:strokeWidth="0dp"
-    app:cardElevation="4dp"
-    app:cardBackgroundColor="@color/white"
-    android:layout_marginHorizontal="12dp"
-    android:layout_marginVertical="12dp">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <data>
+        <variable
+            name="location"
+            type="com.hasanalic.ecommerce.feature_location.domain.model.Location" />
+
+        <variable
+            name="listener"
+            type="com.hasanalic.ecommerce.feature_location.presentation.views.LocationListener" />
+
+        <import type="android.view.View" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/materialCardAddress"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="12dp"
-        android:gravity="start|center_vertical"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="30dp"
-            android:layout_weight="1"
-            android:layout_marginEnd="10dp"
-            android:src="@drawable/location" />
+        app:strokeWidth="0dp"
+        app:cardElevation="4dp"
+        app:cardBackgroundColor="@color/white"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginVertical="12dp">
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="6"
-            android:orientation="vertical">
+            android:padding="12dp"
+            android:gravity="start|center_vertical"
+            android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/textViewAddressTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:text="Ev"
-                android:textSize="16sp"
-                android:textColor="@color/font_secondary" />
-
-            <TextView
-                android:id="@+id/textViewAddressDetail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:text="Çırpıcı Mah. Rüstem Balkan Sok. No:12 Daire: 6"
-                android:textSize="14sp"
-                android:textColor="@color/font_secondary" />
-
-        </LinearLayout>
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/materialCardDelete"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            app:strokeWidth="0dp"
-            app:cardElevation="2dp"
-            android:layout_marginHorizontal="8dp"
-            android:layout_marginVertical="4dp"
-            app:cardBackgroundColor="@color/white">
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/location" />
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginVertical="8dp"
-                android:orientation="horizontal"
-                android:gravity="center">
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginEnd="4dp"
-                    android:background="@drawable/delete"/>
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="6"
+                android:orientation="vertical">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/textViewAddressTitle"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/delete"/>
+                    android:text="@{location.addressTitle}"
+                    tools:text="Ev"
+                    android:textSize="16sp"
+                    android:textColor="@color/font_secondary" />
+
+                <TextView
+                    android:id="@+id/textViewAddressDetail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{location.addressDetail}"
+                    tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit"
+                    android:textSize="14sp"
+                    android:textColor="@color/font_secondary" />
 
             </LinearLayout>
 
-        </com.google.android.material.card.MaterialCardView>
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/materialCardDelete"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:onClick="@{() -> listener.onDeleteClicked(location)}"
+                android:layout_weight="2"
+                app:strokeWidth="0dp"
+                app:cardElevation="2dp"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginVertical="4dp"
+                app:cardBackgroundColor="@color/white">
 
-    </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginVertical="8dp"
+                    android:orientation="horizontal"
+                    android:gravity="center">
 
-</com.google.android.material.card.MaterialCardView>
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_marginEnd="4dp"
+                        android:background="@drawable/delete"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/delete"/>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</layout>

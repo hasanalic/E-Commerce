@@ -71,7 +71,9 @@ class LoginViewModelTest {
         val email = "name@example.com"
         val password = "Password123"
 
-        loginViewModel.onLoginClick(email, password)
+        loginViewModel.email.value = email
+        loginViewModel.password.value = password
+        loginViewModel.onLoginClick()
 
         val loginStateValue = loginViewModel.loginState.getOrAwaitValue()
 
@@ -86,7 +88,9 @@ class LoginViewModelTest {
         val email = ""
         val password = ""
 
-        loginViewModel.onLoginClick(email, password)
+        loginViewModel.email.value = email
+        loginViewModel.password.value = password
+        loginViewModel.onLoginClick()
 
         val loginStateValue = loginViewModel.loginState.getOrAwaitValue()
 
@@ -101,7 +105,9 @@ class LoginViewModelTest {
         val invalidEmail = "email"
         val password = "Password123"
 
-        loginViewModel.onLoginClick(invalidEmail, password)
+        loginViewModel.email.value = invalidEmail
+        loginViewModel.password.value = password
+        loginViewModel.onLoginClick()
 
         val loginStateValue = loginViewModel.loginState.getOrAwaitValue()
 
@@ -116,7 +122,9 @@ class LoginViewModelTest {
         val emptyEmail = ""
         val password = "Password123"
 
-        loginViewModel.onLoginClick(emptyEmail, password)
+        loginViewModel.email.value = emptyEmail
+        loginViewModel.password.value = password
+        loginViewModel.onLoginClick()
 
         val loginStateValue = loginViewModel.loginState.getOrAwaitValue()
 
@@ -131,7 +139,9 @@ class LoginViewModelTest {
         val email = "name@example.com"
         val invalidPassword = "pass"
 
-        loginViewModel.onLoginClick(email, invalidPassword)
+        loginViewModel.email.value = email
+        loginViewModel.password.value = invalidPassword
+        loginViewModel.onLoginClick()
 
         val loginStateValue = loginViewModel.loginState.getOrAwaitValue()
 
@@ -146,7 +156,9 @@ class LoginViewModelTest {
         val email = "name@example.com"
         val emptyPassword = ""
 
-        loginViewModel.onLoginClick(email, emptyPassword)
+        loginViewModel.email.value = email
+        loginViewModel.password.value = emptyPassword
+        loginViewModel.onLoginClick()
 
         val loginStateValue = loginViewModel.loginState.getOrAwaitValue()
 
@@ -161,7 +173,9 @@ class LoginViewModelTest {
         val nonExistentEmail = "nonexistent@example.com"
         val nonExistentPassword = "nonExistentPassword1"
 
-        loginViewModel.onLoginClick(nonExistentEmail, nonExistentPassword)
+        loginViewModel.email.value = nonExistentEmail
+        loginViewModel.password.value = nonExistentPassword
+        loginViewModel.onLoginClick()
 
         val loginStateValue = loginViewModel.loginState.getOrAwaitValue()
 

@@ -1,13 +1,33 @@
 package com.hasanalic.ecommerce.feature_location.presentation.views
 
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import androidx.recyclerview.widget.AsyncListDiffer
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
+import com.hasanalic.ecommerce.R
 import com.hasanalic.ecommerce.databinding.RecyclerItemAddressLocationBinding
-import com.hasanalic.ecommerce.feature_location.data.local.entity.AddressEntity
+import com.hasanalic.ecommerce.feature_location.domain.model.Location
+import com.hasanalic.ecommerce.feature_location.presentation.base.BaseAdapter
 
+class LocationAdapter(
+    private val list: List<Location>,
+    private val locationListener: LocationListener
+) : BaseAdapter<RecyclerItemAddressLocationBinding, Location>(list) {
+
+    override val layoutId: Int = R.layout.recycler_item_address_location
+
+    override fun bind(binding: RecyclerItemAddressLocationBinding, item: Location) {
+        binding.apply {
+            location = item
+            listener = locationListener
+            executePendingBindings()
+        }
+    }
+}
+
+interface LocationListener {
+    fun onDeleteClicked(location: Location)
+}
+
+
+
+/*
 class LocationAdapter: RecyclerView.Adapter<LocationAdapter.MyViewHolder>() {
 
     private val diffUtil = object: DiffUtil.ItemCallback<AddressEntity>() {
@@ -60,3 +80,5 @@ class LocationAdapter: RecyclerView.Adapter<LocationAdapter.MyViewHolder>() {
         holder.bind(addressList[position], position)
     }
 }
+
+ */
